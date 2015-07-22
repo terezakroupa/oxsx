@@ -1,6 +1,6 @@
 #include "CompositePdf.h"
 #include <iostream>
-CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_){
+CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
     fPdfPtrs.push_back(p2_ -> Clone());
 }

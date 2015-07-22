@@ -5,6 +5,7 @@
 #include <vector>
 
 class BinnedPdf : public Pdf{
+    // fixme. dont repeat all of hthe axis methods, just return a reference to the axis collection??
  public:
     BinnedPdf(const AxisCollection& axes_);
     BinnedPdf(const BinnedPdf& other_);
@@ -16,7 +17,15 @@ class BinnedPdf : public Pdf{
     
     void   Fill(const std::vector<double>& vals_);
     size_t FindBin(const std::vector<double>& vals_) const;
+    std::vector<size_t> UnpackIndicies(size_t bin_) const;
+    size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
 
+    double GetBinContent(size_t bin_) const;
+    size_t GetNBins() const;
+    void   AddBinContent(size_t bin_, double content_);
+
+    void   Empty();
+    
  private:
     AxisCollection fAxes;
     std::vector<double> fBinContents;

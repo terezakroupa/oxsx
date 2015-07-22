@@ -5,16 +5,18 @@
 #ifndef __ONE_EV_NLLH__
 #define __ONE_EV_NLLH__
 #include <vector>
-#include "../event/Event.h"
+#include "../pdf/Pdf.h"
 class OneEventNLLH{
-    
  public:
-    OneEventNLLH(const std::vector<Event>* eventTypes_, const std::vector<double>& eventRates_);
-    double Evaluate(const std::vector<double>* eventVals_) const;
+    OneEventNLLH(const std::vector<Pdf*>& pdfs_);
+
+    double Evaluate(const std::vector<double>& eventVals_) const;
     void   SetEventRates(const std::vector<double>& eventRates_);
+
  private:
-    const std::vector<Event>*  fEventTypes;
-    std::vector<double>  fEventRates;
-    
+    std::vector<Pdf*>   fPdfs;
+    std::vector<double> fRates;
+
+    size_t fNPdfs;
 };
 #endif
