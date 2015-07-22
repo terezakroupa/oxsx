@@ -3,7 +3,7 @@
 
 Evaluator::Evaluator(TTree* data_){
     fData = data_;
-    fNEvents = data_->GetEntries();
+    fNEvents = data_->GetEntries(); // FIXME: DO you need to count these? is it taking a long time?
 }
 
 

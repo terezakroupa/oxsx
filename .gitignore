@@ -1,0 +1,9 @@
+*.o
+*.dll
+*.so
+
+*~
+*.pyc
+*.pyo
+*.root
+*.out
