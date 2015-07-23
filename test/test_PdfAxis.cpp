@@ -1,12 +1,15 @@
-#include "PdfAxis.h"
+#include "../src/pdf/binned/PdfAxis.h"
 #include <iostream>
 
 int main(){
-    PdfAxis a1("test1", 0, 10, 10);
-    for(size_t i = 0; i < a1.GetNBins(); i++){
-        std::cout << i << std::endl;
-    }
+    PdfAxis test("test", -10, 10, 100,"te^{s}t");
+    
+    for(size_t i = 0; i < test.GetNBins(); i++)
+        std::cout << i << "\t" << 
+            test.GetBinLowEdge(i) << "\t" << test.GetBinHighEdge(i) << std::endl;
 
-    std::cout << a1.FindBin(-1) << "\t" << a1.FindBin(11) << std::endl;
+    std::cout << "-200 goes in " << test.FindBin(-200) << std::endl;
+    std::cout << "0 goes in " << test.FindBin(0) << std::endl;
+    std::cout << "200 goes in " << test.FindBin(200) << std::endl;
     return 0;
 }

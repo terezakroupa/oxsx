@@ -3,6 +3,8 @@
 #include <TRandom3.h>
 #include <iostream>
 #include <TH1D.h>
+#include <TCanvas.h>
+#include <TLegend.h>
 
 // some of this should be in a pdf test script
 
@@ -28,7 +30,7 @@ private:
 TH1D* ToROOT(BinnedPdf pdf_){
     TH1D* hist = new TH1D("","", 100, -10, 10);
     for(size_t bin = 0; bin < pdf_.GetNBins(); bin++)
-        hist->SetBinContent(bin, pdf_.GetBinContent(bin));
+        hist->SetBinContent(bin +1, pdf_.GetBinContent(bin));
     return hist;
 }
 
@@ -37,9 +39,12 @@ int main(){
     PdfAxis axis("energy", -10, 10, 100, "Energy");
     AxisCollection ac;
     ac.AddAxis(axis);
-    
+
     // set up a simple gaussian
     BinnedPdf before(ac);
+    std::cout << "axis collection dimensions = " << ac.GetNDimensions() << std::endl;
+    std::cout << "pdf dimensions = " << before.GetNDims() << std::endl;
+
     TRandom3 rand;
     TH1D* checkHist = new TH1D("", "", 100, -10 , 10);
     for(unsigned i  = 0; i < 1000; i++){
@@ -47,11 +52,24 @@ int main(){
         checkHist -> Fill(a);
         before.Fill(std::vector<double>(1, a));
     }
-    
+
     TH1D* beforeHist = ToROOT(before);
-    beforeHist->SaveAs("test_systematic.root");
-    checkHist->SaveAs("test_systematic2.root");
-    Scale s(ac, 5);
+
+    Scale scale(ac, 5);
+    BinnedPdf after = scale(before, std::vector<size_t> (1,0));
+
+    TH1D* afterHist = ToROOT(after);
     
+    TCanvas overlay;
+    TLegend leg(0.7, 0.7, 0.9, 0.9);
+    leg.AddEntry(beforeHist, "Before");
+    leg.AddEntry(afterHist, "After");
+    afterHist->SetLineColor(2);
+    afterHist->SetLineStyle(2);
+
+    overlay.cd();
+    afterHist->Draw();
+    beforeHist->Draw("same");
+    overlay.SaveAs("test_Systematic.root");
     return 0;
 }
