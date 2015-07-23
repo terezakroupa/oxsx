@@ -29,7 +29,6 @@ class BinnedPdf : public Pdf{
  private:
     AxisCollection fAxes;
     std::vector<double> fBinContents;
-    size_t fNDims;
     size_t fNBins;
 };
 

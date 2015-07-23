@@ -1,8 +1,9 @@
 #include "BinnedPdf.h"
-
+#include <iostream>
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     fAxes = axes_;
     fNDims = axes_.GetNDimensions();
+    std::cout << "making the pdf with dimension  " << fNDims << std::endl;
     fNBins = axes_.GetNBins();
     fBinContents.resize(fNBins, 0);
 }

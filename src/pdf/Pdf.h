@@ -17,7 +17,7 @@ class Pdf{
     CompositePdf operator* (const Pdf& other_) const;  // references are polymorphic :)
     unsigned GetNDims() const;
 
- private:
+ protected:
     unsigned fNDims;
 };
 #endif
