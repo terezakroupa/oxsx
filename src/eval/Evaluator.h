@@ -14,21 +14,19 @@ class Evaluator{
     virtual ~Evaluator() {};
     virtual double Evaluate() const = 0;
 
-    void SetEventTypes(const std::vector<Event>& eventTypes_);
-    void SetEventRates(const std::vector<double>& eventRates_);
+    void SetPdfs(const std::vector<Event>& eventTypes_);
+    void SetRates(const std::vector<double>& eventRates_);
 
-    void AddEventType(const Event& event_, double rate_);
-
-    unsigned GetNEventTypes() const {return fNEventTypes;}
+    unsigned GetNPdfs() const {return fNEventTypes;}
     unsigned GetNSystematics() const {return 0;}
 
  protected:
     TTree* fData;
     unsigned fNEvents;
-    unsigned fNEventTypes;
-    unsigned fNSystematics;
-    std::vector<Event> fEventTypes;
+    std::vector<Event>  fPdfs;
+    std::vector<double> fRates;
     /*std::vector<Systematics> */
-    std::vector<double> fEventRates;
+    unsigned fNPdfs;
+    unsigned fNSystematics;
 };
 #endif

@@ -23,6 +23,10 @@ class AxisCollection{
     size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
     std::vector<size_t> UnpackIndicies(size_t index_) const;
 
+    std::vector<double> GetBinCentre(size_t bin_) const;
+    std::vector<double> GetBinLowEdges(size_t bin_) const;
+    std::vector<double> GetBinHighEdges(size_t bin_) const;
+    
  private:
     std::vector<PdfAxis> fAxes;
     std::vector<size_t> fAxisNbins;

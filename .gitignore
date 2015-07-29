@@ -1,0 +1,11 @@
+*.o
+*.dll
+*.so
+*.sconsign
+*~
+*.pyc
+*.pyo
+*.root
+*.out
+build/*
+test/*
