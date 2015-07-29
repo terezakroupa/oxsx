@@ -2,21 +2,26 @@
 #include <math.h>
 #include <iostream>
 
-double OneEventNLLH::Evaluate(const std::vector<double>* eventVals_) const{
+OneEventNLLH::OneEventNLLH(const std::vector<Pdf*>& pdfs_){
+    fPdfs  = pdfs_;
+    fNPdfs = pdfs_.size();
+}
+
+
+double OneEventNLLH::Evaluate(const std::vector<double>& eventVals_) const{
     double nllh = 0;
-    for (size_t i = 0; i < fEventRates.size(); i++){
-        double prob = fEventTypes->at(i).Probability(eventVals_);
+    for (size_t i = 0; i < fRates.size(); i++){
+        double prob = fPdfs.at(i) -> operator() (eventVals_);
         if (!prob)
             std::cout << "zero probability inf likelihood..." << std::endl;
-        nllh -= log(fEventRates.at(i) * prob);
+        nllh -= log(fRates.at(i) * prob);
     }
-    
     return nllh;
 }
 
-OneEventNLLH::OneEventNLLH(const std::vector<Event>* eventTypes_, 
-                           const std::vector<double>& eventRates_){
-    fEventTypes = eventTypes_;
-    fEventRates = eventRates_;
-}
 
+void OneEventNLLH::SetEventRates(const std::vector<double>& eventRates_){
+    if (eventRates_.size() != fNPdfs)
+        throw 0; // FIXME should throw dimension error
+    fRates = eventRates_;
+}
