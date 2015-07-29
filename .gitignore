@@ -1,7 +1,7 @@
 *.o
 *.dll
 *.so
-*.sconsign
+*.sconsign*
 *~
 *.pyc
 *.pyo
@@ -9,3 +9,4 @@
 *.out
 build/*
 test/*
+lib.a
