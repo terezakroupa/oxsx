@@ -7,10 +7,11 @@ class CompositePdf;
 class Pdf{
  public:
     Pdf() {}
-
-    virtual double operator() (const std::vector<double>& vals_) const = 0;
     virtual ~Pdf() {}
+    virtual double operator() (const std::vector<double>& vals_) const = 0;
+
     virtual double Integral() const = 0;
+
     virtual void   Normalise() = 0;
     virtual Pdf*   Clone() const = 0;
 

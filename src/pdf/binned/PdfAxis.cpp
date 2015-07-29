@@ -14,9 +14,12 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
 
     fBinLowEdges.resize(fNBins, 0);    
     fBinHighEdges.resize(fNBins, 0);
+    fBinCentres.resize(fNBins, 0);
+
     for(size_t i = 0; i < fNBins; i++){
-        fBinLowEdges[i]  = fMin  + i     * fBinWidth;
-        fBinHighEdges[i] = fMin  + (i+1) * fBinWidth;
+        fBinLowEdges[i]  = fMin  + i          * fBinWidth;
+        fBinCentres[i]   = fMin  + (i + 0.5)  * fBinWidth;
+        fBinHighEdges[i] = fMin  + (i+1)      * fBinWidth;
     }
 }
 

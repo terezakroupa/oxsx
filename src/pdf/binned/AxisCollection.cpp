@@ -78,3 +78,48 @@ bool AxisCollection::HasAxis(const std::string& name_){
             return true;
     return false;
 }
+
+std::vector<double> 
+AxisCollection::GetBinLowEdges(size_t bin_) const{
+
+    if(bin_ > fNBins)
+        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+
+    std::vector<size_t> indicies = UnpackIndicies(bin_);
+    std::vector<double> lowEdges(fNDimensions, 0);
+
+    for(size_t i = 0; i <fNDimensions; i++){
+        lowEdges[i] = fAxes[i].GetBinLowEdge(indicies.at(i));
+    }
+    return lowEdges;
+}
+
+std::vector<double> 
+AxisCollection::GetBinHighEdges(size_t bin_) const{
+
+    if(bin_ > fNBins)
+        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+
+    std::vector<size_t> indicies = UnpackIndicies(bin_);
+    std::vector<double> lowEdges(fNDimensions, 0);
+
+    for(size_t i = 0; i <fNDimensions; i++){
+        lowEdges[i] = fAxes[i].GetBinHighEdge(indicies.at(i));
+    }
+    return lowEdges;
+}
+
+std::vector<double>
+AxisCollection::GetBinCentre(size_t bin_) const{
+
+    if(bin_ > fNBins)
+        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+
+    std::vector<size_t> indicies = UnpackIndicies(bin_);
+    std::vector<double> centre(fNDimensions, 0);
+
+    for(size_t i = 0; i <fNDimensions; i++){
+        centre[i] = fAxes[i].GetBinCentre(indicies.at(i));
+    }
+    return centre;
+}

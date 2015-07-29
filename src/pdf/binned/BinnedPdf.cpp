@@ -1,11 +1,7 @@
 #include "BinnedPdf.h"
 #include <iostream>
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
-    fAxes = axes_;
-    fNDims = axes_.GetNDimensions();
-    std::cout << "making the pdf with dimension  " << fNDims << std::endl;
-    fNBins = axes_.GetNBins();
-    fBinContents.resize(fNBins, 0);
+    SetAxes(axes_);
 }
 
 BinnedPdf::BinnedPdf(const BinnedPdf& other_){
@@ -13,6 +9,18 @@ BinnedPdf::BinnedPdf(const BinnedPdf& other_){
     fNDims = other_.fNDims;
     fBinContents = other_.fBinContents;
     fNBins = fBinContents.size();
+}
+
+void BinnedPdf::SetAxes(const AxisCollection& axes_){
+    fAxes  = axes_;
+    fNBins = fAxes.GetNBins();
+    fNDims = fAxes.GetNDimensions();
+    fBinContents.resize(fNBins, 0);
+    
+}
+
+AxisCollection BinnedPdf::GetAxes() const{
+    return fAxes;
 }
 
 double BinnedPdf::operator() (const std::vector<double>& vals_) const{
