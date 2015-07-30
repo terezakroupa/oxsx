@@ -23,7 +23,7 @@ for x in source_dirs:
 
 # By default just build the source
 objects = [Object(x, CPPPATH = source_dirs + root_flags) for x in source_files]
-lib = Library("build/lib", objects)
+lib = Library("build/liboxsx", objects)
 env.Default([objects, lib])
 
 # Build the tests
