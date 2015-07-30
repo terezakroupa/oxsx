@@ -1,4 +1,4 @@
-#include "Systematic.h"
+#include <Systematic.h>
 
 BinnedPdf Systematic::operator() (const BinnedPdf& pdf_, const std::vector<size_t>& indicies_) const{
     return fResponseMatrix(pdf_, indicies_);

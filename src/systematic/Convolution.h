@@ -4,7 +4,8 @@
 
 #ifndef __CONVOLUTION__
 #define __CONVOLUTION__
-#include "Systematic.h"
+#include <Systematic.h>
+
 class IntegrablePdf;
 class Convolution : public Systematic{
  public:

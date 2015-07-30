@@ -1,5 +1,5 @@
-#include "Convolution.h"
-#include "../pdf/IntegrablePdf.h"
+#include <Convolution.h>
+#include <IntegrablePdf.h>
 
 void Convolution::SetPdf(IntegrablePdf* pdf_){
     fPdf = dynamic_cast<IntegrablePdf*>(pdf_->Clone());

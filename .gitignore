@@ -1,7 +1,7 @@
 *.o
 *.dll
 *.so
-*.sconsign*
+.sconsign.dblite
 *~
 *.pyc
 *.pyo
@@ -9,4 +9,4 @@
 *.out
 build/*
 test/*
-lib.a
+*.a

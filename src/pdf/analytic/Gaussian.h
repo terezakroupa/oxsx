@@ -1,6 +1,6 @@
 #ifndef __GAUSSIAN__
 #define __GAUSSIAN__
-#include "../IntegrablePdf.h"
+#include <IntegrablePdf.h>
 
 // Currently assumes variables are independent. Include covariance matrix to upgrade
 class Gaussian : public IntegrablePdf{

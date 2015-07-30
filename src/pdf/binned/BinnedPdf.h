@@ -1,7 +1,7 @@
 #ifndef __BINNED_PDF__
 #define __BINNED_PDF__
-#include "AxisCollection.h"
-#include "../Pdf.h"
+#include <AxisCollection.h>
+#include <Pdf.h>
 #include <vector>
 
 class BinnedPdf : public Pdf{
