@@ -3,7 +3,7 @@
 /**************************************************************************/
 #ifndef __SYSTEMATIC__
 #define __SYSTEMATIC__
-#include <ResponseMatrix.h>
+#include <PdfMapping.h>
 #include <BinnedPdf.h>
 
 class Systematic{
@@ -17,9 +17,9 @@ class Systematic{
     void 
     SetResponse(const std::vector<std::vector<double> >& responseMatrix_);
 
-    const ResponseMatrix& GetResponse() const;
+    const PdfMapping& GetResponse() const;
         
  protected:
-    ResponseMatrix fResponseMatrix;
+    PdfMapping fPdfMapping;
 };
 #endif
