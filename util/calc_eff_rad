@@ -1,0 +1,83 @@
+#! /usr/bin/env python
+
+########################################################################################################
+# Take a root ntuple containing an x,y,z position and convert it to another ntuple with only (r/r0)**3 #
+########################################################################################################
+
+R0 = 6005
+
+import argparse
+import os
+import sys
+from array import array
+try:
+    from ROOT import TFile, TTree, TNtuple
+except ImportError:
+    print "Cant find root lib is it in $PYTHONPATH?"
+    sys.exit()
+
+def eff_r(x, y, z):
+    r = (x**2 + y**2 + z**2)**0.5
+    return (r/R0)**3
+
+
+def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
+    # Get in tree
+    in_file = TFile(file_name)
+    tree    = in_file.Get(tree_name)
+    if not tree:
+        print "Error: No tree named %s in %s" %(tree_name, file_name)
+        sys.exit()
+        
+    # Check branches
+    branches = [x.GetName() for x in tree.GetListOfBranches()]
+    for b in coord_names:
+        if not b in branches:
+            print "Error branch '%s' not a branch in input tree" %(b)
+            print "Branches available are: \n"
+            print "\t".join(branches_avail)
+            sys.exit()
+    
+    other_branches = set(branches) - set(coord_names) 
+
+    out_file = TFile(outfile, "RECREATE")
+    new_branches = list(other_branches) + [r_name]
+    print new_branches
+    nt       = TNtuple("oxsx", "", ":".join(new_branches))
+
+    n_events = tree.GetEntries()
+    for entry in tree:
+        x = entry.__getattr__(coord_names[0])
+        y = entry.__getattr__(coord_names[1])
+        z = entry.__getattr__(coord_names[2])
+        
+        vals = array("f", [entry.__getattr__(b) for b in other_branches] + [eff_r(x, y, z)])
+        nt.Fill(vals)
+
+    out_file.cd()
+    nt.Write()
+    out_file.Close()
+
+    print "Written %i entries of branch(es) '%s' \nto tree %s  \nin file %s" %(n_events,
+                                                                               ":".join(new_branches),
+                                                                               "oxsx", outfile)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('filename', type=str, )
+    parser.add_argument('-treename', metavar='-t', type=str, default = "oxsx")
+    parser.add_argument('coords', metavar = "c", nargs="+", type=str)
+    parser.add_argument('-rname', metavar = "r", type=str, default= "r_eff")
+    parser.add_argument('-outfile', metavar='-o', type=str, default = "")
+    args = parser.parse_args()
+    
+    
+    if args.outfile == "":
+        outfile = os.path.split(args.filename)[1]
+        outfile = os.path.splitext(outfile)[0]
+        outfile += "_reff.root"
+        args.outfile = outfile
+    to_eff_r(args.filename, args.treename, args.coords,
+             args.outfile, args.rname)
+        
