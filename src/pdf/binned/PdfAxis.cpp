@@ -1,4 +1,4 @@
-#include "PdfAxis.h"
+#include <PdfAxis.h>
 #include <algorithm>
 
 PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBins_,

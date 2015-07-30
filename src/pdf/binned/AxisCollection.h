@@ -5,7 +5,7 @@
 #ifndef __AXIS_COLLECTION__
 #define __AXIS_COLLECTION__
 
-#include "PdfAxis.h"
+#include <PdfAxis.h>
 #include <vector>
 #include <exception>
 

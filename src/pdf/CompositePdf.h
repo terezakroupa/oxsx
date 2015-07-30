@@ -1,6 +1,6 @@
 #ifndef __COMPOSITE_PDF__
 #define __COMPOSITE_PDF__
-#include "Pdf.h"
+#include <Pdf.h>
 #include <vector>
 
 class CompositePdf : public Pdf{

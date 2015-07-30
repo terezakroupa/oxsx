@@ -1,7 +1,7 @@
 #ifndef __INTEGRABLE_PDF__
 #define __INTEGRABLE_PDF__
 #include <vector>
-#include "pdf.h"
+#include <pdf.h>
 
 class IntegrablePdf : public Pdf{
  public:

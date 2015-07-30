@@ -3,8 +3,8 @@
 /**************************************************************************/
 #ifndef __SYSTEMATIC__
 #define __SYSTEMATIC__
-#include "ResponseMatrix.h"
-#include "../pdf/binned/BinnedPdf.h"
+#include <ResponseMatrix.h>
+#include <BinnedPdf.h>
 
 class Systematic{
  public:

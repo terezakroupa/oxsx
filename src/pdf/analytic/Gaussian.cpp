@@ -1,4 +1,4 @@
-#include "Gaussian.h"
+#include <Gaussian.h>
 #include <math.h>
 
 Gaussian::Gaussian(size_t nDims_){

@@ -1,5 +1,5 @@
 #include "ResponseMatrix.h"
-#include "../pdf/binned/BinnedPdf.h"
+#include <BinnedPdf.h>
 #include <iostream>
 void ResponseMatrix::SetAxes(const AxisCollection& axes_){
     fAxes  = axes_;

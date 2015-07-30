@@ -1,5 +1,5 @@
-#include "Pdf.h"
-#include "CompositePdf.h"
+#include <Pdf.h>
+#include <CompositePdf.h>
 #include <algorithm>
 
 CompositePdf Pdf::operator* (const Pdf& other_) const {

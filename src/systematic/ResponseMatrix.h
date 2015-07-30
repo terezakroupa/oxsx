@@ -4,7 +4,7 @@
 
 #ifndef __RESPONSE_MATRIX__
 #define __RESPONSE_MATRIX__
-#include "../pdf/binned/AxisCollection.h"
+#include <AxisCollection.h>
 class BinnedPdf;
 
 class ResponseMatrix{

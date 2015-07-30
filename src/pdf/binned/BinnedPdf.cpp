@@ -1,4 +1,4 @@
-#include "BinnedPdf.h"
+#include <BinnedPdf.h>
 #include <iostream>
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     SetAxes(axes_);
