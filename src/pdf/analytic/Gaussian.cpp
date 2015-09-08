@@ -21,7 +21,7 @@ Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>&
     SetStdDevs(stdDevs_);
 }
 
-Gaussian::Gaussian(const Gaussian& other_){
+Gaussian::Gaussian(const Gaussian& other_) : Pdf(other_){
     fNDims = other_.fNDims;
     fMeans = other_.fMeans;
     fStdDevs = other_.fStdDevs;

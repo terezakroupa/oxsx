@@ -4,7 +4,7 @@ BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     SetAxes(axes_);
 }
 
-BinnedPdf::BinnedPdf(const BinnedPdf& other_){
+BinnedPdf::BinnedPdf(const BinnedPdf& other_) : Pdf(other_){
     fAxes = other_.fAxes;
     fNDims = other_.fNDims;
     fBinContents = other_.fBinContents;
