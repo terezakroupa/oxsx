@@ -20,5 +20,6 @@ class Pdf{
 
  protected:
     unsigned fNDims;
+    
 };
 #endif

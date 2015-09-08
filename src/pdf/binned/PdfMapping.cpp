@@ -1,6 +1,7 @@
 #include <PdfMapping.h>
 #include <BinnedPdf.h>
 #include <iostream>
+
 void PdfMapping::SetAxes(const AxisCollection& axes_){
     fAxes  = axes_;
     fNBins = axes_.GetNBins();

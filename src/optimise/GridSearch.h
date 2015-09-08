@@ -25,7 +25,5 @@ class GridSearch : public Optimiser{
     double fMaxVal;
     bool   IncrementSystematic(size_t index_); // triggers recalculation of pdfs
     bool   IncrementRate(size_t index_);
-
 };
-
 #endif

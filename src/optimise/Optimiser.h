@@ -9,7 +9,7 @@
 class Optimiser{
  public:
     Optimiser();
-    virtual ~Optimiser() {}
+    virtual ~Optimiser() {delete fEvaluator;}
     virtual void Optimise() = 0;
 
     void SetEvaluator(Evaluator* evaluator_) {fEvaluator = evaluator_;}
