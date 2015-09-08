@@ -12,7 +12,8 @@ ROOTHandle::ROOTHandle(const std::string& fileName_, const std::string& treeName
 }
 
 ROOTHandle::~ROOTHandle(){
-    fROOTFile -> Close();
+    if (fROOTFile)
+        fROOTFile -> Close();
     delete fROOTFile;
 }
 

@@ -35,7 +35,7 @@ def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
         if not b in branches:
             print "Error branch '%s' not a branch in input tree" %(b)
             print "Branches available are: \n"
-            print "\t".join(branches_avail)
+            print "\t".join(branches)
             sys.exit()
     
     other_branches = set(branches) - set(coord_names) 
@@ -46,7 +46,9 @@ def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
     nt       = TNtuple("oxsx", "", ":".join(new_branches))
 
     n_events = tree.GetEntries()
-    for entry in tree:
+    for i, entry in enumerate(tree):
+        if not i % 1000000:
+            print "%i/%i"%(i, n_events)
         x = entry.__getattr__(coord_names[0])
         y = entry.__getattr__(coord_names[1])
         z = entry.__getattr__(coord_names[2])

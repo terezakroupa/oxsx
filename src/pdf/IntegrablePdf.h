@@ -12,4 +12,3 @@ class IntegrablePdf : public Pdf{
                             const std::vector<double>& maxs_) const = 0;
 };
 #endif
-

@@ -2,7 +2,10 @@
 #include <IntegrablePdf.h>
 
 void Convolution::SetPdf(IntegrablePdf* pdf_){
+
     fPdf = dynamic_cast<IntegrablePdf*>(pdf_->Clone());
+    if(!fPdf)
+        throw 0; //FIXME not an integrable pdf
 }
 
 Convolution::~Convolution(){

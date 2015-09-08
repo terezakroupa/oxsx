@@ -19,7 +19,7 @@ class Evaluator{
 
     unsigned GetNPdfs() const {return fNEventTypes;}
     unsigned GetNSystematics() const {return 0;}
-
+    
  protected:
     TTree* fData;
     unsigned fNEvents;

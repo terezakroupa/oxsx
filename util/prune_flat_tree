@@ -68,5 +68,6 @@ if __name__ == "__main__":
         outfile = os.path.splitext(outfile)[0]
         outfile += "_oxsx.root"
         args.outfile = outfile
-    make_ntup(args.filename, args.treename, args.branches, 
-              args.outfile, args.nevents)
+        make_ntup(args.filename, args.treename, args.branches, 
+                  args.outfile, args.nevents)
+    
