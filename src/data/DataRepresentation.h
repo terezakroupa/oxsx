@@ -9,7 +9,8 @@
 class DataRepresentation{
  public:    
     DataRepresentation() {}
-    DataRepresentation(const std::vector<size_t>& indicies_) : fIndicies(indicies_) {}
+    DataRepresentation(const std::vector<size_t>& indicies_);
+    DataRepresentation(const DataRepresentation&);
     ~DataRepresentation() {}
 
     std::vector<size_t> GetIndicies() const; 
@@ -18,8 +19,12 @@ class DataRepresentation{
     std::string GetName() const;
     void SetName(const std::string& name_);
 
+    size_t GetIndex(size_t indexNum_) const;
+    size_t GetLength() const;
+
  private:
     std::vector<size_t> fIndicies;
     std::string fName;
+    size_t fLen;
 };
 #endif

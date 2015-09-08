@@ -1,15 +1,20 @@
 #ifndef __PDF__
 #define __PDF__
 #include <vector>
+#include <DataRepresentation.h>
+#include <DataHandler.h>
 
 class CompositePdf; 
 
 class Pdf{
  public:
     Pdf() {}
+    Pdf(const Pdf&);
     virtual ~Pdf() {}
-    virtual double operator() (const std::vector<double>& vals_) const = 0;
 
+    virtual double operator() (const std::vector<double>& vals_) const = 0;
+    virtual double operator() (const DataHandler&) const;
+    
     virtual double Integral() const = 0;
 
     virtual void   Normalise() = 0;
@@ -20,6 +25,6 @@ class Pdf{
 
  protected:
     unsigned fNDims;
-    
+    DataRepresentation fDataRep;
 };
 #endif

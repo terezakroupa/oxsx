@@ -2,6 +2,7 @@
 #define __COMPOSITE_PDF__
 #include <Pdf.h>
 #include <vector>
+class DataHandler;
 
 class CompositePdf : public Pdf{
  public:
@@ -10,6 +11,7 @@ class CompositePdf : public Pdf{
     virtual ~CompositePdf();
 
     virtual double operator() (const std::vector<double>& vals_) const;
+    virtual double operator() (const DataHandler&) const;
     virtual Pdf* Clone() const;
 
     virtual double Integral()  const;

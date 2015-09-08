@@ -1,5 +1,7 @@
 #include <CompositePdf.h>
 #include <iostream>
+#include <DataHandler.h>
+
 CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
     fPdfPtrs.push_back(p2_ -> Clone());
@@ -25,6 +27,13 @@ double CompositePdf::operator() (const std::vector<double>& vals_) const{
     double prob = 1;
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         prob *= fPdfPtrs[i] -> operator() (vals_);
+    return prob;
+}
+
+double CompositePdf::operator() (const DataHandler& data_) const{
+    double prob = 1;
+    for(size_t i = 0; i < fPdfPtrs.size(); i++)
+        prob *= fPdfPtrs[i] -> operator()(data_);
     return prob;
 }
 

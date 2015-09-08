@@ -1,7 +1,5 @@
 #include <DataHandler.h>
-
-std::vector<std::vector<size_t> > DataHandler::fReps;
-std::vector<size_t> DataHandler::fRepLens;
+#include <DataRepresentation.h>
 
 DataHandler::DataHandler(const std::vector<double>& obs_){
     fObservations = obs_;
@@ -11,14 +9,12 @@ std::vector<double> DataHandler::GetData() const{
     return fObservations;
 }
 
-std::vector<double> DataHandler::ToRepresentation(size_t iRep_) const{
-    std::vector<double> rep(fRepLens.at(iRep_), 0); // can you do this better with iterators
-    for(size_t i = 0; i < fRepLens.at(iRep_); i++ )
-        rep[i] = fObservations.at(fReps[iRep_][i]);
-    return rep;
+std::vector<double> DataHandler::ToRepresentation(const DataRepresentation& rep_) const{
+    size_t len = rep_.GetLength();
+    std::vector<double> vals(len, 0); // can you do this better with iterators?
+    for(size_t i = 0; i < len; i++)
+        vals[i] = fObservations.at(rep_.GetIndex(i));
+    return vals;
 }
 
-void DataHandler::AddRepresentation(const std::vector<size_t>& indicies_){
-    fReps.push_back(indicies_);
-    fRepLens.push_back(indicies_.size());
-}
+
