@@ -6,6 +6,7 @@
 class IntegrablePdf : public Pdf{
  public:
     IntegrablePdf() {}
+    IntegrablePdf(const IntegrablePdf& other_) : Pdf(other_) {}
     virtual ~IntegrablePdf() {}
     
     virtual double Integral(const std::vector<double>& mins_, 
