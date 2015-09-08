@@ -5,7 +5,17 @@
 ROOTHandle::ROOTHandle(const std::string& fileName_, const std::string& treeName_){
     // FIXME -- needs excpetions for failing to get the tree
     fROOTFile = new TFile(fileName_.c_str());
+    if (fROOTFile->IsZombie()){
+        delete fROOTFile;
+        throw ROOTError("ROOTHandle::File Does not Exist! " + fileName_);
+    }
+        
     fNtuple = static_cast<TNtuple*>(fROOTFile -> Get(treeName_.c_str()));
+    if(!fNtuple){
+        delete fROOTFile;
+        throw ROOTError("ROOTHandle::Tree Does not Exist! " + treeName_);
+    }        
+
     fNEntries = fNtuple -> GetEntries();
     fIter = 0;
     fNVar = fNtuple -> GetNvar();
@@ -23,6 +33,14 @@ DataHandler ROOTHandle::Assemble(size_t iEvent_) const{
     return DataHandler(std::vector<double> (vals, vals + fNVar));
     
 }
+
+DataHandler ROOTHandle::GetEntry(size_t iEvent_){
+    if(fIter > fNEntries)
+        throw 0; //fix me
+    fIter = iEvent_;
+    return Assemble(fIter);
+}
+
 
 DataHandler ROOTHandle::First(){
     fIter = 0;
