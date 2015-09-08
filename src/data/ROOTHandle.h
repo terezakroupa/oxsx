@@ -17,8 +17,9 @@ class ROOTHandle {
     DataHandler Next();
     DataHandler First();
     DataHandler Last();
-
-    unsigned GetNEntries() const {return fNEntries;}
+    DataHandler GetEntry(size_t iEvent_);
+    unsigned    GetNEntries() const {return fNEntries;}
+    
  private:
     unsigned fIter;
     unsigned fNVar;
@@ -28,4 +29,12 @@ class ROOTHandle {
     
     DataHandler Assemble(size_t iEvent_) const;
 };
+
+class ROOTError : public std::runtime_error {
+ public:
+ ROOTError(const std::string& error_str):runtime_error(error_str){};
+};
+
+
+
 #endif
