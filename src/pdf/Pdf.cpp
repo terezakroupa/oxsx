@@ -4,7 +4,7 @@
 
 Pdf::Pdf(const Pdf& other_){
     fDataRep = other_.fDataRep;
-    fNDims = fNDims;
+    fNDims = other_.fNDims;
 }
 
 CompositePdf 
@@ -21,3 +21,9 @@ double
 Pdf::operator() (const DataHandler& oberservations_) const{
     return operator()(oberservations_.ToRepresentation(fDataRep));
 }
+
+void
+Pdf::SetDataRep(const DataRepresentation& rep_) {fDataRep = rep_;}
+
+DataRepresentation
+Pdf::GetDataRep() const {return fDataRep;}

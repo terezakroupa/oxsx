@@ -48,6 +48,10 @@ void BinnedPdf::Fill(const std::vector<double>& vals_){
     fBinContents[FindBin(vals_)]++;
 }
 
+void BinnedPdf::Fill(const DataHandler& data_){
+    Fill(data_.ToRepresentation(fDataRep));
+}
+
 size_t BinnedPdf::FindBin(const std::vector<double>& vals_) const{
     return fAxes.FindBin(vals_);
     

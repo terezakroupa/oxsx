@@ -27,5 +27,5 @@ lib = Library("build/liboxsx", objects)
 env.Default([objects, lib])
 
 # Build the tests
-tests = [Object(x, CPPPATH = source_dirs + root_flags) for x in Glob("test/*.cpp")]
+tests = [Object(x, CPPPATH = source_dirs + root_flags) for x in Glob("test/*/*.cpp")]
 env.Alias("tests", tests)
