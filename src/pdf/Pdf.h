@@ -22,7 +22,9 @@ class Pdf{
 
     CompositePdf operator* (const Pdf& other_) const;  // references are polymorphic :)
     unsigned GetNDims() const;
-
+    
+    void SetDataRep(const DataRepresentation&);
+    DataRepresentation GetDataRep() const;
  protected:
     unsigned fNDims;
     DataRepresentation fDataRep;

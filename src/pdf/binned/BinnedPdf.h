@@ -17,6 +17,8 @@ class BinnedPdf : public Pdf{
     virtual  Pdf*  Clone() const;
     
     void   Fill(const std::vector<double>& vals_);
+    void   Fill(const DataHandler& data_);
+
     size_t FindBin(const std::vector<double>& vals_) const;
     std::vector<size_t> UnpackIndicies(size_t bin_) const;
     size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
