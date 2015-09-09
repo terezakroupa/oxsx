@@ -1,6 +1,7 @@
 /**************************************************************************/
 /* Responsible for constructing a response matrix and forwarding the call */
 /**************************************************************************/
+
 #ifndef __SYSTEMATIC__
 #define __SYSTEMATIC__
 #include <PdfMapping.h>
@@ -11,7 +12,7 @@ class Systematic{
     Systematic()   {}
     virtual ~Systematic()  {}
 
-    BinnedPdf 
+    virtual BinnedPdf 
     operator()(const BinnedPdf& pdf_, const std::vector<size_t>& indicies_) const;
         
     void 
