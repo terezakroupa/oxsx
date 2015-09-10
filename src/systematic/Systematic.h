@@ -12,7 +12,7 @@ class Systematic{
     Systematic()   {}
     virtual ~Systematic()  {}
 
-    virtual BinnedPdf 
+    BinnedPdf 
     operator()(const BinnedPdf& pdf_, const std::vector<size_t>& indicies_) const;
         
     void 

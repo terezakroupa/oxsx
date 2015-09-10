@@ -18,7 +18,21 @@ PdfConverter::ToBinnedPdf(const IntegrablePdf& analytic_, const AxisCollection& 
         binnedPdf.AddBinContent(bin, analytic_.Integral(lows, highs));
     }
     
-
-
     return binnedPdf;
+}
+
+TH1D
+PdfConverter::ToTH1D(const BinnedPdf& pdf_){
+    if(pdf_.GetNDims() != 1)
+        throw DimensionError("Only a 1D pdf can be represented by a TH1D");
+ 
+    const PdfAxis& axis  = pdf_.GetAxes().GetAxis(0);
+    const unsigned nBins = axis.GetNBins(); 
+    TH1D rtHist("", "", nBins, axis.GetBinLowEdge(0), axis.GetBinHighEdge(nBins - 1));
+    rtHist.SetDirectory(0);
+
+    for(unsigned bin = 0; bin < nBins; bin++)
+        rtHist.SetBinContent(bin+1, pdf_.GetBinContent(bin));
+    
+    return rtHist;                         
 }

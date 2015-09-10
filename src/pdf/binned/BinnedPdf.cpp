@@ -19,7 +19,7 @@ void BinnedPdf::SetAxes(const AxisCollection& axes_){
     
 }
 
-AxisCollection BinnedPdf::GetAxes() const{
+const AxisCollection& BinnedPdf::GetAxes() const{
     return fAxes;
 }
 
