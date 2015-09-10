@@ -20,8 +20,9 @@ Scale::Construct(){
     const AxisCollection& axes  = fPdfMapping.GetAxes();
     const PdfAxis& scaleAxis    = axes.GetAxis(fAxisIndex); 
 
-    const size_t nBins    = axes.GetNBins();
-    const double binWidth = scaleAxis.GetBinWidth();
+    const size_t nBins          = axes.GetNBins();
+    const size_t scaleAxisNBins = scaleAxis.GetNBins();
+    const double binWidth       = scaleAxis.GetBinWidth();
  
     for(size_t i = 0; i < nBins; i++){
         // For each old bin, work out the contributions into all of the new bins
@@ -30,20 +31,22 @@ Scale::Construct(){
         std::vector<size_t> oldIndicies = axes.UnpackIndicies(i);
         size_t scaleBin = oldIndicies.at(fAxisIndex);
         
-        double scaledLow   = scaleAxis.GetBinLowEdge(i)  * fScaleFactor;
-        double scaledHigh  = scaleAxis.GetBinHighEdge(i) * fScaleFactor;
+        double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * fScaleFactor;
+        double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * fScaleFactor;
         double scaledWidth = scaledHigh - scaledLow;
 
-        // new bin to map into 
-        for(size_t j = 0; j < nBins; j++){
-            std::vector<size_t> newIndicies = axes.UnpackIndicies(j);
-            size_t scaleBin = newIndicies.at(fAxisIndex);
+        // new bin to map into, mapping only happens if the indies are the same except the one to scale
+        // others are zero from initialisation 
 
-            double newLow  = scaleAxis.GetBinLowEdge(j);
-            double newHigh = scaleAxis.GetBinHighEdge(j);
+        std::vector<size_t> newIndicies = oldIndicies;
+        for(size_t j = 0; j < scaleAxisNBins; j++){
+            newIndicies[fAxisIndex] = j;
+            size_t newScaleBin = j;
+                        
+            double newLow  = scaleAxis.GetBinLowEdge(newScaleBin);
+            double newHigh = scaleAxis.GetBinHighEdge(newScaleBin);
 
             double contribution;
-
             // Is it in the scale region at all?
             if (newLow > scaledHigh || newHigh < scaledLow) 
                 contribution = 0;
@@ -66,7 +69,8 @@ Scale::Construct(){
                     contribution = (newHigh - scaledLow)/scaledWidth;
                 
             }
-            fPdfMapping.SetComponent(j, i, contribution);
+            
+            fPdfMapping.SetComponent(axes.FlattenIndicies(newIndicies), i, contribution);
             
         }
                
