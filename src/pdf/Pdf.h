@@ -1,6 +1,7 @@
 #ifndef __PDF__
 #define __PDF__
 #include <vector>
+#include <string>
 #include <DataRepresentation.h>
 #include <DataHandler.h>
 
@@ -28,5 +29,6 @@ class Pdf{
  protected:
     unsigned fNDims;
     DataRepresentation fDataRep;
+
 };
 #endif

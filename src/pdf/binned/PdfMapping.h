@@ -19,6 +19,7 @@ class PdfMapping{
     void SetColumn(size_t index, const std::vector<double>& column_);
     void SetRow(size_t index, const std::vector<double>& row_);
     void SetComponent(size_t column_, size_t row_, double val_);
+    double GetComponent(size_t column_, size_t row_) const;
 
     const AxisCollection& GetAxes() const;
     void SetAxes(const AxisCollection& axes_);

@@ -3,6 +3,7 @@
 /*****************************************************************************************************/
 #ifndef __PDF_CONVERTER__
 #define __PDF_CONVERTER__
+#include <TH1D.h>
 
 class BinnedPdf;
 class IntegrablePdf;
@@ -14,5 +15,6 @@ class PdfConverter{
     ~PdfConverter();
     
     static BinnedPdf ToBinnedPdf(const IntegrablePdf&, const AxisCollection& axes_);
+    static TH1D      ToTH1D(const BinnedPdf&);
 };
 #endif

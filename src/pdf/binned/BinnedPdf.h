@@ -23,7 +23,7 @@ class BinnedPdf : public Pdf{
     std::vector<size_t> UnpackIndicies(size_t bin_) const;
     size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
 
-    AxisCollection GetAxes() const;
+    const AxisCollection& GetAxes() const;
     void           SetAxes(const AxisCollection& axes_);
 
     std::vector<double> GetData() const {return fBinContents;}

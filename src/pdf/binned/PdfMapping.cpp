@@ -19,6 +19,7 @@ void PdfMapping::SetResponse(const std::vector<std::vector<double> >& response_)
     fResponse = response_;
 }
 
+
 void PdfMapping::SetRow(size_t index_, const std::vector<double>& row_){
     fResponse[index_] = row_;
 }
@@ -31,6 +32,10 @@ void PdfMapping::SetColumn(size_t index_, const std::vector<double>& col_){
 
 void PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
     fResponse[col_][row_] = val_;
+}
+
+double PdfMapping::GetComponent(size_t column_, size_t row_) const{
+    return fResponse[column_][row_];
 }
 
 PdfMapping PdfMapping::operator = (const PdfMapping& other_){
