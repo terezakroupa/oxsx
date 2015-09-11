@@ -31,11 +31,11 @@ void Convolution::Construct(){
 
             // Move the pdf origin to the centre of bin i
             for(size_t k = 0; k < lowEdges.size(); k++){
-                lowEdges[k]  = binCentre[k] - lowEdges[k];
-                highEdges[k] = binCentre[k] - highEdges[k];
+                lowEdges[k]  =  lowEdges[k]  -  binCentre[k];
+                highEdges[k] =  highEdges[k]  - binCentre[k];
             }
-            double Rij = fPdf -> Integral(highEdges, lowEdges);
-            fPdfMapping.SetComponent(i, j, Rij);
+            double Rij = fPdf -> Integral(lowEdges, highEdges);
+            fPdfMapping.SetComponent(j, i, Rij);
         }
     }        
 }
