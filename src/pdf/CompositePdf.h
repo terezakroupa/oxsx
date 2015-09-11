@@ -11,7 +11,7 @@ class CompositePdf : public Pdf{
     virtual ~CompositePdf();
 
     virtual double operator() (const std::vector<double>& vals_) const;
-    virtual double operator() (const DataHandler&) const;
+    virtual double Probability(const DataHandler&) const;
     virtual Pdf* Clone() const;
 
     virtual double Integral()  const;

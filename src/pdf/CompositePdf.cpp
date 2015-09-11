@@ -30,10 +30,10 @@ double CompositePdf::operator() (const std::vector<double>& vals_) const{
     return prob;
 }
 
-double CompositePdf::operator() (const DataHandler& data_) const{
+double CompositePdf::Probability(const DataHandler& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
-        prob *= fPdfPtrs[i] -> operator()(data_);
+        prob *= fPdfPtrs[i] -> Probability(data_);
     return prob;
 }
 
