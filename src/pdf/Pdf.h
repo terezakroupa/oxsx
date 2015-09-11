@@ -14,7 +14,7 @@ class Pdf{
     virtual ~Pdf() {}
 
     virtual double operator() (const std::vector<double>& vals_) const = 0;
-    virtual double operator() (const DataHandler&) const;
+    virtual double Probability (const DataHandler&) const; // name hiding -> need dif name
     
     virtual double Integral() const = 0;
 
