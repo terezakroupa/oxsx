@@ -10,10 +10,13 @@ VariantDir("build", "src", duplicate=0)
 source_dirs = Split(
 '''
 build/data
+build/eval
+build/optimise
 build/pdf
 build/pdf/analytic
 build/pdf/binned
 build/systematic
+build/core
 '''
 )
 

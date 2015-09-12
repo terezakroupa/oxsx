@@ -3,22 +3,23 @@
 /****************************************/
 #ifndef __OPTIMISER__
 #define __OPTIMISER__
-#include "../eval/Evaluator.h"
 #include <vector>
+
+class Evaluator;
+class FitResult;
 
 class Optimiser{
  public:
-    Optimiser();
-    virtual ~Optimiser() {delete fEvaluator;}
-    virtual void Optimise() = 0;
-
-    void SetEvaluator(Evaluator* evaluator_) {fEvaluator = evaluator_;}
-    std::vector<double> GetBestRates() const {return fBestRates;}
-    std::vector<double> GetBestSystematics() const {return fBestSystematics;}
-
- protected:
-    Evaluator* fEvaluator;
+    Optimiser() : pEvaluator(NULL), pPdfs(NULL) {}
+    ~Optimiser();
+    
+    FitResult Optimise();
+    
+ private:
+    Evaluator* pEvaluator; 
     std::vector<double> fBestRates;
     std::vector<double> fBestSystematics;
+
+    bool fHasConverged;
 };
 #endif

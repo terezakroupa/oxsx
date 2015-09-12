@@ -9,6 +9,7 @@ class DataHandler;
 class Handle {
  public:
     virtual DataHandler GetEntry(size_t iEvent_) = 0;
+    virtual ~Handle() {}
     unsigned GetNEntries() const {return fNEntries;}
     
  private:
