@@ -10,16 +10,19 @@ class FitResult;
 
 class Optimiser{
  public:
-    Optimiser() : pEvaluator(NULL), pPdfs(NULL) {}
-    ~Optimiser();
+    Optimiser(Evaluator* ev_) : pEvaluator(ev_) {}
+    virtual ~Optimiser();
     
-    FitResult Optimise();
+    virtual bool Iterate() = 0;
+    FitResult GetFitResult();
     
+    const std::vector<double>& GetParams() const;
+    void  SetTestValue(double);
+
  private:
     Evaluator* pEvaluator; 
-    std::vector<double> fBestRates;
-    std::vector<double> fBestSystematics;
-
     bool fHasConverged;
+    std::vector<double> fParams;
+    double fTestValue;
 };
 #endif
