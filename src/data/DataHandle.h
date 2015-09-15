@@ -1,15 +1,15 @@
 /**************************************************************/
 /* ABC for a data set from any origin, hands out data to oxsx */
 /**************************************************************/
-#ifndef __HANDLE__
-#define __HANDLE__
+#ifndef __DATAHANDLE__
+#define __DATAHANDLE__
 #include <stddef.h>
 
 class DataHandler;
-class Handle {
+class DataHandle{
  public:
     virtual DataHandler GetEntry(size_t iEvent_) = 0;
-    virtual ~Handle() {}
+    virtual ~DataHandle() {}
     unsigned GetNEntries() const {return fNEntries;}
     
  private:

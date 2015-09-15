@@ -1,5 +1,5 @@
 #include <ChiSquare.h>
-#include <Handle.h>
+#include <DataHandle.h>
 
 double
 ChiSquare::Evaluate(){
@@ -36,8 +36,8 @@ ChiSquare::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
     
-    for(size_t i = 0; i < fHandle -> GetNEntries(); i++){
-        dataPdf.Fill(fHandle -> GetEntry(i));
+    for(size_t i = 0; i < fDataHandle -> GetNEntries(); i++){
+        dataPdf.Fill(fDataHandle -> GetEntry(i));
     }
     
     fDataPdf = dataPdf;

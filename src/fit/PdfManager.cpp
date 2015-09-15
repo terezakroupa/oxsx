@@ -28,3 +28,7 @@ PdfManager::ApplySystematics(const std::vector<Systematic>& systematics_){
     }
 }
 
+const BinnedPdf&
+PdfManager::GetOriginalPdf(size_t index_) const{
+    return fOriginalPdfs.at(index_);
+}
