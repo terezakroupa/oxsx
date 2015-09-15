@@ -17,11 +17,11 @@ Scale::Construct(){
     if (fScaleFactor <= 0)
         throw 0; //FIXME
 
-    const AxisCollection& axes  = fPdfMapping.GetAxes();
-    const PdfAxis& scaleAxis    = axes.GetAxis(fAxisIndex); 
+    const AxisCollection& axes  = fPdfMapping.GetAxes(); 
+    const PdfAxis& scaleAxis    = axes.GetAxis(fAxisIndex);  // the axis to scale
 
-    const size_t nBins          = axes.GetNBins();
-    const size_t scaleAxisNBins = scaleAxis.GetNBins();
+    const size_t nBins          = axes.GetNBins(); 
+    const size_t scaleAxisNBins = scaleAxis.GetNBins(); 
     const double binWidth       = scaleAxis.GetBinWidth();
  
     for(size_t i = 0; i < nBins; i++){
@@ -36,8 +36,9 @@ Scale::Construct(){
         double scaledWidth = scaledHigh - scaledLow;
 
         // new bin to map into, mapping only happens if the indies are the same except the one to scale
-        // others are zero from initialisation 
-
+        // so, loop over the bins in the scale axes and leave other indicies the same
+        // the others are zero from initialisation 
+        
         std::vector<size_t> newIndicies = oldIndicies;
         for(size_t j = 0; j < scaleAxisNBins; j++){
             newIndicies[fAxisIndex] = j;
@@ -77,6 +78,3 @@ Scale::Construct(){
     }
     return;
 }
-
-    
-
