@@ -9,11 +9,11 @@ TestStatistic::SetParams(const std::vector<double>& params_){
 
 
 void 
-TestStatistic::SetDataHandle(Handle* handle_){
-    fHandle = handle_;
+TestStatistic::SetDataHandle(DataHandle* handle_){
+    fDataHandle = handle_;
 }
 
-Handle*
+DataHandle*
 TestStatistic::GetDataHandle() const{
-    return fHandle;
+    return fDataHandle;
 }

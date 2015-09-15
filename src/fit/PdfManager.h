@@ -22,6 +22,8 @@ class PdfManager{
     std::vector<double> GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
 
+    const BinnedPdf& GetOriginalPdf(size_t index_) const;
+
  private:
     std::vector<BinnedPdf> fOriginalPdfs;
     std::vector<BinnedPdf> fWorkingPdfs;

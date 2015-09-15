@@ -4,13 +4,13 @@
 
 #ifndef __ROOT_HANDLE__
 #define __ROOT_HANDLE__
-#include <Handle.h>
+#include <DataHandle.h>
 #include <string>
 #include <TNtuple.h>
 #include <TFile.h>
 
 class DataHandler;
-class ROOTHandle : public Handle {
+class ROOTHandle : public DataHandle {
  public:
     ROOTHandle(const std::string& fileName_, const std::string& treeName_);
     ~ROOTHandle();

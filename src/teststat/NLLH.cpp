@@ -1,6 +1,6 @@
 #include <NLLH.h>
 #include <math.h>
-#include <Handle.h>
+#include <DataHandle.h>
 double 
 NLLH::Evaluate(){
     // Adjust Systematics
@@ -14,8 +14,8 @@ NLLH::Evaluate(){
 
     // loop over events and calculate P(data | {N, #delta})
     double nLogLH = 0;
-    for(size_t i = 0; i < fHandle -> GetNEntries(); i++){
-        DataHandler eventData = fHandle->GetEntry(i);
+    for(size_t i = 0; i < fDataHandle -> GetNEntries(); i++){
+        DataHandler eventData = fDataHandle->GetEntry(i);
         nLogLH -= fPdfManager.Probability(eventData);
     }
 

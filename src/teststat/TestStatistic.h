@@ -5,11 +5,11 @@
 #define __EVALUATOR__
 #include <vector>
 
-class Handle;
+class DataHandle;
 
 class TestStatistic{
  public:
-    TestStatistic(): fHandle(NULL) {}
+    TestStatistic(): fDataHandle(NULL) {}
     virtual ~TestStatistic() {}
 
     virtual double Evaluate() = 0;
@@ -17,11 +17,11 @@ class TestStatistic{
     // normalisations then systematics    
     size_t GetNParams() const {return fNpdfs + fNsystematics;}
     
-    void    SetDataHandle(Handle* handle_);
-    Handle* GetDataHandle() const;
+    void    SetDataHandle(DataHandle* handle_);
+    DataHandle* GetDataHandle() const;
     
  protected:
-    Handle* fHandle;
+    DataHandle* fDataHandle;
     std::vector<double> fNormalisations;
     std::vector<double> fSystematicParams;
     size_t fNpdfs;
