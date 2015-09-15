@@ -17,7 +17,7 @@ class TestStatistic{
     // normalisations then systematics    
     size_t GetNParams() const {return fNpdfs + fNsystematics;}
     
-    void SetDataHandle(Handle* handle_);
+    void    SetDataHandle(Handle* handle_);
     Handle* GetDataHandle() const;
     
  protected:
