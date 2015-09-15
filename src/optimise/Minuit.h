@@ -22,7 +22,7 @@ class Minuit : public Optimiser{
     void Initialise();
     virtual void Optimise();
 
-    void Fix(size_t index_);
+    void Fix(size_t index_);        // these three methods only work after a call to Initialise
     void Release(size_t index_);
     void RemoveLimits(size_t index_);
 

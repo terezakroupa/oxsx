@@ -109,7 +109,6 @@ Minuit::Optimise(){
     if(!fMinimiser)
         Initialise();
 
-    
     fMinimiser -> operator()(fMaxCalls, fTolerance); // defaults are same as ROOT defaults
     
 }

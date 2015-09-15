@@ -2,7 +2,7 @@
 #define __NLLH__
 
 #include <Evaluator.h>
-#include <PdfCollection.h>
+#include <PdfManager.h>
 #include <SystematicManager.h>
 
 class NLLH : public Evaluator{
@@ -13,9 +13,8 @@ class NLLH : public Evaluator{
     double Evaluate();
     
  private:
-    PdfCollection     fPdfCollection;
-    SystematicManager fSystematicManager;
-  
+    PdfManager        fPdfManager;
+    SystematicManager fSystematicManager;  
     
 };
 #endif
