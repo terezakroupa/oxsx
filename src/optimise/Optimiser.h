@@ -4,18 +4,18 @@
 #ifndef __OPTIMISER__
 #define __OPTIMISER__
 #include <vector>
-#include <Evaluator.h>
+#include <TestStatistic.h>
 
 class FitResult;
 
 class Optimiser{
  public:
-    Optimiser(Evaluator* evaluator_): pEvaluator(evaluator_){}
+    Optimiser(TestStatistic* evaluator_): pTestStatistic(evaluator_){}
     virtual ~Optimiser();
 
     virtual void Optimise() = 0;
 
  protected:
-    Evaluator* pEvaluator;
+    TestStatistic* pTestStatistic;
 };
 #endif

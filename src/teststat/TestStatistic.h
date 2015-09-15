@@ -7,10 +7,10 @@
 
 class Handle;
 
-class Evaluator{
+class TestStatistic{
  public:
-    Evaluator(): fHandle(NULL) {}
-    virtual ~Evaluator() {}
+    TestStatistic(): fHandle(NULL) {}
+    virtual ~TestStatistic() {}
 
     virtual double Evaluate() = 0;
     void SetParams(const std::vector<double>& params_); 
