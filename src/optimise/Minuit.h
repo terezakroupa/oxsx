@@ -11,12 +11,12 @@
 #include <MinuitFCN.h>
 #include <Minuit2/MnApplication.h>
 
-class Evaluator;
+class TestStatistic;
 
 class Minuit : public Optimiser{
  public:
- Minuit(Evaluator* evaluator_) : Optimiser(evaluator_), fMinuitFCN(evaluator_), 
-                                 fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1) {}
+ Minuit(TestStatistic* stat_) : Optimiser(stat_), fMinuitFCN(stat_), 
+                                fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1) {}
     ~Minuit();
 
     void Initialise();

@@ -1,4 +1,3 @@
-#include <Evaluator.h>
 #include <Minuit.h>
 #include <Minuit2/MnMigrad.h>
 #include <Minuit2/MnMinimize.h>

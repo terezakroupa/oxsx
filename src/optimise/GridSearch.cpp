@@ -1,5 +1,5 @@
 #include <GridSearch.h>
-#include <Evaluator.h>
+#include <TestStatistic.h>
 
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
@@ -25,7 +25,7 @@ GridSearch::GetMinima() const{
 void 
 GridSearch::Optimise(){
     // list of rates followed by list of systematics
-    fBestFit.resize(pEvaluator -> GetNParams());
+    fBestFit.resize(pTestStatistic -> GetNParams());
     fMaxVal = 0;
 
     // start at min value
@@ -34,8 +34,8 @@ GridSearch::Optimise(){
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
-        pEvaluator->SetParams(fParams);
-        double currentVal = pEvaluator->Evaluate();
+        pTestStatistic->SetParams(fParams);
+        double currentVal = pTestStatistic->Evaluate();
         if (currentVal > fMaxVal){
                 fMaxVal = currentVal;
                 fBestFit = fParams;

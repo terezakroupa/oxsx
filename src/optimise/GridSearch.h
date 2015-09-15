@@ -5,7 +5,7 @@
 
 class GridSearch : public Optimiser{
  public:
-    GridSearch(Evaluator* eval_) : Optimiser(eval_){}
+    GridSearch(TestStatistic* stat_) : Optimiser(stat_){}
     virtual void Optimise();
     
     void SetMinima(const std::vector<double>&);
