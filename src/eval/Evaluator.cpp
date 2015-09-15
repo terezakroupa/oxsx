@@ -8,3 +8,12 @@ Evaluator::SetParams(const std::vector<double>& params_){
 }
 
 
+void 
+Evaluator::SetDataHandle(Handle* handle_){
+    fHandle = handle_;
+}
+
+Handle*
+Evaluator::GetDataHandle() const{
+    return fHandle;
+}
