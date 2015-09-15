@@ -11,10 +11,10 @@
 class DataHandler;
 class Systematic;
 
-class PdfCollection{
+class PdfManager{
  public:
-    PdfCollection() {}
-    ~PdfCollection();
+    PdfManager() {}
+    ~PdfManager();
     size_t GetNDims() const;
     double Probability(const DataHandler&) const;
     void   ApplySystematics(const std::vector<Systematic>&);
