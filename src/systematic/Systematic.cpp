@@ -61,3 +61,13 @@ bool
 Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
     return std::find(vec_.begin(), vec_.end(), val_) != vec_.end();
 }
+
+double
+Systematic::GetParameter(size_t index_) const {
+    return fParams.at(index_);
+}
+
+void
+Systematic::SetParameter(size_t index_, double val_){
+    fParams[index_] = val_;
+}
