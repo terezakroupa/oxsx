@@ -24,7 +24,9 @@ class DataRepresentation{
     size_t GetLength() const;
     
     size_t GetDataIndexPos(size_t dataIndex_) const; // where is data index x in this representation
-    
+    // Call this something else
+    std::vector<size_t> GetRelativeIndicies(const DataRepresentation&) const; 
+
  private:
     std::vector<size_t> fIndicies;
     std::vector< std::pair<size_t, size_t> > fInverse;
