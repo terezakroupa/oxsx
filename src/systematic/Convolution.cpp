@@ -21,21 +21,17 @@ void Convolution::Construct(){
     if (!fPdf)
         return;
     
-    // were are the indicies this systematic is interested in the pdfs data representation
-    std::vector<size_t> relativeIndicies = fPdfDataRep.GetRelativeIndicies(fDataRep);
-    
     size_t nBins = fPdfMapping.GetNBins();
     for(size_t i = 0; i < nBins; i++){
         std::vector<double> binCentre = fPdfMapping.GetAxes().GetBinCentre(i);
         
-        // Can only smear into bins with the same indicies in the systematic represenation 
-        std::vector<size_t>  binIndicies = fPdfMapping.GetAxes().UnpackIndicies(i);
-        std::vector<size_t>  relevantIndicies;
-        for(size_t j = 0; j < relativeIndicies.size(); j++)
-            relativeIndicies.push_back(binIndicies.at(relativeIndicies.at(i)));
-
         // Integrate over bin j to work out the response from i -> j
         for(size_t j = 0; j < nBins; j++){
+            // only smear if the systematic indicies are the same in both bins
+            // others remain zero from intialistion
+            if(!BinsCompatible(i,j))
+                continue;
+
             std::vector<double> lowEdges  = fPdfMapping.GetAxes().GetBinLowEdges(j);
             std::vector<double> highEdges = fPdfMapping.GetAxes().GetBinHighEdges(j);
 

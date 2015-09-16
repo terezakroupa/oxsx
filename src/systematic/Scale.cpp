@@ -3,7 +3,6 @@
 void 
 Scale::SetAxes(const AxisCollection& axes_){
     fPdfMapping.SetAxes(axes_);
-    Construct();
 }
 
 const AxisCollection& 
@@ -11,15 +10,15 @@ Scale::GetAxes() const{
     return fPdfMapping.GetAxes();
 }
 
-
 void 
 Scale::Construct(){
     if (fScaleFactor <= 0)
         throw 0; //FIXME
 
     const AxisCollection& axes  = fPdfMapping.GetAxes(); 
-    const PdfAxis& scaleAxis    = axes.GetAxis(fAxisIndex);  // the axis to scale
-
+    // the axis to scale
+    const PdfAxis& scaleAxis    = axes.GetAxis(fDataRep.GetDataIndexPos(fAxisIndex));  
+    
     const size_t nBins          = axes.GetNBins(); 
     const size_t scaleAxisNBins = scaleAxis.GetNBins(); 
     const double binWidth       = scaleAxis.GetBinWidth();
@@ -29,19 +28,19 @@ Scale::Construct(){
         // indicies in other components should be unaffected
 
         std::vector<size_t> oldIndicies = axes.UnpackIndicies(i);
-        size_t scaleBin = oldIndicies.at(fAxisIndex);
+        size_t scaleBin = oldIndicies.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
         
         double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * fScaleFactor;
         double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * fScaleFactor;
         double scaledWidth = scaledHigh - scaledLow;
 
-        // new bin to map into, mapping only happens if the indies are the same except the one to scale
-        // so, loop over the bins in the scale axes and leave other indicies the same
+        // new bin to map into, mapping only happens if the indicies are the same except the one to 
+        // scale so, loop over the bins in the scale axes and leave other indicies the same
         // the others are zero from initialisation 
         
         std::vector<size_t> newIndicies = oldIndicies;
         for(size_t j = 0; j < scaleAxisNBins; j++){
-            newIndicies[fAxisIndex] = j;
+            newIndicies[fPdfDataRep.GetDataIndexPos(fAxisIndex)] = j;
             size_t newScaleBin = j;
                         
             double newLow  = scaleAxis.GetBinLowEdge(newScaleBin);
