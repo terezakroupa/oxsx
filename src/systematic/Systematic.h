@@ -1,6 +1,7 @@
-/***************************************************************************************/
-/* Responsible for constructing a response matrix and matching systematic/pdf indicies */
-/***************************************************************************************/
+/***************************************************************************************************/
+/* Responsible for constructing and applying a response matrix to a compatible binned pdf          */
+/* Handles the matching of indicies between the two                                                */
+/***************************************************************************************************/
 
 #ifndef __SYSTEMATIC__
 #define __SYSTEMATIC__
