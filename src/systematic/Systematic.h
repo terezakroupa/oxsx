@@ -24,6 +24,9 @@ class Systematic{
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
 
+    void SetPdfDataRep(const DataRepresentation&);
+    DataRepresentation GetPdfDataRep() const;
+
     void SetParameters(const std::vector<double>&);
     const std::vector<double>& GetParameters() const;
     size_t GetParamCount() const;
@@ -31,6 +34,7 @@ class Systematic{
  protected:
     PdfMapping fPdfMapping;
     std::vector<double> fParams;
-    DataRepresentation fDataRep;
+    DataRepresentation fDataRep;     // the data indicies that this systematic acts on
+    DataRepresentation fPdfDataRep;  // the data indices  of the pdfs it will act on
 };
 #endif

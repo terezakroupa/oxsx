@@ -20,6 +20,12 @@ DataRepresentation
 Systematic::GetDataRep() const {return fDataRep;}
 
 void
+Systematic::SetPdfDataRep(const DataRepresentation& rep_) {fPdfDataRep = rep_;}
+
+DataRepresentation
+Systematic::GetPdfDataRep() const {return fPdfDataRep;}
+
+void
 Systematic::SetParameters(const std::vector<double>& params_) {fParams = params_;}
 
 const std::vector<double>& 
