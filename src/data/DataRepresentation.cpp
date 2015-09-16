@@ -1,6 +1,5 @@
 #include <DataRepresentation.h>
 
-
 DataRepresentation::DataRepresentation(const std::vector<size_t>& indicies_){
     SetIndicies(indicies_);
 }
@@ -32,3 +31,13 @@ DataRepresentation::GetIndex(size_t indexNum_) const{return fIndicies.at(indexNu
 
 size_t
 DataRepresentation::GetLength() const {return fLen;}
+
+size_t
+DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
+    for(size_t i = 0; i < fInverse.size(); i++){
+        if (dataIndex_ == fInverse.at(i).first)
+            return fInverse.at(i).second;
+    }
+
+    throw 0; // FIXME
+}
