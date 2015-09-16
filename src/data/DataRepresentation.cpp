@@ -17,6 +17,12 @@ void
 DataRepresentation::SetIndicies(const std::vector<size_t>& indicies_)  {
     fIndicies = indicies_;
     fLen = indicies_.size();
+
+    // build inverse map
+    fInverse.resize(0);
+    for(size_t i = 0; i < fIndicies.size(); i++)
+        fInverse.push_back(std::pair<size_t,size_t>(fIndicies.at(i), i));
+    
 }
 
 std::string
