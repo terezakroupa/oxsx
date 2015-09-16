@@ -6,7 +6,7 @@
 #ifndef __CHI_SQUARED__
 #define __CHI_SQUARED__
 #include <SystematicManager.h>
-#include <PdfManager.h>
+#include <BinnedPdfManager.h>
 #include <TestStatistic.h>
 
 //FIXME::Enforce equal binning on the pdfs
@@ -23,7 +23,7 @@ class ChiSquare : public TestStatistic{
     BinnedPdf         fDataPdf;
     void              BinData();
 
-    PdfManager        fPdfManager;
+    BinnedPdfManager  fPdfManager;
     SystematicManager fSystematicManager;
 };
 #endif

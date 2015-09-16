@@ -1,8 +1,8 @@
-#include <NLLH.h>
+#include <BinnedNLLH.h>
 #include <math.h>
 #include <DataHandle.h>
 double 
-NLLH::Evaluate(){
+BinnedNLLH::Evaluate(){
     // Adjust Systematics
     fSystematicManager.SetParameters(fSystematicParams);
     

@@ -3,18 +3,18 @@
 /* given some rates and some pdfs                                                                  */
 /***************************************************************************************************/
 
-#ifndef __PDF_COLLECTION__
-#define __PDF_COLLECTION__
+#ifndef __BINNED_PDF_MANAGER__
+#define __BINNED_PDF_MANAGER__
 #include <vector>
 #include <BinnedPdf.h>
 
 class DataHandler;
 class Systematic;
 
-class PdfManager{
+class BinnedPdfManager{
  public:
-    PdfManager() {}
-    ~PdfManager();
+    BinnedPdfManager() {}
+    ~BinnedPdfManager();
     size_t GetNDims() const;
     double Probability(const DataHandler&) const;
     void   ApplySystematics(const std::vector<Systematic>&);
