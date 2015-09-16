@@ -5,6 +5,7 @@
 #define __DATA_REPRESENTATION__
 #include <vector>
 #include <string>
+#include <utility>
 
 class DataRepresentation{
  public:    
@@ -21,9 +22,12 @@ class DataRepresentation{
 
     size_t GetIndex(size_t indexNum_) const;
     size_t GetLength() const;
-
+    
+    size_t GetDataIndexPos(size_t dataIndex_) const; // where is data index x in this representation
+    
  private:
     std::vector<size_t> fIndicies;
+    std::vector< std::pair<size_t, size_t> > fInverse;
     std::string fName;
     size_t fLen;
 };
