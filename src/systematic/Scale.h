@@ -7,13 +7,15 @@
 
 class Scale : public Systematic{
  public:
-    Scale(unsigned index_, double scaleFactor_) : fScaleFactor(scaleFactor_), fAxisIndex(index_) {}
+    Scale(unsigned axisIndex_);
     void SetAxes(const AxisCollection&);
     const AxisCollection& GetAxes() const;
+    
+    void SetScaleFactor(double);
+    double GetScaleFactor() const;
 
  private:
     void Construct();
-    double fScaleFactor;
     unsigned fAxisIndex;
 };
 #endif

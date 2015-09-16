@@ -1,5 +1,10 @@
 #include <Scale.h>
 
+Scale::Scale(unsigned index_){
+    SetParameters(std::vector<double>(1,1)); //start with scale factor of one
+    fAxisIndex = index_;
+}
+
 void 
 Scale::SetAxes(const AxisCollection& axes_){
     fPdfMapping.SetAxes(axes_);
@@ -12,7 +17,7 @@ Scale::GetAxes() const{
 
 void 
 Scale::Construct(){
-    if (fScaleFactor <= 0)
+    if (GetScaleFactor() <= 0)
         throw 0; //FIXME
 
     const AxisCollection& axes  = fPdfMapping.GetAxes(); 
@@ -30,8 +35,8 @@ Scale::Construct(){
         std::vector<size_t> oldIndicies = axes.UnpackIndicies(i);
         size_t scaleBin = oldIndicies.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
         
-        double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * fScaleFactor;
-        double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * fScaleFactor;
+        double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * GetScaleFactor();
+        double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * GetScaleFactor();
         double scaledWidth = scaledHigh - scaledLow;
 
         // new bin to map into, mapping only happens if the indicies are the same except the one to 
@@ -58,7 +63,7 @@ Scale::Construct(){
 
                 if (includedFromBelow && includedFromAbove) 
                     // fully inside
-                    contribution = 1/fScaleFactor;
+                    contribution = 1/GetScaleFactor();
 
                 else if (includedFromBelow) 
                     // spills partly over the top
@@ -76,4 +81,14 @@ Scale::Construct(){
                
     }
     return;
+}
+
+void
+Scale::SetScaleFactor(double scaleFactor_){
+    SetParameter(0, scaleFactor_);
+}
+
+double
+Scale::GetScaleFactor() const{
+    return GetParameter(0);
 }
