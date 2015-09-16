@@ -1,4 +1,5 @@
 #include <Systematic.h>
+#include <algorithm>
 
 BinnedPdf Systematic::operator() (const BinnedPdf& pdf_) const{
     return fPdfMapping(pdf_, fDataRep.GetIndicies());
@@ -35,14 +36,19 @@ Systematic::GetParamCount() const {return fParams.size();}
 
 
 bool
-Systematic::BinsCompatible(size_t bin1, size_t bin2) const{
+Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     // unpack
-    std::vector<size_t> bin1Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin1);
-    std::vector<size_t> bin2Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin2);
+    std::vector<size_t> bin1Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin1_);
+    std::vector<size_t> bin2Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin2_);
 
     std::vector<size_t> relativeIndices = fPdfDataRep.GetRelativeIndicies(fDataRep);
-    // Do the two global bin numbers have the same indicies in the dimisensions this systematic affects?
-    for(size_t i = 0; i < relativeIndices.size(); i++){
+
+    // Do the two global bin numbers have the same indicies except for in the dimisensions 
+    // this systematic affects?
+
+    for(size_t i = 0; i < bin1Indicies.size(); i++){
+        if (!VectorContains(relativeIndices, i))
+            continue;
         if (bin1Indicies.at(i) != bin2Indicies.at(i))
             return false;
     }
@@ -50,3 +56,8 @@ Systematic::BinsCompatible(size_t bin1, size_t bin2) const{
     return true;
 }
 
+
+bool
+Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
+    return std::find(vec_.begin(), vec_.end(), val_) != vec_.end();
+}

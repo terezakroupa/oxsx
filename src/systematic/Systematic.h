@@ -40,5 +40,6 @@ class Systematic{
     // systematics representation
     
     bool BinsCompatible(size_t bin1 , size_t bin2) const;
+    bool VectorContains(const std::vector<size_t>&, size_t) const;
 };
 #endif
