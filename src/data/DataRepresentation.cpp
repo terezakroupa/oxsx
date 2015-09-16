@@ -38,6 +38,19 @@ DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
         if (dataIndex_ == fInverse.at(i).first)
             return fInverse.at(i).second;
     }
-
     throw 0; // FIXME
 }
+
+std::vector<size_t> 
+DataRepresentation::GetRelativeIndicies(const DataRepresentation& otherRep_) const{
+    // given a longer represetation containing the indicies of this rep, where are the shared indicies
+    // in the big rep
+
+    if(otherRep_.GetLength() < fLen)
+        throw 0; // FIXME should be dimension error
+
+    std::vector<size_t> relativeIndicies(fIndicies.size(), 0);
+    for(size_t i = 0; i < fIndicies.size(); i++)
+        relativeIndicies[i] = otherRep_.GetDataIndexPos(fIndicies.at(i));
+    return relativeIndicies;
+} 
