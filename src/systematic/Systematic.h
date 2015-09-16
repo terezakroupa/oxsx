@@ -1,6 +1,6 @@
-/**************************************************************************/
-/* Responsible for constructing a response matrix and forwarding the call */
-/**************************************************************************/
+/***************************************************************************************/
+/* Responsible for constructing a response matrix and matching systematic/pdf indicies */
+/***************************************************************************************/
 
 #ifndef __SYSTEMATIC__
 #define __SYSTEMATIC__
@@ -35,6 +35,10 @@ class Systematic{
     PdfMapping fPdfMapping;
     std::vector<double> fParams;
     DataRepresentation fDataRep;     // the data indicies that this systematic acts on
-    DataRepresentation fPdfDataRep;  // the data indices  of the pdfs it will act on
+    DataRepresentation fPdfDataRep;  
+    // the data indices  of the pdfs it will act on, needs to be at least the lenth of the 
+    // systematics representation
+    
+    bool BinsCompatible(size_t bin1 , size_t bin2) const;
 };
 #endif
