@@ -26,9 +26,9 @@ class Pdf{
     
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
+
  protected:
     unsigned fNDims;
     DataRepresentation fDataRep;
-
 };
 #endif

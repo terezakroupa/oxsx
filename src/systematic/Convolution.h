@@ -13,11 +13,14 @@ class Convolution : public Systematic{
     ~Convolution();
     void SetPdf(IntegrablePdf* pdf_);
     void SetAxes(const AxisCollection& axes_);
-    void Construct();
+    void Construct();    
+
+    void SetParameters(const std::vector<double>& params_);
+    std::vector<double> GetParams() const;
 
  private:
     IntegrablePdf* fPdf;
-
+    
 };
 #endif
 

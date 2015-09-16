@@ -27,9 +27,9 @@ class Systematic{
     void SetPdfDataRep(const DataRepresentation&);
     DataRepresentation GetPdfDataRep() const;
 
-    void SetParameters(const std::vector<double>&);
-    const std::vector<double>& GetParameters() const;
-    size_t GetParamCount() const;
+    virtual void SetParameters(const std::vector<double>&);
+    virtual const std::vector<double>& GetParameters() const;
+     size_t GetParamCount() const;
 
  protected:
     PdfMapping fPdfMapping;
