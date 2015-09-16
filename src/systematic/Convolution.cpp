@@ -45,3 +45,13 @@ void Convolution::Construct(){
         }
     }        
 }
+
+void
+Convolution::SetParameters(const std::vector<double>& params_){
+    fPdf->SetParams(params_);
+}
+
+std::vector<double>
+Convolution::GetParams() const{
+    return fPdf->GetParams();
+}

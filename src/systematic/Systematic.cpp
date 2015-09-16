@@ -32,7 +32,7 @@ const std::vector<double>&
 Systematic::GetParameters() const {return fParams;}
 
 size_t
-Systematic::GetParamCount() const {return fParams.size();}
+Systematic::GetParamCount() const {return this->GetParameters().size();}
 
 
 bool
@@ -41,11 +41,11 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     std::vector<size_t> bin1Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin1_);
     std::vector<size_t> bin2Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin2_);
 
+    // Where are the indicies the systematic cares about in the pdfs index scheme
     std::vector<size_t> relativeIndices = fPdfDataRep.GetRelativeIndicies(fDataRep);
 
     // Do the two global bin numbers have the same indicies except for in the dimisensions 
     // this systematic affects?
-
     for(size_t i = 0; i < bin1Indicies.size(); i++){
         if (!VectorContains(relativeIndices, i))
             continue;
