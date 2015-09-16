@@ -1,6 +1,6 @@
 #include <CompositePdf.h>
 #include <iostream>
-#include <DataHandler.h>
+#include <EventData.h>
 
 CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
@@ -30,7 +30,7 @@ double CompositePdf::operator() (const std::vector<double>& vals_) const{
     return prob;
 }
 
-double CompositePdf::Probability(const DataHandler& data_) const{
+double CompositePdf::Probability(const EventData& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         prob *= fPdfPtrs[i] -> Probability(data_);

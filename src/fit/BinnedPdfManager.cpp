@@ -8,7 +8,7 @@ BinnedPdfManager::GetNDims() const{
 }
 
 double 
-BinnedPdfManager::Probability(const DataHandler& data_) const{
+BinnedPdfManager::Probability(const EventData& data_) const{
     double sum = 0;
     for(size_t i = 0; i < fWorkingPdfs.size(); i++)
         sum += fNormalisations[i] * fWorkingPdfs[i].Probability(data_);

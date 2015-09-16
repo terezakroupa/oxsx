@@ -18,7 +18,7 @@ unsigned Pdf::GetNDims() const{
 
 //FIXME::add try catch
 double 
-Pdf::Probability(const DataHandler& oberservations_) const{
+Pdf::Probability(const EventData& oberservations_) const{
     return operator()(oberservations_.ToRepresentation(fDataRep));
 }
 

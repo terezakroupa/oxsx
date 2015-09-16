@@ -5,10 +5,10 @@
 #define __DATAHANDLE__
 #include <stddef.h>
 
-class DataHandler;
+class EventData;
 class DataHandle{
  public:
-    virtual DataHandler GetEntry(size_t iEvent_) = 0;
+    virtual EventData GetEntry(size_t iEvent_) = 0;
     virtual ~DataHandle() {}
     unsigned GetNEntries() const {return fNEntries;}
     
@@ -16,7 +16,7 @@ class DataHandle{
     unsigned fNVar;
     unsigned fNEntries;
     
-    DataHandler Assemble(size_t iEvent_) const;
+    EventData Assemble(size_t iEvent_) const;
 };
 
 #endif

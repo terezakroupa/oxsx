@@ -8,7 +8,7 @@
 #include <vector>
 #include <BinnedPdf.h>
 
-class DataHandler;
+class EventData;
 class Systematic;
 
 class BinnedPdfManager{
@@ -16,7 +16,7 @@ class BinnedPdfManager{
     BinnedPdfManager() {}
     ~BinnedPdfManager();
     size_t GetNDims() const;
-    double Probability(const DataHandler&) const;
+    double Probability(const EventData&) const;
     void   ApplySystematics(const std::vector<Systematic>&);
 
     std::vector<double> GetNormalisations() const;

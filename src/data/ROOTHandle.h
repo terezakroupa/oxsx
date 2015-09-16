@@ -9,16 +9,16 @@
 #include <TNtuple.h>
 #include <TFile.h>
 
-class DataHandler;
+class EventData;
 class ROOTHandle : public DataHandle {
  public:
     ROOTHandle(const std::string& fileName_, const std::string& treeName_);
     ~ROOTHandle();
 
-    DataHandler Next();
-    DataHandler First();
-    DataHandler Last();
-    DataHandler GetEntry(size_t iEvent_);
+    EventData Next();
+    EventData First();
+    EventData Last();
+    EventData GetEntry(size_t iEvent_);
     unsigned    GetNEntries() const {return fNEntries;}
     
  private:
@@ -28,7 +28,7 @@ class ROOTHandle : public DataHandle {
     TFile*   fROOTFile;
     TNtuple* fNtuple;
     
-    DataHandler Assemble(size_t iEvent_) const;
+    EventData Assemble(size_t iEvent_) const;
 };
 
 class ROOTError : public std::runtime_error {

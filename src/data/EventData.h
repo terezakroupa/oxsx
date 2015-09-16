@@ -2,14 +2,14 @@
 /* A class to hold the relevant data for a single event and distribute it to PDFs */
 /**********************************************************************************/
 
-#ifndef __DATA_HANDLER__
-#define __DATA_HANDLER__
+#ifndef __EVENT_DATA__
+#define __EVENT_DATA__
 #include <vector>
 class DataRepresentation;
 
-class DataHandler{
+class EventData{
  public:
-    DataHandler(const std::vector<double>& obs_);
+    EventData(const std::vector<double>& obs_);
     std::vector<double> GetData() const;
     std::vector<double> ToRepresentation(const DataRepresentation&) const;
     
