@@ -16,7 +16,7 @@ build/pdf
 build/pdf/analytic
 build/pdf/binned
 build/systematic
-build/fit
+build/binnedfit
 '''
 )
 
