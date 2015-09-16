@@ -1,5 +1,5 @@
 #include <ROOTHandle.h>
-#include <DataHandler.h>
+#include <EventData.h>
 #include <iostream>
 
 ROOTHandle::ROOTHandle(const std::string& fileName_, const std::string& treeName_){
@@ -27,14 +27,16 @@ ROOTHandle::~ROOTHandle(){
     delete fROOTFile;
 }
 
-DataHandler ROOTHandle::Assemble(size_t iEvent_) const{
+EventData 
+ROOTHandle::Assemble(size_t iEvent_) const{
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
-    return DataHandler(std::vector<double> (vals, vals + fNVar));
+    return EventData(std::vector<double> (vals, vals + fNVar));
     
 }
 
-DataHandler ROOTHandle::GetEntry(size_t iEvent_){
+EventData 
+ROOTHandle::GetEntry(size_t iEvent_){
     if(fIter > fNEntries)
         throw 0; //fix me
     fIter = iEvent_;
@@ -42,18 +44,21 @@ DataHandler ROOTHandle::GetEntry(size_t iEvent_){
 }
 
 
-DataHandler ROOTHandle::First(){
+EventData 
+ROOTHandle::First(){
     fIter = 0;
     return Assemble(fIter);
 }
 
-DataHandler ROOTHandle::Next(){
+EventData 
+ROOTHandle::Next(){
     if(fIter == (fNEntries -1))
         throw 0; // handle this case betxter something better
     return Assemble(++fIter);
 }
 
-DataHandler ROOTHandle::Last(){
+EventData 
+ROOTHandle::Last(){
     fIter = fNEntries -1; 
     return Assemble(fIter);
 }

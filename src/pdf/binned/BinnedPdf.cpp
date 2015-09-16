@@ -48,7 +48,7 @@ void BinnedPdf::Fill(const std::vector<double>& vals_){
     fBinContents[FindBin(vals_)]++;
 }
 
-void BinnedPdf::Fill(const DataHandler& data_){
+void BinnedPdf::Fill(const EventData& data_){
     Fill(data_.ToRepresentation(fDataRep));
 }
 

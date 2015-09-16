@@ -15,7 +15,7 @@ BinnedNLLH::Evaluate(){
     // loop over events and calculate P(data | {N, #delta})
     double nLogLH = 0;
     for(size_t i = 0; i < fDataHandle -> GetNEntries(); i++){
-        DataHandler eventData = fDataHandle->GetEntry(i);
+        EventData eventData = fDataHandle->GetEntry(i);
         nLogLH -= fPdfManager.Probability(eventData);
     }
 

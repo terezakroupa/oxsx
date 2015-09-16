@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <DataRepresentation.h>
-#include <DataHandler.h>
+#include <EventData.h>
 
 class CompositePdf; 
 
@@ -14,7 +14,7 @@ class Pdf{
     virtual ~Pdf() {}
 
     virtual double operator() (const std::vector<double>& vals_) const = 0;
-    virtual double Probability (const DataHandler&) const; // name hiding -> need dif name
+    virtual double Probability (const EventData&) const; // name hiding -> need dif name
     
     virtual double Integral() const = 0;
 
