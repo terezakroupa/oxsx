@@ -20,6 +20,8 @@ class BinnedPdf : public Pdf{
     void   Fill(const EventData& data_);
 
     size_t FindBin(const std::vector<double>& vals_) const;
+    size_t FindBin(const EventData& data_) const;
+
     std::vector<size_t> UnpackIndicies(size_t bin_) const;
     size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
 
