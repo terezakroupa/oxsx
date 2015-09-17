@@ -10,7 +10,7 @@
 
 class SystematicManager{
  public:
-    SystematicManager();
+    SystematicManager() {}
     ~SystematicManager();
 
 
