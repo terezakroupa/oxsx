@@ -26,3 +26,4 @@ SystematicManager::Add(const Systematic& systematic_){
     fSystematics.push_back(systematic_);
     fParamCounts.push_back(systematic_.GetParamCount());
 }
+

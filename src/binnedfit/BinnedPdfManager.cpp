@@ -32,3 +32,14 @@ const BinnedPdf&
 BinnedPdfManager::GetOriginalPdf(size_t index_) const{
     return fOriginalPdfs.at(index_);
 }
+
+void
+BinnedPdfManager::AddPdf(const BinnedPdf& pdf_){
+    fOriginalPdfs.push_back(pdf_);
+}
+
+void 
+BinnedPdfManager::AddPdfs(const std::vector<BinnedPdf>& pdfs_){
+    for(size_t i = 0; i < pdfs_.size(); i++)
+        fOriginalPdfs.push_back(pdfs_.at(i));
+}
