@@ -16,5 +16,10 @@ class BinnedNLLH : public TestStatistic{
     BinnedPdfManager  fPdfManager;
     SystematicManager fSystematicManager;  
     
+    void      BinData();
+    BinnedPdf fDataPdf;
+    bool      fCalculatedDataPdf;
+    
+    
 };
 #endif
