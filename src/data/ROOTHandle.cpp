@@ -7,7 +7,7 @@ ROOTHandle::ROOTHandle(const std::string& fileName_, const std::string& treeName
     fROOTFile = new TFile(fileName_.c_str());
     if (fROOTFile->IsZombie()){
         delete fROOTFile;
-        throw ROOTError("ROOTHandle::File Does not Exist! " + fileName_);
+        throw ROOTError("ROOTHandle::File Does not Exist! or is Zombie " + fileName_);
     }
         
     fNtuple = static_cast<TNtuple*>(fROOTFile -> Get(treeName_.c_str()));
@@ -35,7 +35,7 @@ ROOTHandle::Assemble(size_t iEvent_) const{
     
 }
 
-EventData 
+EventData
 ROOTHandle::GetEntry(size_t iEvent_){
     if(fIter > fNEntries)
         throw 0; //fix me
