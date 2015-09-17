@@ -19,7 +19,7 @@ class ROOTHandle : public DataHandle {
     EventData First();
     EventData Last();
     EventData GetEntry(size_t iEvent_);
-    unsigned    GetNEntries() const {return fNEntries;}
+    unsigned  GetNEntries() const {return fNEntries;}
     
  private:
     unsigned fIter;
