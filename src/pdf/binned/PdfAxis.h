@@ -1,5 +1,5 @@
-#ifndef __AXIS__
-#define __AXIS__
+#ifndef __OXSX_AXIS__
+#define __OXSX_AXIS__
 #include <vector>
 #include <string>
 
@@ -8,7 +8,7 @@ class PdfAxis{
     // Construct the bins
     PdfAxis(const std::string& name_, double min_, double max_, size_t nBins_,
             const std::string& latexName_ = "");
-    
+    ~PdfAxis() {}
     // Find the correct bin
     size_t FindBin(double value_) const;
 

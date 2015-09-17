@@ -29,8 +29,7 @@ BinnedNLLH::Evaluate(){
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);
 
-    // Constraints
-    
+    // Constraints    
     
     return nLogLH;
 }
@@ -45,4 +44,14 @@ BinnedNLLH::BinData(){
     }
 
     fDataPdf = dataPdf;
+}
+
+void
+BinnedNLLH::SetPdfManager(const BinnedPdfManager& man_){
+    fPdfManager = man_;
+}
+
+void
+BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
+    fSystematicManager = man_;
 }
