@@ -1,8 +1,9 @@
 #!python
+import subprocess
 import os
 
-root_flags = Split("""-pthread -stdlib=libc++ -m64 
-                    -I/Users/Jack/snoplus/snoing/install/root-5.34.30/include""")
+root_flags = Split(subprocess.check_output("root-config --cflags --glibs", shell=True))
+root_flags += ["-lMinuit2"]
 env = Environment()
 
 VariantDir("build", "src", duplicate=0)

@@ -15,7 +15,7 @@ class TestStatistic;
 
 class Minuit : public Optimiser{
  public:
- Minuit(TestStatistic* stat_) : Optimiser(stat_), fMinuitFCN(stat_), 
+ Minuit(TestStatistic* stat_) : Optimiser(stat_), fMinuitFCN(stat_), fMethod("Migrad"),
                                 fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1) {}
     ~Minuit();
 
@@ -47,6 +47,8 @@ class Minuit : public Optimiser{
     void   SetTolerance(double);
     double GetTolerance() const;
 
+    std::vector<double> GetBestFit() const;
+    
  private:
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
     std::vector<double> fInitialValues;
@@ -54,7 +56,8 @@ class Minuit : public Optimiser{
 
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
-    
+    std::vector<double> fBestFit;
+
     unsigned fMaxCalls;
     double   fTolerance;
 

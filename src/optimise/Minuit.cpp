@@ -69,9 +69,7 @@ Minuit::Initialise(){
     if(fMinima.size() && fMaxima.size())
         for(size_t i = 0; i < fInitialValues.size(); i++)
             params.SetLimits(i, fMinima.at(i), fMaxima.at(i));
-
-    else
-
+        
     if("Migrad" == fMethod)
         fMinimiser = new MnMigrad(fMinuitFCN, params);
 
@@ -109,7 +107,7 @@ Minuit::Optimise(){
         Initialise();
 
     fMinimiser -> operator()(fMaxCalls, fTolerance); // defaults are same as ROOT defaults
-    
+    fBestFit = fMinimiser -> Params();
 }
 
 
@@ -119,3 +117,9 @@ Minuit::SetTolerance(double tol_) {fTolerance = tol_;}
 
 double
 Minuit::GetTolerance() const {return fTolerance;}
+
+std::vector<double> 
+Minuit::GetBestFit() const{
+    return fBestFit;
+    
+}

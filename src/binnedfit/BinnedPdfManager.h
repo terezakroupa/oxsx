@@ -13,18 +13,19 @@ class Systematic;
 class BinnedPdfManager{
  public:
     BinnedPdfManager() {}
-    ~BinnedPdfManager();
+    ~BinnedPdfManager(){}
 
     void   AddPdf(const BinnedPdf&);
     void   AddPdfs(const std::vector<BinnedPdf>&);
 
     double Probability(const EventData&) const;
     
-    std::vector<double> GetNormalisations() const;
+    const std::vector<double>& GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
     void ApplySystematics(const std::vector<Systematic>&);
 
     const BinnedPdf& GetOriginalPdf(size_t index_) const;
+    unsigned GetNPdfs() const;
     size_t GetNDims() const;
 
  private:

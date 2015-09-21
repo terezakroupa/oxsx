@@ -13,9 +13,10 @@ class Scale : public Systematic{
     
     void SetScaleFactor(double);
     double GetScaleFactor() const;
+    
+    void Construct();
 
  private:
-    void Construct();
     unsigned fAxisIndex;
 };
 #endif

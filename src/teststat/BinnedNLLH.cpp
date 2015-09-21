@@ -11,7 +11,7 @@ BinnedNLLH::Evaluate(){
 
     // Adjust Systematics
     fSystematicManager.SetParameters(fSystematicParams);
-    
+
     // Apply systematics
     fPdfManager.ApplySystematics(fSystematicManager.GetSystematics());
 
@@ -22,13 +22,14 @@ BinnedNLLH::Evaluate(){
     double nLogLH = 0;
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
         double prob = fPdfManager.Probability(fDataPdf.GetAxes().GetBinCentre(i));
-        nLogLH -= fDataPdf.GetBinContent(i) *  prob;
+        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
     }
 
     // Extended LH correction
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);
-
+        
+    
     // Constraints    
     
     return nLogLH;
@@ -38,9 +39,9 @@ void
 BinnedNLLH::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
-
     for(size_t i = 0; i < fDataHandle -> GetNEntries(); i++){
-        dataPdf.Fill(fDataHandle -> GetEntry(i));
+        EventData dat = fDataHandle -> GetEntry(i);
+        dataPdf.Fill(dat);
     }
 
     fDataPdf = dataPdf;
@@ -49,9 +50,11 @@ BinnedNLLH::BinData(){
 void
 BinnedNLLH::SetPdfManager(const BinnedPdfManager& man_){
     fPdfManager = man_;
+    fNpdfs = man_.GetNPdfs();
 }
 
 void
 BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
     fSystematicManager = man_;
+    fNsystematics = man_.GetParameters().size();
 }

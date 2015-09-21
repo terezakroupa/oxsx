@@ -11,6 +11,11 @@ GridSearch::SetMaxima(const std::vector<double>& maxima_){
     fMaxima = maxima_;
 }
 
+void
+GridSearch::SetStepSizes(const std::vector<double>& steps_){
+    fStepSizes = steps_;
+}
+
 std::vector<double> 
 GridSearch::GetMaxima() const{
     return fMaxima;
@@ -21,23 +26,28 @@ GridSearch::GetMinima() const{
     return fMinima;
 }
 
+std::vector<double>
+GridSearch::GetStepSizes() const{
+    return fStepSizes;
+}
 
 void 
 GridSearch::Optimise(){
     // list of rates followed by list of systematics
     fBestFit.resize(pTestStatistic -> GetNParams());
-    fMaxVal = 0;
+    fMinVal = 0;
 
     // start at min value
     fParams = fMinima;
-        
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
         pTestStatistic->SetParams(fParams);
+
         double currentVal = pTestStatistic->Evaluate();
-        if (currentVal > fMaxVal){
-                fMaxVal = currentVal;
+
+        if (currentVal < fMinVal || fMinVal == 0){
+                fMinVal = currentVal;
                 fBestFit = fParams;
         }
     } 
@@ -63,4 +73,9 @@ GridSearch::Increment(size_t index_){
 
     }
     return true;
+}
+
+std::vector<double> 
+GridSearch::GetBestFit() const{
+    return fBestFit;
 }
