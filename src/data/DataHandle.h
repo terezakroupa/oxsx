@@ -8,15 +8,16 @@
 class EventData;
 class DataHandle{
  public:
+    DataHandle() : fNEntries(0){}
     virtual EventData GetEntry(size_t iEvent_) = 0;
     virtual ~DataHandle() {}
-    unsigned GetNEntries() const {return fNEntries;}
+    virtual unsigned GetNEntries() const {return fNEntries;}
     
- private:
+ protected:
     unsigned fNVar;
     unsigned fNEntries;
     
-    EventData Assemble(size_t iEvent_) const;
+
 };
 
 #endif

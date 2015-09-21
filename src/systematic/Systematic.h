@@ -36,6 +36,8 @@ class Systematic{
     
      size_t GetParamCount() const;
 
+     virtual void Construct() {}
+
  protected:
     PdfMapping fPdfMapping;
     std::vector<double> fParams;

@@ -10,10 +10,14 @@ class GridSearch : public Optimiser{
     
     void SetMinima(const std::vector<double>&);
     void SetMaxima(const std::vector<double>&);
+    void SetStepSizes(const std::vector<double>&);
 
     std::vector<double> GetMinima() const;
     std::vector<double> GetMaxima() const;
-        
+    std::vector<double> GetStepSizes()  const;
+    
+    std::vector<double> GetBestFit() const;
+    
  private:
     std::vector<double> fBestFit;
     std::vector<double> fParams;
@@ -22,7 +26,7 @@ class GridSearch : public Optimiser{
     std::vector<double> fMaxima;
     std::vector<double> fStepSizes;
     bool Increment(size_t);
-    double fMaxVal;
+    double fMinVal;
     
 };
 #endif

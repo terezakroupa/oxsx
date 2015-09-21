@@ -11,7 +11,7 @@ class FitResult;
 class Optimiser{
  public:
     Optimiser(TestStatistic* evaluator_): pTestStatistic(evaluator_){}
-    virtual ~Optimiser();
+    virtual ~Optimiser() {}
 
     virtual void Optimise() = 0;
 

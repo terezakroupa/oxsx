@@ -11,7 +11,7 @@
 class SystematicManager{
  public:
     SystematicManager() {}
-    ~SystematicManager();
+    ~SystematicManager(){}
 
 
     void Add(const Systematic&);

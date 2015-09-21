@@ -1,6 +1,12 @@
 #include <BinnedPdfManager.h>
 #include <Systematic.h>
 #include <BinnedPdf.h>
+#include <iostream>
+unsigned 
+BinnedPdfManager::GetNPdfs() const{
+    return fOriginalPdfs.size();
+}
+
 
 size_t
 BinnedPdfManager::GetNDims() const{
@@ -10,8 +16,10 @@ BinnedPdfManager::GetNDims() const{
 double 
 BinnedPdfManager::Probability(const EventData& data_) const{
     double sum = 0;
-    for(size_t i = 0; i < fWorkingPdfs.size(); i++)
-        sum += fNormalisations[i] * fWorkingPdfs[i].Probability(data_);
+
+    for(size_t i = 0; i < fWorkingPdfs.size(); i++){
+        sum += fNormalisations.at(i) * fWorkingPdfs[i].Probability(data_);
+    }
     return sum;
 }
 
@@ -22,11 +30,16 @@ BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
 
 void 
 BinnedPdfManager::ApplySystematics(const std::vector<Systematic>& systematics_){
-    for(size_t i = 0; i < systematics_.size(); i++){
-        for(size_t j = 0; j < systematics_.size(); j++)
-            fWorkingPdfs[j] = systematics_.at(i).operator()(fOriginalPdfs[j]);
-    }
+    // If there are no systematics dont transform the working pdfs 
+    //  ( = original pdfs from initialisagtion)
+    if(!systematics_.size())
+        return;
+
+    for(size_t i = 0; i < systematics_.size(); i++)
+        for(size_t j = 0; j < fOriginalPdfs.size(); j++)
+            fWorkingPdfs[j] = systematics_.at(i).operator()(fOriginalPdfs[j]);        
 }
+
 
 const BinnedPdf&
 BinnedPdfManager::GetOriginalPdf(size_t index_) const{
@@ -36,10 +49,18 @@ BinnedPdfManager::GetOriginalPdf(size_t index_) const{
 void
 BinnedPdfManager::AddPdf(const BinnedPdf& pdf_){
     fOriginalPdfs.push_back(pdf_);
+    fWorkingPdfs.push_back(pdf_);
 }
 
 void 
 BinnedPdfManager::AddPdfs(const std::vector<BinnedPdf>& pdfs_){
-    for(size_t i = 0; i < pdfs_.size(); i++)
+    for(size_t i = 0; i < pdfs_.size(); i++){
         fOriginalPdfs.push_back(pdfs_.at(i));
+        fWorkingPdfs.push_back(pdfs_.at(i));
+    }
+}
+
+const std::vector<double>&
+BinnedPdfManager::GetNormalisations() const{
+    return fNormalisations;
 }

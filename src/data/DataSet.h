@@ -16,9 +16,9 @@ public:
     void AddEntry(const EventData&);
     EventData GetEntry(size_t eventIndex_);
     unsigned  GetNEntries() const;
-    
+
 private:
     std::vector<EventData>* fData;
-    unsigned fEntryCount;
+
 };
 #endif

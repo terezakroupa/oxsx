@@ -1,9 +1,9 @@
 #include <DataSet.h>
 #include <EventData.h>
+
 void
 DataSet::AddEntry(const EventData& evData_){
     fData -> push_back(evData_);
-    fEntryCount++;
 }
 
 EventData
@@ -29,3 +29,6 @@ DataSet::operator=(const DataSet& other_){
     fData = new std::vector<EventData>(*other_.fData);
     return *this;
 }
+
+
+
