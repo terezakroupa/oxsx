@@ -1,6 +1,8 @@
 #include <Gaussian.h>
 #include <math.h>
-#include <iostream>
+#include <PdfExceptions.h>
+
+// Set/Get Parameters are the protected interface from base class Integrable Pdf
 
 Gaussian::Gaussian(size_t nDims_){
     fNDims = nDims_;
@@ -8,8 +10,9 @@ Gaussian::Gaussian(size_t nDims_){
 
 Gaussian::Gaussian(double mean_, double stdDev_){
     if(stdDev_ <= 0)
-        throw 0; // should throw something better
+        throw ParameterError("Gaussian standard deviation must be greater than 0!");
     fNDims = 1;
+
     std::vector<double> params;
     params.push_back(mean_);
     params.push_back(stdDev_);
@@ -18,7 +21,8 @@ Gaussian::Gaussian(double mean_, double stdDev_){
 
 Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
     if(means_.size() != stdDevs_.size())
-        throw 0;
+        throw ParameterError("Gaussian: Unequal number of means and std devs");
+
     fNDims = means_.size();
     std::vector<double> params(fNDims * 2, 0);
     for(size_t i = 0; i < means_.size(); i++){
@@ -36,7 +40,7 @@ Gaussian::Gaussian(const Gaussian& other_) : IntegrablePdf(other_){
 double 
 Gaussian::operator() (const std::vector<double>& vals_) const{
     if (vals_.size() != fNDims)
-        throw 0; // should throw dimension error
+        throw DimensionError("Gaussian dimensionality does not match the observable vector passed!");
 
     double exponent = 0;
     for(size_t i = 0; i < fNDims; i++){
@@ -55,7 +59,8 @@ Gaussian::operator() (const std::vector<double>& vals_) const{
 double 
 Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const{
     if(mins_.size() != fNDims || maxs_.size() != fNDims)
-        throw 0; // should throw dimension error
+        throw DimensionError("Gaussian, tried to integrate over interval of wrong dimensionality");
+
     double integral = 1;
     for(size_t i = 0; i < mins_.size(); i++)
         integral *= ( Cdf(i, maxs_[i]) - Cdf(i, mins_[i]));
@@ -78,7 +83,7 @@ Gaussian::Cdf(size_t dim_, double val_) const{
     return 0.5 * ( 1 + erf(   
                            (val_ - GetMean(dim_))  / ( sqrt(2) * GetStDev(dim_) ) 
                           ) 
-                   );
+                 );
 }
 
 double 

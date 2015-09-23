@@ -24,4 +24,9 @@ class BinError : public PdfException{
  BinError(const std::string& errorStr): PdfException(errorStr) {}
 };
 
+
+class ParameterError : public PdfException{
+ public:
+ ParameterError(const std::string& errorStr) : PdfException(errorStr) {}
+};
 #endif

@@ -1,9 +1,16 @@
+/*****************************************************************************************************/
+/* A gaussian pdf, gives the probability of a given observation vector.                              */
+/* Parameters are contained in fParams in the IntegralPdf object, ordered (mean_0, sigma_0,          */
+/*  mean_1, sigma_1.....)                                                                            */
+/* These can be set using SetMean etc, or using the generic SetParameter interface from IntegrablePdf*/
+/* The latter is required  to use this pdf as a convolution systematic that can be adjusted in a fit */
+/* Currently assumes variables are independent. Include covariance matrix to upgrade                 */
+/* params are stored like mean1, sigma1, mean2, sigma2 etc..                                         */
+/*****************************************************************************************************/
+
 #ifndef __GAUSSIAN__
 #define __GAUSSIAN__
 #include <IntegrablePdf.h>
-
-// Currently assumes variables are independent. Include covariance matrix to upgrade
-// params are stored like mean1, sigma1, mean2, sigma2 etc..
 
 class Gaussian : public IntegrablePdf{
  public:
@@ -25,6 +32,6 @@ class Gaussian : public IntegrablePdf{
     virtual double Integral() const {return 1;}
     double Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const;
     double Integral(double mins_, double max_) const;
-    virtual Pdf* Clone() const;
+    virtual Pdf* Clone() const; // required for composition of pdfs
 };
 #endif
