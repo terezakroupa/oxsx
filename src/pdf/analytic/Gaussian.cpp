@@ -1,5 +1,6 @@
 #include <Gaussian.h>
 #include <math.h>
+#include <iostream>
 
 Gaussian::Gaussian(size_t nDims_){
     fNDims = nDims_;
@@ -12,7 +13,7 @@ Gaussian::Gaussian(double mean_, double stdDev_){
     std::vector<double> params;
     params.push_back(mean_);
     params.push_back(stdDev_);
-    SetParams(params);
+    SetParameters(params);
 }
 
 Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
@@ -24,12 +25,12 @@ Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>&
         params.push_back(means_.at(i));
         params.push_back(stdDevs_.at(i));
     }
-    SetParams(params);
+    SetParameters(params);
 }
 
 Gaussian::Gaussian(const Gaussian& other_) : IntegrablePdf(other_){
     fNDims = other_.fNDims;
-    SetParams(other_.GetParams());
+    SetParameters(other_.GetParameters());
 }
 
 double 
@@ -55,10 +56,10 @@ double
 Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const{
     if(mins_.size() != fNDims || maxs_.size() != fNDims)
         throw 0; // should throw dimension error
-
     double integral = 1;
     for(size_t i = 0; i < mins_.size(); i++)
         integral *= ( Cdf(i, maxs_[i]) - Cdf(i, mins_[i]));
+  
     return integral;  
 }
 
@@ -74,15 +75,18 @@ Gaussian::Clone() const{
 
 double 
 Gaussian::Cdf(size_t dim_, double val_) const{
-    return 0.5 * ( 1 + erf( (val_ - GetMean(dim_)  / (sqrt(2) * GetStDev(dim_)) ) ));
+    return 0.5 * ( 1 + erf(   
+                           (val_ - GetMean(dim_))  / ( sqrt(2) * GetStDev(dim_) ) 
+                          ) 
+                   );
 }
 
 double 
 Gaussian::GetMean(size_t dimension_) const{
-    return GetParam(dimension_ * 2);
+    return GetParameter(dimension_ * 2);
 }
 
 double 
 Gaussian::GetStDev(size_t dimension_) const{
-    return GetParam(dimension_ * 2 -1);
+    return GetParameter(dimension_ * 2 + 1);
 }

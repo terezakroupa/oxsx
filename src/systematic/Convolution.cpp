@@ -1,6 +1,6 @@
-
 #include <Convolution.h>
 #include <IntegrablePdf.h>
+#include <iostream>
 
 void Convolution::SetPdf(IntegrablePdf* pdf_){
     fPdf = dynamic_cast<IntegrablePdf*>(pdf_->Clone());
@@ -14,17 +14,18 @@ Convolution::~Convolution(){
 
 void Convolution::SetAxes(const AxisCollection& axes_){
     fPdfMapping.SetAxes(axes_);
-    Construct();
 }
 
 void Convolution::Construct(){
     if (!fPdf)
         return;
-    
+
+    Reset();
     size_t nBins = fPdfMapping.GetNBins();
+    
     for(size_t i = 0; i < nBins; i++){
         std::vector<double> binCentre = fPdfMapping.GetAxes().GetBinCentre(i);
-        
+
         // Integrate over bin j to work out the response from i -> j
         for(size_t j = 0; j < nBins; j++){
             // only smear if the systematic indicies are the same in both bins
@@ -40,18 +41,38 @@ void Convolution::Construct(){
                 lowEdges[k]  -=  binCentre[k];
                 highEdges[k] -=  binCentre[k];
             }
+
             double Rij = fPdf -> Integral(lowEdges, highEdges);
             fPdfMapping.SetComponent(j, i, Rij);
         }
     }        
+
+    std::cout << "inside convolution, sigma = " << fPdf->GetParameter(1) << "\t" << std::endl;
 }
 
 void
 Convolution::SetParameters(const std::vector<double>& params_){
-    fPdf->SetParams(params_);
+    fPdf->SetParameters(params_);
 }
 
 std::vector<double>
-Convolution::GetParams() const{
-    return fPdf->GetParams();
+Convolution::GetParameters() const{
+    return fPdf->GetParameters();
+}
+
+double 
+Convolution::GetParameter(size_t index_) const{
+    return fPdf->GetParameter(index_);
+}
+
+void
+Convolution::SetParameter(size_t index_, double val_){
+    fPdf->SetParameter(index_, val_);
+}
+
+void
+Convolution::Reset(){
+    for(size_t i = 0; i < fPdfMapping.GetNBins(); i++)
+        for(size_t j = 0; j < fPdfMapping.GetNBins(); j++)
+            fPdfMapping.SetComponent(i, j , 0);
 }

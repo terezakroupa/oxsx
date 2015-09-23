@@ -1,4 +1,5 @@
 #include <Scale.h>
+#include <iostream>
 
 Scale::Scale(unsigned index_){
     SetParameters(std::vector<double>(1,1)); //start with scale factor of one
@@ -76,7 +77,6 @@ Scale::Construct(){
             }
             
             fPdfMapping.SetComponent(axes.FlattenIndicies(newIndicies), i, contribution);
-            
         }
                
     }

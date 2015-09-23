@@ -1,8 +1,11 @@
 #include <Systematic.h>
 #include <algorithm>
+#include <iostream>
 
 BinnedPdf Systematic::operator() (const BinnedPdf& pdf_) const{
-    return fPdfMapping(pdf_, fDataRep.GetIndicies());
+    BinnedPdf afterSmear = fPdfMapping(pdf_, fDataRep.GetIndicies());
+    afterSmear.Normalise();
+    return afterSmear;
 }
 
 void Systematic::SetResponse(const std::vector<std::vector<double> >& responseMatrix_){
@@ -26,9 +29,11 @@ DataRepresentation
 Systematic::GetPdfDataRep() const {return fPdfDataRep;}
 
 void
-Systematic::SetParameters(const std::vector<double>& params_) {fParams = params_;}
+Systematic::SetParameters(const std::vector<double>& params_) {
+    fParams = params_;
+}
 
-const std::vector<double>& 
+std::vector<double>
 Systematic::GetParameters() const {return fParams;}
 
 size_t
@@ -47,7 +52,7 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     // Do the two global bin numbers have the same indicies except for in the dimisensions 
     // this systematic affects?
     for(size_t i = 0; i < bin1Indicies.size(); i++){
-        if (!VectorContains(relativeIndices, i))
+        if (VectorContains(relativeIndices, i))
             continue;
         if (bin1Indicies.at(i) != bin2Indicies.at(i))
             return false;

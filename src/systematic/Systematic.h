@@ -29,7 +29,7 @@ class Systematic{
     DataRepresentation GetPdfDataRep() const;
 
     virtual void   SetParameters(const std::vector<double>&);
-    virtual const  std::vector<double>& GetParameters() const;
+    virtual std::vector<double> GetParameters() const;
 
     virtual void   SetParameter(size_t index_, double val_);
     virtual double GetParameter(size_t index_) const;

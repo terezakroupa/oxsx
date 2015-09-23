@@ -62,10 +62,9 @@ void
 Minuit::Initialise(){
     delete fMinimiser;
     fMinimiser = NULL;
-    
+
     // Create parameters and set limits
     MnUserParameters params(fInitialValues, fInitialErrors);
-
     if(fMinima.size() && fMaxima.size())
         for(size_t i = 0; i < fInitialValues.size(); i++)
             params.SetLimits(i, fMinima.at(i), fMaxima.at(i));
@@ -105,7 +104,7 @@ void
 Minuit::Optimise(){
     if(!fMinimiser)
         Initialise();
-
+    
     fMinimiser -> operator()(fMaxCalls, fTolerance); // defaults are same as ROOT defaults
     fBestFit = fMinimiser -> Params();
 }
