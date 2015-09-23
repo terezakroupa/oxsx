@@ -1,24 +1,23 @@
+/******************************************************************/
+/* Abstract base for a class that hands out data from some source */
+/******************************************************************/
 #ifndef __OXSX_DATA_SET__
 #define __OXSX_DATA_SET__
-#include <vector>
-#include <DataHandle.h>
-#include <EventData.h>
+#include <stddef.h>
 
-class DataSet : public DataHandle{
-public:
-    DataSet() : fData(new std::vector<EventData>()) {}
-    ~DataSet();
-
-    DataSet(const DataSet&); //deep copy
-    DataSet operator=(const DataSet&);
-
-
-    void AddEntry(const EventData&);
-    EventData GetEntry(size_t eventIndex_);
-    unsigned  GetNEntries() const;
-
-private:
-    std::vector<EventData>* fData;
+class EventData;
+class DataSet{
+ public:
+    DataSet() : fNEntries(0){}
+    virtual EventData GetEntry(size_t iEvent_) = 0;
+    virtual ~DataSet() {}
+    virtual unsigned GetNEntries() const {return fNEntries;}
+    
+ protected:
+    unsigned fNVar;
+    unsigned fNEntries;
+    
 
 };
+
 #endif

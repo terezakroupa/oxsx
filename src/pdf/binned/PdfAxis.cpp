@@ -33,7 +33,7 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
                  const std::vector<double>& highEdges_, const std::string& latexName_){
 
     if (highEdges_.size() != lowEdges_.size() || !lowEdges_.size())
-        BinError("Invalid bins  Must have the same number of low and high edges!");
+        throw BinError("Invalid bins  Must have the same number of low and high edges!");
 
     fName = name_;
     fBinLowEdges  = lowEdges_;
@@ -41,7 +41,7 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
 
     for(size_t i = 0; i < fBinLowEdges.size(); i++)
         if(fBinLowEdges.at(i) > fBinHighEdges.at(i))
-            BinError("Bin Low Edge is bigger than equivilent high edge!");
+            throw BinError("Bin Low Edge is bigger than equivilent high edge!");
 
     fNBins = fBinLowEdges.size();
     fBinWidth = 0;
