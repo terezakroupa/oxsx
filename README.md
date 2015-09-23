@@ -1,2 +1,2 @@
 # oxsx
-work in progress
+Signal Extraction framework for the SNO+ experiment
