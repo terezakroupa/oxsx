@@ -3,6 +3,7 @@
 #include <IntegrablePdf.h>
 #include <AxisCollection.h>
 #include <vector>
+#include <PdfExceptions.h>
 
 BinnedPdf
 PdfConverter::ToBinnedPdf(const IntegrablePdf& analytic_, const AxisCollection& axes_){
