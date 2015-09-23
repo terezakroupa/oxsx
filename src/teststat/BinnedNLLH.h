@@ -7,19 +7,18 @@
 
 class BinnedNLLH : public TestStatistic{
  public:
-    BinnedNLLH() {}
+    BinnedNLLH():fCalculatedDataPdf(false) {}
     ~BinnedNLLH(){}
 
     double Evaluate();
     void   SetPdfManager(const BinnedPdfManager&);
     void   SetSystematicManager(const SystematicManager&);
 
-
+    void   BinData();
  private:
     BinnedPdfManager  fPdfManager;
     SystematicManager fSystematicManager;  
     
-    void      BinData();
     BinnedPdf fDataPdf;
     bool      fCalculatedDataPdf;
     

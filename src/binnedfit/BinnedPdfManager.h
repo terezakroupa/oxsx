@@ -22,7 +22,7 @@ class BinnedPdfManager{
     
     const std::vector<double>& GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
-    void ApplySystematics(const std::vector<Systematic>&);
+    void ApplySystematics(const std::vector<Systematic*>&);
 
     const BinnedPdf& GetOriginalPdf(size_t index_) const;
     unsigned GetNPdfs() const;

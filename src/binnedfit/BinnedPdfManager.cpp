@@ -20,6 +20,7 @@ BinnedPdfManager::Probability(const EventData& data_) const{
     for(size_t i = 0; i < fWorkingPdfs.size(); i++){
         sum += fNormalisations.at(i) * fWorkingPdfs[i].Probability(data_);
     }
+
     return sum;
 }
 
@@ -29,7 +30,7 @@ BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
 }
 
 void 
-BinnedPdfManager::ApplySystematics(const std::vector<Systematic>& systematics_){
+BinnedPdfManager::ApplySystematics(const std::vector<Systematic*>& systematics_){
     // If there are no systematics dont transform the working pdfs 
     //  ( = original pdfs from initialisagtion)
     if(!systematics_.size())
@@ -37,8 +38,10 @@ BinnedPdfManager::ApplySystematics(const std::vector<Systematic>& systematics_){
 
     for(size_t i = 0; i < systematics_.size(); i++)
         for(size_t j = 0; j < fOriginalPdfs.size(); j++)
-            fWorkingPdfs[j] = systematics_.at(i).operator()(fOriginalPdfs[j]);        
+            fWorkingPdfs[j] = systematics_.at(i)->operator()(fOriginalPdfs[j]);
 }
+
+
 
 
 const BinnedPdf&

@@ -1,6 +1,6 @@
 #include <GridSearch.h>
 #include <TestStatistic.h>
-
+#include <iostream>
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
     fMinima = minima_;
@@ -42,11 +42,13 @@ GridSearch::Optimise(){
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
+        for(size_t i = 0; i < fParams.size(); i++)
+            std::cout << fParams.at(i) << "\t";
+        
         pTestStatistic->SetParams(fParams);
-
         double currentVal = pTestStatistic->Evaluate();
-
-        if (currentVal < fMinVal || fMinVal == 0){
+        std::cout << currentVal << std::endl;
+        if (currentVal < fMinVal || !fMinVal){
                 fMinVal = currentVal;
                 fBestFit = fParams;
         }

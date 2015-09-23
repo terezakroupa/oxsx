@@ -16,9 +16,13 @@ class Convolution : public Systematic{
     void Construct();    
 
     void SetParameters(const std::vector<double>& params_);
-    std::vector<double> GetParams() const;
+    std::vector<double> GetParameters() const;
+
+    double GetParameter(size_t index_) const;
+    void   SetParameter(size_t index_, double val);
 
  private:
+    void   Reset();
     IntegrablePdf* fPdf;
     
 };

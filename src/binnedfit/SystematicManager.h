@@ -10,20 +10,22 @@
 
 class SystematicManager{
  public:
-    SystematicManager() {}
+    SystematicManager():fNSystematics(0) {}
     ~SystematicManager(){}
 
 
-    void Add(const Systematic&);
-    const std::vector<Systematic>& GetSystematics() const;
+    void Add(Systematic*);
+    const std::vector<Systematic*>& GetSystematics() const;
     
     void SetParameters(const std::vector<double>& params_);
     const std::vector<double>& GetParameters() const;
-    
+
+    size_t GetNSystematics() const;
  private:
-    std::vector<size_t>     fParamCounts;
-    std::vector<Systematic> fSystematics;
-    std::vector<double>     fParams;
+    std::vector<size_t>      fParamCounts;
+    std::vector<Systematic*> fSystematics;
+    std::vector<double>      fParams;
+    size_t fNSystematics;
 };
 #endif
 

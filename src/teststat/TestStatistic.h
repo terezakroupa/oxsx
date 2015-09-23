@@ -9,7 +9,7 @@ class DataHandle;
 
 class TestStatistic{
  public:
-    TestStatistic(): fDataHandle(NULL) {}
+    TestStatistic(): fDataHandle(NULL), fNpdfs(0), fNsystematics(0) {}
     virtual ~TestStatistic() {}
 
     virtual double Evaluate() = 0;
