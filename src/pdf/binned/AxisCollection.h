@@ -1,6 +1,8 @@
-/********************************************************************************************/
-/* This class controls the indexing of the dynamic dimension array that underlies each pdf */
-/********************************************************************************************/
+/******************************************************************************************************/
+/* A group of Axes that defines the binning for a pdf.                                                */
+/* Each bin is assigned a global bin ID, switch between this global ID and the indicies in each       */
+/* axis using FlattenIndicies and UnpackIndicies                                                      */
+/******************************************************************************************************/
 
 #ifndef __AXIS_COLLECTION__
 #define __AXIS_COLLECTION__

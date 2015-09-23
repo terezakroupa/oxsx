@@ -1,3 +1,10 @@
+/******************************************************************************************************/
+/* A binned pdf is a combination of an axis collection that defines the binning and a single vector of*/
+/* bin contents, indexed by the corresponding global bin ID.                                          */
+/* Each pdf has a data representation, that tells it which event variables it is interested in from th*/
+/* EventData class                                                                                    */
+/******************************************************************************************************/
+
 #ifndef __BINNED_PDF__
 #define __BINNED_PDF__
 #include <AxisCollection.h>
@@ -5,7 +12,6 @@
 #include <vector>
 
 class BinnedPdf : public Pdf{
-    // fixme. dont repeat all of hthe axis methods, just return a reference to the axis collection??
  public:
     BinnedPdf() {}
     BinnedPdf(const AxisCollection& axes_);
@@ -14,7 +20,7 @@ class BinnedPdf : public Pdf{
     virtual double operator() (const std::vector<double>& vals_) const;
     virtual double Integral()  const;
     virtual void   Normalise();
-    virtual  Pdf*  Clone() const;
+    virtual  Pdf*  Clone() const; // required for pdf outer product
     
     void   Fill(const std::vector<double>& vals_);
     void   Fill(const EventData& data_);
@@ -40,5 +46,4 @@ class BinnedPdf : public Pdf{
     std::vector<double> fBinContents;
     size_t fNBins;
 };
-
 #endif
