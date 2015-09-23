@@ -1,6 +1,6 @@
-/*****************************************************************************************************/
-/* A class that converts an integrable analytic pdf for a binned one for comparison with binned pdfs */
-/*****************************************************************************************************/
+/**************************************************************/
+/* Static Utility class for doing a variety of pdfconversions */
+/**************************************************************/
 #ifndef __PDF_CONVERTER__
 #define __PDF_CONVERTER__
 #include <TH1D.h>
