@@ -1,6 +1,9 @@
-/***********************************************************************************/
-/* Responsible for generating a new pdf given a detector response and an input pdf */
-/***********************************************************************************/
+/*********************************************************************************************/
+/* A square response Matix for the experiment. Takes a binned pdf and applies the detector   */
+/* to produce a new BinnedPdf. Inside is a vector of vectors, component fResponse[i][j] =    */
+/* R_i_j = fraction of contents in bin j of original pdf -> bin i in the output pdf          */
+/* the output bin contents are then x'_j = sum(R_i_j * x_j)                                  */
+/*********************************************************************************************/
 
 #ifndef __PDF_MAPPING__
 #define __PDF_MAPPING__
