@@ -23,7 +23,28 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
     }
 }
 
-size_t PdfAxis::FindBin(double value_) const{
+PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
+                 const std::vector<double>& highEdges_, const std::string& latexName_){
+    fName = name_;
+    fBinLowEdges  = lowEdges_;
+    fBinHighEdges = highEdges_;
+
+    fNBins = fBinLowEdges.size();
+    fBinWidth = 0;
+
+    fBinCentres.resize(fNBins, 0);
+    for(size_t i = 0; i < fBinLowEdges.size(); i++)
+        fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
+
+    fLatexName = latexName_;
+    if("" == fLatexName)
+        fLatexName = name_;
+}
+
+
+
+size_t 
+PdfAxis::FindBin(double value_) const{
     size_t insertIndex = std::lower_bound(fBinHighEdges.begin(), fBinHighEdges.end(), value_) - 
         fBinHighEdges.begin();
     if (insertIndex == fNBins)
