@@ -1,5 +1,7 @@
 #include <BinnedPdf.h>
 #include <iostream>
+#include <PdfExceptions.h>
+
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     SetAxes(axes_);
 }
@@ -58,13 +60,12 @@ size_t BinnedPdf::FindBin(const std::vector<double>& vals_) const{
 }
 
 size_t BinnedPdf::FindBin(const EventData& data_) const{
-    return fAxes.FindBin(data_.ToRepresentation(fDataRep));
-    
+    return fAxes.FindBin(data_.ToRepresentation(fDataRep));    
 }
 
 double BinnedPdf::GetBinContent(size_t bin_) const{
     if(bin_ > fNBins)
-        throw 0; //FIXME should be outofbounds error
+        throw OutOfBoundsError("Out of bounds bin access attempted!");
     return fBinContents[bin_];
 }
 

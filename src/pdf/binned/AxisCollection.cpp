@@ -1,24 +1,34 @@
 #include <AxisCollection.h>
 #include <iostream>
+#include <PdfExceptions.h>
 
 size_t AxisCollection::GetNBins() const {return fNBins;}
 size_t AxisCollection::GetNDimensions() const {return fNDimensions;}
 
 const PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
-    return fAxes.at(axisIndex_);
+    try {
+        return fAxes.at(axisIndex_);
+    }
+
+    catch (const std::out_of_range& e_){
+        throw DimensionError(e_.what());
+    }
 }
 
 void AxisCollection::CountBins(){
-    fNBins = 1;
-    for(size_t i = 0; i < fNDimensions; i++)
-        fNBins *= fAxisNbins[i];
+    if (!fNDimensions)
+        fNBins = 0;
+
+    else{
+        fNBins = 1;
+        for(size_t i = 0; i < fNDimensions; i++)
+            fNBins *= fAxisNbins[i];
+    }
 }
 
 void AxisCollection::AddAxis(const PdfAxis& axis_){
     if (HasAxis(axis_.GetName())){
-        std::cout << "cant add axis " << axis_.GetName() << " already has an axis by that name!" 
-                  << std::endl;
-        return;
+        throw DimensionError("Can't add axis " + axis_.GetName() + " already exists!"); 
     }
         
     fAxes.push_back(axis_);
@@ -35,6 +45,7 @@ void AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
 size_t AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) const{
     if(indicies_.size() != fNDimensions)
         throw DimensionError("Can't flatten! wrong number of indicies");
+
     size_t index = indicies_.back();
     for (size_t i = 0; i < fNDimensions-1; i++){
         size_t x = indicies_[i];

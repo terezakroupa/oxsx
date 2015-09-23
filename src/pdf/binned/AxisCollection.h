@@ -38,16 +38,4 @@ class AxisCollection{
     bool    HasAxis(const std::string& name_);
 };
 
-
-
-class DimensionError : public std::runtime_error {
- public:
- DimensionError(const std::string& error_str):runtime_error(error_str){};
-};
-
-class OutOfBoundsError : public std::runtime_error {
- public:
- OutOfBoundsError(const std::string& error_str):runtime_error(error_str){};
-};
-
 #endif
