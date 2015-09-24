@@ -3,7 +3,7 @@
 /* its underlying detector response matrix so the response can be applied. And modifying the       */
 /* response matrix according to some set of parameters.                                            */
 /* The class knows the data representation of the indicies it affects, as well as the rep of       */
-   /*    the pdfs it acts on, this is nessecary to properly calulate its affect                    */
+/*    the pdfs it acts on, this is nessecary to properly calulate its affect                       */
 /* The construct() method is called in fit routines to recalculate the matrix after pdf adjustment */
 /* Classes derived from this construct the response matrix according to some physical process.     */
 /***************************************************************************************************/

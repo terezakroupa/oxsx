@@ -39,15 +39,13 @@ GridSearch::Optimise(){
 
     // start at min value
     fParams = fMinima;
+
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
-        for(size_t i = 0; i < fParams.size(); i++)
-            std::cout << fParams.at(i) << "\t";
         
         pTestStatistic->SetParams(fParams);
         double currentVal = pTestStatistic->Evaluate();
-        std::cout << currentVal << std::endl;
         if (currentVal < fMinVal || !fMinVal){
                 fMinVal = currentVal;
                 fBestFit = fParams;

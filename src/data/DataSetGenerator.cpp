@@ -7,8 +7,8 @@
 #include <stdlib.h>
 
 void
-DataSetGenerator::SetDataHandles(const std::vector<DataSet*> handles_){
-    fDataSets = handles_;
+DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
+    fDataSets = sets_;
 }
 
 void

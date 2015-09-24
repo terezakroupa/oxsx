@@ -2,11 +2,12 @@
 #include <Systematic.h>
 #include <BinnedPdf.h>
 #include <iostream>
+#include <PdfExceptions.h>
+
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
     return fOriginalPdfs.size();
 }
-
 
 size_t
 BinnedPdfManager::GetNDims() const{
@@ -26,6 +27,8 @@ BinnedPdfManager::Probability(const EventData& data_) const{
 
 void
 BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
+    if (normalisations_.size() != fOriginalPdfs.size())
+        throw DimensionError("BinnedPdfManager: number of norms doesn't match #pdfs");
     fNormalisations = normalisations_;
 }
 
@@ -40,9 +43,6 @@ BinnedPdfManager::ApplySystematics(const std::vector<Systematic*>& systematics_)
         for(size_t j = 0; j < fOriginalPdfs.size(); j++)
             fWorkingPdfs[j] = systematics_.at(i)->operator()(fOriginalPdfs[j]);
 }
-
-
-
 
 const BinnedPdf&
 BinnedPdfManager::GetOriginalPdf(size_t index_) const{

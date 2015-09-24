@@ -17,11 +17,12 @@ Gaussian::Gaussian(double mean_, double stdDev_){
     params.push_back(mean_);
     params.push_back(stdDev_);
     SetParameters(params);
+    
 }
 
 Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
     if(means_.size() != stdDevs_.size())
-        throw ParameterError("Gaussian: Unequal number of means and std devs");
+        throw DimensionError("Gaussian: Unequal number of means and std devs");
 
     fNDims = means_.size();
     std::vector<double> params(fNDims * 2, 0);
@@ -41,6 +42,9 @@ double
 Gaussian::operator() (const std::vector<double>& vals_) const{
     if (vals_.size() != fNDims)
         throw DimensionError("Gaussian dimensionality does not match the observable vector passed!");
+
+    if(GetParameters().size() != fNDims)
+        throw DimensionError("Gaussian: Attempted to set wrong number of params");
 
     double exponent = 0;
     for(size_t i = 0; i < fNDims; i++){

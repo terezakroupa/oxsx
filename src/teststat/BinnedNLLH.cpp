@@ -1,6 +1,6 @@
 #include <BinnedNLLH.h>
 #include <math.h>
-#include <DataHandle.h>
+#include <DataSet.h>
 #include <iostream>
 
 double 
@@ -28,8 +28,8 @@ BinnedNLLH::Evaluate(){
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);
             
-    // Constraints    
-    
+    // Constraints
+
     return nLogLH;
 }
 
@@ -38,8 +38,8 @@ BinnedNLLH::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
 
-    for(size_t i = 0; i < fDataHandle -> GetNEntries(); i++){
-        EventData dat = fDataHandle -> GetEntry(i);
+    for(size_t i = 0; i < fDataSet -> GetNEntries(); i++){
+        EventData dat = fDataSet -> GetEntry(i);
         dataPdf.Fill(dat);
     }
 

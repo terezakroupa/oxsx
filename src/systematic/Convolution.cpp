@@ -1,11 +1,17 @@
 #include <Convolution.h>
 #include <IntegrablePdf.h>
 #include <iostream>
+#include <PdfExceptions.h>
+#include <SystematicExceptions.h>
+
+// Catch the pdf errors from parameter setting and rethrow as systematic exceptions, so they
+// can be treated generically with the other systematics
 
 void Convolution::SetPdf(IntegrablePdf* pdf_){
     fPdf = dynamic_cast<IntegrablePdf*>(pdf_->Clone());
+    fParameterCount = fPdf->GetParameters().size();
     if(!fPdf)
-        throw 0; //FIXME not an integrable pdf
+        throw InitialisationError("Non-Integrable pdf used for convolution!");
 }
 
 Convolution::~Convolution(){
@@ -14,12 +20,13 @@ Convolution::~Convolution(){
 
 void Convolution::SetAxes(const AxisCollection& axes_){
     fPdfMapping.SetAxes(axes_);
+    fHasAxes = true;
 }
 
 void Convolution::Construct(){
-    if (!fPdf)
-        return;
-
+    if (!fPdf || !fHasAxes)
+        throw InitialisationError("Tried to construct convolution without axes and pdf!");
+    
     Reset();
     size_t nBins = fPdfMapping.GetNBins();
     
@@ -47,12 +54,20 @@ void Convolution::Construct(){
         }
     }        
 
-    std::cout << "inside convolution, sigma = " << fPdf->GetParameter(1) << "\t" << std::endl;
 }
 
 void
 Convolution::SetParameters(const std::vector<double>& params_){
+    try{
     fPdf->SetParameters(params_);
+    }
+    catch (const ParameterError& e_){
+        throw InvalidSystematicParameter(std::string("Convolution: couldnt set pdf params, invalid val:  ") + e_.what());
+    }
+    catch (const DimensionError& e_){
+        throw WrongNumberOfParameters(std::string("Convolution: tried to change pdf params with wrong number") + e_.what());
+    }
+
 }
 
 std::vector<double>
@@ -62,12 +77,22 @@ Convolution::GetParameters() const{
 
 double 
 Convolution::GetParameter(size_t index_) const{
-    return fPdf->GetParameter(index_);
+    try{
+        return fPdf->GetParameter(index_);
+    }
+    catch(const DimensionError& e_){
+        throw WrongNumberOfParameters("Convolution: Tried to access a variable the pdf does not have!");
+    }
 }
 
 void
 Convolution::SetParameter(size_t index_, double val_){
-    fPdf->SetParameter(index_, val_);
+    try{
+        fPdf->SetParameter(index_, val_);
+    }
+    catch(const DimensionError& e_){
+        throw WrongNumberOfParameters("Convolution: Tried to access a variable the pdf does not have!");       
+    }
 }
 
 void

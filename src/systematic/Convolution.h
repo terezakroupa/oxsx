@@ -1,15 +1,19 @@
-/******************************************************************/
-/* Convolve a binned pdf with an integrable pdf to give a new pdf */
-/******************************************************************/
+/*****************************************************************************************************/
+/* Convolution of the pdf with another compatible pdf. The pdf must have dimensionality smaller than */
+/* the pdfs it will act on, and must implement IntegrablePdf method Integrate() to allow the         */
+/* convolution to integrate it over bin boundaries.                                                  */
+/* The parameters set in this systematic are forwarded on to the internal pdf, you then need to call */
+/* Construct() to update the response matrix                                                         */
+/*****************************************************************************************************/
 
-#ifndef __CONVOLUTION__
-#define __CONVOLUTION__
+#ifndef __OXSX_CONVOLUTION__
+#define __OXSX_CONVOLUTION__
 #include <Systematic.h>
 
 class IntegrablePdf;
 class Convolution : public Systematic{
  public:
-    Convolution():fPdf(NULL) {}
+    Convolution():fPdf(NULL), fHasAxes(false) {}
     ~Convolution();
     void SetPdf(IntegrablePdf* pdf_);
     void SetAxes(const AxisCollection& axes_);
@@ -22,9 +26,10 @@ class Convolution : public Systematic{
     void   SetParameter(size_t index_, double val);
 
  private:
-    void   Reset();
+    void           Reset();
     IntegrablePdf* fPdf;
-    
+    size_t         fParameterCount;
+    bool           fHasAxes;
 };
 #endif
 
