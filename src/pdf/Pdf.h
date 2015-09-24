@@ -1,11 +1,11 @@
 /*****************************************************************************************************/
-/* Abstract base class for a pdf. In this context a pdf is any object that takes a set of observations
-   /* and returns a probability.                                                                     */
+/* Abstract base class for a pdf. In this context a pdf is anything that takes a set of observations */
+/* and returns a probability.                                                                        */
 /* Each pdf owns a DataRepresentation, that contains the list of indicies it should act on.          */
 /*                                                                                                   */
 /* For example, if the data comes as triplets (x, y, z), but the pdf is only concerned with the first*/
 /* and last observables (perhaps the others are ignored or dealt with by another pdf) the rep will   */
-/* contian the indicies (0, 2)
+/* contian the indicies (0, 2)                                                                       */
 /* The method Probability() then simply picks these indicies out of the EventData and passes them to */
 /* the operator(). This is implemented at the Pdf level and does not need to be repeated in inherited*/
 /* classes                                                                                           */

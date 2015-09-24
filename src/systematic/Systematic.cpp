@@ -42,7 +42,6 @@ Systematic::GetParamCount() const {return this->GetParameters().size();}
 
 bool
 Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
-    // unpack
     std::vector<size_t> bin1Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin1_);
     std::vector<size_t> bin2Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin2_);
 

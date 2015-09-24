@@ -24,6 +24,6 @@ IntegrablePdf::GetParameter(size_t index_) const{
         return fParams.at(index_);
     }
     catch(std::out_of_range&){
-        throw ParameterError("Tried accessing a parameter pdf does not have!");
+        throw DimensionError("Tried accessing a parameter pdf does not have!");
     }
 }

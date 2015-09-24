@@ -1,5 +1,6 @@
 #include <SystematicManager.h>
 #include <iostream>
+#include <SystematicExceptions.h>
 
 const std::vector<Systematic*>& 
 SystematicManager::GetSystematics() const{
@@ -8,10 +9,17 @@ SystematicManager::GetSystematics() const{
 
 void
 SystematicManager::SetParameters(const std::vector<double>& params_){
+    // No parameters or no change? dont do anything
     if (!params_.size() || params_ == fParams)
         return;
 
+    // wrong number of parameters
+    if (params_.size() != fTotalParamCount)
+        throw WrongNumberOfParameters("Fit routine passed wrong number of systematic params!");
+
     fParams = params_;
+
+    // divide up the systematics into their proper destination
     std::vector<double>::const_iterator it = params_.begin();
     fSystematics[0] -> SetParameters(std::vector<double>(it, it + fParamCounts.at(0)));
     
@@ -37,6 +45,7 @@ void
 SystematicManager::Add(Systematic* systematic_){    
     fSystematics.push_back(systematic_);
     fParamCounts.push_back(systematic_->GetParamCount());
+    fTotalParamCount += systematic_->GetParamCount();
     fNSystematics++;
 }
 

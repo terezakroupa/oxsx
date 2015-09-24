@@ -16,7 +16,7 @@ class DataSetGenerator{
  public:
     DataSetGenerator() {}
     ~DataSetGenerator() {}
-    void SetDataHandles(const std::vector<DataSet*> handles_);
+    void SetDataSets(const std::vector<DataSet*> sets_);
     void SetExpectedRates(const std::vector<double>& rates_);
     
     OXSXDataSet ExpectedRatesDataSet() const;

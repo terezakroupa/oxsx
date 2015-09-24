@@ -1,5 +1,6 @@
 #ifndef __PDF_EXCEPTIONS__
 #define __PDF_EXCEPTIONS__
+#include <string>
 
 class PdfException : public std::runtime_error {
  public:

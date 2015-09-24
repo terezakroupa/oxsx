@@ -1,4 +1,5 @@
 #include <Scale.h>
+#include <SystematicExceptions.h>
 #include <iostream>
 
 Scale::Scale(unsigned index_){
@@ -19,8 +20,11 @@ Scale::GetAxes() const{
 void 
 Scale::Construct(){
     if (GetScaleFactor() <= 0)
-        throw 0; //FIXME
+        throw InvalidSystematicParameter("Scale factor must be >0 !");
 
+    if (GetParameters().size() != 1)
+        throw WrongNumberOfParameters("More than one parameter passed to scale systematic!");
+    
     const AxisCollection& axes  = fPdfMapping.GetAxes(); 
     // the axis to scale
     const PdfAxis& scaleAxis    = axes.GetAxis(fDataRep.GetDataIndexPos(fAxisIndex));  
@@ -29,10 +33,10 @@ Scale::Construct(){
     const size_t scaleAxisNBins = scaleAxis.GetNBins(); 
     const double binWidth       = scaleAxis.GetBinWidth();
  
+    std::cout << "In scaler, " << GetScaleFactor() << std::endl;
     for(size_t i = 0; i < nBins; i++){
         // For each old bin, work out the contributions into all of the new bins
         // indicies in other components should be unaffected
-
         std::vector<size_t> oldIndicies = axes.UnpackIndicies(i);
         size_t scaleBin = oldIndicies.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
         
@@ -92,3 +96,4 @@ double
 Scale::GetScaleFactor() const{
     return GetParameter(0);
 }
+
