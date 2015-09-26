@@ -4,6 +4,7 @@
 #include <Minuit2/MnSimplex.h>
 #include <Minuit2/MnUserParameters.h>
 #include <Minuit2/FunctionMinimum.h>
+#include <FitResult.h>
 
 using ROOT::Minuit2::MnMigrad;
 using ROOT::Minuit2::MnMinimize;
@@ -100,13 +101,15 @@ Minuit::RemoveLimits(size_t index_){
     fMinimiser->RemoveLimits(index_);
 }
 
-void 
+FitResult 
 Minuit::Optimise(){
     if(!fMinimiser)
         Initialise();
     
     fMinimiser -> operator()(fMaxCalls, fTolerance); // defaults are same as ROOT defaults
-    fBestFit = fMinimiser -> Params();
+
+    fFitResult.SetBestFit(fMinimiser -> Params());
+    return fFitResult;
 }
 
 
@@ -117,8 +120,8 @@ Minuit::SetTolerance(double tol_) {fTolerance = tol_;}
 double
 Minuit::GetTolerance() const {return fTolerance;}
 
-std::vector<double> 
-Minuit::GetBestFit() const{
-    return fBestFit;
+FitResult
+Minuit::GetFitResult() const{
+    return fFitResult;
     
 }

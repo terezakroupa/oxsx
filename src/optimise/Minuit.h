@@ -10,6 +10,7 @@
 #include <vector>
 #include <MinuitFCN.h>
 #include <Minuit2/MnApplication.h>
+#include <FitResult.h>
 
 class TestStatistic;
 
@@ -20,7 +21,7 @@ class Minuit : public Optimiser{
     ~Minuit();
 
     void Initialise();
-    virtual void Optimise();
+    virtual FitResult Optimise();
 
     void Fix(size_t index_);        // these three methods only work after a call to Initialise
     void Release(size_t index_);
@@ -47,7 +48,7 @@ class Minuit : public Optimiser{
     void   SetTolerance(double);
     double GetTolerance() const;
 
-    std::vector<double> GetBestFit() const;
+    FitResult GetFitResult() const;
     
  private:
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
@@ -56,13 +57,13 @@ class Minuit : public Optimiser{
 
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
-    std::vector<double> fBestFit;
 
     unsigned fMaxCalls;
     double   fTolerance;
 
     std::string fMethod;
     ROOT::Minuit2::MnApplication* fMinimiser;
-        
+
+    FitResult fFitResult;
 };
 #endif
