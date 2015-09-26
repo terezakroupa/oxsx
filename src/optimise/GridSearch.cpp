@@ -1,8 +1,10 @@
 #include <GridSearch.h>
 #include <TestStatistic.h>
 #include <iostream>
+#include <sstream>
 #include <BinnedPdf.h>
 #include <FitResult.h>
+#include <SystematicExceptions.h>
 
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
@@ -42,23 +44,31 @@ GridSearch::Optimise(){
     fMinVal = 0;
 
 
-    // Initialise LH space
+    // Initialise LH space and count the number of grid steps
     AxisCollection statAxes;
-    for(size_t i = 0; i < fMinima.size(); i++)
-        statAxes.AddAxis(PdfAxis("", 
+
+    unsigned maxSteps = 1;
+    std::vector<double> gridCounts;
+
+    for(size_t i = 0; i < fMinima.size(); i++){
+        size_t axisCounts = static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
+        maxSteps *= axisCounts;
+        gridCounts.push_back(axisCounts);
+    }
+
+    for(size_t i = 0; i < fMinima.size(); i++){
+        std::stringstream ss;
+        ss << "param " << i;
+        statAxes.AddAxis(PdfAxis(ss.str(), 
                                fMinima.at(i) - fStepSizes.at(i)/2, 
                                fMaxima.at(i) - fStepSizes.at(i)/2,
-                               fStepSizes.at(i)
+                               gridCounts.at(i)
                                )
                        );
+    }
 
     BinnedPdf statSpace(statAxes);
-
-    // count the number of steps to do
-    unsigned maxSteps = 1;
-    for(size_t i = 0; i < fMinima.size(); i++)
-        maxSteps *= static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
-
+    
     // start at min value
     fParams = fMinima;
     
@@ -85,7 +95,6 @@ GridSearch::Optimise(){
     } 
     fFitResult.SetBestFit(bestFit);
     fFitResult.SetStatSpace(&statSpace);
-    
     return fFitResult;
 }
 
