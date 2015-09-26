@@ -22,8 +22,8 @@ class BinnedPdf : public Pdf{
     virtual void   Normalise();
     virtual  Pdf*  Clone() const; // required for pdf outer product
     
-    void   Fill(const std::vector<double>& vals_);
-    void   Fill(const EventData& data_);
+    void   Fill(const std::vector<double>& vals_, double weight_ = 1);
+    void   Fill(const EventData& data_, double weight_ = 1);
 
     size_t FindBin(const std::vector<double>& vals_) const;
     size_t FindBin(const EventData& data_) const;
