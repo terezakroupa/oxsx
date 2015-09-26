@@ -9,11 +9,11 @@ BinnedNLLH::Evaluate(){
         BinData();
     }
 
-    // Adjust Systematics
+    // Adjust Systematics if they have changed
     fSystematicManager.SetParameters(fSystematicParams);
 
     // Apply systematics
-    fPdfManager.ApplySystematics(fSystematicManager.GetSystematics());
+    fPdfManager.ApplySystematics(fSystematicManager);
 
     // Set Normalisations
     fPdfManager.SetNormalisations(fNormalisations);
@@ -21,7 +21,7 @@ BinnedNLLH::Evaluate(){
     // loop over bins and calculate the likelihood
     double nLogLH = 0;
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
-        double prob = fPdfManager.Probability(EventData(fDataPdf.GetAxes().GetBinCentre(i)));
+        double prob = fPdfManager.BinProbability(i);
         nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
     }
     // Extended LH correction

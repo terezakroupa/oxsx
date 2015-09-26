@@ -8,7 +8,7 @@
 #include <BinnedPdf.h>
 
 class EventData;
-class Systematic;
+class SystematicManager;
 
 class BinnedPdfManager{
  public:
@@ -19,10 +19,11 @@ class BinnedPdfManager{
     void   AddPdfs(const std::vector<BinnedPdf>&);
 
     double Probability(const EventData&) const;
+    double BinProbability(size_t) const;
     
     const std::vector<double>& GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
-    void ApplySystematics(const std::vector<Systematic*>&);
+    void ApplySystematics(const SystematicManager& sysMan_);
 
     const BinnedPdf& GetOriginalPdf(size_t index_) const;
     unsigned GetNPdfs() const;
@@ -32,6 +33,7 @@ class BinnedPdfManager{
     std::vector<BinnedPdf> fOriginalPdfs;
     std::vector<BinnedPdf> fWorkingPdfs;
     std::vector<double>    fNormalisations;
+    std::vector<double>    fCachedParams;
     size_t fNDims;
 };
 #endif

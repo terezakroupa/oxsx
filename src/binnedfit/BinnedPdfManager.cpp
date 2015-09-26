@@ -1,5 +1,5 @@
 #include <BinnedPdfManager.h>
-#include <Systematic.h>
+#include <SystematicManager.h>
 #include <BinnedPdf.h>
 #include <iostream>
 #include <PdfExceptions.h>
@@ -25,6 +25,15 @@ BinnedPdfManager::Probability(const EventData& data_) const{
     return sum;
 }
 
+double
+BinnedPdfManager::BinProbability(size_t bin_) const{
+    double sum = 0;
+    for(size_t i = 0; i < fWorkingPdfs.size(); i++)
+        sum += fNormalisations.at(i) * fWorkingPdfs.at(i).GetBinContent(i);
+    return sum;
+}
+
+
 void
 BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
     if (normalisations_.size() != fOriginalPdfs.size())
@@ -33,15 +42,19 @@ BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
 }
 
 void 
-BinnedPdfManager::ApplySystematics(const std::vector<Systematic*>& systematics_){
-    // If there are no systematics dont transform the working pdfs 
-    //  ( = original pdfs from initialisagtion)
-    if(!systematics_.size())
-        return;
+BinnedPdfManager::ApplySystematics(const SystematicManager& sysMan_){
+    const std::vector<Systematic*>& systematics = sysMan_.GetSystematics();
 
-    for(size_t i = 0; i < systematics_.size(); i++)
+    // If there are no systematics or they haven't changed, dont transform the working pdfs 
+    //  ( = original pdfs from initialisagtion)
+    if((!systematics.size()) || sysMan_.GetParameters() == fCachedParams)
+        return;
+    fCachedParams = sysMan_.GetParameters();
+
+
+    for(size_t i = 0; i < systematics.size(); i++)
         for(size_t j = 0; j < fOriginalPdfs.size(); j++)
-            fWorkingPdfs[j] = systematics_.at(i)->operator()(fOriginalPdfs[j]);
+            fWorkingPdfs[j] = systematics.at(i)->operator()(fOriginalPdfs[j]);
 }
 
 const BinnedPdf&
