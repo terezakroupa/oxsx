@@ -53,12 +53,12 @@ DataRepresentation::GetRelativeIndicies(const DataRepresentation& otherRep_) con
     // given a longer represetation containing the indicies of this rep, where are the shared indicies
     // in the big rep
 
-    if(otherRep_.GetLength() > fLen)
+    if(otherRep_.GetLength() < fLen)
         throw RepresentationError("Tried to take relatice indicies in compatible representations ");
         
-
-    std::vector<size_t> relativeIndicies(otherRep_.fIndicies.size(), 0);
-    for(size_t i = 0; i < otherRep_.fIndicies.size(); i++)
+    std::vector<size_t> relativeIndicies(fIndicies.size(), 0);
+    for(size_t i = 0; i < fIndicies.size(); i++)
         relativeIndicies[i] = GetDataIndexPos(otherRep_.fIndicies.at(i));
+    
     return relativeIndicies;
 } 
