@@ -37,13 +37,25 @@ GridSearch::Optimise(){
     fBestFit.resize(pTestStatistic -> GetNParams());
     fMinVal = 0;
 
+
+    // count the number of steps to do
+    unsigned maxSteps = 1;
+    for(size_t i = 0; i < fMinima.size(); i++)
+        maxSteps *= static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
+
     // start at min value
     fParams = fMinima;
+    
+    // count interations
+    unsigned stepCount = 0;
 
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
-        
+
+        if(!(stepCount++ %1000000))
+            std::cout << stepCount << " / " << maxSteps << std::endl;
+
         pTestStatistic->SetParams(fParams);
         double currentVal = pTestStatistic->Evaluate();
         if (currentVal < fMinVal || !fMinVal){

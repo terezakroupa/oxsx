@@ -13,7 +13,7 @@ ChiSquare::Evaluate(){
     fSystematicManager.SetParameters(fSystematicParams);
 
     // Apply systematics
-    fPdfManager.ApplySystematics(fSystematicManager.GetSystematics());
+    fPdfManager.ApplySystematics(fSystematicManager);
     
     // Set Normalisations                                   
     fPdfManager.SetNormalisations(fNormalisations);
