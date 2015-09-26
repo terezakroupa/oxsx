@@ -1,4 +1,5 @@
 #include <DataRepresentation.h>
+#include <DataExceptions.h>
 
 DataRepresentation::DataRepresentation(const std::vector<size_t>& indicies_){
     SetIndicies(indicies_);
@@ -44,7 +45,7 @@ DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
         if (dataIndex_ == fInverse.at(i).first)
             return fInverse.at(i).second;
     }
-    throw 0; // FIXME
+    throw RepresentationError("Incompatible data representation"); // 
 }
 
 std::vector<size_t> 
@@ -53,7 +54,8 @@ DataRepresentation::GetRelativeIndicies(const DataRepresentation& otherRep_) con
     // in the big rep
 
     if(otherRep_.GetLength() > fLen)
-        throw 0; // FIXME should be dimension error
+        throw RepresentationError("Tried to take relatice indicies in compatible representations ");
+        
 
     std::vector<size_t> relativeIndicies(otherRep_.fIndicies.size(), 0);
     for(size_t i = 0; i < otherRep_.fIndicies.size(); i++)

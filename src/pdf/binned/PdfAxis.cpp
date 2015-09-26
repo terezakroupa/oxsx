@@ -9,11 +9,11 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
     if(fLatexName == "")
         fLatexName = name_;
 
-    if (fMin < fMax || !nBins_)
-        throw 0;
-
     fMin = min_;
     fMax = max_;
+
+    if (fMin > fMax || !nBins_)
+        throw BinError("Invalid bin specification: min > max or nbins = 0");
 
     fNBins = nBins_;
     fBinWidth =  double(fMax - fMin) /fNBins;
