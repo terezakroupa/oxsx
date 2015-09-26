@@ -2,7 +2,7 @@
 #include <math.h>
 #include <DataSet.h>
 #include <iostream>
-
+#include <PdfExceptions.h>
 double 
 BinnedNLLH::Evaluate(){
     if (!fCalculatedDataPdf){
@@ -29,6 +29,10 @@ BinnedNLLH::Evaluate(){
         nLogLH += fNormalisations.at(i);
             
     // Constraints
+    for(size_t i = 0; i < fSystematicConstraints.size(); i++)
+        nLogLH += fSystematicConstraints.at(i).operator()(fSystematicParams);
+    for(size_t i = 0; i < fNormalisationConstraints.size(); i++)
+        nLogLH += fNormalisationConstraints.at(i).operator()(fNormalisations);
 
     return nLogLH;
 }
@@ -59,3 +63,42 @@ BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
     fNsystematics = man_.GetNSystematics();
 }
 
+void
+BinnedNLLH::AddSystematicConstraint(const QuadraticConstraint& constr_){
+    fSystematicConstraints.push_back(constr_);
+}
+
+void
+BinnedNLLH::SetSystematicConstraint(size_t index_, const QuadraticConstraint& constr_){
+    if(index_ >= fSystematicConstraints.size())
+        throw DimensionError("Tried to set systematic constraint that doesn't exist : logic error");
+    fSystematicConstraints[index_] = constr_;
+}
+
+
+void
+BinnedNLLH::AddNormalisationConstraint(const QuadraticConstraint& constr_){
+    fNormalisationConstraints.push_back(constr_);
+}
+
+void
+BinnedNLLH::SetNormalisationConstraint(size_t index_, const QuadraticConstraint& constr_){
+    if(index_ >= fNormalisationConstraints.size())
+        throw DimensionError("BinnedNNLH::Tried to set systematic constraint that doesn't exist : logic error");
+    fNormalisationConstraints[index_] = constr_;
+}
+
+QuadraticConstraint
+BinnedNLLH::GetNormalisationConstraint(size_t index_) const{
+    if(index_ >= fNormalisationConstraints.size())
+        throw DimensionError("BinnedNLLH::Attempted access on non existent constraint");
+    return fNormalisationConstraints.at(index_);
+}
+
+
+QuadraticConstraint
+BinnedNLLH::GetSystematicConstraint(size_t index_) const{
+    if(index_ >= fSystematicConstraints.size())
+        throw DimensionError("BinnedNLLH::Attempted access on non existent constraint");
+    return fSystematicConstraints.at(index_);
+}
