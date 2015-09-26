@@ -1,7 +1,7 @@
 #include <PdfAxis.h>
 #include <algorithm>
 #include <PdfExceptions.h>
-
+#include <iostream>
 PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBins_,
                  const std::string& latexName_){
     fName = name_;

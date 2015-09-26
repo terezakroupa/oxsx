@@ -4,6 +4,7 @@
 #include <AxisCollection.h>
 #include <vector>
 #include <PdfExceptions.h>
+#include <iostream>
 
 BinnedPdf
 PdfConverter::ToBinnedPdf(const IntegrablePdf& analytic_, const AxisCollection& axes_){
@@ -36,4 +37,44 @@ PdfConverter::ToTH1D(const BinnedPdf& pdf_){
         rtHist.SetBinContent(bin+1, pdf_.GetBinContent(bin));
     
     return rtHist;                         
+}
+
+BinnedPdf
+PdfConverter::Marginalise(const BinnedPdf& binnedPdf_, 
+                          const std::vector<size_t>& indicies_){
+    // check the pdf does contain the indicies asked for
+    DataRepresentation dRep = binnedPdf_.GetDataRep();
+    std::vector<size_t> oldDataRepIndicies = dRep.GetIndicies();
+
+    for(size_t i = 0; i < indicies_.size(); i++)
+        if (std::find(oldDataRepIndicies.begin(), 
+                      oldDataRepIndicies.end(), 
+                      indicies_.at(i)) == oldDataRepIndicies.end()){
+            throw DimensionError("PdfConverter: Tried to project pdf onto dimension it doesn't contain!");
+        }
+    
+    std::vector<size_t> relativeIndicies = DataRepresentation(indicies_).GetRelativeIndicies(dRep);
+
+    // Get the axes you are interested in,  in the order requested
+    AxisCollection newAxes;
+    for(size_t i = 0;  i < indicies_.size(); i++)
+        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(i));
+
+    // New pdf
+    BinnedPdf marginalisedPdf(newAxes);
+    
+    // Now loop over the bins in old and fill new pdfs
+    for(size_t bin = 0; bin < binnedPdf_.GetNBins(); bin++){
+        std::vector<size_t> oldIndicies = binnedPdf_.UnpackIndicies(bin);
+        std::vector<size_t> newIndicies;
+
+        for(size_t i = 0; i < relativeIndicies.size(); i++)
+            newIndicies.push_back(oldIndicies.at(relativeIndicies.at(i)));
+        
+        
+        size_t newBin = marginalisedPdf.FlattenIndicies(newIndicies);
+
+        marginalisedPdf.AddBinContent(newBin, binnedPdf_.GetBinContent(bin));
+    }
+    return marginalisedPdf;
 }
