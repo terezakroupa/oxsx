@@ -47,7 +47,7 @@ Pdf* BinnedPdf::Clone() const{
 }
 
 void BinnedPdf::Fill(const std::vector<double>& vals_, double weight_){
-    fBinContents += weight_;
+    fBinContents[FindBin(vals_)] += weight_;
 }
 
 void BinnedPdf::Fill(const EventData& data_, double weight_){
