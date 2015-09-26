@@ -1,6 +1,9 @@
 #include <GridSearch.h>
 #include <TestStatistic.h>
 #include <iostream>
+#include <BinnedPdf.h>
+#include <FitResult.h>
+
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
     fMinima = minima_;
@@ -31,12 +34,25 @@ GridSearch::GetStepSizes() const{
     return fStepSizes;
 }
 
-void 
+FitResult
 GridSearch::Optimise(){
     // list of rates followed by list of systematics
-    fBestFit.resize(pTestStatistic -> GetNParams());
+    std::vector<double> bestFit;
+    bestFit.resize(pTestStatistic -> GetNParams());
     fMinVal = 0;
 
+
+    // Initialise LH space
+    AxisCollection statAxes;
+    for(size_t i = 0; i < fMinima.size(); i++)
+        statAxes.AddAxis(PdfAxis("", 
+                               fMinima.at(i) - fStepSizes.at(i)/2, 
+                               fMaxima.at(i) - fStepSizes.at(i)/2,
+                               fStepSizes.at(i)
+                               )
+                       );
+
+    BinnedPdf statSpace(statAxes);
 
     // count the number of steps to do
     unsigned maxSteps = 1;
@@ -48,22 +64,31 @@ GridSearch::Optimise(){
     
     // count interations
     unsigned stepCount = 0;
-
+    
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
 
-        if(!(stepCount++ %1000000))
+        if(!(stepCount++ %1000000)){
             std::cout << stepCount << " / " << maxSteps << std::endl;
+        }
 
         pTestStatistic->SetParams(fParams);
         double currentVal = pTestStatistic->Evaluate();
         if (currentVal < fMinVal || !fMinVal){
                 fMinVal = currentVal;
-                fBestFit = fParams;
+                bestFit = fParams;
         }
+        
+        // Save to LH space
+        statSpace.Fill(fParams, currentVal);
     } 
+    fFitResult.SetBestFit(bestFit);
+    fFitResult.SetStatSpace(&statSpace);
+    
+    return fFitResult;
 }
+
 
 bool 
 GridSearch::Increment(size_t index_){
@@ -87,7 +112,7 @@ GridSearch::Increment(size_t index_){
     return true;
 }
 
-std::vector<double> 
-GridSearch::GetBestFit() const{
-    return fBestFit;
+FitResult
+GridSearch::GetFitResult() const{
+    return fFitResult;
 }

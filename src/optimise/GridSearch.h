@@ -2,11 +2,12 @@
 #define __GRID_SEARCH__
 #include <Optimiser.h>
 #include <vector>
+#include <FitResult.h>
 
 class GridSearch : public Optimiser{
  public:
     GridSearch(TestStatistic* stat_) : Optimiser(stat_){}
-    virtual void Optimise();
+    virtual FitResult Optimise();
     
     void SetMinima(const std::vector<double>&);
     void SetMaxima(const std::vector<double>&);
@@ -16,12 +17,12 @@ class GridSearch : public Optimiser{
     std::vector<double> GetMaxima() const;
     std::vector<double> GetStepSizes()  const;
     
-    std::vector<double> GetBestFit() const;
+    FitResult GetFitResult() const;
     
  private:
-    std::vector<double> fBestFit;
     std::vector<double> fParams;
-
+    FitResult           fFitResult;
+    
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
     std::vector<double> fStepSizes;
