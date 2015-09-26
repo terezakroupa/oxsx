@@ -33,7 +33,6 @@ Scale::Construct(){
     const size_t scaleAxisNBins = scaleAxis.GetNBins(); 
     const double binWidth       = scaleAxis.GetBinWidth();
  
-    std::cout << "In scaler, " << GetScaleFactor() << std::endl;
     for(size_t i = 0; i < nBins; i++){
         // For each old bin, work out the contributions into all of the new bins
         // indicies in other components should be unaffected

@@ -31,6 +31,7 @@ BinnedNLLH::Evaluate(){
     // Constraints
     for(size_t i = 0; i < fSystematicConstraints.size(); i++)
         nLogLH += fSystematicConstraints.at(i).operator()(fSystematicParams);
+    
     for(size_t i = 0; i < fNormalisationConstraints.size(); i++)
         nLogLH += fNormalisationConstraints.at(i).operator()(fNormalisations);
 
