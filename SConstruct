@@ -12,6 +12,7 @@ VariantDir("build", "src", duplicate=0)
 source_dirs = Split(
 '''
 build/data
+build/rand
 build/teststat
 build/optimise
 build/pdf
