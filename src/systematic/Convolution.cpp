@@ -26,6 +26,9 @@ void Convolution::SetAxes(const AxisCollection& axes_){
 void Convolution::Construct(){
     if (!fPdf || !fHasAxes)
         throw InitialisationError("Tried to construct convolution without axes and pdf!");
+
+    if(!fCachedCompatibleBins)
+        CacheCompatibleBins();
     
     Reset();
     size_t nBins = fPdfMapping.GetNBins();
@@ -33,15 +36,13 @@ void Convolution::Construct(){
     for(size_t i = 0; i < nBins; i++){
         std::vector<double> binCentre = fPdfMapping.GetAxes().GetBinCentre(i);
 
-        // Integrate over bin j to work out the response from i -> j
-        for(size_t j = 0; j < nBins; j++){
-            // only smear if the systematic indicies are the same in both bins
-            // others remain zero from intialistion
-            if(!BinsCompatible(i,j))
-                continue;
+        // Loop over compatible bins and integrate over bin j to work out the response from i -> j
+        // others are zero from reset
+        for(size_t j = 0; j < fCompatibleBins.at(i).size(); j++){
+            size_t mappedBin = fCompatibleBins.at(i).at(j);
 
-            std::vector<double> lowEdges  = fPdfMapping.GetAxes().GetBinLowEdges(j);
-            std::vector<double> highEdges = fPdfMapping.GetAxes().GetBinHighEdges(j);
+            std::vector<double> lowEdges  = fPdfMapping.GetAxes().GetBinLowEdges(mappedBin);
+            std::vector<double> highEdges = fPdfMapping.GetAxes().GetBinHighEdges(mappedBin);
 
             // Move the pdf origin to the centre of bin i
             for(size_t k = 0; k < lowEdges.size(); k++){
@@ -50,7 +51,7 @@ void Convolution::Construct(){
             }
 
             double Rij = fPdf -> Integral(lowEdges, highEdges);
-            fPdfMapping.SetComponent(j, i, Rij);
+            fPdfMapping.SetComponent(mappedBin, i, Rij);
         }
     }        
 
@@ -100,4 +101,17 @@ Convolution::Reset(){
     for(size_t i = 0; i < fPdfMapping.GetNBins(); i++)
         for(size_t j = 0; j < fPdfMapping.GetNBins(); j++)
             fPdfMapping.SetComponent(i, j , 0);
+}
+
+void
+Convolution::CacheCompatibleBins(){
+    fCompatibleBins.resize(fPdfMapping.GetNBins());
+    // only need to look at one side of the matrix, its symmetric
+    for(size_t i = 0; i < fPdfMapping.GetNBins(); i++){
+        for(size_t j = i;  j < fPdfMapping.GetNBins(); j++){
+            fCompatibleBins.at(i).push_back(j);
+            fCompatibleBins.at(j).push_back(i);
+        }
+    }
+    fCachedCompatibleBins = true;
 }
