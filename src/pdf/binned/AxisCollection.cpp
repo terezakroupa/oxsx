@@ -5,7 +5,8 @@
 size_t AxisCollection::GetNBins() const {return fNBins;}
 size_t AxisCollection::GetNDimensions() const {return fNDimensions;}
 
-const PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
+const 
+PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
     try {
         return fAxes.at(axisIndex_);
     }
@@ -15,7 +16,8 @@ const PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
     }
 }
 
-void AxisCollection::CountBins(){
+void 
+AxisCollection::CountBins(){
     if (!fNDimensions)
         fNBins = 0;
 
@@ -26,7 +28,8 @@ void AxisCollection::CountBins(){
     }
 }
 
-void AxisCollection::AddAxis(const PdfAxis& axis_){
+void 
+AxisCollection::AddAxis(const PdfAxis& axis_){
     if (HasAxis(axis_.GetName())){
         throw DimensionError("Can't add axis " + axis_.GetName() + " already exists!"); 
     }
@@ -37,12 +40,14 @@ void AxisCollection::AddAxis(const PdfAxis& axis_){
     CountBins();
 }
 
-void AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
+void 
+AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
     for(size_t i = 0; i < axes_.size(); i++)
         AddAxis(axes_[i]);
 }
 
-size_t AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) const{
+size_t 
+AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) const{
     if(indicies_.size() != fNDimensions)
         throw DimensionError("Can't flatten! wrong number of indicies");
 
@@ -57,7 +62,8 @@ size_t AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) con
 }
 
 
-size_t AxisCollection::FindBin(const std::vector<double>& vals_) const{
+size_t 
+AxisCollection::FindBin(const std::vector<double>& vals_) const{
     if (vals_.size() != fNDimensions)
         throw DimensionError("Can't find bin! wrong number of vals");
 
@@ -68,7 +74,8 @@ size_t AxisCollection::FindBin(const std::vector<double>& vals_) const{
     return FlattenIndicies(indicies);
 }
 
-size_t AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
+size_t 
+AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
     if (index_ >= fNBins)
         throw OutOfBoundsError("index out of bounds");
     size_t x =1;
@@ -77,21 +84,23 @@ size_t AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
     return (index_/x) % fAxisNbins[dim_];
 }
 
-std::vector<size_t> AxisCollection::UnpackIndicies(size_t index_) const{
+std::vector<size_t>
+AxisCollection::UnpackIndicies(size_t index_) const{
     std::vector<size_t> indicies(fNDimensions, 0);
     for(size_t i = 0; i < fNDimensions; i++)
         indicies[i] = UnflattenIndex(index_, i);
     return indicies;
 }
 
-bool AxisCollection::HasAxis(const std::string& name_){
+bool 
+AxisCollection::HasAxis(const std::string& name_){
     for(size_t i = 0; i < fNDimensions; i++)
         if(name_ == fAxes[i].GetName())
             return true;
     return false;
 }
 
-std::vector<double> 
+std::vector<double>
 AxisCollection::GetBinLowEdges(size_t bin_) const{
 
     if(bin_ > fNBins)
@@ -106,7 +115,7 @@ AxisCollection::GetBinLowEdges(size_t bin_) const{
     return lowEdges;
 }
 
-std::vector<double> 
+std::vector<double>
 AxisCollection::GetBinHighEdges(size_t bin_) const{
 
     if(bin_ > fNBins)
