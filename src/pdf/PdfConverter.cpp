@@ -13,8 +13,8 @@ PdfConverter::ToBinnedPdf(const IntegrablePdf& analytic_, const AxisCollection& 
 
     BinnedPdf binnedPdf(axes_);
     // Loop over bins
-    std::vector<double> lows;
-    std::vector<double> highs;
+    std::vector<double> lows(axes_.GetNDimensions());
+    std::vector<double> highs(axes_.GetNDimensions());
     for(size_t bin = 0; bin < axes_.GetNBins(); bin++){
         axes_.GetBinLowEdges(bin, lows);
         axes_.GetBinHighEdges(bin, highs);
