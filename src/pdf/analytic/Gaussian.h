@@ -21,8 +21,8 @@ class Gaussian : public IntegrablePdf{
     Gaussian(const Gaussian& other_);
 
     virtual double operator()(const std::vector<double>& vals_) const;
-    inline  double  Cdf(size_t dim_, double val_) const 
-    {return gsl_cdf_gaussian_P(val_ - GetMean(dim_), GetStDev(dim_));}
+    double  Cdf(size_t dim_, double val_) const;
+
 
     void SetMeans(const std::vector<double>& means_);
     void SetStdDevs(const std::vector<double>& stdDevs_);
