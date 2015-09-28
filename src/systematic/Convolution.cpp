@@ -32,17 +32,22 @@ void Convolution::Construct(){
     
     Reset();
     size_t nBins = fPdfMapping.GetNBins();
-    
+    size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
+
+    std::vector<double> binCentre(nDims);
+    std::vector<double> lowEdges(nDims);
+    std::vector<double> highEdges(nDims);
+
     for(size_t i = 0; i < nBins; i++){
-        std::vector<double> binCentre = fPdfMapping.GetAxes().GetBinCentre(i);
+        fPdfMapping.GetAxes().GetBinCentre(i, binCentre);
 
         // Loop over compatible bins and integrate over bin j to work out the response from i -> j
         // others are zero from reset
         for(size_t j = 0; j < fCompatibleBins.at(i).size(); j++){
             size_t mappedBin = fCompatibleBins.at(i).at(j);
 
-            std::vector<double> lowEdges  = fPdfMapping.GetAxes().GetBinLowEdges(mappedBin);
-            std::vector<double> highEdges = fPdfMapping.GetAxes().GetBinHighEdges(mappedBin);
+            fPdfMapping.GetAxes().GetBinLowEdges(mappedBin, lowEdges);
+            fPdfMapping.GetAxes().GetBinHighEdges(mappedBin, highEdges);
 
             // Move the pdf origin to the centre of bin i
             for(size_t k = 0; k < lowEdges.size(); k++){
@@ -54,7 +59,6 @@ void Convolution::Construct(){
             fPdfMapping.SetComponent(mappedBin, i, Rij);
         }
     }        
-
 }
 
 void
