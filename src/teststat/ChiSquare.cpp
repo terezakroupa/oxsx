@@ -20,8 +20,10 @@ ChiSquare::Evaluate(){
 
     // Now calculate the ChiSquared
     double chiSquare = 0;
+    std::vector<double> binCentre(fDataPdf.GetNDims());
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
-        double expected = fPdfManager.Probability(fDataPdf.GetAxes().GetBinCentre(i));
+        fDataPdf.GetAxes().GetBinCentre(i, binCentre);
+        double expected = fPdfManager.Probability(binCentre);
         double deviation = fDataPdf.GetBinContent(i) - expected;
         chiSquare += deviation * deviation / expected; // poisson errors 
     }

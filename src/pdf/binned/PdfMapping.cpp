@@ -92,11 +92,14 @@ BinnedPdf PdfMapping::operator()
     BinnedPdf observedPdf(pdf_);
     observedPdf.Empty();
 
+    std::vector<size_t> relIndicies(indicies_.size());
+    std::vector<size_t> pdfIndicies(pdf_.GetNDims());
 
     for(size_t pdfGlobalBin = 0; pdfGlobalBin < pdf_.GetNBins(); pdfGlobalBin++){
         // Get the indicies you care about 
-        std::vector<size_t> pdfIndicies = pdf_.UnpackIndicies(pdfGlobalBin);
-        std::vector<size_t> relIndicies(indicies_.size(), 0);
+        for(size_t i = 0; i < pdfIndicies.size(); i++)
+            pdfIndicies[i] = pdf_.GetAxes().UnflattenIndex(pdfGlobalBin, i);
+
 
         try{
             for(size_t i = 0; i < relIndicies.size(); i++)
@@ -109,11 +112,13 @@ BinnedPdf PdfMapping::operator()
         size_t systematicBin = fAxes.FlattenIndicies(relIndicies);
         double content = pdf_.GetBinContent(pdfGlobalBin);
 
+        std::vector<size_t> newSysIndicies(fAxes.GetNDimensions());
+        std::vector<size_t> newPdfIndicies(pdfIndicies.size());
         // Loop over the first index and distribute the bin contents
         for(size_t i = 0; i < fResponse.size(); i++){
             double newContent = fResponse[i][systematicBin] * content;
-            std::vector<size_t> newSysIndicies = fAxes.UnpackIndicies(i);
-            std::vector<size_t> newPdfIndicies(pdfIndicies.size(),0);
+            for(size_t j = 0; j < newSysIndicies.size(); j++)
+                newSysIndicies[j] = fAxes.UnflattenIndex(i, j);
 
             for(size_t i = 0; i < indicies_.size(); i++)
                 newPdfIndicies[indicies_[i]] = newSysIndicies[i];

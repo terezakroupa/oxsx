@@ -51,6 +51,9 @@ AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) const{
     if(indicies_.size() != fNDimensions)
         throw DimensionError("Can't flatten! wrong number of indicies");
 
+    if(fNDimensions == 1)
+        return indicies_.at(0);
+
     size_t index = indicies_.back();
     for (size_t i = 0; i < fNDimensions-1; i++){
         size_t x = indicies_[i];
@@ -76,6 +79,9 @@ AxisCollection::FindBin(const std::vector<double>& vals_) const{
 
 size_t 
 AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
+    if(fNDimensions == 1)
+        return index_;
+
     if (index_ >= fNBins)
         throw OutOfBoundsError("index out of bounds");
     size_t x =1;
@@ -100,47 +106,45 @@ AxisCollection::HasAxis(const std::string& name_){
     return false;
 }
 
-std::vector<double>
-AxisCollection::GetBinLowEdges(size_t bin_) const{
+void
+AxisCollection::GetBinLowEdges(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ > fNBins)
         throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
 
-    std::vector<size_t> indicies = UnpackIndicies(bin_);
-    std::vector<double> lowEdges(fNDimensions, 0);
+    if(output_.size() != fNDimensions)
+        throw DimensionError("wrong size vec passed to get bin edges");
 
     for(size_t i = 0; i <fNDimensions; i++){
-        lowEdges[i] = fAxes[i].GetBinLowEdge(indicies.at(i));
+        output_[i] = fAxes[i].GetBinLowEdge(UnflattenIndex(bin_, i));
     }
-    return lowEdges;
 }
 
-std::vector<double>
-AxisCollection::GetBinHighEdges(size_t bin_) const{
+void
+AxisCollection::GetBinHighEdges(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ > fNBins)
         throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+    
 
-    std::vector<size_t> indicies = UnpackIndicies(bin_);
-    std::vector<double> lowEdges(fNDimensions, 0);
+    if(output_.size() != fNDimensions)
+        throw DimensionError("wrong size vec passed to get bin edges");
 
     for(size_t i = 0; i <fNDimensions; i++){
-        lowEdges[i] = fAxes[i].GetBinHighEdge(indicies.at(i));
+        output_[i] = fAxes[i].GetBinHighEdge(UnflattenIndex(bin_, i));
     }
-    return lowEdges;
 }
 
-std::vector<double>
-AxisCollection::GetBinCentre(size_t bin_) const{
+void
+AxisCollection::GetBinCentre(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ > fNBins)
         throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
 
-    std::vector<size_t> indicies = UnpackIndicies(bin_);
-    std::vector<double> centre(fNDimensions, 0);
+    if(output_.size() != fNDimensions)
+        throw DimensionError("wrong size vec passed to get bin edges");
 
     for(size_t i = 0; i <fNDimensions; i++){
-        centre[i] = fAxes[i].GetBinCentre(indicies.at(i));
+        output_[i] = fAxes[i].GetBinCentre(UnflattenIndex(bin_, i));
     }
-    return centre;
 }

@@ -23,11 +23,12 @@ class AxisCollection{
     
     size_t GetNDimensions() const;
     size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
+    size_t  UnflattenIndex(size_t index_, size_t dim_)  const;
     std::vector<size_t> UnpackIndicies(size_t index_) const;
 
-    std::vector<double> GetBinCentre(size_t bin_) const;
-    std::vector<double> GetBinLowEdges(size_t bin_) const;
-    std::vector<double> GetBinHighEdges(size_t bin_) const;
+    void GetBinCentre(size_t bin_, std::vector<double>& output_) const;
+    void GetBinLowEdges(size_t bin_, std::vector<double>& output_) const;
+    void GetBinHighEdges(size_t bin_, std::vector<double>& output_) const;
     
  private:
     std::vector<PdfAxis> fAxes;
@@ -36,7 +37,6 @@ class AxisCollection{
     size_t fNDimensions;
     
     void    CountBins();
-    size_t  UnflattenIndex(size_t index_, size_t dim_)  const;
     bool    HasAxis(const std::string& name_);
 };
 
