@@ -33,7 +33,9 @@ void Convolution::Construct(){
     Reset();
     size_t nBins = fPdfMapping.GetNBins();
     size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
-
+    const AxisCollection& axes = fPdfMapping.GetAxes();
+    std::vector<size_t> relativeIndicies = fDataRep.GetRelativeIndicies(fPdfDataRep);
+    
     std::vector<double> binCentre(nDims);
     std::vector<double> lowEdges(nDims);
     std::vector<double> highEdges(nDims);
@@ -45,7 +47,11 @@ void Convolution::Construct(){
         // others are zero from reset
         for(size_t j = 0; j < fCompatibleBins.at(i).size(); j++){
             size_t mappedBin = fCompatibleBins.at(i).at(j);
-
+            
+            for(size_t k = 0; k < nDims; i++){
+                lowEdges[k] = axes.GetBinLowEdge(mappedBin, relativeIndicies.at(k));
+            }
+            
             fPdfMapping.GetAxes().GetBinLowEdges(mappedBin, lowEdges);
             fPdfMapping.GetAxes().GetBinHighEdges(mappedBin, highEdges);
 
