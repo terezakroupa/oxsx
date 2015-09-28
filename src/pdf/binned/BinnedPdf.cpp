@@ -83,7 +83,7 @@ BinnedPdf::GetBinContent(size_t bin_) const{
 void 
 BinnedPdf::AddBinContent(size_t bin_, double content_){
     if(bin_ > fNBins)
-        throw 0; //FIXME should be outofbounds error
+        throw OutOfBoundsError("Tried to add bin contents to non existent bin");
     fBinContents[bin_] += content_;
 }
 
