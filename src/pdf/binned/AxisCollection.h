@@ -26,7 +26,7 @@ class AxisCollection{
     size_t  UnflattenIndex(size_t index_, size_t dim_)  const;
     std::vector<size_t> UnpackIndicies(size_t index_) const;
 
-    void GetBinCentre(size_t bin_, std::vector<double>& output_) const;
+    void GetBinCentres(size_t bin_, std::vector<double>& output_) const;
     void GetBinLowEdges(size_t bin_, std::vector<double>& output_) const;
     void GetBinHighEdges(size_t bin_, std::vector<double>& output_) const;
 
