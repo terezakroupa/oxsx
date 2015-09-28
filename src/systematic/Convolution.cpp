@@ -26,34 +26,34 @@ void Convolution::SetAxes(const AxisCollection& axes_){
 void Convolution::Construct(){
     if (!fPdf || !fHasAxes)
         throw InitialisationError("Tried to construct convolution without axes and pdf!");
-
+    
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
-    
+
     Reset();
     size_t nBins = fPdfMapping.GetNBins();
     size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
     const AxisCollection& axes = fPdfMapping.GetAxes();
     std::vector<size_t> relativeIndicies = fDataRep.GetRelativeIndicies(fPdfDataRep);
-    
-    std::vector<double> binCentre(nDims);
-    std::vector<double> lowEdges(nDims);
-    std::vector<double> highEdges(nDims);
+
+    std::vector<double> binCentre(relativeIndicies.size());
+    std::vector<double> lowEdges(relativeIndicies.size());
+    std::vector<double> highEdges(relativeIndicies.size());
 
     for(size_t i = 0; i < nBins; i++){
-        fPdfMapping.GetAxes().GetBinCentre(i, binCentre);
+        for(size_t k = 0; k < relativeIndicies.size(); k++)
+            binCentre[k] = axes.GetBinCentre(i, relativeIndicies.at(k));
 
         // Loop over compatible bins and integrate over bin j to work out the response from i -> j
         // others are zero from reset
         for(size_t j = 0; j < fCompatibleBins.at(i).size(); j++){
             size_t mappedBin = fCompatibleBins.at(i).at(j);
             
-            for(size_t k = 0; k < nDims; i++){
-                lowEdges[k] = axes.GetBinLowEdge(mappedBin, relativeIndicies.at(k));
+            for(size_t k = 0; k < relativeIndicies.size(); k++){
+                lowEdges[k]  = axes.GetBinLowEdge(mappedBin, relativeIndicies.at(k));
+                highEdges[k] = axes.GetBinHighEdge(mappedBin, relativeIndicies.at(k));
+                
             }
-            
-            fPdfMapping.GetAxes().GetBinLowEdges(mappedBin, lowEdges);
-            fPdfMapping.GetAxes().GetBinHighEdges(mappedBin, highEdges);
 
             // Move the pdf origin to the centre of bin i
             for(size_t k = 0; k < lowEdges.size(); k++){
