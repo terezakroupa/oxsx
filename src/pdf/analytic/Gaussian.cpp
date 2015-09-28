@@ -84,10 +84,13 @@ Gaussian::Clone() const{
 
 double 
 Gaussian::Cdf(size_t dim_, double val_) const{
-    return 0.5 * ( 1 + erf(   
-                           (val_ - GetMean(dim_))  / ( sqrt(2) * GetStDev(dim_) ) 
-                          ) 
-                 );
+    double nDevs = (val_ - GetMean(dim_))/GetStDev(dim_);
+    if (nDevs > 3)
+        return 1;
+    if(nDevs < 3)
+        return 0;
+
+    return gsl_cdf_gaussian_P(val_ - GetMean(dim_), GetStDev(dim_));
 }
 
 double 
