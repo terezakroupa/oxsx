@@ -35,3 +35,9 @@ DataSetGenerator::RandomEvent(size_t handleIndex_) const{
     unsigned eventNum = (rand() % (int)(fDataSets.at(handleIndex_)->GetNEntries() + 1));
     return fDataSets.at(handleIndex_)->GetEntry(eventNum);
 }
+
+void
+DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
+    fDataSets.push_back(data_);
+    fExpectedRates.push_back(rate_);
+}
