@@ -11,6 +11,7 @@
 #ifndef __GAUSSIAN__
 #define __GAUSSIAN__
 #include <IntegrablePdf.h>
+#include <gsl/gsl_cdf.h>
 
 class Gaussian : public IntegrablePdf{
  public:
@@ -21,6 +22,7 @@ class Gaussian : public IntegrablePdf{
 
     virtual double operator()(const std::vector<double>& vals_) const;
     double  Cdf(size_t dim_, double val_) const;
+
 
     void SetMeans(const std::vector<double>& means_);
     void SetStdDevs(const std::vector<double>& stdDevs_);

@@ -9,6 +9,7 @@
 #ifndef __PDF_MAPPING__
 #define __PDF_MAPPING__
 #include <AxisCollection.h>
+#include <armadillo>
 class BinnedPdf;
 
 class PdfMapping{
@@ -17,9 +18,9 @@ class PdfMapping{
     PdfMapping operator = (const PdfMapping& other_);
     ~PdfMapping() {}
 
-    BinnedPdf operator() (const BinnedPdf& pdf_, const std::vector<size_t>& indicies_) const;
+    BinnedPdf operator() (const BinnedPdf& pdf_) const;
 
-    void SetResponse(const std::vector<std::vector<double> >& response_);
+    void SetResponse(const arma::mat& response_);
     void SetColumn(size_t index, const std::vector<double>& column_);
     void SetRow(size_t index, const std::vector<double>& row_);
     void SetComponent(size_t column_, size_t row_, double val_);
@@ -31,7 +32,7 @@ class PdfMapping{
     
  private:
     AxisCollection fAxes;
-    std::vector<std::vector<double> > fResponse; // inner is the row
+    arma::mat fResponse;
     unsigned fNBins;
     unsigned fNDims;
 
