@@ -74,7 +74,7 @@ FitResult
 MetropolisHastings::Optimise(){
     fNDims = fMinima.size();
     fRejectionRate = 0;
-    std::vector<double> bestFit;
+    
 
     // 1. Choose a random starting point
     std::vector<double> currentStep;
@@ -82,6 +82,7 @@ MetropolisHastings::Optimise(){
         currentStep.push_back(fMinima.at(i) + Rand::Uniform() * (fMaxima.at(i) - fMinima.at(i)));
     }
 
+    fSample.reserve(fMaxIter - fBurnIn);
     // 2. Loop step through the space a fixed number of times and
     for(unsigned i = 0; i < fMaxIter; i++){
         // a. Save the point in question if you are past burn-in phase and according to thinning
@@ -102,6 +103,8 @@ MetropolisHastings::Optimise(){
             fRejectionRate++;
         
     }
+    fRejectionRate/= static_cast<double>(fMaxIter);
+    std::cout << fRejectionRate << std::endl;
     return fFitResult;
 }
 
