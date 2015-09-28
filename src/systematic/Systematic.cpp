@@ -3,13 +3,14 @@
 #include <iostream>
 
 BinnedPdf Systematic::operator() (const BinnedPdf& pdf_) const{
-    BinnedPdf afterSmear = fPdfMapping(pdf_, fDataRep.GetIndicies());
+    BinnedPdf afterSmear = fPdfMapping(pdf_);
     afterSmear.Normalise();
     return afterSmear;
 }
 
-void Systematic::SetResponse(const std::vector<std::vector<double> >& responseMatrix_){
-    fPdfMapping.SetResponse(responseMatrix_);
+void 
+Systematic::SetResponse(const PdfMapping& responseMatrix_){
+    fPdfMapping = responseMatrix_;
 }
 
 const PdfMapping& Systematic::GetResponse() const{

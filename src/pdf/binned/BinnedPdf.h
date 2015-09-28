@@ -35,6 +35,8 @@ class BinnedPdf : public Pdf{
     void  SetAxes(const AxisCollection& axes_);
 
     std::vector<double> GetData() const {return fBinContents;}
+    void SetData(const std::vector<double>& data_) {fBinContents = data_;}
+
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
     void   AddBinContent(size_t bin_, double content_);

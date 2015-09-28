@@ -24,7 +24,7 @@ class Systematic{
     operator()(const BinnedPdf& pdf_) const;
         
     void 
-    SetResponse(const std::vector<std::vector<double> >& responseMatrix_);
+    SetResponse(const PdfMapping& responseMatrix_);
     const PdfMapping& GetResponse() const;
         
     void SetDataRep(const DataRepresentation&);
