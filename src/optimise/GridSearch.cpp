@@ -51,7 +51,7 @@ GridSearch::Optimise(){
     std::vector<double> gridCounts;
 
     for(size_t i = 0; i < fMinima.size(); i++){
-        size_t axisCounts = static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
+        size_t axisCounts = 1 + static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
         maxSteps *= axisCounts;
         gridCounts.push_back(axisCounts);
     }
@@ -80,7 +80,9 @@ GridSearch::Optimise(){
         // if bigger, grab this as new best fit
 
         if(!(stepCount++ %1000000)){
-            std::cout << stepCount << " / " << maxSteps << std::endl;
+            std::cout << stepCount << " / " << maxSteps  << "\t"
+                      <<  100 * double(stepCount)/maxSteps 
+                      << "%" << std::endl;
         }
 
         pTestStatistic->SetParams(fParams);
