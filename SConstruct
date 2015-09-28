@@ -4,6 +4,7 @@ import os
 
 root_flags = Split(subprocess.check_output("root-config --cflags --glibs", shell=True))
 root_flags += ["-lMinuit2"]
+root_flags += Split("-I/opt/local/include -L/opt/local/lib -lgsl -lgslblas")
 env = Environment(CCFLAGS = '-O2')
 #env = Environment()
 
