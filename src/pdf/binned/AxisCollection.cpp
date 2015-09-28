@@ -136,7 +136,7 @@ AxisCollection::GetBinHighEdges(size_t bin_, std::vector<double>& output_) const
 }
 
 void
-AxisCollection::GetBinCentre(size_t bin_, std::vector<double>& output_) const{
+AxisCollection::GetBinCentres(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ >= fNBins)
         throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
