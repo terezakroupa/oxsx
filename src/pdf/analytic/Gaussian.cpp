@@ -82,13 +82,10 @@ Gaussian::Clone() const{
     return static_cast<Pdf*> (new Gaussian(*this));
 }
 
-double 
-Gaussian::Cdf(size_t dim_, double val_) const{
-    return 0.5 * ( 1 + erf(   
-                           (val_ - GetMean(dim_))  / ( sqrt(2) * GetStDev(dim_) ) 
-                          ) 
-                 );
-}
+// double 
+// Gaussian::Cdf(size_t dim_, double val_) const{
+//     return gsl_cdf_gaussian_P(val_ - GetMean(dim_), GetStDev(dim_));
+// }
 
 double 
 Gaussian::GetMean(size_t dimension_) const{
