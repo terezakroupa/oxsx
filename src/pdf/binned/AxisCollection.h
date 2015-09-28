@@ -29,6 +29,10 @@ class AxisCollection{
     void GetBinCentre(size_t bin_, std::vector<double>& output_) const;
     void GetBinLowEdges(size_t bin_, std::vector<double>& output_) const;
     void GetBinHighEdges(size_t bin_, std::vector<double>& output_) const;
+
+    double GetBinLowEdge(size_t bin_, size_t dim_) const;
+    double GetBinHighEdge(size_t bin_, size_t dim_) const;
+    double GetBinCentre(size_t bin_, size_t dim_) const;
     
  private:
     std::vector<PdfAxis> fAxes;
