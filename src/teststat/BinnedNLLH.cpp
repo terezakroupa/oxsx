@@ -42,7 +42,6 @@ void
 BinnedNLLH::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
-
     for(size_t i = 0; i < fDataSet -> GetNEntries(); i++){
         EventData dat = fDataSet -> GetEntry(i);
         dataPdf.Fill(dat);
@@ -102,4 +101,16 @@ BinnedNLLH::GetSystematicConstraint(size_t index_) const{
     if(index_ >= fSystematicConstraints.size())
         throw DimensionError("BinnedNLLH::Attempted access on non existent constraint");
     return fSystematicConstraints.at(index_);
+}
+
+void
+BinnedNLLH::AddPdf(const BinnedPdf& pdf_){
+    fPdfManager.AddPdf(pdf_);
+    fNpdfs++;
+}
+
+void 
+BinnedNLLH::AddSystematic(Systematic sys_){
+    fSystematicManager.Add(&sys_);
+    fNsystematics++;
 }
