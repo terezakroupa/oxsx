@@ -151,7 +151,7 @@ int main(){
     sManager.Add(&scaler);
 
     BinnedNLLH lh;
-]    lh.SetPdfManager(pManager);
+    lh.SetPdfManager(pManager);
     lh.SetSystematicManager(sManager);
     lh.SetDataSet(&fakeData);
 
