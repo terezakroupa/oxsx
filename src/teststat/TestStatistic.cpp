@@ -9,7 +9,6 @@ TestStatistic::SetParams(const std::vector<double>& params_){
     fSystematicParams.resize(0);
 
     try{
-
         fNormalisations.insert(fNormalisations.begin(), 
                                params_.begin(), params_.begin() + fNpdfs);
 
