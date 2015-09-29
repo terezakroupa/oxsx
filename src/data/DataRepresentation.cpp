@@ -5,6 +5,10 @@ DataRepresentation::DataRepresentation(const std::vector<size_t>& indicies_){
     SetIndicies(indicies_);
 }
 
+DataRepresentation::DataRepresentation(size_t index_){
+    SetIndicies(std::vector<size_t>(1, index_));
+}
+
 DataRepresentation::DataRepresentation(const DataRepresentation& other_){
     fName = other_.fName;
     SetIndicies(other_.fIndicies);

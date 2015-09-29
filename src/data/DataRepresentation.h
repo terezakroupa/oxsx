@@ -11,7 +11,9 @@ class DataRepresentation{
  public:    
     DataRepresentation() {}
     DataRepresentation(const std::vector<size_t>& indicies_);
+    DataRepresentation(size_t index_);
     DataRepresentation(const DataRepresentation&);
+    
     ~DataRepresentation() {}
 
     std::vector<size_t> GetIndicies() const; 
