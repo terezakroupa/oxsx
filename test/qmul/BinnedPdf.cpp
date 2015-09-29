@@ -45,7 +45,7 @@ int main(){
     AxisCollection psdAxes;
     psdAxes.AddAxis(PdfAxis("psd", -2, 2, 10));
     
-    DataRepresentation psdRep(std::vector<size_t>(1, 2));
+    DataRepresentation psdRep(2);
 
 
     BinnedPdf psdPDF = PdfConverter::ToBinnedPdf(psdGaus, psdAxes);
