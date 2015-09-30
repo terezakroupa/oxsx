@@ -1,5 +1,6 @@
 #include <IntegrablePdf.h>
 #include <PdfExceptions.h>
+#include <iostream>
 
 void
 IntegrablePdf::SetParameters(const std::vector<double>& params_){
@@ -16,6 +17,7 @@ void
 IntegrablePdf::SetParameter(size_t index_, double val_){
     if (index_ >= fParams.size())
         throw ParameterError("Tried accessing a parameter pdf does not have!");
+    fParams[index_] = val_;
 }
 
 double
