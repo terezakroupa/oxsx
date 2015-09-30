@@ -44,8 +44,8 @@ Gaussian::operator() (const std::vector<double>& vals_) const{
     if (vals_.size() != fNDims)
         throw DimensionError("Gaussian dimensionality does not match the observable vector passed!");
 
-    if(GetParameters().size() != fNDims)
-        throw DimensionError("Gaussian: Attempted to set wrong number of params");
+    if(GetParameters().size() != 2 * fNDims)
+        throw DimensionError("Gaussian:  Wrong number of params to evaluate probability");
 
     double exponent = 0;
     for(size_t i = 0; i < fNDims; i++){
@@ -88,7 +88,7 @@ Gaussian::Cdf(size_t dim_, double val_) const{
     double nDevs = (val_ - GetMean(dim_))/GetStDev(dim_);
     if (nDevs > 3)
         return 1;
-    if(nDevs < 3)
+    if(nDevs < -3)
         return 0;
 
     return gsl_cdf_gaussian_P(val_ - GetMean(dim_), GetStDev(dim_));
