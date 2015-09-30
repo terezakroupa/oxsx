@@ -14,7 +14,7 @@ class BinnedPdf;
 
 class PdfMapping{
  public:
-    PdfMapping()  {}
+    PdfMapping() :fNBins(0), fNDims(0) {}
     PdfMapping operator = (const PdfMapping& other_);
     ~PdfMapping() {}
 
