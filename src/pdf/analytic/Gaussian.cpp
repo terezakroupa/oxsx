@@ -28,8 +28,8 @@ Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>&
     fNDims = means_.size();
     std::vector<double> params(fNDims * 2, 0);
     for(size_t i = 0; i < means_.size(); i++){
-        params[i] = means_.at(i);
-        params[i] = stdDevs_.at(i);
+        params[2 * i] = means_.at(i);
+        params[2 * i + 1] = stdDevs_.at(i);
     }
     SetParameters(params);
 }
