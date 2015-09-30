@@ -39,9 +39,12 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
     fBinLowEdges  = lowEdges_;
     fBinHighEdges = highEdges_;
 
-    for(size_t i = 0; i < fBinLowEdges.size(); i++)
+    for(size_t i = 0; i < fBinLowEdges.size(); i++){
+        if(i && fBinLowEdges.at(i-1) > fBinLowEdges.at(i))
+            throw BinError("Low edges not ordered!");
         if(fBinLowEdges.at(i) > fBinHighEdges.at(i))
             throw BinError("Bin Low Edge is bigger than equivilent high edge!");
+    }
 
     fNBins = fBinLowEdges.size();
     fBinWidth = 0;
