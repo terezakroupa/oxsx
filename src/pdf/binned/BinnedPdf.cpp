@@ -91,6 +91,7 @@ void
 BinnedPdf::SetBinContent(size_t bin_, double content_){
     if(bin_ > fNBins)
         throw OutOfBoundsError("Tried to set contents of non-existent bin");
+    fBinContents[bin_] = content_;
 }
 
 size_t 
