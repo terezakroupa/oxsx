@@ -34,5 +34,8 @@ lib = env.Library("build/liboxsx", objects)
 env.Default([objects, lib])
 
 # Build the tests
-tests = [Object(x, CPPPATH = source_dirs + root_flags) for x in Glob("test/*/*.cpp")]
+tests = env.Program("test/RunTests", Glob("test/*/*.cpp") + Glob("test/*.cpp"), 
+                    LIBS = ['oxsx', 'armadillo', "gsl"], LIBPATH = ["build", "/opt/local/lib/"],
+                    CPPPATH = source_dirs + root_flags + ["Catch/include"]
+                    )
 env.Alias("tests", tests)
