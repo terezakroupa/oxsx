@@ -108,3 +108,13 @@ BinnedPdf::UnpackIndicies(size_t bin_) const{
     return fAxes.UnpackIndicies(bin_);
 }
 
+std::vector<double> 
+BinnedPdf::GetData() const{
+    return fBinContents;
+}
+void 
+BinnedPdf::SetData(const std::vector<double>& data_){
+    if (data_.size() != fNBins)
+        throw BinError("Set data that doesn't match binned pdf binning");
+    fBinContents = data_;
+}
