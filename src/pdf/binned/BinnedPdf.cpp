@@ -1,6 +1,7 @@
 #include <BinnedPdf.h>
 #include <iostream>
 #include <PdfExceptions.h>
+#include <DataExceptions.h>
 
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -54,12 +55,25 @@ BinnedPdf::Clone() const{
 
 void 
 BinnedPdf::Fill(const std::vector<double>& vals_, double weight_){
+    if(vals_.size() != fNDims)
+        throw DimensionError("Tried to fill pdf with wrong number of vals");
+
     fBinContents[FindBin(vals_)] += weight_;
 }
 
 void 
 BinnedPdf::Fill(const EventData& data_, double weight_){
-    Fill(data_.ToRepresentation(fDataRep), weight_);
+    try{
+        Fill(data_.ToRepresentation(fDataRep), weight_);
+    }
+    catch (const DimensionError& e_){
+        throw RepresentationError(std::string("Representation in compatible with pdf ") + e_.what());
+    }
+}
+
+void 
+BinnedPdf::Fill(double vals_, double weight_){
+    Fill(std::vector<double>(1, vals_), weight_);
 }
 
 size_t 
