@@ -48,6 +48,9 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
     DataRepresentation dRep = binnedPdf_.GetDataRep();
     std::vector<size_t> oldDataRepIndicies = dRep.GetIndicies();
 
+    if (!dRep.GetLength())
+        throw DimensionError("Cant project out, pdf doesn't have indicies - set the data rep!");
+
     for(size_t i = 0; i < indicies_.size(); i++)
         if (std::find(oldDataRepIndicies.begin(), 
                       oldDataRepIndicies.end(), 
@@ -79,4 +82,9 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
         marginalisedPdf.AddBinContent(newBin, binnedPdf_.GetBinContent(bin));
     }
     return marginalisedPdf;
+}
+
+BinnedPdf
+PdfConverter::Marginalise(const BinnedPdf& pdf_, size_t index_){
+    return Marginalise(pdf_, std::vector<size_t> (1, index_));
 }

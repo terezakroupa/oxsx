@@ -38,6 +38,8 @@ class BinnedPdf : public Pdf{
     std::vector<double> GetData() const; 
     void SetData(const std::vector<double>& data_);     
 
+    std::vector<double> Means() const;
+    std::vector<double> Variances() const;
 
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
