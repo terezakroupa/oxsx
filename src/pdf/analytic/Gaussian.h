@@ -35,5 +35,12 @@ class Gaussian : public IntegrablePdf{
     double Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const;
     double Integral(double mins_, double max_) const;
     virtual Pdf* Clone() const; // required for composition of pdfs
+
+    double GetCdfCutOff() const;
+    void   SetCdfCutOff(double);
+
+ private:
+    double fCdfCutOff; // number of stDevs away from the mean 
+                       // assumed to be zero or 1 for speed integration
 };
 #endif
