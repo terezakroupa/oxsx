@@ -7,6 +7,7 @@
 
 Gaussian::Gaussian(size_t nDims_){
     fNDims = nDims_;
+    fCdfCutOff = 3; // default val
 }
 
 Gaussian::Gaussian(double mean_, double stdDev_){
@@ -18,7 +19,8 @@ Gaussian::Gaussian(double mean_, double stdDev_){
     params.push_back(mean_);
     params.push_back(stdDev_);
     SetParameters(params);
-    
+
+    fCdfCutOff = 3; // default val
 }
 
 Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
@@ -32,11 +34,13 @@ Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>&
         params[2 * i + 1] = stdDevs_.at(i);
     }
     SetParameters(params);
+    fCdfCutOff = 3; // default val
 }
 
 Gaussian::Gaussian(const Gaussian& other_) : IntegrablePdf(other_){
     fNDims = other_.fNDims;
     SetParameters(other_.GetParameters());
+    fCdfCutOff = other_.fCdfCutOff;
 }
 
 double 
@@ -86,9 +90,9 @@ Gaussian::Clone() const{
 double 
 Gaussian::Cdf(size_t dim_, double val_) const{
     double nDevs = (val_ - GetMean(dim_))/GetStDev(dim_);
-    if (nDevs > 3)
+    if (nDevs > fCdfCutOff)
         return 1;
-    if(nDevs < -3)
+    if(nDevs < -1 * fCdfCutOff)
         return 0;
 
     return gsl_cdf_gaussian_P(val_ - GetMean(dim_), GetStDev(dim_));
@@ -102,4 +106,14 @@ Gaussian::GetMean(size_t dimension_) const{
 double 
 Gaussian::GetStDev(size_t dimension_) const{
     return GetParameter(dimension_ * 2 + 1);
+}
+
+double
+Gaussian::GetCdfCutOff() const{
+    return fCdfCutOff;
+}
+
+void 
+Gaussian::SetCdfCutOff(double cutOff_){
+    fCdfCutOff = cutOff_;
 }
