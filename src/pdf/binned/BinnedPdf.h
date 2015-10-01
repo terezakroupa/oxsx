@@ -24,6 +24,7 @@ class BinnedPdf : public Pdf{
     
     void   Fill(const std::vector<double>& vals_, double weight_ = 1);
     void   Fill(const EventData& data_, double weight_ = 1);
+    void   Fill(double val_, double weight_ = 1);
 
     size_t FindBin(const std::vector<double>& vals_) const;
     size_t FindBin(const EventData& data_) const;
