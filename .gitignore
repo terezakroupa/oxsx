@@ -10,4 +10,4 @@
 build/*
 *.a
 *\#
-test/RunTests
+test/RunUnits

@@ -4,7 +4,8 @@ import os
 
 root_flags = Split(subprocess.check_output("root-config --cflags --glibs", shell=True))
 root_flags += ["-lMinuit2"]
-root_flags += Split("-I/opt/local/include -L/opt/local/lib -lgsl -lgslblas")
+root_flags += Split("-I/opt/local/include -L/opt/local/lib -lgsl -lgslcblas")
+
 env = Environment(CCFLAGS = '-O2')
 #env = Environment()
 
@@ -34,8 +35,14 @@ lib = env.Library("build/liboxsx", objects)
 env.Default([objects, lib])
 
 # Build the tests
-tests = env.Program("test/RunTests", Glob("test/*/*.cpp") + Glob("test/*.cpp"), 
-                    LIBS = ['oxsx', 'armadillo', "gsl"], LIBPATH = ["build", "/opt/local/lib/"],
-                    CPPPATH = source_dirs + root_flags + ["Catch/include"]
-                    )
-env.Alias("tests", tests)
+unit_tests = [env.Object(x, CPPPATH = source_dirs + root_flags + ["-ICatch/include"]
+                         ) for x in  Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")]
+
+unit_test_executable = Program("test/RunUnits", unit_tests, 
+                               LIBPATH = ["/Users/Jack/snoplus/oxsx/build", 
+                                          "/Users/Jack/snoplus/snoing/install/root-5.34.30/lib",
+                                          "/opt/local/lib"],
+                               RPATH = root_flags,
+                               LIBS = ["liboxsx", "Hist", "Core","MathCore", "armadillo", "gsl", 
+                                       "gslcblas"])
+env.Alias("units", [unit_tests, unit_test_executable])
