@@ -12,6 +12,7 @@ BinnedPdf::BinnedPdf(const BinnedPdf& other_) : Pdf(other_){
     fNDims = other_.fNDims;
     fBinContents = other_.fBinContents;
     fNBins = fBinContents.size();
+    fDataRep = other_.fDataRep;
 }
 
 void 
@@ -138,4 +139,32 @@ BinnedPdf::SetData(const std::vector<double>& data_){
     if (data_.size() != fNBins)
         throw BinError("Set data that doesn't match binned pdf binning");
     fBinContents = data_;
+}
+
+std::vector<double>
+BinnedPdf::Means() const{
+    std::vector<double> means(fNDims, 0);    
+    for(size_t i = 0; i < fNBins; i++)
+        for(size_t j = 0; j < fNDims; j++)
+            means[j] += fBinContents.at(i) * fAxes.GetBinCentre(i, j);
+    return means;
+}
+
+std::vector<double>
+BinnedPdf::Variances() const{
+    std::vector<double> variances(fNDims, 0);
+
+    for(size_t i = 0; i < fNBins; i++)
+        for(size_t j = 0; j < fNDims; j++){
+            double binCent = fAxes.GetBinCentre(i, j);
+            variances[j] += binCent * binCent *  fBinContents.at(i);
+        }
+    
+    
+
+    std::vector<double> means = Means();
+    for(size_t i = 0; i < fNDims; i++)
+        variances[i] -= means.at(i) * means.at(i);
+
+    return variances;
 }

@@ -1,7 +1,7 @@
 #include <CompositePdf.h>
-#include <iostream>
 #include <EventData.h>
-
+#include <PdfExceptions.h>
+#include <iostream>
 CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
     fPdfPtrs.push_back(p2_ -> Clone());
@@ -17,39 +17,49 @@ CompositePdf::CompositePdf(const std::vector<Pdf*>& pdfs_){
         fNDims += pdfs_[i] -> GetNDims();
     }
 }
-
 CompositePdf::~CompositePdf() {
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         delete fPdfPtrs[i];
 }
 
-double CompositePdf::operator() (const std::vector<double>& vals_) const{
+double 
+CompositePdf::operator() (const std::vector<double>& vals_) const{
     double prob = 1;
-    for(size_t i = 0; i < fPdfPtrs.size(); i++)
-        prob *= fPdfPtrs[i] -> operator() (vals_);
+    try{
+        for(size_t i = 0; i < fPdfPtrs.size(); i++)
+            prob *= fPdfPtrs[i] -> operator() (vals_);
+    }
+
+    catch(const DimensionError& e_){
+        throw DimensionError("Passed vector of values into composite where pdfs are not all same dim! Use Probability() if you want the data distributed across the internal pdfs");
+    }
     return prob;
 }
 
-double CompositePdf::Probability(const EventData& data_) const{
+double 
+CompositePdf::Probability(const EventData& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         prob *= fPdfPtrs[i] -> Probability(data_);
     return prob;
 }
 
-void CompositePdf::Normalise(){
+void 
+CompositePdf::Normalise(){
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         fPdfPtrs[i] -> Normalise();
 }
 
-double CompositePdf::Integral() const{
+double 
+CompositePdf::Integral() const{
     double integral = 1;
     for(size_t i = 0; i < fPdfPtrs.size(); i++)
         integral *= fPdfPtrs[i] -> Integral();
     return integral;
 }
 
-Pdf* CompositePdf::Clone() const {
+Pdf* 
+CompositePdf::Clone() const {
     Pdf *cp = new CompositePdf(fPdfPtrs);
     return static_cast<Pdf*>(cp);
 }

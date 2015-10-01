@@ -60,3 +60,16 @@ TEST_CASE("1D gaussian", "[Gaussian]"){
         REQUIRE(gaus.Integral(0,0) == Approx(0));
     }
 }
+
+TEST_CASE("Cloning Gaussian PDf"){
+    Gaussian gaus(0, 1);
+    gaus.SetDataRep(0);
+
+    Gaussian * clone = dynamic_cast<Gaussian*>(gaus.Clone());
+        
+    REQUIRE(clone->GetDataRep().GetLength() == 1 );
+    REQUIRE(clone->GetDataRep().GetIndicies().at(0) == 0);
+    REQUIRE(clone->GetParameter(0) == 0);
+    REQUIRE(clone->GetParameter(1) == 1);
+    REQUIRE(clone->operator()(std::vector<double>(1,1)) == Approx(0.24197) );
+}

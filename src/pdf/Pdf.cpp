@@ -1,6 +1,7 @@
 #include <Pdf.h>
 #include <CompositePdf.h>
 #include <algorithm>
+#include <iostream>
 
 Pdf::Pdf(const Pdf& other_){
     fDataRep = other_.fDataRep;

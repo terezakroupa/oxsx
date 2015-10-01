@@ -41,6 +41,7 @@ Gaussian::Gaussian(const Gaussian& other_) : IntegrablePdf(other_){
     fNDims = other_.fNDims;
     SetParameters(other_.GetParameters());
     fCdfCutOff = other_.fCdfCutOff;
+    fDataRep = other_.fDataRep;
 }
 
 double 

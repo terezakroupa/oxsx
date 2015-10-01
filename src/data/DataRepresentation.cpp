@@ -1,5 +1,6 @@
 #include <DataRepresentation.h>
 #include <DataExceptions.h>
+#include <iostream>
 
 DataRepresentation::DataRepresentation(const std::vector<size_t>& indicies_){
     SetIndicies(indicies_);
@@ -62,7 +63,7 @@ DataRepresentation::GetRelativeIndicies(const DataRepresentation& otherRep_) con
         
     std::vector<size_t> relativeIndicies(fIndicies.size(), 0);
     for(size_t i = 0; i < fIndicies.size(); i++)
-        relativeIndicies[i] = GetDataIndexPos(otherRep_.fIndicies.at(i));
+        relativeIndicies[i] = otherRep_.GetDataIndexPos(fIndicies.at(i));
     
     return relativeIndicies;
 } 
