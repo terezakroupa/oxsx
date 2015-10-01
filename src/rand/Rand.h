@@ -1,5 +1,7 @@
-
-
+/*****************************************************************************************************/
+/* Central place for control of random numbers, at the moment dumb c++ rand() but switch it out here */
+/* to change everywhere                                                                              */
+/*****************************************************************************************************/
 #ifndef __OXSX_RAND__
 #define __OXSX_RAND__
 
