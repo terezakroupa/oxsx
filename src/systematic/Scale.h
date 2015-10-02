@@ -11,7 +11,7 @@ class Scale : public Systematic{
     void SetAxes(const AxisCollection&);
     const AxisCollection& GetAxes() const;
     
-    void SetScaleFactor(double);
+    void   SetScaleFactor(double);
     double GetScaleFactor() const;
     
     void Construct();
