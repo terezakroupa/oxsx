@@ -37,6 +37,8 @@ Systematic::SetParameters(const std::vector<double>& params_) {
 std::vector<double>
 Systematic::GetParameters() const {return fParams;}
 
+// use this, so that you get the derived class method
+// e.g. in the convolution you want to know the number of parameters in the underlying pdf
 size_t
 Systematic::GetParamCount() const {return this->GetParameters().size();}
 
@@ -47,7 +49,7 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     std::vector<size_t> bin2Indicies = fPdfMapping.GetAxes().UnpackIndicies(bin2_);
 
     // Where are the indicies the systematic cares about in the pdfs index scheme
-    std::vector<size_t> relativeIndices = fPdfDataRep.GetRelativeIndicies(fDataRep);
+    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndicies(fPdfDataRep);
 
     // Do the two global bin numbers have the same indicies except for in the dimisensions 
     // this systematic affects?
