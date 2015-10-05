@@ -1,4 +1,4 @@
-#include <Catch.hpp>
+#include <catch.hpp>
 #include <PdfAxis.h>
 
 TEST_CASE("Bin Finding For Uniform Binning 1000 bins 0-100", "[PdfAxis]"){
