@@ -19,6 +19,15 @@ except:
     print "Couldnt find armadillo enviroment vars - are they set?"
     sys.exit()
 
+
+try:
+    gsl_lib     = os.environ["GSL_LIB"]
+    gsl_include = os.environ["GSL_HEADER"]
+
+except:
+    print "Couldnt find gsl enviroment vars - are they set?"
+    sys.exit()
+
 root_incs     = Split(check_output("root-config --cflags", shell=True))
 root_libs     = Split(check_output("root-config --libs", shell=True))
 
@@ -35,7 +44,7 @@ for x in source_dirs:
 
 # Create the build environment
 env = Environment(CCFLAGS = '-O2', 
-                  CPPPATH = source_dirs + [armadillo_include] + root_incs
+                  CPPPATH = source_dirs + [armadillo_include, gsl_include] + root_incs
                   )
 
 # Build the library
@@ -52,7 +61,7 @@ testenv = Environment(parse_flags = root_libs,
                       CCFLAGS = "-O2",
                       CPPPATH = ["Catch/include"] + source_dirs + root_incs,
                       )
-testenv.Append(LIBS=["armadillo", "gsl"], LIBPATHS=armadillo_lib)
+testenv.Append(LIBS=["armadillo", "gsl"], LIBPATHS = [armadillo_lib, gsl_lib])
 
 unit_test_files = Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")
 unit_tests = [testenv.Object(x) for x in unit_test_files]
