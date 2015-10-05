@@ -1,4 +1,4 @@
-#include <OXSXDataset.h>
+#include <OXSXDataSet.h>
 #include <EventData.h>
 #include <DataExceptions.h>
 void

@@ -1,10 +1,11 @@
 #ifndef __OXSX_DATA_EXCEPTIONS__
 #define __OXSX_DATA_EXCEPTIONS__
 #include <string>
+#include <stdexcept>
 
 class DataException : public std::runtime_error{
  public:
- DataException(const std::string& errorStr) : runtime_error(errorStr) {}
+ DataException(const std::string& errorStr) : std::runtime_error(errorStr) {}
 };
 
 
@@ -22,9 +23,9 @@ class DataNotFoundError : public DataException{
 };
 
 // error reading root file
-class ROOTError : public std::runtime_error {
+class ROOTError : public DataException {
  public:
- ROOTError(const std::string& error_str):runtime_error(error_str){};
+ ROOTError(const std::string& error_str): DataException(error_str){};
 };
 
 

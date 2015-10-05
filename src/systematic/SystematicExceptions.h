@@ -1,6 +1,7 @@
 #ifndef __OXSX_SYSTEMATIC_EXCEPTIONS__
 #define __OXSX_SYSTEMATIC_EXCEPTIONS__
 #include <string>
+#include <stdexcept>
 
 class SystematicException : public std::runtime_error{
  public:
