@@ -1,6 +1,7 @@
-#ifndef __PDF_EXCEPTIONS__
-#define __PDF_EXCEPTIONS__
+#ifndef __OXSX_PDF_EXCEPTIONS__
+#define __OXSX_PDF_EXCEPTIONS__
 #include <string>
+#include <stdexcept>
 
 class PdfException : public std::runtime_error {
  public:
