@@ -1,12 +1,20 @@
 #!/bin/bash
-OXSXROOT=/Users/Jack/snoplus/oxsx
 
-PATH=/Users/Jack/snoplus/snoing/install/root-5.34.30/bin:/Users/Jack/snoplus/snoing/install/scons-2.3.4/script:/Users/jack/snoplus/snoing/install/root-5.34.30/include$PATH
+#Set these for the installation paths
+SCONS_DIR="/data/snoplus/software/snocave_SL6/scons-2.3.4"
+ROOT_DIR="/data/snoplus/software/snocave_SL6/root-5.34.30"
 
-PYTHONPATH=$OXSXROOT/util:/Users/Jack/snoplus/snoing/install/scons-2.3.4/engine:$PYTHONPATH
-LD_LIBRARY_PATH=$OXSXROOT/build:/Users/Jack/snoplus/snoing/install/root-5.34.30/lib:$LD_LIBRARY_PATH
+#####################################################
+# Shouldn't need to change anything below this line #
+#####################################################
 
-DYLD_LIBRARY_PATH=/Users/Jack/snoplus/snoing/install/root-5.34.30/lib:$DYLD_LIBRARY_PATH
-export ROOTSYS=/Users/Jack/snoplus/snoing/install/root-5.34.30
-export OXSX_SCONS=/Users/Jack/snoplus/snoing/install/scons-2.3.4
-export LD_LIBRARY_PATH PYTHONPATH OXSXROOT DYLD_LIBRARY_PATH
+OXSXROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+PATH=$ROOT_DIR/bin:/$SCONS_DIR/script:$PATH
+
+#tells python where the utility functions are
+PYTHONPATH=$OXSXROOT/util:/data/snoplus/software/snocave_SL6/scons-2.3.4/engine:$PYTHONPATH
+LD_LIBRARY_PATH=$OXSXROOT/build:$ROOT_DIR/lib:$LD_LIBRARY_PATH
+DYLD_LIBRARY_PATH=$ROOT_DIR:$DYLD_LIBRARY_PATH
+
+export LD_LIBRARY_PATH PYTHONPATH DYLD_LIBRARY_PATH

@@ -1,48 +1,50 @@
 #!python
 import subprocess
 import os
+import sys
 
-root_flags = Split(subprocess.check_output("root-config --cflags --glibs", shell=True))
-root_flags += ["-lMinuit2"]
-root_flags += Split("-I/opt/local/include -L/opt/local/lib -lgsl -lgslcblas")
+#use root utility to find out where the includes and libs are, Minuit2 not included by default 
+root_incs = Split(subprocess.check_output("root-config --cflags", shell=True))
+root_libs = Split(subprocess.check_output("root-config --glibs --noldflags", 
+                                          shell=True)) + ["-lMinuit2"]
 
-env = Environment(CCFLAGS = '-O2')
-#env = Environment()
+root_lib_dir  = subprocess.check_output("root-config --libdir", shell=True)
 
+# Get the external library dependencies from the environment
+try:
+    armadillo_path = os.environ.get("OXSXROOT")
+    print armadillo_path
+
+except:
+    print "Build failed, please source environment"
+
+
+# Put built object files in build/ 
 VariantDir("build", "src", duplicate=0)
 
-source_dirs = Split(
-'''
-build/data
-build/rand
-build/teststat
-build/optimise
-build/pdf
-build/pdf/analytic
-build/pdf/binned
-build/systematic
-build/binnedfit
-'''
-)
-
+# Compile all .cpp files in source tree
+source_dirs  = [x[0] for x in os.walk("src")]
 source_files = []
 for x in source_dirs:
     source_files += Glob(os.path.join(x,"*.cpp"))
 
-# By default just build the source
-objects = [env.Object(x, CPPPATH = source_dirs + root_flags) for x in source_files]
+
+# Create the build environment
+env = Environment(CCFLAGS = '-O2', CPPPATH = source_dirs + root_incs + ["Catch/include"])
+
+# Build the library
+objects = [env.Object(x) for x in source_files]
 lib = env.Library("build/liboxsx", objects)
 env.Default([objects, lib])
 
-# Build the tests
-unit_tests = [env.Object(x, CPPPATH = source_dirs + root_flags + ["-ICatch/include"]
-                         ) for x in  Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")]
 
-unit_test_executable = Program("test/RunUnits", unit_tests, 
-                               LIBPATH = ["/Users/Jack/snoplus/oxsx/build", 
-                                          "/Users/Jack/snoplus/snoing/install/root-5.34.30/lib",
-                                          "/opt/local/lib"],
-                               RPATH = root_flags,
-                               LIBS = ["liboxsx", "Hist", "Core","MathCore", "armadillo", "gsl", 
-                                       "gslcblas"])
-env.Alias("units", [unit_tests, unit_test_executable])
+############################################################
+# For compiling tests and user scripts against the library #
+############################################################
+
+unit_test_files = Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")
+unit_tests = [testenv.Object(x) for x in unit_test_files]
+
+unit_test_executible = testenv.Program("test/RunUnits", source = [unit_tests, lib])
+
+env.Alias("units", [unit_tests, unit_test_executible])
