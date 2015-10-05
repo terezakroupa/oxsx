@@ -4,6 +4,12 @@
 SCONS_DIR="/data/snoplus/software/snocave_SL6/scons-2.3.4"
 ROOT_DIR="/data/snoplus/software/snocave_SL6/root-5.34.30"
 
+#location of armadillo includes and libraries
+ARMA_LIB="/usr/lib64"
+ARMA_HEADER="/usr/include"
+GSL_LIB=""
+GSL_HEADER=""
+
 #####################################################
 # Shouldn't need to change anything below this line #
 #####################################################
@@ -17,4 +23,4 @@ PYTHONPATH=$OXSXROOT/util:/data/snoplus/software/snocave_SL6/scons-2.3.4/engine:
 LD_LIBRARY_PATH=$OXSXROOT/build:$ROOT_DIR/lib:$LD_LIBRARY_PATH
 DYLD_LIBRARY_PATH=$ROOT_DIR:$DYLD_LIBRARY_PATH
 
-export LD_LIBRARY_PATH PYTHONPATH DYLD_LIBRARY_PATH
+export LD_LIBRARY_PATH PYTHONPATH DYLD_LIBRARY_PATH ARMA_HEADER ARMA_LIB
