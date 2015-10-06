@@ -11,3 +11,4 @@ build/*
 *.a
 *\#
 test/RunUnits
+examples/compile.sh
