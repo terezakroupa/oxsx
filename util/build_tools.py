@@ -1,11 +1,12 @@
 import os
 import glob
+from SCons.Errors import BuildError
 
 try:
     from subprocess import check_output
     
 except:
-    print "import check_output failed: are you running python 2.7"
+    raise BuildError("import check_output failed: are you running python 2.7")
     
 
 def get_root_flags():
@@ -21,7 +22,7 @@ def get_arma_flags():
         return armadillo_include, armadillo_lib
 
     except:
-        print "Can't find armadillo - if non-standard install location please update pointer in env.sh"
+       raise BuildError(errstr = "Can't find armadillo - if non-standard install location please update pointer in env.sh")
 
 
 def get_gsl_flags():
@@ -31,7 +32,7 @@ def get_gsl_flags():
         return gsl_include, gsl_lib
 
     except:
-        print "Can't find armadillo - if non-standard install location please update pointer in env.sh"
+        raise BuildError("Can't find armadillo - if non-standard install location please update pointer in env.sh")
         
 
 def write_compile_script(env, dir):
