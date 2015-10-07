@@ -20,7 +20,7 @@ OXSXROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PATH=$ROOT_DIR/bin:/$SCONS_DIR/script:$PATH
 
 #tells python where the utility functions are
-PYTHONPATH=$OXSXROOT/util:/data/snoplus/software/snocave_SL6/scons-2.3.4/engine:$PYTHONPATH
+PYTHONPATH=$OXSXROOT/util:$SCONS_DIR/engine:$PYTHONPATH
 LD_LIBRARY_PATH=$OXSXROOT/build:$ROOT_DIR/lib:$LD_LIBRARY_PATH
 DYLD_LIBRARY_PATH=$ROOT_DIR/lib:$ARMA_LIB:$DYLD_LIBRARY_PATH
 
