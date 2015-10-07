@@ -6,7 +6,7 @@ try:
     from subprocess import check_output
     
 except:
-    raise BuildError("import check_output failed: are you running python 2.7")
+    raise BuildError(errstr = "import check_output failed: are you running python 2.7")
     
 
 def get_root_flags():
