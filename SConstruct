@@ -17,11 +17,12 @@ gsl_include, gsl_lib = get_gsl_flags()
 VariantDir("build", "src", duplicate=0)
 
 # Compile all .cpp files in source tree
-source_dirs  = [x[0] for x in os.walk("src/")]
+source_dirs  = [x[0] for x in os.walk("src")]
 source_files = []
 for x in source_dirs:
-    source_files += Glob(os.path.join(x,"*.cpp"))
+    source_files += Glob(os.path.join(x,"*.cpp").replace("src", "build"))
 
+print [x.path for x in source_files]
 # Create the build environment
 env = Environment(CCFLAGS = '-O2', 
                   CPPPATH = source_dirs + [armadillo_include, gsl_include] + root_incs
