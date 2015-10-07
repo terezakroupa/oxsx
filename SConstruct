@@ -14,10 +14,10 @@ gsl_include, gsl_lib = get_gsl_flags()
 ###############################
 
 # Put built object files in build/ 
-VariantDir("build", "src")
+VariantDir("build", "src", duplicate=0)
 
 # Compile all .cpp files in source tree
-source_dirs  = [x[0] for x in os.walk("build/")]
+source_dirs  = [x[0] for x in os.walk("src/")]
 source_files = []
 for x in source_dirs:
     source_files += Glob(os.path.join(x,"*.cpp"))
@@ -26,7 +26,6 @@ for x in source_dirs:
 env = Environment(CCFLAGS = '-O2', 
                   CPPPATH = source_dirs + [armadillo_include, gsl_include] + root_incs
                   )
-
 
 # Build the library
 objects = [env.Object(x) for x in source_files]
@@ -41,13 +40,13 @@ env.Default([objects, lib])
                       
 testenv = Environment(parse_flags = root_libs + root_incs,
                       CCFLAGS = "-O2",
-                      CPPPATH = ["Catch/include"] + source_dirs + [gsl_include],
+                      CPPPATH = ["Catch/include"] + source_dirs + [gsl_include, armadillo_include],
                       LIBS = ["armadillo", "gsl", "oxsx", "Minuit2"],
                       LIBPATH = [gsl_lib, armadillo_lib, "build"]
                       )
 
 unit_test_files = Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")
-unit_tests = [testenv.Object(x) for x in unit_test_files]
+unit_tests      = [testenv.Object(x) for x in unit_test_files]
 
 unit_test_executible = testenv.Program("test/RunUnits", 
                                        source = [unit_tests, lib],
