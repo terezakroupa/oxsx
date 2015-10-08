@@ -17,8 +17,11 @@ class EventData{
     EventData(const std::vector<double>& obs_);
     std::vector<double> GetData() const;
     std::vector<double> ToRepresentation(const DataRepresentation&) const;
-    
+
+    size_t GetNDimensions() const {return fNDimensions;}
+
  private:
+    size_t fNDimensions;
     std::vector<double> fObservations;
     
 };
