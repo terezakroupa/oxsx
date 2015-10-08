@@ -18,6 +18,8 @@ class DataSetIO{
     static void SaveDataSet(const DataSet&, const std::string& filename);
     static OXSXDataSet LoadDataSet(const std::string& filename);
 
+
+    // used for combining and unpacking the observable names into a delimited string for hdf5 attr
     static std::string FlattenStringVector(const std::vector<std::string>&, char delimiter_);
     static std::vector<std::string> UnpackString(const std::string&, char delimiter_);
 
