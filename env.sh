@@ -6,6 +6,7 @@ ROOT_DIR=/Users/Jack/snoplus/snoing/install/root-5.34.30
 
 # location of armadillo includes and libraries. 
 # If these are installed to any of the standard /usr/... they may be left blank
+# h5c++ -show tells you where the hdf libraries are (-L/.....)
 ARMA_LIB=""
 ARMA_HEADER=""
 GSL_LIB=/opt/local/lib
