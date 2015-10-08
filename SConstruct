@@ -10,6 +10,8 @@ root_incs, root_libs = Split(root_incs), Split(root_libs)
 armadillo_include, armadillo_lib = get_arma_flags()
 gsl_include, gsl_lib = get_gsl_flags()
 
+hdf_lib_names = ["hdf5_hl_cpp", "hdf5_cpp", "hdf5_hl", "hdf5"]
+
 ###############################
 # Building the static library #
 ###############################
@@ -42,8 +44,7 @@ env.Default([objects, lib])
 testenv = Environment(parse_flags = root_libs + root_incs,
                       CCFLAGS = "-O2",
                       CPPPATH = ["Catch/include"] + source_dirs + [gsl_include, armadillo_include],
-                      LIBS = ["armadillo", "gsl", "oxsx", "Minuit2", "hdf5_hl_cpp", "hdf5_cpp",
-                              "hdf5_hl", "hdf5"],
+                      LIBS = ["armadillo", "gsl", "oxsx", "Minuit2"] + hdf_lib_names,
                       LIBPATH = [gsl_lib, armadillo_lib, "build"]
                       )
 
