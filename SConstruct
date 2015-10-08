@@ -25,7 +25,6 @@ source_files = []
 for x in source_dirs:
     source_files += Glob(os.path.join(x,"*.cpp").replace("src", "build"))
 
-print [x.path for x in source_files]
 # Create the build environment
 env = Environment(CCFLAGS = '-O2', 
                   CPPPATH = source_dirs + [armadillo_include, gsl_include] + root_incs

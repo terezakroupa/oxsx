@@ -19,7 +19,7 @@ e.g.
  ```SCONS_DIR   =  /software/..../scons-2.3.4```
 
 
-3. Do the same for GSL,armadillo, HDF5, if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
+3. Do the same for GSL,armadillo, HDF5 and if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
 
 4. Run ```source env.sh && scons && scons units```
 
