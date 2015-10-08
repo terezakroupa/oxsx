@@ -22,7 +22,17 @@ def get_arma_flags():
         return armadillo_include, armadillo_lib
 
     except:
-       raise BuildError(errstr = "Can't find armadillo - if non-standard install location please update pointer in env.sh")
+       raise BuildError(errstr = "Can't find armadillo, is it installed? - if non-standard install location please update pointer in env.sh")
+
+
+def get_hdf_flags():
+    try:
+        hdf_lib     = os.environ["HDF_LIB"]
+        hdf_include = os.environ["HDF_HEADER"]
+        return hdf_include, hdf_lib
+
+    except:
+       raise BuildError(errstr = "Can't find hdf - is it installed? if non-standard install location please update pointer in env.sh")
 
 
 def get_gsl_flags():

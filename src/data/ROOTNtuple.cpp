@@ -18,8 +18,7 @@ ROOTNtuple::ROOTNtuple(const std::string& fileName_, const std::string& treeName
     }        
 
     fNEntries = fNtuple -> GetEntries();
-    fIter = 0;
-    fNVar = fNtuple -> GetNvar();
+    fNObservables = fNtuple -> GetNvar();
 }
 
 ROOTNtuple::~ROOTNtuple(){
@@ -35,35 +34,25 @@ ROOTNtuple::Assemble(size_t iEvent_) const{
 
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
-    return EventData(std::vector<double> (vals, vals + fNVar));
+    return EventData(std::vector<double> (vals, vals + fNObservables));
     
 }
 
 EventData
-ROOTNtuple::GetEntry(size_t iEvent_){
-    if(fIter >= fNEntries)
+ROOTNtuple::GetEntry(size_t iEvent_) const{
+    if(iEvent_ >= fNEntries)
         throw DataNotFoundError("Exceeded end of ROOT NTuple");
+    return Assemble(iEvent_);
+}
 
-    fIter = iEvent_;
-    return Assemble(fIter);
+std::vector<std::string>
+ROOTNtuple::GetObservableNames() const{
+    std::vector<std::string> names(fNObservables);
+    for(unsigned i = 0; i < fNObservables; i++)
+        names[i] = (fNtuple -> GetListOfBranches()->At(i) -> GetName());
+    return names;
+    
 }
 
 
-EventData 
-ROOTNtuple::First(){
-    fIter = 0;
-    return Assemble(fIter);
-}
 
-EventData 
-ROOTNtuple::Next(){
-    if(fIter == (fNEntries -1))
-        throw DataNotFoundError("Exceeded end of ROOT NTuple");
-    return Assemble(++fIter);
-}
-
-EventData 
-ROOTNtuple::Last(){
-    fIter = fNEntries -1; 
-    return Assemble(fIter);
-}
