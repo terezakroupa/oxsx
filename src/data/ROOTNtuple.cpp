@@ -10,15 +10,17 @@ ROOTNtuple::ROOTNtuple(const std::string& fileName_, const std::string& treeName
         delete fROOTFile;
         throw ROOTError("ROOTNtuple::File Does not Exist! or is Zombie " + fileName_);
     }
-        
-    fNtuple = static_cast<TNtuple*>(fROOTFile -> Get(treeName_.c_str()));
+
+    fNtuple = dynamic_cast<TNtuple*>(fROOTFile -> Get(treeName_.c_str()));
+
     if(!fNtuple){
         delete fROOTFile;
-        throw ROOTError("ROOTNtuple::Tree Does not Exist! " + treeName_);
+        throw ROOTError("ROOTNtuple::Tree does not exist, or isn't an ntuple! " + treeName_);
     }        
 
     fNEntries = fNtuple -> GetEntries();
     fNObservables = fNtuple -> GetNvar();
+
 }
 
 ROOTNtuple::~ROOTNtuple(){
