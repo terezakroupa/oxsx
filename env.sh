@@ -10,7 +10,8 @@ ARMA_LIB=""
 ARMA_HEADER=""
 GSL_LIB=/opt/local/lib
 GSL_HEADER=/opt/local/include
-
+H5_HEADER="" 
+H5_LIB=""
 #####################################################
 # Shouldn't need to change anything below this line #
 #####################################################
@@ -22,6 +23,6 @@ PATH=$ROOT_DIR/bin:/$SCONS_DIR/script:$PATH
 #tells python where the utility functions are
 PYTHONPATH=$OXSXROOT/util:/data/snoplus/software/snocave_SL6/scons-2.3.4/engine:$PYTHONPATH
 LD_LIBRARY_PATH=$OXSXROOT/build:$ROOT_DIR/lib:$LD_LIBRARY_PATH
-DYLD_LIBRARY_PATH=$ROOT_DIR/lib:$ARMA_LIB:$DYLD_LIBRARY_PATH
+DYLD_LIBRARY_PATH=$ROOT_DIR/lib:$ARMA_LIB:$H5_LIB:$DYLD_LIBRARY_PATH
 
 export ARMA_HEADER ARMA_LIB GSL_LIB GSL_HEADER PYTHONPATH LD_LIBRARY_PATH DYLD_LIBRARY_PATH

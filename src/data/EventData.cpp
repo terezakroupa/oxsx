@@ -4,6 +4,7 @@
 
 EventData::EventData(const std::vector<double>& obs_){
     fObservations = obs_;
+    fNDimensions  = obs_.size(); 
 }
 
 std::vector<double> EventData::GetData() const{

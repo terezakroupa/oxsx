@@ -9,6 +9,7 @@
 #include <string>
 #include <TNtuple.h>
 #include <TFile.h>
+#include <vector>
 
 class EventData;
 class ROOTNtuple : public DataSet{
@@ -16,15 +17,11 @@ class ROOTNtuple : public DataSet{
     ROOTNtuple(const std::string& fileName_, const std::string& treeName_);
     ~ROOTNtuple();
 
-    EventData Next();
-    EventData First();
-    EventData Last();
-    EventData GetEntry(size_t iEvent_);
+    EventData GetEntry(size_t iEvent_) const;
     unsigned  GetNEntries() const {return fNEntries;}
+    std::vector<std::string> GetObservableNames() const;
     
  private:
-    unsigned fIter;
-    unsigned fNVar;
     unsigned fNEntries;
     TFile*   fROOTFile;
     TNtuple* fNtuple;
