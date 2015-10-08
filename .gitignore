@@ -13,3 +13,4 @@ build/*
 test/RunUnits
 examples/compile.sh
 *.h5
+env.sh

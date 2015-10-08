@@ -7,6 +7,7 @@ Signal Extraction framework for the SNO+ experiment
 2. [GSL](https://gcc.gnu.org/libstdc++/) - likely you already have this installed, especially if you are running RAT
 3. [SCons](http://www.scons.org/) Is used for the build, also a dependency for RAT
 
+4.[HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html)
 Follow the installation instructions for each of the above using either the default install location or a different directory if you would prefer.
 
 <h2>Installation Instructions </h2>
@@ -19,7 +20,7 @@ e.g.
  ```SCONS_DIR   =  /software/..../scons-2.3.4```
 
 
-3. Do the same for GSL and armadillo, if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
+3. Do the same for GSL,armadillo, HDF5, if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
 
 4. Run ```source env.sh && scons && scons units```
 
