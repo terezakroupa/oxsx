@@ -5,8 +5,8 @@
 #define __OXSX_DATA_SET__
 #include <stddef.h>
 #include <vector>
+#include <string>
 
-class string;
 class EventData;
 class DataSet{
  public:
