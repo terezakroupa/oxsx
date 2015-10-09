@@ -32,7 +32,7 @@ DataSetIO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     flattenedData.reserve(nData);
     for(size_t i = 0; i < nEntries; i++){
         eventData = dataSet_.GetEntry(i).GetData();
-        flattenedData.insert(std::end(flattenedData), std::begin(eventData), std::end(eventData));
+        flattenedData.insert(flattenedData.end(), eventData.begin(), eventData.end());
     }
     
     // Set up the data set
