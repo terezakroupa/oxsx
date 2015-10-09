@@ -39,6 +39,6 @@ TEST_CASE("Identity Matrix Multiplication on 100 long vector"){
 
     BinnedPdf mappedPdf = map(binnedPdf);
 
-    REQUIRE(mappedPdf.GetData() == std::vector<double> (100, 1.1));
+    REQUIRE(mappedPdf.GetBinContents() == std::vector<double> (100, 1.1));
 }
 
