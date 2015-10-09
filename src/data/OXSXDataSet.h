@@ -9,7 +9,7 @@
 #include <vector>
 #include <DataSet.h>
 #include <EventData.h>
-
+#include <string>
 class OXSXDataSet : public DataSet{
 public:
     OXSXDataSet() : fData(new std::vector<EventData>()) {} //initialises DataSet::fnObservables to 0
