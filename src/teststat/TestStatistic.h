@@ -4,7 +4,7 @@
 #ifndef __EVALUATOR__
 #define __EVALUATOR__
 #include <vector>
-
+#include <stddef.h>
 class DataSet;
 
 class TestStatistic{
