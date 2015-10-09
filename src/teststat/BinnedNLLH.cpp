@@ -3,8 +3,14 @@
 #include <DataSet.h>
 #include <iostream>
 #include <PdfExceptions.h>
+#include <DataExceptions.h>
+
 double 
 BinnedNLLH::Evaluate(){
+    if(!fDataSet) 
+        throw DataException("BinnedNNLH function called with no data set! set this first");
+    
+
     if (!fCalculatedDataPdf){
         BinData();
     }
@@ -22,8 +28,11 @@ BinnedNLLH::Evaluate(){
     double nLogLH = 0;
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
         double prob = fPdfManager.BinProbability(i);
-        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
+        if(prob){
+            nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
+        }
     }
+
     // Extended LH correction
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);

@@ -28,8 +28,17 @@ BinnedPdfManager::Probability(const EventData& data_) const{
 double
 BinnedPdfManager::BinProbability(size_t bin_) const{
     double sum = 0;
-    for(size_t i = 0; i < fWorkingPdfs.size(); i++)
-        sum += fNormalisations.at(i) * fWorkingPdfs.at(i).GetBinContent(i);
+
+    try{
+        for(size_t i = 0; i < fWorkingPdfs.size(); i++){
+            sum += fNormalisations.at(i) * fWorkingPdfs.at(i).GetBinContent(bin_);
+        }
+    }
+
+    catch(const std::out_of_range&){
+        throw DimensionError("BinnedPdfManager:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
+    }
+
     return sum;
 }
 
