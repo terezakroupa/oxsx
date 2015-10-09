@@ -80,8 +80,10 @@ BinnedPdf PdfMapping::operator()
     BinnedPdf observedPdf(pdf_.GetAxes());
     observedPdf.SetDataRep(pdf_.GetDataRep());
     
-    arma::vec newContents = fResponse * arma::vec(pdf_.GetData());
-    observedPdf.SetData(arma::conv_to<std::vector<double> >::from((newContents)));
+    // convert to armadillo vec
+    arma::vec newContents = fResponse * arma::vec(pdf_.GetBinContents());
+    // armadillo function for quick transfer to std::vector double
+    observedPdf.SetBinContents(arma::conv_to<std::vector<double> >::from((newContents)));
        
     return observedPdf;
 }
