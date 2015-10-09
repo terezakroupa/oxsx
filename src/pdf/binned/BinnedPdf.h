@@ -1,13 +1,13 @@
-/******************************************************************************************************/
-/* A binned pdf is a combination of an axis collection that defines the binning and a single vector of*/
-/* bin contents, indexed by the corresponding global bin ID.                                          */
-/* Each pdf has a data representation, that tells it which event variables it is interested in from th*/
-/* EventData class                                                                                    */
-/******************************************************************************************************/
+/**************************************************************************************************/
+/* A BinnedPdf is an ND histogram along with a data representation that tells the pdf where it    */
+/* looks for the data to pass to the histogram inside. Most methods just defer to the histogram.  */
+/* The two are serparate classes, because other things are histograms e.g. LH space but not pdfs  */
+/* in the sense that they have a data representation and examine events                           */
+/**************************************************************************************************/
 
-#ifndef __BINNED_PDF__
-#define __BINNED_PDF__
-#include <AxisCollection.h>
+#ifndef __OXSX_BINNED_PDF__
+#define __OXSX_BINNED_PDF__
+#include <Histogram.h>
 #include <Pdf.h>
 #include <vector>
 
@@ -35,8 +35,8 @@ class BinnedPdf : public Pdf{
     const AxisCollection& GetAxes() const;
     void  SetAxes(const AxisCollection& axes_);
 
-    std::vector<double> GetData() const; 
-    void SetData(const std::vector<double>& data_);     
+    std::vector<double> GetBinContents() const; 
+    void SetBinContents(const std::vector<double>& data_);     
 
     std::vector<double> Means() const;
     std::vector<double> Variances() const;
@@ -48,8 +48,6 @@ class BinnedPdf : public Pdf{
     void   Empty();
     
  private:
-    AxisCollection fAxes;
-    std::vector<double> fBinContents;
-    size_t fNBins;
+    Histogram fHistogram;
 };
 #endif
