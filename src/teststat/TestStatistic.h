@@ -1,8 +1,8 @@
 /****************************************/
 /* Abstract base class for an evaluator */
 /****************************************/
-#ifndef __EVALUATOR__
-#define __EVALUATOR__
+#ifndef __OXSX_TEST_STATISTIC__
+#define __OXSX_TEST_STATISTIC__
 #include <vector>
 #include <stddef.h>
 class DataSet;
