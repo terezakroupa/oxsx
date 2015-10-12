@@ -35,7 +35,7 @@ def make_ntup(file_name, tree_name,  branches, outfile, n_events, new_tree_name)
 
     # output
     out_file = TFile(outfile, "RECREATE")
-    nt       = TNtuple("oxsx", "", ":".join(branches))
+    nt       = TNtuple(new_tree_name, "", ":".join(branches))
 
     if(n_events < 0):
         n_events = tree.GetEntries()
@@ -72,6 +72,6 @@ if __name__ == "__main__":
         outfile = os.path.splitext(outfile)[0]
         outfile += "_oxsx.root"
         args.outfile = outfile
-        make_ntup(args.filename, args.treename, args.branches, 
-                  args.outfile, args.nevents, args.newtreename)
+    make_ntup(args.filename, args.treename, args.branches, 
+              args.outfile, args.nevents, args.newtreename)
     
