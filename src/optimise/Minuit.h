@@ -17,7 +17,7 @@ class TestStatistic;
 class Minuit : public Optimiser{
  public:
  Minuit(TestStatistic* stat_) : Optimiser(stat_), fMinuitFCN(stat_), fMethod("Migrad"),
-                                fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1) {}
+                                fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1), fMaximising(false) {}
     ~Minuit();
 
     void Initialise();
@@ -48,6 +48,9 @@ class Minuit : public Optimiser{
     void   SetTolerance(double);
     double GetTolerance() const;
 
+    void SetMaximising(bool b_) {fMaximising = b_;}
+    bool GetMaximising() const  {return fMaximising;}
+
     FitResult GetFitResult() const;
     
  private:
@@ -65,5 +68,6 @@ class Minuit : public Optimiser{
     ROOT::Minuit2::MnApplication* fMinimiser;
 
     FitResult fFitResult;
+    bool fMaximising;
 };
 #endif

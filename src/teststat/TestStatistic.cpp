@@ -34,3 +34,13 @@ DataSet*
 TestStatistic::GetDataSet() const{
     return fDataSet;
 }
+
+size_t 
+TestStatistic::GetNsystematics() const{
+    return fNsystematics;
+}
+
+size_t
+TestStatistic::GetNpdfs() const{
+    return fNpdfs;
+}

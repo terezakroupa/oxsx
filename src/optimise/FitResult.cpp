@@ -1,5 +1,5 @@
 #include <FitResult.h>
-#include <BinnedPdf.h>
+#include <Histogram.h>
 #include <iostream>
 FitResult::~FitResult(){
     delete fStatSpace;
@@ -16,11 +16,11 @@ FitResult::GetBestFit() const{
 }
 
 void
-FitResult::SetStatSpace(BinnedPdf* statSpace_){
-    fStatSpace = new BinnedPdf(*statSpace_);
+FitResult::SetStatSpace(Histogram* statSpace_){
+    fStatSpace = new Histogram(*statSpace_);
 }
 
-BinnedPdf*
+Histogram*
 FitResult::GetStatSpace() const{
     return fStatSpace;
 }
@@ -30,7 +30,7 @@ FitResult::operator=(const FitResult& other_){
     if (!fStatSpace)
         fStatSpace = NULL;
     else
-        fStatSpace = new BinnedPdf(*other_.fStatSpace);
+        fStatSpace = new Histogram(*other_.fStatSpace);
 
     fBestFit = other_.fBestFit;
     return *this;
@@ -41,6 +41,16 @@ FitResult::FitResult(const FitResult& other_){
         fStatSpace = NULL;
 
     else
-        fStatSpace = new BinnedPdf(*other_.fStatSpace);
+        fStatSpace = new Histogram(*other_.fStatSpace);
     fBestFit = other_.fBestFit;
+}
+
+std::vector<std::vector<double> > 
+FitResult::GetStatSample() const{
+    return fStatSample;
+}
+
+void
+FitResult::SetStatSample(const std::vector<std::vector<double> >& statSample_){
+    fStatSample = statSample_;
 }

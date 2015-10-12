@@ -64,6 +64,10 @@ Minuit::Initialise(){
     delete fMinimiser;
     fMinimiser = NULL;
 
+    // max or min?
+    if(fMaximising)
+        fMinuitFCN.SetSignFlip(true);
+
     // Create parameters and set limits
     MnUserParameters params(fInitialValues, fInitialErrors);
     if(fMinima.size() && fMaxima.size())

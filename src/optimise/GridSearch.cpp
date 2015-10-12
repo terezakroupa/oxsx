@@ -2,7 +2,7 @@
 #include <TestStatistic.h>
 #include <iostream>
 #include <sstream>
-#include <BinnedPdf.h>
+#include <Histogram.h>
 #include <FitResult.h>
 #include <SystematicExceptions.h>
 
@@ -45,8 +45,6 @@ GridSearch::Optimise(){
 
 
     // Initialise LH space and count the number of grid steps
-    AxisCollection statAxes;
-
     unsigned maxSteps = 1;
     std::vector<double> gridCounts;
 
@@ -55,19 +53,6 @@ GridSearch::Optimise(){
         maxSteps *= axisCounts;
         gridCounts.push_back(axisCounts);
     }
-
-    for(size_t i = 0; i < fMinima.size(); i++){
-        std::stringstream ss;
-        ss << "param " << i;
-        statAxes.AddAxis(PdfAxis(ss.str(), 
-                               fMinima.at(i) - fStepSizes.at(i)/2, 
-                               fMaxima.at(i) - fStepSizes.at(i)/2,
-                               gridCounts.at(i)
-                               )
-                       );
-    }
-
-    BinnedPdf statSpace(statAxes);
     
     // start at min value
     fParams = fMinima;
@@ -87,16 +72,18 @@ GridSearch::Optimise(){
 
         pTestStatistic->SetParams(fParams);
         double currentVal = pTestStatistic->Evaluate();
+
+        // if maximising, take the negative of the test stat
+        if(fMaximising)
+            currentVal *= -1;
+
         if (currentVal < fMinVal || !fMinVal){
                 fMinVal = currentVal;
                 bestFit = fParams;
         }
-        
-        // Save to LH space
-        statSpace.Fill(fParams, currentVal);
+       
     } 
     fFitResult.SetBestFit(bestFit);
-    fFitResult.SetStatSpace(&statSpace);
     return fFitResult;
 }
 
@@ -126,4 +113,14 @@ GridSearch::Increment(size_t index_){
 FitResult
 GridSearch::GetFitResult() const{
     return fFitResult;
+}
+
+bool
+GridSearch::GetMaximising() const{
+    return fMaximising;
+}
+
+void
+GridSearch::SetMaximising(bool b_){
+    fMaximising = b_;
 }

@@ -6,7 +6,7 @@
 class MetropolisHastings : public Optimiser{
  public:
  MetropolisHastings(TestStatistic* stat_) : Optimiser(stat_), fBurnIn(3000), 
-                                            fMaxIter(100000), fThinFactor(1) {}
+                                            fMaxIter(100000), fThinFactor(1), fMaxVal(0) {}
     ~MetropolisHastings() {}
     
     FitResult Optimise(); 
@@ -31,7 +31,6 @@ class MetropolisHastings : public Optimiser{
     const std::vector<double>& GetSigmas() const;
     void   SetSigmas(const std::vector<double>&);
 
-
  private:
     unsigned fBurnIn;
     unsigned fThinFactor;
@@ -43,14 +42,17 @@ class MetropolisHastings : public Optimiser{
     
     double fRejectionRate;
     std::vector< std::vector<double> > fSample;
+    FitResult fFitResult;
+    std::vector<double> fBestFit;
+    double fMaxVal;
     
     std::vector<double> JumpDraw(const std::vector<double>& thisStep_) const; 
     inline double JumpProbRatio(const std::vector<double>& thisStep_, 
                                 const std::vector<double>& proposedStep_) const {return 1;}
 
     bool   StepAccepted(const std::vector<double>& thisStep_,
-                        const std::vector<double>& proposedStep_) const;
+                        const std::vector<double>& proposedStep_);
 
-    FitResult fFitResult;
+
 };
 #endif

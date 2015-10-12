@@ -55,7 +55,7 @@ unit_test_executible = testenv.Program("test/RunUnits",
                                        source = [unit_tests, lib],
                                        )
 testenv.Alias("units", unit_test_executible)
-testenv.AlwaysBuild(unit_test_executible)
+
 
 ######################################
 # Create a compiler for user scripts #

@@ -8,21 +8,28 @@
 
 class MinuitFCN : public ROOT::Minuit2::FCNBase{
  public:
-    MinuitFCN(TestStatistic* statistic_) : fTestStatistic(statistic_), fUp(0.5){}
+    MinuitFCN(TestStatistic* statistic_) : fTestStatistic(statistic_), fUp(0.5), fFlipSign(false){}
 
     //these two required by minit
     double Up() const {return fUp;} 
     double operator()(const std::vector<double>& params_) const {
         fTestStatistic->SetParams(params_);
-        return fTestStatistic->Evaluate();
+        if(fFlipSign)
+            return -1 * fTestStatistic->Evaluate();
+
+        return fTestStatistic -> Evaluate();
     }
 
 
     void   SetUp(double up_) {fUp = up_;}
     double GetUp() const {return Up();}
 
+    void SetSignFlip(bool b_) {fFlipSign = b_;}
+    bool GetSignFlip() const {return fFlipSign;}
+
  private:
     TestStatistic* fTestStatistic;
     double fUp;
+    bool   fFlipSign;  // if true, result is multiplied by -ve 1. changes minimisation to maximisation
 };
 #endif
