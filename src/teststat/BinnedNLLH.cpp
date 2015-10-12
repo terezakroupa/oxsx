@@ -10,7 +10,6 @@ BinnedNLLH::Evaluate(){
     if(!fDataSet) 
         throw DataException("BinnedNNLH function called with no data set! set this first");
     
-
     if (!fCalculatedDataPdf){
         BinData();
     }
@@ -122,4 +121,10 @@ void
 BinnedNLLH::AddSystematic(Systematic sys_){
     fSystematicManager.Add(&sys_);
     fNsystematics++;
+}
+
+void
+BinnedNLLH::SetDataSet(DataSet* dataSet_){
+    fDataSet = dataSet_;
+    fCalculatedDataPdf = false;
 }

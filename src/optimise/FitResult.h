@@ -4,7 +4,7 @@
 #ifndef __OXSX_FIT_RESULT__
 #define __OXSX_FIT_RESULT__
 #include <vector>
-class BinnedPdf;
+class Histogram;
 class FitResult{
  public:
     FitResult() : fStatSpace(NULL)  {}
@@ -16,13 +16,16 @@ class FitResult{
     void  SetBestFit(const std::vector<double>&);
     std::vector<double> GetBestFit() const;
 
-    void SetStatSpace(BinnedPdf*);
-    BinnedPdf* GetStatSpace() const; 
+    void SetStatSpace(Histogram*);
+    Histogram* GetStatSpace() const; 
+
+    void SetStatSample(const std::vector<std::vector<double> >&);
+    std::vector<std::vector<double> > GetStatSample() const;
 
  private:
     std::vector<double>   fBestFit;
-    BinnedPdf*            fStatSpace;
-    // Correlation matrix
+    std::vector<std::vector<double> > fStatSample;
+    Histogram*            fStatSpace;
     
 };
 #endif

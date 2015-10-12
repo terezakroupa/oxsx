@@ -18,11 +18,15 @@ class GridSearch : public Optimiser{
     std::vector<double> GetStepSizes()  const;
     
     FitResult GetFitResult() const;
-    
+    void SetMaximising(bool);
+    bool GetMaximising() const;
+
  private:
     std::vector<double> fParams;
     FitResult           fFitResult;
     
+    bool fMaximising;
+
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
     std::vector<double> fStepSizes;

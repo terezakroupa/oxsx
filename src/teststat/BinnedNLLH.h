@@ -29,6 +29,7 @@ class BinnedNLLH : public TestStatistic{
     QuadraticConstraint GetNormalisationConstraint(size_t index_)  const;
 
     void  BinData();
+    virtual void SetDataSet(DataSet*);
  private:
     BinnedPdfManager  fPdfManager;
     SystematicManager fSystematicManager;  

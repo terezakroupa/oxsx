@@ -74,7 +74,8 @@ FitResult
 MetropolisHastings::Optimise(){
     fNDims = fMinima.size();
     fRejectionRate = 0;
-    
+    fBestFit.resize(fNDims, 0);
+    fMaxVal = 0;
 
     // 1. Choose a random starting point
     std::vector<double> currentStep;
@@ -104,16 +105,24 @@ MetropolisHastings::Optimise(){
         
     }
     fRejectionRate/= static_cast<double>(fMaxIter);
-    std::cout << fRejectionRate << std::endl;
+    std::cout << "Metropolis Hastings:: rejection rate = " << fRejectionRate << std::endl;
+
+    fFitResult.SetBestFit(fBestFit);
+    fFitResult.SetStatSample(fSample);
     return fFitResult;
 }
 
 bool
 MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_, 
-                                 const std::vector<double>& proposedStep_) const{
+                                 const std::vector<double>& proposedStep_){
 
     pTestStatistic -> SetParams(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
+
+    if(thisVal > fMaxVal){
+        fMaxVal = thisVal;
+        fBestFit = thisStep_;
+    }
 
     pTestStatistic -> SetParams(proposedStep_);
     double proposedVal = pTestStatistic -> Evaluate();

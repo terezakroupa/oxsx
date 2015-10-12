@@ -13,12 +13,15 @@ class TestStatistic{
     virtual ~TestStatistic() {}
 
     virtual double Evaluate() = 0;
-    void SetParams(const std::vector<double>& params_); 
+    virtual void SetParams(const std::vector<double>& params_); 
     // normalisations then systematics    
-    size_t GetNParams() const {return fNpdfs + fNsystematics;}
+    virtual size_t GetNParams() const {return fNpdfs + fNsystematics;}
     
-    void    SetDataSet(DataSet* handle_);
-    DataSet* GetDataSet() const;
+    virtual void    SetDataSet(DataSet* handle_);
+    virtual DataSet* GetDataSet() const;
+
+    size_t GetNpdfs () const;
+    size_t GetNsystematics () const;
     
  protected:
     DataSet* fDataSet;
