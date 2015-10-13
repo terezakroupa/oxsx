@@ -32,7 +32,7 @@ DataSetGenerator::ExpectedRatesDataSet() const{
 
 EventData
 DataSetGenerator::RandomEvent(size_t handleIndex_) const{
-    unsigned eventNum = (rand() % (int)(fDataSets.at(handleIndex_)->GetNEntries() + 1));
+    unsigned eventNum = (rand() % (int)(fDataSets.at(handleIndex_)->GetNEntries()));
     return fDataSets.at(handleIndex_)->GetEntry(eventNum);
 }
 
