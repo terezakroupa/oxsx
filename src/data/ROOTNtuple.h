@@ -20,6 +20,9 @@ class ROOTNtuple : public DataSet{
     EventData GetEntry(size_t iEvent_) const;
     unsigned  GetNEntries() const {return fNEntries;}
     std::vector<std::string> GetObservableNames() const;
+
+    void LoadBaskets();
+    void DropBaskets();
     
  private:
     unsigned fNEntries;
