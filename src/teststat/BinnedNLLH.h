@@ -30,6 +30,10 @@ class BinnedNLLH : public TestStatistic{
 
     void  BinData();
     virtual void SetDataSet(DataSet*);
+
+    void SetDataPdf(const BinnedPdf&);
+    BinnedPdf GetDataPdf() const;
+
  private:
     BinnedPdfManager  fPdfManager;
     SystematicManager fSystematicManager;  
