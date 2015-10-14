@@ -17,7 +17,7 @@ class BinnedNLLH : public TestStatistic{
     void   SetSystematicManager(const SystematicManager&);
 
     void   AddPdf(const BinnedPdf&);
-    void   AddSystematic(Systematic);
+    void   AddSystematic(Systematic*);
 
     void AddSystematicConstraint(const QuadraticConstraint& constr_);
     void AddNormalisationConstraint(const QuadraticConstraint& constr_);

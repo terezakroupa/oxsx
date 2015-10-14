@@ -1,7 +1,6 @@
 #include <BinnedNLLH.h>
 #include <math.h>
 #include <DataSet.h>
-#include <iostream>
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
 
@@ -54,7 +53,6 @@ BinnedNLLH::BinData(){
         EventData dat = fDataSet -> GetEntry(i);
         dataPdf.Fill(dat);
     }
-
     fDataPdf = dataPdf;
     fCalculatedDataPdf = true;
 }
@@ -118,8 +116,8 @@ BinnedNLLH::AddPdf(const BinnedPdf& pdf_){
 }
 
 void 
-BinnedNLLH::AddSystematic(Systematic sys_){
-    fSystematicManager.Add(&sys_);
+BinnedNLLH::AddSystematic(Systematic* sys_){
+    fSystematicManager.Add(sys_);
     fNsystematics++;
 }
 
