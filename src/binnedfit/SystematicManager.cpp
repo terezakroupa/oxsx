@@ -27,7 +27,7 @@ SystematicManager::SetParameters(const std::vector<double>& params_){
                                                              it  + fParamCounts.at(i-1) + 
                                                              + fParamCounts.at(i)));
     }
-
+    // construct the response matricies
     for(size_t i = 0; i < fSystematics.size(); i++)
         fSystematics[i] -> Construct();
 

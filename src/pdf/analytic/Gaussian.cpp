@@ -7,7 +7,7 @@
 
 Gaussian::Gaussian(size_t nDims_){
     fNDims = nDims_;
-    fCdfCutOff = 3; // default val
+    fCdfCutOff = 6; // default val
 }
 
 Gaussian::Gaussian(double mean_, double stdDev_){
@@ -20,7 +20,7 @@ Gaussian::Gaussian(double mean_, double stdDev_){
     params.push_back(stdDev_);
     SetParameters(params);
 
-    fCdfCutOff = 3; // default val
+    fCdfCutOff = 6; // default val
 }
 
 Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
@@ -34,7 +34,7 @@ Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>&
         params[2 * i + 1] = stdDevs_.at(i);
     }
     SetParameters(params);
-    fCdfCutOff = 3; // default val
+    fCdfCutOff = 6; // default val
 }
 
 Gaussian::Gaussian(const Gaussian& other_) : IntegrablePdf(other_){

@@ -6,7 +6,7 @@
 
 class GridSearch : public Optimiser{
  public:
-    GridSearch(TestStatistic* stat_) : Optimiser(stat_){}
+    GridSearch(TestStatistic* stat_) : Optimiser(stat_), fMaximising(false){}
     virtual FitResult Optimise();
     
     void SetMinima(const std::vector<double>&);
