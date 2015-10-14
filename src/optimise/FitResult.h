@@ -7,7 +7,7 @@
 class Histogram;
 class FitResult{
  public:
-    FitResult() : fStatSpace(NULL)  {}
+    FitResult() : fStatSpace(NULL), fIsValid(true)  {}
     FitResult(const FitResult&); //deep copy
     FitResult operator=(const FitResult&); //deep copy
 
@@ -21,12 +21,15 @@ class FitResult{
 
     void SetStatSample(const std::vector<std::vector<double> >&);
     std::vector<std::vector<double> > GetStatSample() const;
+    
+    void SetValid(bool b_);
+    bool GetValid() const;
 
  private:
     std::vector<double>   fBestFit;
     std::vector<std::vector<double> > fStatSample;
     Histogram*            fStatSpace;
-    
+    bool fIsValid;
 };
 #endif
 

@@ -2,8 +2,8 @@
 #include <Minuit2/MnMigrad.h>
 #include <Minuit2/MnMinimize.h>
 #include <Minuit2/MnSimplex.h>
-#include <Minuit2/MnUserParameters.h>
 #include <Minuit2/FunctionMinimum.h>
+#include <Minuit2/MnUserParameters.h>
 #include <FitResult.h>
 
 using ROOT::Minuit2::MnMigrad;
@@ -109,10 +109,12 @@ FitResult
 Minuit::Optimise(){
     if(!fMinimiser)
         Initialise();
-    
-    fMinimiser -> operator()(fMaxCalls, fTolerance); // defaults are same as ROOT defaults
+
+    // defaults are same as ROOT defaults
+    ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 
     fFitResult.SetBestFit(fMinimiser -> Params());
+    fFitResult.SetValid(fnMin.IsValid());
     return fFitResult;
 }
 
