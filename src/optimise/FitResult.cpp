@@ -31,7 +31,7 @@ FitResult::operator=(const FitResult& other_){
         fStatSpace = NULL;
     else
         fStatSpace = new Histogram(*other_.fStatSpace);
-
+    fIsValid = other_.fIsValid;
     fBestFit = other_.fBestFit;
     return *this;
 }
@@ -43,6 +43,7 @@ FitResult::FitResult(const FitResult& other_){
     else
         fStatSpace = new Histogram(*other_.fStatSpace);
     fBestFit = other_.fBestFit;
+    fIsValid = other_.fIsValid;
 }
 
 std::vector<std::vector<double> > 
