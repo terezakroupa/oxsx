@@ -7,8 +7,8 @@
 
 double 
 BinnedNLLH::Evaluate(){
-    if(!fDataSet) 
-        throw DataException("BinnedNNLH function called with no data set! set this first");
+    if(!fDataSet && !fCalculatedDataPdf) 
+        throw DataException("BinnedNNLH function called with no data set and no DataPdf! set one of these first");
     
     if (!fCalculatedDataPdf){
         BinData();
@@ -127,4 +127,15 @@ void
 BinnedNLLH::SetDataSet(DataSet* dataSet_){
     fDataSet = dataSet_;
     fCalculatedDataPdf = false;
+}
+
+void
+BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
+    fDataPdf = binnedPdf_;
+    fCalculatedDataPdf = true;
+}
+
+BinnedPdf
+BinnedNLLH::GetDataPdf() const{
+    return fDataPdf;
 }

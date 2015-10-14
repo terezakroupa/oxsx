@@ -20,7 +20,8 @@ ROOTNtuple::ROOTNtuple(const std::string& fileName_, const std::string& treeName
 
     fNEntries = fNtuple -> GetEntries();
     fNObservables = fNtuple -> GetNvar();
-
+    
+    fNtuple->LoadBaskets();
 }
 
 ROOTNtuple::~ROOTNtuple(){
