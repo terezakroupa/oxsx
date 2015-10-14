@@ -1,11 +1,11 @@
 #include <iostream>
-#include <Posterior.h>
+#include <LogPosterior.h>
 #include <PdfExceptions.h>
 #include <SystematicExceptions.h>
 #include <Function.h>
 #include <cmath>
 
-Posterior::Posterior(TestStatistic* testStat_, Function* prior_){
+LogPosterior::LogPosterior(TestStatistic* testStat_, Function* prior_){
     fTestStat = testStat_;
     fPrior = prior_;
     fNpdfs = testStat_->GetNpdfs();
@@ -13,44 +13,48 @@ Posterior::Posterior(TestStatistic* testStat_, Function* prior_){
 }
 
 void
-Posterior::SetDataSet(DataSet* dataSet_){
+LogPosterior::SetDataSet(DataSet* dataSet_){
     fTestStat -> SetDataSet(dataSet_);
 }
 
 DataSet* 
-Posterior::GetDataSet() const{
+LogPosterior::GetDataSet() const{
     return fTestStat -> GetDataSet();
 }
 
 void 
-Posterior::SetParams(const std::vector<double>& params_){
+LogPosterior::SetParams(const std::vector<double>& params_){
     fParams = params_;
     try{
         fTestStat -> SetParams(params_);
     }
     catch(const DimensionError& e_){
-        throw DimensionError(std::string("Posterior:: Underlying test stat rejected params set") + e_.what());
+        throw DimensionError(std::string("LogPosterior:: Underlying test stat rejected params set") + e_.what());
         
     }
     catch(const WrongNumberOfParameters& e_){
-        throw WrongNumberOfParameters(std::string("Posterior:: Underlying test stat rejected params set") + e_.what());
+        throw WrongNumberOfParameters(std::string("LogPosterior:: Underlying test stat rejected params set") + e_.what());
         
     }
 }
 
 
 double
-Posterior::Evaluate(){
+LogPosterior::Evaluate(){
     // avoid setting unphysical values by calculating the prior first, skip lh if prior is zero
     double val = fPrior -> operator()(fParams);
     if (val){
-        val *= exp(-1 * fTestStat -> Evaluate());
+        return log(val) - fTestStat->Evaluate();
     }
-    return val;
+    else{
+        // fixme
+        return -1e250;
+    }
+
 }
 
 
 size_t
-Posterior::GetNParams() const{
+LogPosterior::GetNParams() const{
     return fPrior->GetNDims();
 }

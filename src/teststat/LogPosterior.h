@@ -11,10 +11,10 @@
 #include <TestStatistic.h>
 
 class Function;
-class Posterior : public TestStatistic{
+class LogPosterior : public TestStatistic{
  public:
-    Posterior(TestStatistic*, Function*);
-    ~Posterior(){}
+    LogPosterior(TestStatistic*, Function*);
+    ~LogPosterior(){}
 
     void SetTestStat(TestStatistic*);
     TestStatistic* GetTestStat() const;
