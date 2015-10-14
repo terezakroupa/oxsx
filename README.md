@@ -31,7 +31,9 @@ e.g.
 scons auto-generates a script that compiles and links your c++ against the source code and dependencies just run ```./examples/compile.sh <your cpp file>``` to produce an executible of the same name
 
 
+
 <h2> Creating ntuples </h2>
+One way to read in data is using a ROOT ntuple. If you are looking at SNO+ data, you probably have a flat root tree that can be easily pruned down into this format with only the branches you are interested in.
 
 To create ntuples for oxsx run ```./util/prune_flat_tree <path_to_file_to_convert> -treename <name_of_the_tree> <branch1> <branch2> <branch3> -newtreename <name_of_your_tree> -outputfile <name_of_your_file> -nevents <number_of_events>```
 
