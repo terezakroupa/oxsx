@@ -3,6 +3,7 @@
 #include <DataSet.h>
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
+#include <iostream>
 
 double 
 BinnedNLLH::Evaluate(){
@@ -26,11 +27,12 @@ BinnedNLLH::Evaluate(){
     double nLogLH = 0;
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
         double prob = fPdfManager.BinProbability(i);
-        if(prob){
-            nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
-        }
-    }
+        if(!prob)
+            throw std::runtime_error("BinnedNLLH::Encountered zero probability bin!");
 
+        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
+        
+    }
     // Extended LH correction
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);
