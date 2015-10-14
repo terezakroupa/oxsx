@@ -30,3 +30,13 @@ e.g.
 
 scons auto-generates a script that compiles and links your c++ against the source code and dependencies just run ```./examples/compile.sh <your cpp file>``` to produce an executible of the same name
 
+
+<h2> Creating ntuples </h2>
+
+To create ntuples for oxsx run ```./util/prune_flat_tree <path_to_file_to_convert> -treename <name_of_the_tree> <branch1> <branch2> <branch3> -newtreename <name_of_your_tree> -outputfile <name_of_your_file> -nevents <number_of_events>```
+
+ * The name of the tree in an input file is optional, as a default it is "output"
+ * The name of the output file is optional, as a default is is <the_name_of_input_file>+"_oxsx.root"
+ * The name of the tree in an output file is optional, as a default it is "oxsx"
+ * The number of events of an output file is optional 
+
