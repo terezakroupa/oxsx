@@ -54,3 +54,13 @@ void
 FitResult::SetStatSample(const std::vector<std::vector<double> >& statSample_){
     fStatSample = statSample_;
 }
+
+bool
+FitResult::GetValid() const {
+    return fIsValid;
+}
+
+void
+FitResult::SetValid(bool b_){
+    fIsValid = b_;
+}
