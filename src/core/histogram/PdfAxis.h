@@ -22,6 +22,10 @@ class PdfAxis{
     PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_, 
             const std::vector<double>& highEdges_, const std::string& latexName_ = "");
 
+    // Copy Constructors
+    PdfAxis(const PdfAxis&);
+    PdfAxis operator=(const PdfAxis&);
+
     ~PdfAxis() {}
 
     // Find the Bin value_ is in
@@ -30,17 +34,16 @@ class PdfAxis{
     double GetMin() const {return fMin;}
     double GetMax() const {return fMax;}
     size_t GetNBins() const {return fNBins;}
-    double GetBinWidth() const {return fBinWidth;}
     double GetBinLowEdge (size_t i) const {return fBinLowEdges.at(i);}
     double GetBinHighEdge(size_t i) const {return fBinHighEdges.at(i);}
     double GetBinCentre  (size_t i) const {return fBinCentres.at(i);}    
     std::string GetName() const {return fName;}
-
+    std::string GetLatexName() const {return fLatexName;}
  private:
     int fNBins;
     double fMin;
     double fMax;
-    double fBinWidth;
+
     std::string fName;
     std::string fLatexName; 
     
