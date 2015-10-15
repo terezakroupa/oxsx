@@ -65,7 +65,8 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
 PdfAxis::PdfAxis(const PdfAxis& other_){
     fName = other_.fName;
     fLatexName = other_.fLatexName;
-    fBinLowEdges = other_.fBinHighEdges;
+    fBinLowEdges = other_.fBinLowEdges;
+    fBinHighEdges = other_.fBinHighEdges;
     fBinCentres = other_.fBinCentres;
     fNBins = other_.fNBins;
 }
@@ -74,7 +75,8 @@ PdfAxis
 PdfAxis::operator=(const PdfAxis& other_){
     fName = other_.fName;
     fLatexName = other_.fLatexName;
-    fBinLowEdges = other_.fBinHighEdges;
+    fBinLowEdges = other_.fBinLowEdges;
+    fBinHighEdges = other_.fBinHighEdges;
     fBinCentres = other_.fBinCentres;
     fNBins = other_.fNBins;
     return *this;
