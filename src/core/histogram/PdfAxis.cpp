@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <PdfExceptions.h>
 #include <iostream>
+
+
 PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBins_,
                  const std::string& latexName_){
     fName = name_;
@@ -16,16 +18,16 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
         throw BinError("Invalid bin specification: min > max or nbins = 0");
 
     fNBins = nBins_;
-    fBinWidth =  double(fMax - fMin) /fNBins;
+    double binWidth =  double(fMax - fMin) /fNBins;
 
     fBinLowEdges.resize(fNBins, 0);    
     fBinHighEdges.resize(fNBins, 0);
     fBinCentres.resize(fNBins, 0);
 
     for(size_t i = 0; i < fNBins; i++){
-        fBinLowEdges[i]  = fMin  + i          * fBinWidth;
-        fBinCentres[i]   = fMin  + (i + 0.5)  * fBinWidth;
-        fBinHighEdges[i] = fMin  + (i+1)      * fBinWidth;
+        fBinLowEdges[i]  = fMin  + i          * binWidth;
+        fBinCentres[i]   = fMin  + (i + 0.5)  * binWidth;
+        fBinHighEdges[i] = fMin  + (i+1)      * binWidth;
     }
 }
 
@@ -47,17 +49,38 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
     }
 
     fNBins = fBinLowEdges.size();
-    fBinWidth = 0;
 
     fBinCentres.resize(fNBins, 0);
     for(size_t i = 0; i < fBinLowEdges.size(); i++)
         fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
 
     fLatexName = latexName_;
+    fMin = fBinLowEdges.at(0);
+    fMax = fBinHighEdges.back();
+
     if("" == fLatexName)
         fLatexName = name_;
 }
 
+PdfAxis::PdfAxis(const PdfAxis& other_){
+    fName = other_.fName;
+    fLatexName = other_.fLatexName;
+    fBinLowEdges = other_.fBinLowEdges;
+    fBinHighEdges = other_.fBinHighEdges;
+    fBinCentres = other_.fBinCentres;
+    fNBins = other_.fNBins;
+}
+
+PdfAxis
+PdfAxis::operator=(const PdfAxis& other_){
+    fName = other_.fName;
+    fLatexName = other_.fLatexName;
+    fBinLowEdges = other_.fBinLowEdges;
+    fBinHighEdges = other_.fBinHighEdges;
+    fBinCentres = other_.fBinCentres;
+    fNBins = other_.fNBins;
+    return *this;
+}
 
 
 size_t 
