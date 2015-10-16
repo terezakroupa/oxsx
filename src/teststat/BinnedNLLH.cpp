@@ -59,7 +59,7 @@ BinnedNLLH::BinData(){
         EventData dat = fDataSet -> GetEntry(i);
         dataPdf.Fill(dat);
     }
-    fDataPdf = dataPdf;
+    fDataPdf = fPdfShrinker.shrinkpdf(dataPdf);
     fCalculatedDataPdf = true;
 }
 
