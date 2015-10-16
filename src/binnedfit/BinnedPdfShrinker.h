@@ -6,33 +6,28 @@
 
 #ifndef __OXSX_BINNEDPDFSHRINKER__
 #define __OXSX_BINNEDPDFSHRINKER__
-#include <vector>
+#include <map>
+#include <utility> // std::pair
 #include <BinnedPdf.h>
 
 class BinnedPdfShrinker{
  public:
-    BinnedPdfShrinker(unsigned nDims_);
+    BinnedPdfShrinker();
     ~BinnedPdfShrinker(){}
-    
-    BinnedPdf ShrinkPdf(const BinnedPdf& pdf_) const;
-    void SetLowerBuffer(size_t dimension_, unsigned nBins_);
-    unsigned GetLowerBuffer(size_t dimension_) const;
-
-    void SetUpperBuffer(size_t dimension_, unsigned nBins_);
-    unsigned GetUpperBuffer(size_t dimension_) const;
 
     static PdfAxis ShrinkAxis(const PdfAxis&, const unsigned lowerBuff_, 
-                              const unsigned upperBuff_);
+                              const unsigned upperBuff_);    
+    BinnedPdf ShrinkPdf(const BinnedPdf& pdf_) const;
+    
+    void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
+    std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;
+
     void SetUsingOverflows(bool b_);
     bool GetUsingOverflows() const;
 
-    size_t GetNDims() const;
-
  private:
-    BinnedPdfShrinker() {}
-    std::vector<unsigned> fLowerBinBuffers; // initalised to zero in const.
-    std::vector<unsigned> fUpperBinBuffers; // initalised to zero in const.
-    size_t fNDims;
+    // Pairs of lower/upper buffer sizes in number of bins, keyed by diminension to shrink
+    std::map<size_t, std::pair<unsigned, unsigned> > fBuffers; 
     bool fUsingOverflows; // true at initialisation
 };
 #endif

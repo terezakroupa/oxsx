@@ -6,7 +6,7 @@
 #define __BINNED_PDF_MANAGER__
 #include <vector>
 #include <BinnedPdf.h>
-
+#include <BinnedPdfShrinker.h>
 class EventData;
 class SystematicManager;
 
@@ -24,6 +24,7 @@ class BinnedPdfManager{
     const std::vector<double>& GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
     void ApplySystematics(const SystematicManager& sysMan_);
+    void ApplyShrink(const BinnedPdfShrinker&);
 
     const BinnedPdf& GetOriginalPdf(size_t index_) const;
     unsigned GetNPdfs() const;

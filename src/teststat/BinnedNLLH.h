@@ -1,9 +1,9 @@
 #ifndef __BinnedNLLH__
 #define __BinnedNLLH__
-
 #include <TestStatistic.h>
 #include <BinnedPdfManager.h>
 #include <SystematicManager.h>
+#include <BinnedPdfShrinker.h>
 #include <vector>
 #include <QuadraticConstraint.h>
 
@@ -13,6 +13,7 @@ class BinnedNLLH : public TestStatistic{
     ~BinnedNLLH(){}
 
     double Evaluate();
+
     void   SetPdfManager(const BinnedPdfManager&);
     void   SetSystematicManager(const SystematicManager&);
 
@@ -34,9 +35,16 @@ class BinnedNLLH : public TestStatistic{
     void SetDataPdf(const BinnedPdf&);
     BinnedPdf GetDataPdf() const;
 
+    void SetBuffer(size_t dim_, unsigned lower_, unsigned upper_);
+    std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;
+    void SetBufferAsOverflow(bool b_);
+    bool GetBufferAsOverflow() const;
+    
+    
  private:
     BinnedPdfManager  fPdfManager;
-    SystematicManager fSystematicManager;  
+    SystematicManager fSystematicManager;
+    BinnedPdfShrinker fPdfShrinker;
 
     std::vector<QuadraticConstraint> fSystematicConstraints;
     std::vector<QuadraticConstraint> fNormalisationConstraints;

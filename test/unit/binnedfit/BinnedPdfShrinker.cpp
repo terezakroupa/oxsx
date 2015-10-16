@@ -34,9 +34,8 @@ TEST_CASE("Shrinking a 1D pdf"){
         inputPdf.SetBinContent(i, i);
     inputPdf.SetDataRep(0);
 
-    BinnedPdfShrinker shrinker(1);
-    shrinker.SetUpperBuffer(0, 5); // buffer of 5 above 
-    shrinker.SetLowerBuffer(0, 3); // 3 below
+    BinnedPdfShrinker shrinker;
+    shrinker.SetBuffer(0, 3, 5); // buffer of 5 above, 3 below in dimension 0
 
     SECTION("With overflow bins"){
         shrinker.SetUsingOverflows(true);
@@ -63,8 +62,6 @@ TEST_CASE("Shrinking a 1D pdf"){
 
         REQUIRE(shrunkPdf.GetBinContent(shrunkPdf.GetNBins() - 1) == 94); 
         REQUIRE(shrunkPdf.GetBinContent(50) == 53);
-        (PdfConverter::ToTH1D(inputPdf)).SaveAs("original.root");
-        (PdfConverter::ToTH1D(shrunkPdf)).SaveAs("truncated.root");
     }
     
 }
@@ -90,13 +87,12 @@ TEST_CASE("2D pdf, only have buffer in one direction"){
     inputPdf.SetDataRep(DataRepresentation(relevantIndicies));
 
 
-    BinnedPdfShrinker shrinker(2);
-    shrinker.SetUpperBuffer(1, 5); // five from above on dim 1
-    shrinker.SetLowerBuffer(1, 3); // three from below on dim 1
+    BinnedPdfShrinker shrinker;
+    shrinker.SetBuffer(1, 3, 5); // five, three from above on dim 1
     
     SECTION("With Overflow bins"){
         BinnedPdf shrunk = shrinker.ShrinkPdf(inputPdf);
-        
+
         REQUIRE(shrunk.GetAxes().GetAxis(0).GetNBins() == inputPdf.GetAxes().GetAxis(0).GetNBins());
         REQUIRE(shrunk.GetAxes().GetAxis(1).GetNBins() == 
                 inputPdf.GetAxes().GetAxis(1).GetNBins() - 5 -3 );

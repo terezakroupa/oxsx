@@ -20,6 +20,9 @@ BinnedNLLH::Evaluate(){
     // Apply systematics
     fPdfManager.ApplySystematics(fSystematicManager);
 
+    // Apply Shrinking
+    fPdfManager.ApplyShrink(fPdfShrinker);
+
     // Set Normalisations
     fPdfManager.SetNormalisations(fNormalisations);
 
@@ -30,9 +33,10 @@ BinnedNLLH::Evaluate(){
         if(!prob)
             throw std::runtime_error("BinnedNLLH::Encountered zero probability bin!");
 
-        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);
-        
+        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);        
     }
+
+
     // Extended LH correction
     for(size_t i = 0; i < fNormalisations.size(); i++)
         nLogLH += fNormalisations.at(i);
@@ -71,10 +75,6 @@ BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
     fNsystematics = man_.GetNSystematics();
 }
 
-void
-BinnedNLLH::AddSystematicConstraint(const QuadraticConstraint& constr_){
-    fSystematicConstraints.push_back(constr_);
-}
 
 void
 BinnedNLLH::SetSystematicConstraint(size_t index_, const QuadraticConstraint& constr_){
@@ -138,4 +138,25 @@ BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
 BinnedPdf
 BinnedNLLH::GetDataPdf() const{
     return fDataPdf;
+}
+
+
+void
+BinnedNLLH::SetBuffer(size_t dim_, unsigned lower_, unsigned upper_){
+    fPdfShrinker.SetBuffer(dim_, lower_, upper_);
+}
+
+std::pair<unsigned, unsigned>
+BinnedNLLH::GetBuffer(size_t dim_) const{
+    return fPdfShrinker.GetBuffer(dim_);
+}
+
+void
+BinnedNLLH::SetBufferAsOverflow(bool b_){
+    fPdfShrinker.SetUsingOverflows(b_);
+}
+
+bool
+BinnedNLLH::GetBufferAsOverflow() const{
+    return fPdfShrinker.GetUsingOverflows();
 }
