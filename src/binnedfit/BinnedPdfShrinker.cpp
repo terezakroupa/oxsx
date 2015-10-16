@@ -3,59 +3,25 @@
 #include <DataExceptions.h>
 #include <iostream>
 
-BinnedPdfShrinker::BinnedPdfShrinker(unsigned nDims_){
-    fLowerBinBuffers = std::vector<unsigned>(nDims_, 0);
-    fUpperBinBuffers = std::vector<unsigned>(nDims_, 0);
-    fUsingOverflows  = true; // move into overflow by default, if false just throw away the buffer bins
-    fNDims = nDims_;
+BinnedPdfShrinker::BinnedPdfShrinker(){
+    fUsingOverflows = true;
 }
-
 
 void
-BinnedPdfShrinker::SetLowerBuffer(size_t dimension_, unsigned nBins_){
-    if (dimension_ >= fNDims)
-        throw DimensionError("BinnedPdfShrinker::Tried to set lower buffer on non-existent dimension");
-    fLowerBinBuffers[dimension_] = nBins_;
+BinnedPdfShrinker::SetBuffer(size_t dim_, unsigned lowerBuff_, unsigned upperBuff_){
+    fBuffers[dim_] = std::pair<unsigned, unsigned> (lowerBuff_, upperBuff_);
 }
 
-
-void
-BinnedPdfShrinker::SetUpperBuffer(size_t dimension_, unsigned nBins_){
-    if (dimension_ >= fNDims)
-        throw DimensionError("BinnedPdfShrinker::Tried to set upper buffer on non-existent dimension");
-    fUpperBinBuffers[dimension_] = nBins_;
-}
-
-
-unsigned
-BinnedPdfShrinker::GetUpperBuffer(size_t dimension_) const{
+std::pair<unsigned, unsigned>
+BinnedPdfShrinker::GetBuffer(size_t dim_) const{
     try{
-        return fUpperBinBuffers.at(dimension_);
+        return fBuffers.at(dim_);
     }
-
     catch(const std::out_of_range&){
-        throw DimensionError("BinnedPdfShrinker::Attempted access on non-existent fit dimension");
+        throw DimensionError("BinnedPdfShrinker::Requested non-existent buffer boundaries!");
     }
-
 }
 
-unsigned
-BinnedPdfShrinker::GetLowerBuffer(size_t dimension_) const{
-    try{
-        return fLowerBinBuffers.at(dimension_);
-    }
-
-    catch(const std::out_of_range&){
-        throw DimensionError("BinnedPdfShrinker::Attempted access on non-existent fit dimension");
-    }
-
-}
-
-
-size_t
-BinnedPdfShrinker::GetNDims() const{
-    return fLowerBinBuffers.size();
-}
 
 PdfAxis
 BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
@@ -85,25 +51,28 @@ BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_,
 
 BinnedPdf
 BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
+    // No buffer no problem. FIXME: what about if all the values are zero?
+    if (!fBuffers.size())
+        return pdf_;
+    
+    size_t nDims = pdf_.GetNDims();
+
+    // FIXME Add a check to see if the non zero entries of fBuffers are in the pdf and give warning
+
     // 1. Build new axes. ShrinkPdf method just makes a copy if buffer size is zero
     AxisCollection newAxes;
     const std::vector<size_t> pdfDataIndicies = pdf_.GetDataRep().GetIndicies();
-    unsigned bufferLow  = 0;
-    unsigned bufferHigh = 0;
-    size_t nDims = pdf_.GetNDims();
-
-    if (nDims != fNDims)
-        throw DimensionError("BinnedPdfShrinker:: Pdf Dimensionality doesn't match shrinker");
-
-    if(pdfDataIndicies.size() != fNDims)
-        throw RepresentationError("BinnedPdfShrinker:: Input pdf data rep doesnt match dimensionality of pdf - which indicies do I shrink?");
-
+    size_t dataIndex = 0;
+    
     for(size_t i = 0; i < nDims; i++){
-        bufferLow  = fLowerBinBuffers.at(pdfDataIndicies.at(i));
-        bufferHigh = fUpperBinBuffers.at(pdfDataIndicies.at(i));
-        newAxes.AddAxis(ShrinkAxis(pdf_.GetAxes().GetAxis(i), bufferLow, bufferHigh));
+        dataIndex = pdfDataIndicies.at(i);
+        if (!fBuffers.count(dataIndex))
+            newAxes.AddAxis(pdf_.GetAxes().GetAxis(i));
+        else
+            newAxes.AddAxis(ShrinkAxis(pdf_.GetAxes().GetAxis(i), 
+                                       fBuffers.at(dataIndex).first,  
+                                       fBuffers.at(dataIndex).second));
     }
-        
 
     // 2. Initialise the new pdf with same data rep
     BinnedPdf newPdf(newAxes);
@@ -119,9 +88,12 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     // bin by bin of old pdf
     for(size_t i = 0; i < pdf_.GetNBins(); i++){
         content = pdf_.GetBinContent(i);
+
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
-            offsetIndex = axes.UnflattenIndex(i, j) - fLowerBinBuffers.at(j);
+            offsetIndex = axes.UnflattenIndex(i, j);            // the index in old pdf
+            if (fBuffers.count(pdfDataIndicies.at(j)))          // offset by lower buffer if nonzero
+                offsetIndex -= fBuffers.at(pdfDataIndicies.at(j)).first;
 
             // Correct the ones that fall in the buffer regions
             // bins in the lower buffer have negative index. Put in first bin in fit region or ignore
@@ -131,6 +103,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
                     content = 0;
 
             }
+
             // bins in the upper buffer have i > number of bins in axis j. Do the same
             if (offsetIndex >= newAxes.GetAxis(j).GetNBins()){
                 offsetIndex = newAxes.GetAxis(j).GetNBins() - 1;

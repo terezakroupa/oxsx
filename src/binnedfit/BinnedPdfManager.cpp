@@ -89,3 +89,9 @@ const std::vector<double>&
 BinnedPdfManager::GetNormalisations() const{
     return fNormalisations;
 }
+
+void
+BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
+    for (size_t i = 0; i < fWorkingPdfs.size(); i++)
+        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+}
