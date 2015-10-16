@@ -33,6 +33,6 @@ class BinnedPdfShrinker{
     std::vector<unsigned> fLowerBinBuffers; // initalised to zero in const.
     std::vector<unsigned> fUpperBinBuffers; // initalised to zero in const.
     size_t fNDims;
-    bool fUsingOverflows;
+    bool fUsingOverflows; // true at initialisation
 };
 #endif
