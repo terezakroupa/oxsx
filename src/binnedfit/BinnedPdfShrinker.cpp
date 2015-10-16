@@ -1,10 +1,12 @@
 #include <BinnedPdfShrinker.h>
 #include <PdfExceptions.h>
+#include <DataExceptions.h>
+#include <iostream>
 
 BinnedPdfShrinker::BinnedPdfShrinker(unsigned nDims_){
     fLowerBinBuffers = std::vector<unsigned>(nDims_, 0);
     fUpperBinBuffers = std::vector<unsigned>(nDims_, 0);
-    fUsingOverflows  = true; // move into overflow by default, if true just throw away the buffer bins
+    fUsingOverflows  = true; // move into overflow by default, if false just throw away the buffer bins
     fNDims = nDims_;
 }
 
@@ -90,6 +92,12 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     unsigned bufferHigh = 0;
     size_t nDims = pdf_.GetNDims();
 
+    if (nDims != fNDims)
+        throw DimensionError("BinnedPdfShrinker:: Pdf Dimensionality doesn't match shrinker");
+
+    if(pdfDataIndicies.size() != fNDims)
+        throw RepresentationError("BinnedPdfShrinker:: Input pdf data rep doesnt match dimensionality of pdf - which indicies do I shrink?");
+
     for(size_t i = 0; i < nDims; i++){
         bufferLow  = fLowerBinBuffers.at(pdfDataIndicies.at(i));
         bufferHigh = fUpperBinBuffers.at(pdfDataIndicies.at(i));
@@ -107,37 +115,44 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     size_t newBin = 0;
 
     const AxisCollection& axes = pdf_.GetAxes();
-
+    double content = 0;
     // bin by bin of old pdf
     for(size_t i = 0; i < pdf_.GetNBins(); i++){
+        content = pdf_.GetBinContent(i);
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
-            offsetIndex = axes.UnflattenIndex(j, i) - fLowerBinBuffers.at(j);
+            offsetIndex = axes.UnflattenIndex(i, j) - fLowerBinBuffers.at(j);
 
             // Correct the ones that fall in the buffer regions
             // bins in the lower buffer have negative index. Put in first bin in fit region or ignore
             if (offsetIndex < 0){
-                if (fUsingOverflows)
-                    offsetIndex = fLowerBinBuffers.at(j);
-                else
-                    break;
+                offsetIndex = 0;
+                if(!fUsingOverflows)
+                    content = 0;
+
             }
             // bins in the upper buffer have i > number of bins in axis j. Do the same
-            if (offsetIndex > axes.GetAxis(j).GetNBins()){
-                if (fUsingOverflows)
-                    offsetIndex = fUpperBinBuffers.at(j);
-                else
-                    break;
+            if (offsetIndex >= newAxes.GetAxis(j).GetNBins()){
+                offsetIndex = newAxes.GetAxis(j).GetNBins() - 1;
+                if (!fUsingOverflows)
+                    content = 0;
             }
-            
+
             newIndicies[j] = offsetIndex;
         }
         // Fill 
         newBin = newAxes.FlattenIndicies(newIndicies);
-        newPdf.SetBinContent(newBin, pdf_.GetBinContent(i));
+        newPdf.AddBinContent(newBin, content);
     }
-
-    newPdf.Normalise();
     return newPdf;
 }
 
+void
+BinnedPdfShrinker::SetUsingOverflows(bool b_){
+    fUsingOverflows = b_;
+}
+
+bool
+BinnedPdfShrinker::GetUsingOverflows() const{
+    return fUsingOverflows;
+}
