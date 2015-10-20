@@ -3,6 +3,7 @@
 #include <BinnedPdf.h>
 #include <iostream>
 #include <PdfExceptions.h>
+#include <PdfConverter.h>
 
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
@@ -28,17 +29,16 @@ BinnedPdfManager::Probability(const EventData& data_) const{
 double
 BinnedPdfManager::BinProbability(size_t bin_) const{
     double sum = 0;
-
     try{
         for(size_t i = 0; i < fWorkingPdfs.size(); i++){
             sum += fNormalisations.at(i) * fWorkingPdfs.at(i).GetBinContent(bin_);
+    
         }
     }
 
     catch(const std::out_of_range&){
         throw DimensionError("BinnedPdfManager:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
     }
-
     return sum;
 }
 
@@ -92,6 +92,10 @@ BinnedPdfManager::GetNormalisations() const{
 
 void
 BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
+    // only shrink if not already shrunk! FIXME: more obvious behaviour
+    if (!fWorkingPdfs.size() || fWorkingPdfs.at(0).GetNBins() != fOriginalPdfs.at(0).GetNBins())
+      return;
+
     for (size_t i = 0; i < fWorkingPdfs.size(); i++)
-        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+      fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
 }

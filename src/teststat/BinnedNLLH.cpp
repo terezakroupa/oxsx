@@ -29,10 +29,9 @@ BinnedNLLH::Evaluate(){
     // loop over bins and calculate the likelihood
     double nLogLH = 0;
     for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
-        double prob = fPdfManager.BinProbability(i);
+        double prob = fPdfManager.BinProbability(i);	
         if(!prob)
             throw std::runtime_error("BinnedNLLH::Encountered zero probability bin!");
-
         nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);        
     }
 
@@ -131,8 +130,8 @@ BinnedNLLH::SetDataSet(DataSet* dataSet_){
 
 void
 BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
-    fDataPdf = binnedPdf_;
-    fCalculatedDataPdf = true;
+  fDataPdf = fPdfShrinker.ShrinkPdf(binnedPdf_);
+  fCalculatedDataPdf = true;
 }
 
 BinnedPdf

@@ -79,15 +79,17 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     newPdf.SetDataRep(pdf_.GetDataRep());
 
     // 3. Fill the axes
-    std::vector<size_t> newIndicies(pdf_.GetNDims()); 
+    std::vector<size_t> newIndicies(pdf_.GetNDims());  // same as old, just corrected for overflow
     int   offsetIndex = 0; // note taking difference of two unsigneds
-    size_t newBin = 0;
+    size_t newBin = 0;     //  will loop over dims and use this to assign bin # corrected for overflow
 
     const AxisCollection& axes = pdf_.GetAxes();
     double content = 0;
     // bin by bin of old pdf
     for(size_t i = 0; i < pdf_.GetNBins(); i++){
         content = pdf_.GetBinContent(i);
+	if(!content) // no content no problem
+	  continue;
 
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
@@ -107,6 +109,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
             // bins in the upper buffer have i > number of bins in axis j. Do the same
             if (offsetIndex >= newAxes.GetAxis(j).GetNBins()){
                 offsetIndex = newAxes.GetAxis(j).GetNBins() - 1;
+
                 if (!fUsingOverflows)
                     content = 0;
             }
@@ -129,3 +132,4 @@ bool
 BinnedPdfShrinker::GetUsingOverflows() const{
     return fUsingOverflows;
 }
+
