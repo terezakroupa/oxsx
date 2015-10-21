@@ -55,3 +55,12 @@ std::vector<std::string>
 OXSXDataSet::GetObservableNames() const{
     return fObservableNames;
 }
+
+
+OXSXDataSet
+OXSXDataSet::operator+ (const OXSXDataSet& other_){
+    for(size_t i = 0; i < other_.GetNEntries(); i++)
+        AddEntry(other_.GetEntry(i));
+    
+    return *this;
+}
