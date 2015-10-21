@@ -16,6 +16,7 @@ class EventData{
  public:
     EventData(const std::vector<double>& obs_);
     std::vector<double> GetData() const;
+    double GetDatum(size_t) const;
     std::vector<double> ToRepresentation(const DataRepresentation&) const;
 
     size_t GetNDimensions() const {return fNDimensions;}

@@ -1,17 +1,31 @@
 #include <EventData.h>
 #include <DataRepresentation.h>
 #include <DataExceptions.h>
+#include <PdfExceptions.h>
 
 EventData::EventData(const std::vector<double>& obs_){
     fObservations = obs_;
     fNDimensions  = obs_.size(); 
 }
 
-std::vector<double> EventData::GetData() const{
+std::vector<double> 
+EventData::GetData() const{
     return fObservations;
 }
 
-std::vector<double> EventData::ToRepresentation(const DataRepresentation& rep_) const{
+double
+EventData::GetDatum(size_t index_) const{
+    try{
+        return fObservations.at(index_);
+    }
+
+    catch(const std::out_of_range& e_){
+        throw DimensionError("EventData::Attempted access on non-existent observable");
+    }
+}
+
+std::vector<double> 
+EventData::ToRepresentation(const DataRepresentation& rep_) const{
     size_t len = rep_.GetLength();
 
     if (!len)
