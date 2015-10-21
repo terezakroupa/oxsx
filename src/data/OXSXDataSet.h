@@ -24,6 +24,9 @@ public:
 
     void SetObservableNames(const std::vector<std::string>& names_);
     std::vector<std::string> GetObservableNames() const;
+    
+    // concatenate
+    OXSXDataSet operator+ (const OXSXDataSet& other_);
 
 private:
     std::vector<EventData>* fData;
