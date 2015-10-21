@@ -24,9 +24,23 @@ DataSetGenerator::ExpectedRatesDataSet() const{
     OXSXDataSet dataSet;
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-    for(unsigned j = 0; j < expectedCounts; j++)
-        dataSet.AddEntry(RandomEvent(i));
+
+        for(unsigned j = 0; j < expectedCounts;){
+            EventData event_ = RandomEvent(i);
+            
+            // check it passes the cuts
+            bool passesCuts = true;
+            for(size_t k = 0; k < fCuts.size(); k++)
+                passesCuts = passesCuts && fCuts.at(k).PassesCut(event_);
+                
+            
+            if (passesCuts){
+                dataSet.AddEntry(event_);
+                j++;
+            }
+        }
     }
+        
     return dataSet;
 }
 
@@ -40,4 +54,14 @@ void
 DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
+}
+
+void
+DataSetGenerator::AddCut(const Cut& cut_){
+    fCuts.push_back(cut_);
+}
+
+Cut
+DataSetGenerator::GetCut(size_t index_) const{
+    return fCuts.at(index_);
 }
