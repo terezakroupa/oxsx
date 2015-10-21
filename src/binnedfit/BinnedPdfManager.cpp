@@ -96,6 +96,9 @@ BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
     if (!fWorkingPdfs.size() || fWorkingPdfs.at(0).GetNBins() != fOriginalPdfs.at(0).GetNBins())
       return;
 
-    for (size_t i = 0; i < fWorkingPdfs.size(); i++)
+    for (size_t i = 0; i < fWorkingPdfs.size(); i++){
       fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+      fWorkingPdfs[i].Normalise();
+    }
+    
 }
