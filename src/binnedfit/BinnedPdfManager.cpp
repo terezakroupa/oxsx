@@ -92,13 +92,16 @@ BinnedPdfManager::GetNormalisations() const{
 
 void
 BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
+    if (!shrinker_.GetBuffers().size())
+        return;
+        
     // only shrink if not already shrunk! FIXME: more obvious behaviour
     if (!fWorkingPdfs.size() || fWorkingPdfs.at(0).GetNBins() != fOriginalPdfs.at(0).GetNBins())
-      return;
+        return;
 
     for (size_t i = 0; i < fWorkingPdfs.size(); i++){
-      fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
-      fWorkingPdfs[i].Normalise();
+        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+        fWorkingPdfs[i].Normalise();
     }
     
 }

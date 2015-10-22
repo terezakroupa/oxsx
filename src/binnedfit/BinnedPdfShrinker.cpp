@@ -22,6 +22,10 @@ BinnedPdfShrinker::GetBuffer(size_t dim_) const{
     }
 }
 
+std::map<size_t, std::pair<unsigned, unsigned> > 
+BinnedPdfShrinker::GetBuffers() const{
+    return fBuffers;
+}
 
 PdfAxis
 BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
@@ -45,12 +49,13 @@ BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_,
         lowEdges[i]   = axis_.GetBinLowEdge(equivilentOldBin);
         highEdges[i]  = axis_.GetBinHighEdge(equivilentOldBin);
     }
-
+    
     return PdfAxis(axis_.GetName(), lowEdges, highEdges, axis_.GetLatexName());
 }
 
 BinnedPdf
 BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
+
     // No buffer no problem. FIXME: what about if all the values are zero?
     if (!fBuffers.size())
         return pdf_;
@@ -88,8 +93,8 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     // bin by bin of old pdf
     for(size_t i = 0; i < pdf_.GetNBins(); i++){
         content = pdf_.GetBinContent(i);
-	if(!content) // no content no problem
-	  continue;
+        if(!content) // no content no problem
+            continue;
 
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
@@ -120,6 +125,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
         newBin = newAxes.FlattenIndicies(newIndicies);
         newPdf.AddBinContent(newBin, content);
     }
+
     return newPdf;
 }
 
