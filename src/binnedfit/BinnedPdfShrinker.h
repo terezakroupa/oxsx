@@ -21,7 +21,9 @@ class BinnedPdfShrinker{
     
     void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
     std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;
-
+    
+    std::map<size_t, std::pair<unsigned, unsigned> > GetBuffers() const;
+     
     void SetUsingOverflows(bool b_);
     bool GetUsingOverflows() const;
 

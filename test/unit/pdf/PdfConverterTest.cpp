@@ -25,7 +25,6 @@ TEST_CASE("Writing a 1D pdf to a root histogram", "[PdfConverter]"){
         TH1D rootPdf = PdfConverter::ToTH1D(binnedPdf);
         REQUIRE(rootPdf.Integral() == 100);
         
-
         // root histograms are ordered 1->nbins with 0 and nbins +1 as over/underflow
         // nativex pdfs are ordered 0->nbins-1 with 0 and nbins-1 as underflow
 
@@ -66,11 +65,11 @@ TEST_CASE("Converting a 1D gaussian to a binned pdf", "[PdfConverter]"){
         double meanBinError = std::abs(binnedGaus.Means().at(0) - 10);
         double varBinError  = std::abs(binnedGaus.Variances().at(0) - 21.1 * 21.1);
 
-        
-        
+                
         // integral mean and var right to within 0.3% rms != gaus sigma
         REQUIRE(meanBinError/10 < 0.003);
         REQUIRE(varBinError/21.1/21.1 < 0.003);
+        REQUIRE(gaus.Integral() == 1);
     }                                                                        
     
 }                                                                           
