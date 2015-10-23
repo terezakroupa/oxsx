@@ -12,8 +12,9 @@ class FakePdfGenerator{
 
     void SetRates(const std::vector<double> rates_) {fRates = rates_;}
     std::vector<double> GetRates() const {return fRates;}
-
+    
     BinnedPdf ExpectedRatesPdf() const;
+    BinnedPdf PoissonFluctuatedPdf() const;
 
  private:
     std::vector<BinnedPdf> fPdfs;
