@@ -15,6 +15,15 @@ BinnedPdf::BinnedPdf(const BinnedPdf& other_) : Pdf(other_){
     fNDims = other_.fNDims;
 }
 
+BinnedPdf
+BinnedPdf::operator=(const BinnedPdf& other_){
+    fHistogram.SetAxes(other_.GetAxes());
+    fHistogram.SetBinContents(other_.GetBinContents());
+    fDataRep = other_.fDataRep;
+    fNDims = other_.fNDims;
+    return *this;
+}
+
 void 
 BinnedPdf::Fill(const EventData& data_, double weight_){
     try{
