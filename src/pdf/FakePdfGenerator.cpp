@@ -4,6 +4,7 @@
 #include <Rand.h>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 BinnedPdf
 FakePdfGenerator::ExpectedRatesPdf() const{
