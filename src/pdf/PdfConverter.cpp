@@ -64,7 +64,7 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
     // Get the axes you are interested in,  in the order requested
     AxisCollection newAxes;
     for(size_t i = 0;  i < indicies_.size(); i++)
-        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(i));
+        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(indicies_.at(i)));
 
     // New pdf
     BinnedPdf marginalisedPdf(newAxes);
