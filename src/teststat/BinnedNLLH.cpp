@@ -159,3 +159,15 @@ bool
 BinnedNLLH::GetBufferAsOverflow() const{
     return fPdfShrinker.GetUsingOverflows();
 }
+
+void
+BinnedNLLH::AddPdfs(const std::vector<BinnedPdf>& pdfs_){
+  for(size_t i = 0; i < pdfs_.size(); i++)
+    AddPdf(pdfs_.at(i));
+}
+
+void
+BinnedNLLH::AddSystematics(const std::vector<Systematic*> systematics_){
+  for(size_t i = 0; i < systematics_.size(); i++)
+    AddSystematic(systematics_.at(i));
+}

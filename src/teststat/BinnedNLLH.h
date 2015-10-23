@@ -20,6 +20,9 @@ class BinnedNLLH : public TestStatistic{
     void   AddPdf(const BinnedPdf&);
     void   AddSystematic(Systematic*);
 
+    void   AddPdfs(const std::vector<BinnedPdf>&);
+    void   AddSystematics(const std::vector<Systematic*>);
+
     void AddSystematicConstraint(const QuadraticConstraint& constr_);
     void AddNormalisationConstraint(const QuadraticConstraint& constr_);
 
