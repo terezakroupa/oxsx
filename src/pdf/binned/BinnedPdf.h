@@ -16,7 +16,8 @@ class BinnedPdf : public Pdf{
     BinnedPdf() {}
     BinnedPdf(const AxisCollection& axes_);
     BinnedPdf(const BinnedPdf& other_);
-    
+    BinnedPdf operator=(const BinnedPdf& other_);
+
     virtual double operator() (const std::vector<double>& vals_) const;
     virtual double Integral()  const;
     virtual void   Normalise();
