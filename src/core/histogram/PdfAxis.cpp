@@ -14,7 +14,7 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
     fMin = min_;
     fMax = max_;
 
-    if (fMin > fMax || !nBins_)
+    if (fMin >= fMax || !nBins_)
         throw BinError("Invalid bin specification: min > max or nbins = 0");
 
     fNBins = nBins_;
