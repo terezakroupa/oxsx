@@ -70,6 +70,16 @@ MetropolisHastings::SetMaxima(const std::vector<double>& maxima_){
 }
 
 
+void
+MetropolisHastings::SetFlipSign(bool b_){
+    fFlipSign = b_;
+}
+
+bool
+MetropolisHastings::GetFlipSign() const{
+    return fFlipSign;
+}
+
 FitResult
 MetropolisHastings::Optimise(){
     fNDims = fMinima.size();
@@ -118,6 +128,9 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
 
     pTestStatistic -> SetParams(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
+
+    if(fFlipSign)
+        thisVal = -thisVal;
 
     if(thisVal > fMaxVal){
         fMaxVal = thisVal;
