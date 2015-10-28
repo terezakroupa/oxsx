@@ -16,11 +16,11 @@ class FitResult{
     void  SetBestFit(const std::vector<double>&);
     std::vector<double> GetBestFit() const;
 
-    void SetStatSpace(Histogram*);
-    Histogram* GetStatSpace() const; 
+    void SetStatSpace(const Histogram&);
+    const Histogram& GetStatSpace() const; 
 
     void SetStatSample(const std::vector<std::vector<double> >&);
-    std::vector<std::vector<double> > GetStatSample() const;
+    const std::vector<std::vector<double> >& GetStatSample() const;
     
     void SetValid(bool b_);
     bool GetValid() const;

@@ -16,13 +16,13 @@ FitResult::GetBestFit() const{
 }
 
 void
-FitResult::SetStatSpace(Histogram* statSpace_){
-    fStatSpace = new Histogram(*statSpace_);
+FitResult::SetStatSpace(const Histogram& statSpace_){
+    fStatSpace = new Histogram(statSpace_);
 }
 
-Histogram*
+const Histogram&
 FitResult::GetStatSpace() const{
-    return fStatSpace;
+    return *fStatSpace;
 }
 
 FitResult
@@ -48,7 +48,7 @@ FitResult::FitResult(const FitResult& other_){
     fIsValid = other_.fIsValid;
 }
 
-std::vector<std::vector<double> > 
+const std::vector<std::vector<double> >&
 FitResult::GetStatSample() const{
     return fStatSample;
 }
