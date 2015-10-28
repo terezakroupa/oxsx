@@ -127,9 +127,10 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
                                  const std::vector<double>& proposedStep_){
 
     // dont step outside of the fit region 
-  for (size_t i = 0; i < fMinima.size(); i++){
-    if (proposedStep.at(i) < fMinima.at(i) || proposedStep.at(i) > fMaxima.at(i))
-  }
+    for (size_t i = 0; i < fMinima.size(); i++){
+        if (proposedStep_.at(i) < fMinima.at(i) || proposedStep_.at(i) > fMaxima.at(i))
+            return false;
+    }
 
     pTestStatistic -> SetParams(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
