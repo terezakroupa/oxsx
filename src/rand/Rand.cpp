@@ -1,6 +1,10 @@
 #include <Rand.h>
 #include <stdlib.h>
 #include <TRandom3.h>
+#include <iostream>
+
+TRandom3
+Rand::fRandomGen = TRandom3();
 
 double
 Rand::Uniform(double max_){
@@ -9,7 +13,6 @@ Rand::Uniform(double max_){
 
 double 
 Rand::Gaus(double mean_, double sigma_){
-    TRandom3 rand3;
-    rand3.SetSeed();
-    return rand3.Gaus(mean_, sigma_);
+    //    rand3.SetSeed();
+    return fRandomGen.Gaus(mean_, sigma_);
 }
