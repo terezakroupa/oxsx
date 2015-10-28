@@ -22,6 +22,7 @@ class PdfConverter{
     
     // 2nd arg is the vec of (data) indicies to keep (not to project out)
     static BinnedPdf Marginalise(const BinnedPdf& binnedPdf_, const std::vector<size_t>& indices_);
+    static Histogram Marginalise(const Histogram& binnedPdf_, const std::vector<size_t>& indices_);
     static BinnedPdf Marginalise(const BinnedPdf& binnedPdf_, size_t index_);
 };
 #endif
