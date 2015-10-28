@@ -92,17 +92,23 @@ MetropolisHastings::Optimise(){
     for(size_t i = 0; i < fMinima.size(); i++){
         currentStep.push_back(fMinima.at(i) + Rand::Uniform() * (fMaxima.at(i) - fMinima.at(i)));
     }
+
+    std::cout << "Metropolis Hastings::Initial Position @ \t\t";
+    for(size_t i = 0; i < currentStep.size(); i++)
+        std::cout << currentStep.at(i) << ",";
+    std::cout << std::endl;
+
     fSample.empty();
     fSample.reserve(fMaxIter - fBurnIn);
+   
     // 2. Loop step through the space a fixed number of times and
     for(unsigned i = 0; i < fMaxIter; i++){
         // a. Save the point in question if you are past burn-in phase and according to thinning
-      if (i > fBurnIn && !(i%fThinFactor))
+        if (i > fBurnIn && !(i%fThinFactor))
             fSample.push_back(currentStep);
       
-        if(!(i%1000))
+        if(!(i%100000))
             std::cout << i << "  /  " << fMaxIter << std::endl;
-
 
         // b. Propose a new step according to a random jump distribution
         std::vector<double> proposedStep = JumpDraw(currentStep);
@@ -112,10 +118,9 @@ MetropolisHastings::Optimise(){
             currentStep = proposedStep;
         else
             fRejectionRate++;
-        
     }
     fRejectionRate/= static_cast<double>(fMaxIter);
-    std::cout << "Metropolis Hastings:: rejection rate = " << fRejectionRate << std::endl;
+    std::cout << "Metropolis Hastings:: acceptance rate = " << 1 - fRejectionRate << std::endl;
 
     fFitResult.SetBestFit(fBestFit);
     fFitResult.SetStatSample(fSample);
@@ -140,7 +145,7 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
 
     if(fFlipSign){
         thisVal = -thisVal;
-	proposedVal = -proposedVal;
+        proposedVal = -proposedVal;
     }
 
     if(thisVal > fMaxVal){
