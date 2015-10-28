@@ -8,7 +8,7 @@ import os
 import sys
 from array import array
 try:
-    from ROOT import TFile, TTree, TNtuple
+    from ROOT import TFile, TTree, TNtuple, TChain
 except ImportError:
     print "Cant find root lib is it in $PYTHONPATH?"
     sys.exit()
@@ -16,10 +16,12 @@ except ImportError:
 def make_ntup(file_name, tree_name,  branches, outfile, n_events, new_tree_name):
     if new_tree_name == "":
         new_tree_name = tree_name
+
+    print file_name
     
     # Get the event tree 
-    in_file = TFile(file_name)
-    tree    = in_file.Get(tree_name)
+    tree = TChain(tree_name)
+    tree.Add(file_name)
     if not tree:
         print "Error: No tree named %s in %s" %(tree_name, file_name)
         sys.exit()
@@ -46,7 +48,9 @@ def make_ntup(file_name, tree_name,  branches, outfile, n_events, new_tree_name)
             break
         vals = array('f', [entry.__getattr__(b) for b in branches])
         nt.Fill(vals)
-
+        
+        if (index % 100000 == 0):
+            print index, "/", n_events
     # Save
     out_file.cd()
     nt.Write()
@@ -72,8 +76,8 @@ if __name__ == "__main__":
         outfile = os.path.splitext(outfile)[0]
         outfile += "_oxsx.root"
         args.outfile = outfile
-        make_ntup(args.filename, args.treename, args.branches, 
-                  args.outfile, args.nevents, args.newtreename)
+    make_ntup(args.filename, args.treename, args.branches, 
+              args.outfile, args.nevents, args.newtreename)
     
 
         
