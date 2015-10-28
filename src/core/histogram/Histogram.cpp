@@ -94,6 +94,11 @@ Histogram::GetNBins() const{
     return fNBins;
 }
 
+size_t 
+Histogram::GetNDims() const{
+  return fNDims;
+}
+
 void 
 Histogram::Empty(){
     for(size_t i = 0; i < fNBins; i++)
