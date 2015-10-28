@@ -92,14 +92,14 @@ MetropolisHastings::Optimise(){
     for(size_t i = 0; i < fMinima.size(); i++){
         currentStep.push_back(fMinima.at(i) + Rand::Uniform() * (fMaxima.at(i) - fMinima.at(i)));
     }
-
+    fSample.empty();
     fSample.reserve(fMaxIter - fBurnIn);
     // 2. Loop step through the space a fixed number of times and
     for(unsigned i = 0; i < fMaxIter; i++){
         // a. Save the point in question if you are past burn-in phase and according to thinning
-        if (i > fBurnIn && !(i%fThinFactor))
+      if (i > fBurnIn && !(i%fThinFactor))
             fSample.push_back(currentStep);
-
+      
         if(!(i%1000))
             std::cout << i << "  /  " << fMaxIter << std::endl;
 
@@ -126,19 +126,26 @@ bool
 MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_, 
                                  const std::vector<double>& proposedStep_){
 
+    // dont step outside of the fit region 
+  for (size_t i = 0; i < fMinima.size(); i++){
+    if (proposedStep.at(i) < fMinima.at(i) || proposedStep.at(i) > fMaxima.at(i))
+  }
+
     pTestStatistic -> SetParams(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
+    
+    pTestStatistic -> SetParams(proposedStep_);
+    double proposedVal = pTestStatistic -> Evaluate();
 
-    if(fFlipSign)
+    if(fFlipSign){
         thisVal = -thisVal;
+	proposedVal = -proposedVal;
+    }
 
     if(thisVal > fMaxVal){
         fMaxVal = thisVal;
         fBestFit = thisStep_;
     }
-
-    pTestStatistic -> SetParams(proposedStep_);
-    double proposedVal = pTestStatistic -> Evaluate();
 
     double acceptanceParam = JumpProbRatio(thisStep_, proposedStep_) * proposedVal/thisVal;
 
