@@ -33,6 +33,7 @@ FitResult::operator=(const FitResult& other_){
         fStatSpace = new Histogram(*other_.fStatSpace);
     fIsValid = other_.fIsValid;
     fBestFit = other_.fBestFit;
+    fStatSample = other_.fStatSample;
     return *this;
 }
 
@@ -42,6 +43,7 @@ FitResult::FitResult(const FitResult& other_){
 
     else
         fStatSpace = new Histogram(*other_.fStatSpace);
+    fStatSample = other_.fStatSample;
     fBestFit = other_.fBestFit;
     fIsValid = other_.fIsValid;
 }
