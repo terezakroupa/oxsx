@@ -38,6 +38,7 @@ class Histogram{
 
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
+    size_t GetNDims() const;
     void   AddBinContent(size_t bin_, double content_);
     void   SetBinContent(size_t bin_, double content_);
     void   Empty();
