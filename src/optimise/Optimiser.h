@@ -13,7 +13,7 @@ class Optimiser{
     Optimiser(TestStatistic* evaluator_): pTestStatistic(evaluator_){}
     virtual ~Optimiser() {}
 
-    virtual FitResult Optimise() = 0;
+    virtual const FitResult& Optimise() = 0;
 
  protected:
     TestStatistic* pTestStatistic;

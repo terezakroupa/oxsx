@@ -105,7 +105,7 @@ Minuit::RemoveLimits(size_t index_){
     fMinimiser->RemoveLimits(index_);
 }
 
-FitResult 
+const FitResult&
 Minuit::Optimise(){
     if(!fMinimiser)
         Initialise();

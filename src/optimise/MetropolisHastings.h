@@ -7,11 +7,11 @@ class MetropolisHastings : public Optimiser{
  public:
  MetropolisHastings(TestStatistic* stat_) : Optimiser(stat_), fBurnIn(3000), 
                                             fMaxIter(100000), fThinFactor(1), 
-                                            fMaxVal(0), fFlipSign(false) {}
+                                            fMaxVal(0), fFlipSign(false), fTestStatLogged(false)  {}
 
     ~MetropolisHastings() {}
     
-    FitResult Optimise(); 
+    const FitResult& Optimise(); 
 
     unsigned GetBurnIn() const;
     void     SetBurnIn(unsigned);
@@ -35,6 +35,9 @@ class MetropolisHastings : public Optimiser{
 
     bool GetFlipSign() const;
     void SetFlipSign(bool);
+    
+    bool GetTestStatLogged() const;
+    void SetTestStatLogged(bool b_);
 
  private:
     unsigned fBurnIn;
@@ -59,8 +62,8 @@ class MetropolisHastings : public Optimiser{
 
     bool   StepAccepted(const std::vector<double>& thisStep_,
                         const std::vector<double>& proposedStep_);
-
-
+    
+    bool fTestStatLogged;
 };
 #endif
 

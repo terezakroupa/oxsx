@@ -117,16 +117,19 @@ PdfConverter::Marginalise(const Histogram& histo_,
     // New pdf
     Histogram marginalised(newAxes);
     
+    std::vector<size_t> oldIndicies(histo_.GetNDims());
+    std::vector<size_t> newIndicies(indicies_.size());
+    size_t newBin = -1;
+
     // Now loop over the bins in old and fill new pdfs
     for(size_t bin = 0; bin < histo_.GetNBins(); bin++){
-        std::vector<size_t> oldIndicies = histo_.UnpackIndicies(bin);
-        std::vector<size_t> newIndicies;
+        for(size_t i = 0; i < histo_.GetNDims(); i++)
+            oldIndicies[i] = histo_.GetAxes().UnflattenIndex(bin, i);
 
         for(size_t i = 0; i < indicies_.size(); i++)
-            newIndicies.push_back(oldIndicies.at(indicies_.at(i)));
+            newIndicies[i] = oldIndicies.at(indicies_.at(i));
                 
-        size_t newBin = marginalised.FlattenIndicies(newIndicies);
-
+        newBin = marginalised.FlattenIndicies(newIndicies);
         marginalised.AddBinContent(newBin, histo_.GetBinContent(bin));
     }
     return marginalised;
