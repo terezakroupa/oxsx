@@ -80,7 +80,17 @@ MetropolisHastings::GetFlipSign() const{
     return fFlipSign;
 }
 
-FitResult
+bool
+MetropolisHastings::GetTestStatLogged() const{
+    return fTestStatLogged;
+}
+
+void
+MetropolisHastings::SetTestStatLogged(bool b_){
+    fTestStatLogged = b_;
+}
+
+const FitResult&
 MetropolisHastings::Optimise(){
     fNDims = fMinima.size();
     fRejectionRate = 0;
@@ -124,6 +134,7 @@ MetropolisHastings::Optimise(){
 
     fFitResult.SetBestFit(fBestFit);
     fFitResult.SetStatSample(fSample);
+    fFitResult.SetValid(true);
     return fFitResult;
 }
 
@@ -148,13 +159,18 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
         proposedVal = -proposedVal;
     }
 
-    if(thisVal > fMaxVal){
+    if(thisVal > fMaxVal || fMaxVal == 0.0){
         fMaxVal = thisVal;
         fBestFit = thisStep_;
     }
+    
+    double acceptanceParam = 0;
+    if(fTestStatLogged)
+        acceptanceParam = JumpProbRatio(thisStep_, proposedStep_) * exp(proposedVal - thisVal);
 
-    double acceptanceParam = JumpProbRatio(thisStep_, proposedStep_) * proposedVal/thisVal;
-
+    else
+        acceptanceParam = JumpProbRatio(thisStep_, proposedStep_) * proposedVal/thisVal;
+    
     if (acceptanceParam > 1)
         return true;
 

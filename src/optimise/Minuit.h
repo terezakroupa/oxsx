@@ -21,7 +21,7 @@ class Minuit : public Optimiser{
     ~Minuit();
 
     void Initialise();
-    virtual FitResult Optimise();
+    virtual const FitResult& Optimise();
 
     void Fix(size_t index_);        // these three methods only work after a call to Initialise
     void Release(size_t index_);

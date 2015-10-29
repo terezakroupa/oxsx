@@ -36,7 +36,7 @@ GridSearch::GetStepSizes() const{
     return fStepSizes;
 }
 
-FitResult
+const FitResult&
 GridSearch::Optimise(){
     // list of rates followed by list of systematics
     std::vector<double> bestFit;
