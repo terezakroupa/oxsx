@@ -28,4 +28,7 @@ class CompositePdf : public Pdf{
  private:
     std::vector<Pdf*> fPdfPtrs;
 };
+
+CompositePdf operator * (const Pdf&, const Pdf&);
+
 #endif
