@@ -63,3 +63,11 @@ CompositePdf::Clone() const {
     Pdf *cp = new CompositePdf(fPdfPtrs);
     return static_cast<Pdf*>(cp);
 }
+
+
+CompositePdf
+operator * (const Pdf& pdf1_, const Pdf& pdf2_){
+    return CompositePdf(&pdf1_, &pdf2_);
+}
+
+

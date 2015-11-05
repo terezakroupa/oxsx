@@ -40,7 +40,6 @@ class Pdf{
     virtual void   Normalise() = 0;
     virtual Pdf*   Clone() const = 0;
 
-    CompositePdf operator* (const Pdf& other_) const;  // references are polymorphic :)
     unsigned GetNDims() const;
     
     void SetDataRep(const DataRepresentation&);
