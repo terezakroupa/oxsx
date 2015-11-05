@@ -31,9 +31,17 @@ SystematicManager::SetParameters(const std::vector<double>& params_){
     for(size_t i = 0; i < fSystematics.size(); i++)
         fSystematics[i] -> Construct();
 
+    
+    // Assemble the overall response
+    fTotalResponse = fSystematics.at(0) -> GetResponse();
+    for(size_t i = 1; i < fSystematics.size(); i++)
+      fTotalResponse *= fSystematics.at(i) -> GetResponse();
 }
 
-
+const PdfMapping&
+SystematicManager::GetTotalResponse() const{
+     return fTotalResponse;
+}
                                         
 
 const std::vector<double>& 

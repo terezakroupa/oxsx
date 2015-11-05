@@ -50,20 +50,18 @@ BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
     fNormalisations = normalisations_;
 }
 
-void 
+void
 BinnedPdfManager::ApplySystematics(const SystematicManager& sysMan_){
-    const std::vector<Systematic*>& systematics = sysMan_.GetSystematics();
-
     // If there are no systematics or they haven't changed, dont transform the working pdfs 
     //  ( = original pdfs from initialisagtion)
-    if((!systematics.size()) || sysMan_.GetParameters() == fCachedParams)
+    
+    if((!sysMan_.GetSystematics().size()) || sysMan_.GetParameters() == fCachedParams)
         return;
     fCachedParams = sysMan_.GetParameters();
 
-
-    for(size_t i = 0; i < systematics.size(); i++)
-        for(size_t j = 0; j < fOriginalPdfs.size(); j++)
-            fWorkingPdfs[j] = systematics.at(i)->operator()(fOriginalPdfs[j]);
+    
+    for(size_t j = 0; j < fOriginalPdfs.size(); j++)
+      fWorkingPdfs[j] = sysMan_.GetTotalResponse().operator()(fOriginalPdfs[j]);
 }
 
 const BinnedPdf&
