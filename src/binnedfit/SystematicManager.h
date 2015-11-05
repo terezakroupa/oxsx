@@ -8,6 +8,7 @@
 #define __SYSTEMATIC_MANAGER__
 #include <vector>
 #include <Systematic.h>
+#include <PdfMapping.h>
 
 class SystematicManager{
  public:
@@ -21,11 +22,15 @@ class SystematicManager{
     const std::vector<double>& GetParameters() const;
 
     size_t GetNSystematics() const;
-
+    const PdfMapping& GetTotalResponse() const;
+    
  private:
     std::vector<size_t>      fParamCounts;
     std::vector<Systematic*> fSystematics;
     std::vector<double>      fParams;
+
+    PdfMapping fTotalResponse;
+
     size_t fTotalParamCount;
     size_t fNSystematics;
 };

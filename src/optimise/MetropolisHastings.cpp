@@ -117,7 +117,7 @@ MetropolisHastings::Optimise(){
         if (i > fBurnIn && !(i%fThinFactor))
             fSample.push_back(currentStep);
       
-        if(!(i%100000))
+        if(!(i%1000))
             std::cout << i << "  /  " << fMaxIter << std::endl;
 
         // b. Propose a new step according to a random jump distribution
