@@ -26,6 +26,8 @@ class PdfMapping{
     void SetComponent(size_t column_, size_t row_, double val_);
     double GetComponent(size_t column_, size_t row_) const;
 
+    PdfMapping operator*=(const PdfMapping& other_);
+
     const AxisCollection& GetAxes() const;
     void SetAxes(const AxisCollection& axes_);
     size_t GetNBins() const {return fNBins;}

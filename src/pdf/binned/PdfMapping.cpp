@@ -87,3 +87,10 @@ BinnedPdf PdfMapping::operator()
        
     return observedPdf;
 }
+
+PdfMapping
+PdfMapping::operator*=(const PdfMapping& other_){
+  fResponse = fResponse * other_.fResponse;
+  return *this;
+}
+
