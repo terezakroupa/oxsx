@@ -65,6 +65,9 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
     DataRepresentation dRep = binnedPdf_.GetDataRep();
     std::vector<size_t> oldDataRepIndicies = dRep.GetIndicies();
 
+    if(!indicies_.size())
+        throw DimensionError("Requested marginalisation with no indicies to project!");
+
     if (!dRep.GetLength())
         throw DimensionError("Cant project out, pdf doesn't have indicies - set the data rep!");
 
