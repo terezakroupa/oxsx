@@ -36,35 +36,57 @@ void Convolution::Construct(){
     const AxisCollection& axes = fPdfMapping.GetAxes();
     std::vector<size_t> relativeIndicies = fDataRep.GetRelativeIndicies(fPdfDataRep);
 
-    std::vector<double> binCentre(relativeIndicies.size());
-    std::vector<double> lowEdges(relativeIndicies.size());
-    std::vector<double> highEdges(relativeIndicies.size());
+    AxisCollection systematicAxes;
+    //  get the axes that this systematic will act on 
+    for(size_t i = 0; i < relativeIndicies.size(); i++)
+        systematicAxes.AddAxis(axes.GetAxis(relativeIndicies.at(i)));
 
-    for(size_t i = 0; i < nBins; i++){
-        for(size_t k = 0; k < relativeIndicies.size(); k++)
-            binCentre[k] = axes.GetBinCentre(i, relativeIndicies.at(k));
+    // Work out the transition probabilitites within this sub set of the bins
+    std::vector<double> binCentres(systematicAxes.GetNDimensions());
+    std::vector<double> lowEdges(systematicAxes.GetNDimensions());
+    std::vector<double> highEdges(systematicAxes.GetNDimensions());
 
-        // Loop over compatible bins and integrate over bin j to work out the response from i -> j
-        // others are zero from reset
-        for(size_t j = 0; j < fCompatibleBins.at(i).size(); j++){
-            size_t mappedBin = fCompatibleBins.at(i).at(j);
+    PdfMapping subMap;
+    subMap.SetAxes(systematicAxes);
+    for (size_t origBin = 0; origBin < systematicAxes.GetNBins(); origBin++){
+        // get the centre of the bin. Need to offset by this for a convolution
+        systematicAxes.GetBinCentres(origBin, binCentres);
+
+        // loop over the bins it can be smeared into 
+        for(size_t destBin = 0; destBin < systematicAxes.GetNBins(); destBin++){
+            systematicAxes.GetBinLowEdges(destBin, lowEdges);
+            systematicAxes.GetBinHighEdges(destBin, highEdges);
             
-            for(size_t k = 0; k < relativeIndicies.size(); k++){
-                lowEdges[k]  = axes.GetBinLowEdge(mappedBin, relativeIndicies.at(k));
-                highEdges[k] = axes.GetBinHighEdge(mappedBin, relativeIndicies.at(k));
-                
+            for(size_t i = 0; i < systematicAxes.GetNDimensions(); i++){
+                lowEdges[i] -= binCentres.at(i);
+                highEdges[i] -= binCentres.at(i);
             }
 
-            // Move the pdf origin to the centre of bin i
-            for(size_t k = 0; k < lowEdges.size(); k++){
-                lowEdges[k]  -=  binCentre[k];
-                highEdges[k] -=  binCentre[k];
-            }
+            subMap.SetComponent(destBin, origBin, fPdf -> Integral(lowEdges, highEdges));
+        }        
+    }
 
-            double Rij = fPdf -> Integral(lowEdges, highEdges);
-            fPdfMapping.SetComponent(mappedBin, i, Rij);
+    // Now expand to the full size matrix. Elements are zero by default
+    // compatible bins are cached, values must match the smaller matrix above
+    std::vector<size_t> origSysInds(relativeIndicies.size());
+    std::vector<size_t> destSysInds(relativeIndicies.size());
+    
+    for(size_t origBin = 0; origBin < axes.GetNBins(); origBin++){
+        for(size_t dim =0; dim < relativeIndicies.size(); dim++)
+            origSysInds[dim] = axes.UnflattenIndex(origBin, relativeIndicies.at(dim));
+
+        for(size_t destBin = 0; destBin < fCompatibleBins.at(origBin).size(); destBin++){
+            for(size_t dim =0; dim < relativeIndicies.size(); dim++)
+                destSysInds[dim] = axes.UnflattenIndex(destBin, relativeIndicies.at(dim));
+            
+            fPdfMapping.SetComponent(destBin, 
+                                     origBin, 
+                                     subMap.GetComponent(systematicAxes.FlattenIndicies(destSysInds),
+                                                         systematicAxes.FlattenIndicies(origSysInds))
+                                     );
         }
-    }        
+        
+    }    
 }
 
 void
@@ -118,10 +140,11 @@ Convolution::CacheCompatibleBins(){
     fCompatibleBins.resize(fPdfMapping.GetNBins());
     // only need to look at one side of the matrix, its symmetric
     for(size_t i = 0; i < fPdfMapping.GetNBins(); i++){
-        for(size_t j = i;  j < fPdfMapping.GetNBins(); j++){
+        for(size_t j = i+1;  j < fPdfMapping.GetNBins(); j++){
             fCompatibleBins.at(i).push_back(j);
             fCompatibleBins.at(j).push_back(i);
         }
     }
+
     fCachedCompatibleBins = true;
 }
