@@ -32,8 +32,10 @@ class Convolution : public Systematic{
     bool           fHasAxes;
     bool           fCachedCompatibleBins;
 
+    AxisCollection fSysAxes;
     void  CacheCompatibleBins();
     std::vector<std::vector<size_t> > fCompatibleBins;
+    std::vector<size_t> fSysBins; // the systematic subMap bin for each global bin of pdf
 };
 #endif
 
