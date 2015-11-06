@@ -62,16 +62,17 @@ void Convolution::Construct(){
     }
 
     // Now expand to the full size matrix. Elements are zero by default
-    // compatible bins are cached, values must match the smaller matrix above    
-    
+    // compatible bins are cached, values must match the smaller matrix above        
+    size_t destBin = -1;
     for(size_t origBin = 0; origBin < axes.GetNBins(); origBin++){
-      for(size_t destBin = 0; destBin < fCompatibleBins.at(origBin).size(); destBin++){            
+        for(size_t i = 0; i < fCompatibleBins.at(origBin).size(); i++){
+            destBin = fCompatibleBins.at(origBin).at(i);
             fPdfMapping.SetComponent(destBin, 
                                      origBin, 
                                      subMap.GetComponent(fSysBins.at(destBin),
-							 fSysBins.at(origBin)
-							 )
-				     );
+                                                         fSysBins.at(origBin)
+                                                         )
+                                     );
 	}
 	
     }    
