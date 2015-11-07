@@ -94,3 +94,10 @@ PdfMapping::operator*=(const PdfMapping& other_){
   return *this;
 }
 
+void
+PdfMapping::SetZeros(){
+    if(!fNBins)
+        return;
+    // column major ordering
+    fResponse.fill(0);
+}
