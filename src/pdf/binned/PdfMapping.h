@@ -32,6 +32,7 @@ class PdfMapping{
     void SetAxes(const AxisCollection& axes_);
     size_t GetNBins() const {return fNBins;}
     
+    void SetZeros();
  private:
     AxisCollection fAxes;
     arma::mat fResponse;
