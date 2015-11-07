@@ -42,6 +42,8 @@ class BinnedPdf : public Pdf{
     std::vector<double> Means() const;
     std::vector<double> Variances() const;
 
+    const Histogram& GetHistogram() const;
+    
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
     void   AddBinContent(size_t bin_, double content_);

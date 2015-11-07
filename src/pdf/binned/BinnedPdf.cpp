@@ -24,6 +24,11 @@ BinnedPdf::operator=(const BinnedPdf& other_){
     return *this;
 }
 
+const Histogram&
+BinnedPdf::GetHistogram() const{
+    return fHistogram;
+}
+
 void 
 BinnedPdf::Fill(const EventData& data_, double weight_){
     try{
