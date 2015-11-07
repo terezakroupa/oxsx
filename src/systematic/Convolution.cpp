@@ -73,8 +73,8 @@ void Convolution::Construct(){
                                                          fSysBins.at(origBin)
                                                          )
                                      );
-	}
-	
+        }
+        
     }    
 }
 
@@ -119,8 +119,9 @@ Convolution::SetParameter(size_t index_, double val_){
 
 void
 Convolution::Reset(){
-    for(size_t i = 0; i < fPdfMapping.GetNBins(); i++)
-        for(size_t j = 0; j < fPdfMapping.GetNBins(); j++)
+    // column major ordering for arma matricies
+    for(size_t j = 0; j < fPdfMapping.GetNBins(); j++)
+        for(size_t i = 0; i < fPdfMapping.GetNBins(); i++)
             fPdfMapping.SetComponent(i, j , 0);
 }
 
@@ -130,10 +131,10 @@ Convolution::CacheCompatibleBins(){
     // only need to look at one side of the matrix, its symmetric
     for(size_t i = 0; i < fPdfMapping.GetNBins(); i++){
         for(size_t j = i+1;  j < fPdfMapping.GetNBins(); j++){
-  	    if(BinsCompatible(i , j)){
-	      fCompatibleBins.at(i).push_back(j);
-	      fCompatibleBins.at(j).push_back(i);
-	    }
+            if(BinsCompatible(i , j)){
+                fCompatibleBins.at(i).push_back(j);
+                fCompatibleBins.at(j).push_back(i);
+            }
         }
     }
 
