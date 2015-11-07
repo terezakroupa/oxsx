@@ -23,14 +23,15 @@ void Convolution::SetAxes(const AxisCollection& axes_){
     fHasAxes = true;
 }
 
-void Convolution::Construct(){
+void 
+Convolution::Construct(){
     if (!fPdf || !fHasAxes)
         throw InitialisationError("Tried to construct convolution without axes and pdf!");
     
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
 
-    Reset();
+    fPdfMapping.SetZeros();
     size_t nBins = fPdfMapping.GetNBins();
     size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
     const AxisCollection& axes = fPdfMapping.GetAxes();
@@ -115,14 +116,6 @@ Convolution::SetParameter(size_t index_, double val_){
     catch(const DimensionError& e_){
         throw WrongNumberOfParameters("Convolution: Tried to access a variable the pdf does not have!");       
     }
-}
-
-void
-Convolution::Reset(){
-    // column major ordering for arma matricies
-    for(size_t j = 0; j < fPdfMapping.GetNBins(); j++)
-        for(size_t i = 0; i < fPdfMapping.GetNBins(); i++)
-            fPdfMapping.SetComponent(i, j , 0);
 }
 
 void
