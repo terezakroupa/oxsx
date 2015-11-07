@@ -13,7 +13,8 @@ Systematic::SetResponse(const PdfMapping& responseMatrix_){
     fPdfMapping = responseMatrix_;
 }
 
-const PdfMapping& Systematic::GetResponse() const{
+const PdfMapping& 
+Systematic::GetResponse() const{
     return fPdfMapping;
 }
 
