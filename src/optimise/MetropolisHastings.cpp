@@ -90,6 +90,16 @@ MetropolisHastings::SetTestStatLogged(bool b_){
     fTestStatLogged = b_;
 }
 
+void
+MetropolisHastings::SetInitialTrial(const std::vector<double>& trial_){
+    fInitialTrial = trial_;
+}
+
+std::vector<double>
+MetropolisHastings::GetInitialTrial() const{
+    return fInitialTrial;
+}
+
 const FitResult&
 MetropolisHastings::Optimise(){
     fNDims = fMinima.size();
@@ -97,11 +107,14 @@ MetropolisHastings::Optimise(){
     fBestFit.resize(fNDims, 0);
     fMaxVal = 0;
 
-    // 1. Choose a random starting point
+    // 1. Choose a random starting point or the user defined one
     std::vector<double> currentStep;
-    for(size_t i = 0; i < fMinima.size(); i++){
-        currentStep.push_back(fMinima.at(i) + Rand::Uniform() * (fMaxima.at(i) - fMinima.at(i)));
-    }
+    if(fInitialTrial.size())
+      currentStep = fInitialTrial;
+    else
+      for(size_t i = 0; i < fMinima.size(); i++){
+          currentStep.push_back(fMinima.at(i) + Rand::Uniform() * (fMaxima.at(i) - fMinima.at(i)));
+      }
 
     std::cout << "Metropolis Hastings::Initial Position @ \t\t";
     for(size_t i = 0; i < currentStep.size(); i++)
@@ -118,7 +131,8 @@ MetropolisHastings::Optimise(){
             fSample.push_back(currentStep);
       
         if(!(i%1000))
-            std::cout << i << "  /  " << fMaxIter << std::endl;
+            std::cout << i << "  /  " << fMaxIter 
+		      << "\t" << (i - fRejectionRate) / static_cast<double>(i) << std::endl;
 
         // b. Propose a new step according to a random jump distribution
         std::vector<double> proposedStep = JumpDraw(currentStep);

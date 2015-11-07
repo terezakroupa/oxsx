@@ -39,6 +39,9 @@ class MetropolisHastings : public Optimiser{
     bool GetTestStatLogged() const;
     void SetTestStatLogged(bool b_);
 
+    void SetInitialTrial(const std::vector<double>&);
+    std::vector<double> GetInitialTrial() const;
+
  private:
     unsigned fBurnIn;
     unsigned fThinFactor;
@@ -47,7 +50,7 @@ class MetropolisHastings : public Optimiser{
     std::vector<double> fMaxima;
     std::vector<double> fMinima;
     std::vector<double> fSigmas;
-   
+    std::vector<double> fInitialTrial;
     bool fFlipSign;
 
     double fRejectionRate;
@@ -64,6 +67,7 @@ class MetropolisHastings : public Optimiser{
                         const std::vector<double>& proposedStep_);
     
     bool fTestStatLogged;
+
 };
 #endif
 
