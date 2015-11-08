@@ -6,7 +6,6 @@
 
 // Catch the pdf errors from parameter setting and rethrow as systematic exceptions, so they
 // can be treated generically with the other systematics
-
 void Convolution::SetPdf(IntegrablePdf* pdf_){
     fPdf = dynamic_cast<IntegrablePdf*>(pdf_->Clone());
     fParameterCount = fPdf->GetParameters().size();
@@ -31,7 +30,6 @@ Convolution::Construct(){
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
 
-    fPdfMapping.SetZeros();
     size_t nBins = fPdfMapping.GetNBins();
     size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
     const AxisCollection& axes = fPdfMapping.GetAxes();
@@ -63,20 +61,26 @@ Convolution::Construct(){
     }
 
     // Now expand to the full size matrix. Elements are zero by default
-    // compatible bins are cached, values must match the smaller matrix above        
+    // compatible bins are cached, values must match the smaller matrix above
     size_t destBin = -1;
+    std::vector<unsigned> nonZeroRowIndices;
+    std::vector<unsigned> nonZeroColIndices;
+    std::vector<double> values;
+    nonZeroRowIndices.reserve(fCompatibleBins.at(0).size());
+    nonZeroColIndices.reserve(fCompatibleBins.at(0).size());
+    
+
     for(size_t origBin = 0; origBin < axes.GetNBins(); origBin++){
         for(size_t i = 0; i < fCompatibleBins.at(origBin).size(); i++){
             destBin = fCompatibleBins.at(origBin).at(i);
-            fPdfMapping.SetComponent(destBin, 
-                                     origBin, 
-                                     subMap.GetComponent(fSysBins.at(destBin),
-                                                         fSysBins.at(origBin)
-                                                         )
-                                     );
+            nonZeroRowIndices.push_back(origBin);
+            nonZeroColIndices.push_back(destBin);
+            values.push_back( subMap.GetComponent(fSysBins.at(origBin),
+                                                  fSysBins.at(destBin)));
         }
+    }
         
-    }    
+    fPdfMapping.SetComponents(nonZeroRowIndices, nonZeroColIndices, values);
 }
 
 void

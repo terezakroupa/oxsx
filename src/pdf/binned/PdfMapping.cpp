@@ -9,7 +9,7 @@ PdfMapping::SetAxes(const AxisCollection& axes_){
     fAxes  = axes_;
     fNBins = axes_.GetNBins();
     fNDims = axes_.GetNDimensions();
-    fResponse = arma::mat(fNBins, fNBins, arma::fill::zeros);
+    fResponse = arma::sp_mat(fNBins, fNBins);
 }
 
 
@@ -19,41 +19,44 @@ PdfMapping::GetAxes() const{
 }
 
 void 
-PdfMapping::SetResponse(const arma::mat& response_){
+PdfMapping::SetResponse(const arma::sp_mat& response_){
     fResponse = response_;
 }
 
 
+// void 
+// PdfMapping::SetRow(size_t index_, const std::vector<double>& row_){
+//     if (index_ >= fNBins)
+//         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
+//     fResponse.row(index_) = arma::vec(row_);
+// }
+
+// void PdfMapping::SetColumn(size_t index_, const std::vector<double>& col_){
+//     if (index_ >= fNBins)
+//         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
+
+//     fResponse.col(index_) = arma::vec(col_);
+//     }
+
+
 void 
-PdfMapping::SetRow(size_t index_, const std::vector<double>& row_){
-    if (index_ >= fNBins)
-        throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
-    fResponse.row(index_) = arma::vec(row_);
-}
-
-void PdfMapping::SetColumn(size_t index_, const std::vector<double>& col_){
-    if (index_ >= fNBins)
-        throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
-
-    fResponse.col(index_) = arma::vec(col_);
-    }
-
-
-void PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
+PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
     if (col_ >= fNBins || row_ >= fNBins)
         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
 
     fResponse(col_,row_) = val_; 
 }
 
-double PdfMapping::GetComponent(size_t col_, size_t row_) const{
+double 
+PdfMapping::GetComponent(size_t col_, size_t row_) const{
     if (col_ >= fNBins || row_ >= fNBins)
         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
 
     return fResponse(col_, row_);
 }
 
-PdfMapping PdfMapping::operator = (const PdfMapping& other_){
+PdfMapping 
+PdfMapping::operator = (const PdfMapping& other_){
     if(this != &other_){
         fAxes  = other_.fAxes;
         fNBins = other_.fNBins;
@@ -63,7 +66,8 @@ PdfMapping PdfMapping::operator = (const PdfMapping& other_){
     return *this;
 }
 
-BinnedPdf PdfMapping::operator()
+BinnedPdf
+PdfMapping::operator()
     (const BinnedPdf& pdf_) const{
     // FIXME Factor out the bin index manipulation into seperate function or into fAxes class?
     // nneds a addbincontent(<vec of indicies>, content) function to tidy this up
@@ -98,6 +102,20 @@ void
 PdfMapping::SetZeros(){
     if(!fNBins)
         return;
-    // column major ordering
-    fResponse.fill(0);
+    fResponse = arma::sp_mat(fNBins, fNBins);
+}
+
+// FIXME: unsigned vs. size_t
+void 
+PdfMapping::SetComponents(const std::vector<unsigned>& rowIndices_,
+                          const std::vector<unsigned>& colIndices_,
+                          const std::vector<double>& values_){
+    if(rowIndices_.size() != values_.size() || colIndices_.size() != values_.size())
+        throw DimensionError("PdfMapping::SetComponent() #values != #locations");
+
+    arma::umat locs(2, rowIndices_.size());
+    locs.row(0) = arma::urowvec(rowIndices_);
+    locs.row(1) = arma::urowvec(colIndices_);
+
+    fResponse = arma::sp_mat(locs, arma::vec(values_));
 }
