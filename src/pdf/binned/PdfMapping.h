@@ -20,11 +20,15 @@ class PdfMapping{
 
     BinnedPdf operator() (const BinnedPdf& pdf_) const;
 
-    void SetResponse(const arma::mat& response_);
+    void SetResponse(const arma::sp_mat& response_);
     void SetColumn(size_t index, const std::vector<double>& column_);
     void SetRow(size_t index, const std::vector<double>& row_);
     void SetComponent(size_t column_, size_t row_, double val_);
     double GetComponent(size_t column_, size_t row_) const;
+
+    void SetComponents(const std::vector<unsigned>& rowIndices_,
+                       const std::vector<unsigned>& colIndices_,
+                       const std::vector<double>& values_);
 
     PdfMapping operator*=(const PdfMapping& other_);
 
@@ -35,7 +39,7 @@ class PdfMapping{
     void SetZeros();
  private:
     AxisCollection fAxes;
-    arma::mat fResponse;
+    arma::sp_mat fResponse;
     unsigned fNBins;
     unsigned fNDims;
 
