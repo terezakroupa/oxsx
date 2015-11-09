@@ -23,6 +23,7 @@ class DataSetGenerator{
     
     void AddCut(const Cut&);
     Cut  GetCut(size_t) const;
+    void SetCuts(const std::vector<Cut>& cuts_);
 
     OXSXDataSet ExpectedRatesDataSet() const;
     OXSXDataSet PoissonFluctuatedDataset() const; // needs implementing

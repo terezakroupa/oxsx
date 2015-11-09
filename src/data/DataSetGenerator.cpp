@@ -65,3 +65,8 @@ Cut
 DataSetGenerator::GetCut(size_t index_) const{
     return fCuts.at(index_);
 }
+
+void
+DataSetGenerator::SetCuts(const std::vector<Cut>& cuts_){
+    fCuts = cuts_;
+}
