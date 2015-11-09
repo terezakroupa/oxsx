@@ -11,6 +11,11 @@ Rand::Uniform(double max_){
     return max_ * fRandomGen.Rndm();
 }
 
+int
+Rand::Shoot(int max_){
+    return int((max_) * Uniform());
+}
+
 double 
 Rand::Gaus(double mean_, double sigma_){
     //    rand3.SetSeed();
@@ -20,4 +25,9 @@ Rand::Gaus(double mean_, double sigma_){
 void
 Rand::SetSeed(unsigned seed_){
     fRandomGen.SetSeed(seed_);
+}
+
+int
+Rand::Poisson(double rate_){
+    return fRandomGen.Poisson(rate_);
 }

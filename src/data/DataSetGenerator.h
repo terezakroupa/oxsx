@@ -26,7 +26,7 @@ class DataSetGenerator{
     void SetCuts(const std::vector<Cut>& cuts_);
 
     OXSXDataSet ExpectedRatesDataSet() const;
-    OXSXDataSet PoissonFluctuatedDataset() const; // needs implementing
+    OXSXDataSet PoissonFluctuatedDataSet() const; // needs implementing
     OXSXDataSet AllValidEvents() const; // needs implementing
     
  private:

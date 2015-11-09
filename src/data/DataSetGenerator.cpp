@@ -5,6 +5,7 @@
 #include <math.h>
 #include <EventData.h>
 #include <stdlib.h>
+#include <Rand.h>
 
 void
 DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
@@ -44,9 +45,39 @@ DataSetGenerator::ExpectedRatesDataSet() const{
     return dataSet;
 }
 
+OXSXDataSet
+DataSetGenerator::PoissonFluctuatedDataSet() const{
+    if(fExpectedRates.size() != fDataSets.size())
+        throw DataException("Can't generate fake data: need one rate exactly for each data set");
+
+    OXSXDataSet dataSet;
+    for(size_t i = 0; i < fDataSets.size(); i++){
+        int counts = Rand::Poisson(fExpectedRates.at(i));
+
+        for(unsigned j = 0; j < counts;){
+            EventData event_ = RandomEvent(i);
+            
+            // check it passes the cuts
+            bool passesCuts = true;
+            for(size_t k = 0; k < fCuts.size(); k++)
+                passesCuts = passesCuts && fCuts.at(k).PassesCut(event_);
+                
+            
+            if (passesCuts){
+                dataSet.AddEntry(event_);
+                j++;
+            }
+        }
+    }
+        
+    return dataSet;
+}
+    
+
+
 EventData
 DataSetGenerator::RandomEvent(size_t handleIndex_) const{
-    unsigned eventNum = (rand() % (int)(fDataSets.at(handleIndex_)->GetNEntries()));
+    unsigned eventNum = Rand::Shoot(fDataSets.at(handleIndex_)->GetNEntries());
     return fDataSets.at(handleIndex_)->GetEntry(eventNum);
 }
 
@@ -70,3 +101,4 @@ void
 DataSetGenerator::SetCuts(const std::vector<Cut>& cuts_){
     fCuts = cuts_;
 }
+
