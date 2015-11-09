@@ -12,7 +12,7 @@ class QuadraticConstraint{
 
     double operator()(const std::vector<double>& vals_) const {
         double val = vals_.at(fParamIndex);
-        return (val - fMean) * (val - fMean) / (fWidth * fWidth);
+        return (val - fMean) * (val - fMean) / (2 * fWidth * fWidth);
     }
     
  private:
