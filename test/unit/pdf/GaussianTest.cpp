@@ -68,7 +68,7 @@ TEST_CASE("Cloning Gaussian PDf"){
     Gaussian * clone = dynamic_cast<Gaussian*>(gaus.Clone());
         
     REQUIRE(clone->GetDataRep().GetLength() == 1 );
-    REQUIRE(clone->GetDataRep().GetIndicies().at(0) == 0);
+    REQUIRE(clone->GetDataRep().GetIndices().at(0) == 0);
     REQUIRE(clone->GetParameter(0) == 0);
     REQUIRE(clone->GetParameter(1) == 1);
     REQUIRE(clone->operator()(std::vector<double>(1,1)) == Approx(0.24197) );
