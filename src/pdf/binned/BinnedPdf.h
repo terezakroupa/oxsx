@@ -30,8 +30,8 @@ class BinnedPdf : public Pdf{
     size_t FindBin(const std::vector<double>& vals_) const;
     size_t FindBin(const EventData& data_) const;
 
-    std::vector<size_t> UnpackIndicies(size_t bin_) const;
-    size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
+    std::vector<size_t> UnpackIndices(size_t bin_) const;
+    size_t FlattenIndices(const std::vector<size_t>& indices_) const;
 
     const AxisCollection& GetAxes() const;
     void  SetAxes(const AxisCollection& axes_);

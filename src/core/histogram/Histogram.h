@@ -1,7 +1,7 @@
 /*************************************************************************************/
 /* An ND histogram is a combination of an axis collection that defines the binning   */
 /* and a single vector of bin contents, indexed by the corresponding global bin ID.  */
-/* Conversions between global bin ID and the indicies on each axis are performed by  */
+/* Conversions between global bin ID and the indices on each axis are performed by  */
 /* the axis collection                                                               */
 /*************************************************************************************/
 #ifndef __OXSX_HISTOGRAM__
@@ -24,8 +24,8 @@ class Histogram{
 
     size_t FindBin(const std::vector<double>& vals_) const;
 
-    std::vector<size_t> UnpackIndicies(size_t bin_) const;
-    size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
+    std::vector<size_t> UnpackIndices(size_t bin_) const;
+    size_t FlattenIndices(const std::vector<size_t>& indices_) const;
 
     const AxisCollection& GetAxes() const;
     void  SetAxes(const AxisCollection& axes_);
@@ -42,7 +42,9 @@ class Histogram{
     void   AddBinContent(size_t bin_, double content_);
     void   SetBinContent(size_t bin_, double content_);
     void   Empty();
-    
+
+    Histogram Marginalise(const std::vector<size_t>& indices_) const;
+    Histogram Marginalise(size_t index_) const;
  private:
     AxisCollection fAxes;
     std::vector<double> fBinContents;

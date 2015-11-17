@@ -2,32 +2,32 @@
 #include <DataExceptions.h>
 #include <iostream>
 
-DataRepresentation::DataRepresentation(const std::vector<size_t>& indicies_){
-    SetIndicies(indicies_);
+DataRepresentation::DataRepresentation(const std::vector<size_t>& indices_){
+    SetIndices(indices_);
 }
 
 DataRepresentation::DataRepresentation(size_t index_){
-    SetIndicies(std::vector<size_t>(1, index_));
+    SetIndices(std::vector<size_t>(1, index_));
 }
 
 DataRepresentation::DataRepresentation(const DataRepresentation& other_){
     fName = other_.fName;
-    SetIndicies(other_.fIndicies);
+    SetIndices(other_.fIndices);
 }
 
 
 std::vector<size_t>
-DataRepresentation::GetIndicies() const {return fIndicies;}
+DataRepresentation::GetIndices() const {return fIndices;}
 
 void 
-DataRepresentation::SetIndicies(const std::vector<size_t>& indicies_)  {
-    fIndicies = indicies_;
-    fLen = indicies_.size();
+DataRepresentation::SetIndices(const std::vector<size_t>& indices_)  {
+    fIndices = indices_;
+    fLen = indices_.size();
 
     // build inverse map
     fInverse.resize(0);
-    for(size_t i = 0; i < fIndicies.size(); i++)
-        fInverse.push_back(std::pair<size_t,size_t>(fIndicies.at(i), i));
+    for(size_t i = 0; i < fIndices.size(); i++)
+        fInverse.push_back(std::pair<size_t,size_t>(fIndices.at(i), i));
     
 }
 
@@ -39,7 +39,7 @@ DataRepresentation::SetName(const std::string& name_) {fName = name_;}
 
 // FIXME -  needs bounds handling!
 size_t
-DataRepresentation::GetIndex(size_t indexNum_) const{return fIndicies.at(indexNum_);}
+DataRepresentation::GetIndex(size_t indexNum_) const{return fIndices.at(indexNum_);}
 
 size_t
 DataRepresentation::GetLength() const {return fLen;}
@@ -54,16 +54,16 @@ DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
 }
 
 std::vector<size_t> 
-DataRepresentation::GetRelativeIndicies(const DataRepresentation& otherRep_) const{
-    // given a longer represetation containing the indicies of this rep, where are the shared indicies
+DataRepresentation::GetRelativeIndices(const DataRepresentation& otherRep_) const{
+    // given a longer represetation containing the indices of this rep, where are the shared indices
     // in the big rep
 
     if(otherRep_.GetLength() < fLen)
-        throw RepresentationError("Tried to take relatice indicies in compatible representations ");
+        throw RepresentationError("Tried to take relatice indices in compatible representations ");
         
-    std::vector<size_t> relativeIndicies(fIndicies.size(), 0);
-    for(size_t i = 0; i < fIndicies.size(); i++)
-        relativeIndicies[i] = otherRep_.GetDataIndexPos(fIndicies.at(i));
+    std::vector<size_t> relativeIndices(fIndices.size(), 0);
+    for(size_t i = 0; i < fIndices.size(); i++)
+        relativeIndices[i] = otherRep_.GetDataIndexPos(fIndices.at(i));
     
-    return relativeIndicies;
+    return relativeIndices;
 } 

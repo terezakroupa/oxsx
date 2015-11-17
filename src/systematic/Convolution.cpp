@@ -33,7 +33,7 @@ Convolution::Construct(){
     size_t nBins = fPdfMapping.GetNBins();
     size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
     const AxisCollection& axes = fPdfMapping.GetAxes();
-    std::vector<size_t> relativeIndicies = fDataRep.GetRelativeIndicies(fPdfDataRep);
+    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
 
     // Work out the transition probabilitites within this sub set of the bins
     std::vector<double> binCentres(fSysAxes.GetNDimensions());
@@ -135,22 +135,22 @@ Convolution::CacheCompatibleBins(){
         }
     }
 
-    std::vector<size_t> relativeIndicies = fDataRep.GetRelativeIndicies(fPdfDataRep);
+    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
     const AxisCollection& axes = fPdfMapping.GetAxes();
 
     //  get the axes that this systematic will act on
     fSysAxes = AxisCollection();
-    for(size_t i = 0; i < relativeIndicies.size(); i++)
-      fSysAxes.AddAxis(axes.GetAxis(relativeIndicies.at(i)));
+    for(size_t i = 0; i < relativeIndices.size(); i++)
+      fSysAxes.AddAxis(axes.GetAxis(relativeIndices.at(i)));
     
     // cache the equivilent index in the binning system of the systematic
     fSysBins.resize(fPdfMapping.GetNBins());
-    std::vector<size_t> sysIndices(relativeIndicies.size(), 0);
+    std::vector<size_t> sysIndices(relativeIndices.size(), 0);
     for(size_t i = 0; i < axes.GetNBins(); i++){
-      for(size_t dim = 0; dim < relativeIndicies.size(); dim++)
-	sysIndices[dim] = axes.UnflattenIndex(i, relativeIndicies.at(dim));
+      for(size_t dim = 0; dim < relativeIndices.size(); dim++)
+	sysIndices[dim] = axes.UnflattenIndex(i, relativeIndices.at(dim));
 
-      fSysBins[i] = fSysAxes.FlattenIndicies(sysIndices);
+      fSysBins[i] = fSysAxes.FlattenIndices(sysIndices);
     }
     fCachedCompatibleBins = true;
 }

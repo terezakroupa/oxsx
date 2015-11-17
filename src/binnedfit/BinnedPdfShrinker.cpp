@@ -66,11 +66,11 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
 
     // 1. Build new axes. ShrinkPdf method just makes a copy if buffer size is zero
     AxisCollection newAxes;
-    const std::vector<size_t> pdfDataIndicies = pdf_.GetDataRep().GetIndicies();
+    const std::vector<size_t> pdfDataIndices = pdf_.GetDataRep().GetIndices();
     size_t dataIndex = 0;
     
     for(size_t i = 0; i < nDims; i++){
-        dataIndex = pdfDataIndicies.at(i);
+        dataIndex = pdfDataIndices.at(i);
         if (!fBuffers.count(dataIndex))
             newAxes.AddAxis(pdf_.GetAxes().GetAxis(i));
         else
@@ -84,7 +84,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     newPdf.SetDataRep(pdf_.GetDataRep());
 
     // 3. Fill the axes
-    std::vector<size_t> newIndicies(pdf_.GetNDims());  // same as old, just corrected for overflow
+    std::vector<size_t> newIndices(pdf_.GetNDims());  // same as old, just corrected for overflow
     int   offsetIndex = 0; // note taking difference of two unsigneds
     size_t newBin = 0;     //  will loop over dims and use this to assign bin # corrected for overflow
 
@@ -99,8 +99,8 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
             offsetIndex = axes.UnflattenIndex(i, j);            // the index in old pdf
-            if (fBuffers.count(pdfDataIndicies.at(j)))          // offset by lower buffer if nonzero
-                offsetIndex -= fBuffers.at(pdfDataIndicies.at(j)).first;
+            if (fBuffers.count(pdfDataIndices.at(j)))          // offset by lower buffer if nonzero
+                offsetIndex -= fBuffers.at(pdfDataIndices.at(j)).first;
 
             // Correct the ones that fall in the buffer regions
             // bins in the lower buffer have negative index. Put in first bin in fit region or ignore
@@ -119,10 +119,10 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
                     content = 0;
             }
 
-            newIndicies[j] = offsetIndex;
+            newIndices[j] = offsetIndex;
         }
         // Fill 
-        newBin = newAxes.FlattenIndicies(newIndicies);
+        newBin = newAxes.FlattenIndices(newIndices);
         newPdf.AddBinContent(newBin, content);
     }
 

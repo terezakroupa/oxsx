@@ -60,44 +60,44 @@ PdfConverter::ToTH1D(const Histogram& histo_){
 
 BinnedPdf
 PdfConverter::Marginalise(const BinnedPdf& binnedPdf_, 
-                          const std::vector<size_t>& indicies_){
-    // check the pdf does contain the indicies asked for
+                          const std::vector<size_t>& indices_){
+    // check the pdf does contain the indices asked for
     DataRepresentation dRep = binnedPdf_.GetDataRep();
-    std::vector<size_t> oldDataRepIndicies = dRep.GetIndicies();
+    std::vector<size_t> oldDataRepIndices = dRep.GetIndices();
 
-    if(!indicies_.size())
-        throw DimensionError("Requested marginalisation with no indicies to project!");
+    if(!indices_.size())
+        throw DimensionError("Requested marginalisation with no indices to project!");
 
     if (!dRep.GetLength())
-        throw DimensionError("Cant project out, pdf doesn't have indicies - set the data rep!");
+        throw DimensionError("Cant project out, pdf doesn't have indices - set the data rep!");
 
-    for(size_t i = 0; i < indicies_.size(); i++)
-        if (std::find(oldDataRepIndicies.begin(), 
-                      oldDataRepIndicies.end(), 
-                      indicies_.at(i)) == oldDataRepIndicies.end()){
+    for(size_t i = 0; i < indices_.size(); i++)
+        if (std::find(oldDataRepIndices.begin(), 
+                      oldDataRepIndices.end(), 
+                      indices_.at(i)) == oldDataRepIndices.end()){
             throw DimensionError("PdfConverter: Tried to project pdf onto dimension it doesn't contain!");
         }
     
-    std::vector<size_t> relativeIndicies = DataRepresentation(indicies_).GetRelativeIndicies(dRep);
+    std::vector<size_t> relativeIndices = DataRepresentation(indices_).GetRelativeIndices(dRep);
 
     // Get the axes you are interested in,  in the order requested
     AxisCollection newAxes;
-    for(size_t i = 0;  i < indicies_.size(); i++)
-        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(indicies_.at(i)));
+    for(size_t i = 0;  i < indices_.size(); i++)
+        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(indices_.at(i)));
 
     // New pdf
     BinnedPdf marginalisedPdf(newAxes);
     
     // Now loop over the bins in old and fill new pdfs
     for(size_t bin = 0; bin < binnedPdf_.GetNBins(); bin++){
-        std::vector<size_t> oldIndicies = binnedPdf_.UnpackIndicies(bin);
-        std::vector<size_t> newIndicies;
+        std::vector<size_t> oldIndices = binnedPdf_.UnpackIndices(bin);
+        std::vector<size_t> newIndices;
 
-        for(size_t i = 0; i < relativeIndicies.size(); i++)
-            newIndicies.push_back(oldIndicies.at(relativeIndicies.at(i)));
+        for(size_t i = 0; i < relativeIndices.size(); i++)
+            newIndices.push_back(oldIndices.at(relativeIndices.at(i)));
         
         
-        size_t newBin = marginalisedPdf.FlattenIndicies(newIndicies);
+        size_t newBin = marginalisedPdf.FlattenIndices(newIndices);
 
         marginalisedPdf.AddBinContent(newBin, binnedPdf_.GetBinContent(bin));
     }
@@ -106,33 +106,33 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
 
 Histogram
 PdfConverter::Marginalise(const Histogram& histo_, 
-                          const std::vector<size_t>& indicies_){
-    // check the pdf does contain the indicies asked for
-  for(size_t i = 0; i < indicies_.size(); i++){
-    if (indicies_.at(i) >= histo_.GetNDims())
+                          const std::vector<size_t>& indices_){
+    // check the pdf does contain the indices asked for
+  for(size_t i = 0; i < indices_.size(); i++){
+    if (indices_.at(i) >= histo_.GetNDims())
       throw DimensionError("Marginalise Histogram::Tried to project out non existent dim!");
   }
     // Get the axes you are interested in,  in the order requested
     AxisCollection newAxes;
-    for(size_t i = 0;  i < indicies_.size(); i++)
-        newAxes.AddAxis(histo_.GetAxes().GetAxis(indicies_.at(i)));
+    for(size_t i = 0;  i < indices_.size(); i++)
+        newAxes.AddAxis(histo_.GetAxes().GetAxis(indices_.at(i)));
 
     // New pdf
     Histogram marginalised(newAxes);
     
-    std::vector<size_t> oldIndicies(histo_.GetNDims());
-    std::vector<size_t> newIndicies(indicies_.size());
+    std::vector<size_t> oldIndices(histo_.GetNDims());
+    std::vector<size_t> newIndices(indices_.size());
     size_t newBin = -1;
 
     // Now loop over the bins in old and fill new pdfs
     for(size_t bin = 0; bin < histo_.GetNBins(); bin++){
         for(size_t i = 0; i < histo_.GetNDims(); i++)
-            oldIndicies[i] = histo_.GetAxes().UnflattenIndex(bin, i);
+            oldIndices[i] = histo_.GetAxes().UnflattenIndex(bin, i);
 
-        for(size_t i = 0; i < indicies_.size(); i++)
-            newIndicies[i] = oldIndicies.at(indicies_.at(i));
+        for(size_t i = 0; i < indices_.size(); i++)
+            newIndices[i] = oldIndices.at(indices_.at(i));
                 
-        newBin = marginalised.FlattenIndicies(newIndicies);
+        newBin = marginalised.FlattenIndices(newIndices);
         marginalised.AddBinContent(newBin, histo_.GetBinContent(bin));
     }
     return marginalised;
