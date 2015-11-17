@@ -23,22 +23,6 @@ PdfMapping::SetResponse(const arma::sp_mat& response_){
     fResponse = response_;
 }
 
-
-// void 
-// PdfMapping::SetRow(size_t index_, const std::vector<double>& row_){
-//     if (index_ >= fNBins)
-//         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
-//     fResponse.row(index_) = arma::vec(row_);
-// }
-
-// void PdfMapping::SetColumn(size_t index_, const std::vector<double>& col_){
-//     if (index_ >= fNBins)
-//         throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
-
-//     fResponse.col(index_) = arma::vec(col_);
-//     }
-
-
 void 
 PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
     if (col_ >= fNBins || row_ >= fNBins)
