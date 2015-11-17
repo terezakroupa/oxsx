@@ -28,8 +28,8 @@ TEST_CASE("Correct Indexing for 3x3 Uniform Axes","[AxisCollection]"){
         lastBins.push_back(218);
         lastBins.push_back(2340);
 
-        REQUIRE(axes.FlattenIndicies(firstBins) == 0);
-        REQUIRE(axes.FlattenIndicies(lastBins)  ==  (2341 * 100 * 219 - 1));
+        REQUIRE(axes.FlattenIndices(firstBins) == 0);
+        REQUIRE(axes.FlattenIndices(lastBins)  ==  (2341 * 100 * 219 - 1));
     }
 
     SECTION("Global Bin Self Conversions"){
@@ -37,8 +37,8 @@ TEST_CASE("Correct Indexing for 3x3 Uniform Axes","[AxisCollection]"){
         for(unsigned i = 0; i < 100; i++ ){
             size_t bin = rand()%(2341 * 219 * 100);
 
-            std::vector<size_t> indicies = axes.UnpackIndicies(bin);
-            size_t bin2 = axes.FlattenIndicies(indicies);
+            std::vector<size_t> indices = axes.UnpackIndices(bin);
+            size_t bin2 = axes.FlattenIndices(indices);
 
             REQUIRE(bin == bin2);
         }
@@ -51,10 +51,10 @@ TEST_CASE("Correct Indexing when there's just one axis in there", "[AxisCollecti
     PdfAxis axis("test", -20, 55, 9875);
     axes.AddAxis(axis);
 
-    SECTION("Right bin numbers and indicies"){
+    SECTION("Right bin numbers and indices"){
         for(size_t i = 0; i < 100; i++){
             size_t axisBin  = rand() % axis.GetNBins();
-            std::vector<size_t> axesBins = axes.UnpackIndicies(axisBin);
+            std::vector<size_t> axesBins = axes.UnpackIndices(axisBin);
 
             REQUIRE(axesBins.size() == 1);
             REQUIRE(axesBins.at(0)  == axisBin);

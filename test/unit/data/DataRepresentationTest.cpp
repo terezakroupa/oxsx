@@ -8,12 +8,12 @@ TEST_CASE("Build from one index"){
 }
 
 TEST_CASE("Build from vec"){
-    std::vector<size_t> indicies;
-    indicies.push_back(5);
-    indicies.push_back(9);
-    indicies.push_back(11);
+    std::vector<size_t> indices;
+    indices.push_back(5);
+    indices.push_back(9);
+    indices.push_back(11);
 
-    DataRepresentation drep(indicies);
+    DataRepresentation drep(indices);
     REQUIRE(drep.GetLength() == 3);
     REQUIRE(drep.GetIndex(0) == 5);
     REQUIRE(drep.GetIndex(1) == 9);
@@ -38,23 +38,23 @@ TEST_CASE("Build from vec"){
 }
 
 
-TEST_CASE("Looking for the relative indicies of 2d rep in 4d rep"){
-    std::vector<size_t> smallRepIndicies;
-    smallRepIndicies.push_back(6);
-    smallRepIndicies.push_back(0);
+TEST_CASE("Looking for the relative indices of 2d rep in 4d rep"){
+    std::vector<size_t> smallRepIndices;
+    smallRepIndices.push_back(6);
+    smallRepIndices.push_back(0);
 
-    std::vector<size_t> bigRepIndicies;
-    bigRepIndicies.push_back(0);
-    bigRepIndicies.push_back(3);
-    bigRepIndicies.push_back(6);
+    std::vector<size_t> bigRepIndices;
+    bigRepIndices.push_back(0);
+    bigRepIndices.push_back(3);
+    bigRepIndices.push_back(6);
 
-    DataRepresentation bigRep(bigRepIndicies);
-    DataRepresentation smallRep(smallRepIndicies);
+    DataRepresentation bigRep(bigRepIndices);
+    DataRepresentation smallRep(smallRepIndices);
 
-    std::vector<size_t> relativeIndicies = smallRep.GetRelativeIndicies(bigRep);
+    std::vector<size_t> relativeIndices = smallRep.GetRelativeIndices(bigRep);
 
-    REQUIRE(relativeIndicies.size() == 2);
-    REQUIRE(relativeIndicies.at(0) == 2);
-    REQUIRE(relativeIndicies.at(1) == 0);
+    REQUIRE(relativeIndices.size() == 2);
+    REQUIRE(relativeIndices.at(0) == 2);
+    REQUIRE(relativeIndices.at(1) == 0);
     
 }
