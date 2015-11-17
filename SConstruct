@@ -11,7 +11,6 @@ armadillo_include, armadillo_lib = get_arma_flags()
 gsl_include, gsl_lib = get_gsl_flags()
 
 hdf_lib_names = ["hdf5_hl_cpp", "hdf5_cpp", "hdf5_hl", "hdf5"]
-
 ###############################
 # Building the static library #
 ###############################
@@ -25,9 +24,19 @@ source_files = []
 for x in source_dirs:
     source_files += Glob(os.path.join(x,"*.cpp").replace("src", "build"))
 
+#Copy headers into include dir
+hdrs = []
+for x in source_dirs:
+    hdrs += Glob(os.path.join(x, "*.h")) + Glob(os.path.join(x, "*.hpp")) + Glob(os.path.join(x, "*.hh"))
+
+env = Environment()
+headers = [Command(os.path.join("include", os.path.basename(y.rstr())), 
+                   y, Copy("$TARGET", "$SOURCE")) for y in hdrs]
+
+env.Default(headers)
 # Create the build environment
 env = Environment(CCFLAGS = '-O2', 
-                  CPPPATH = source_dirs + [armadillo_include, gsl_include] + root_incs
+                  CPPPATH = ["include"] + [armadillo_include, gsl_include] + root_incs
                   )
 
 # Build the library
