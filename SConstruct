@@ -35,8 +35,9 @@ headers = [Command(os.path.join("include", os.path.basename(y.rstr())),
 
 env.Default(headers)
 # Create the build environment
+print hdf5_incs
 env = Environment(CCFLAGS = '-O2', 
-                  CPPPATH = ["include"] + [armadillo_include, gsl_include] + root_incs
+                  CPPPATH = ["include", hdf5_incs, armadillo_include, gsl_include] + root_incs
                   )
 
 # Build the library
@@ -52,7 +53,7 @@ env.Default([objects, lib])
                       
 testenv = Environment(parse_flags = root_libs + root_incs,
                       CCFLAGS = "-O2",
-                      CPPPATH = ["Catch/include"] + source_dirs + [gsl_include, armadillo_include],
+                      CPPPATH = ["Catch/include", "include", hdf5_incs, gsl_include, armadillo_include],
                       LIBS = ["armadillo", "gsl", "oxsx", "Minuit2"] + hdf_lib_names,
                       LIBPATH = [gsl_lib, armadillo_lib, "build"]
                       )
