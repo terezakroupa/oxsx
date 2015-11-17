@@ -34,21 +34,21 @@ Scale::Construct(){
  
     for(size_t i = 0; i < nBins; i++){
         // For each old bin, work out the contributions into all of the new bins
-        // indicies in other components should be unaffected
-        std::vector<size_t> oldIndicies = axes.UnpackIndicies(i);
-        size_t scaleBin = oldIndicies.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
+        // indices in other components should be unaffected
+        std::vector<size_t> oldIndices = axes.UnpackIndices(i);
+        size_t scaleBin = oldIndices.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
         
         double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * GetScaleFactor();
         double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * GetScaleFactor();
         double scaledWidth = scaledHigh - scaledLow;
 
-        // new bin to map into, mapping only happens if the indicies are the same except the one to 
-        // scale so, loop over the bins in the scale axes and leave other indicies the same
+        // new bin to map into, mapping only happens if the indices are the same except the one to 
+        // scale so, loop over the bins in the scale axes and leave other indices the same
         // the others are zero from initialisation 
         
-        std::vector<size_t> newIndicies = oldIndicies;
+        std::vector<size_t> newIndices = oldIndices;
         for(size_t j = 0; j < scaleAxisNBins; j++){
-            newIndicies[fPdfDataRep.GetDataIndexPos(fAxisIndex)] = j;
+            newIndices[fPdfDataRep.GetDataIndexPos(fAxisIndex)] = j;
             size_t newScaleBin = j;
                         
             double newLow  = scaleAxis.GetBinLowEdge(newScaleBin);
@@ -78,7 +78,7 @@ Scale::Construct(){
                 
             }
             
-            fPdfMapping.SetComponent(axes.FlattenIndicies(newIndicies), i, contribution);
+            fPdfMapping.SetComponent(axes.FlattenIndices(newIndices), i, contribution);
         }
                
     }

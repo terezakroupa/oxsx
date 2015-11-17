@@ -47,16 +47,16 @@ AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
 }
 
 size_t 
-AxisCollection::FlattenIndicies(const std::vector<size_t>& indicies_) const{
-    if(indicies_.size() != fNDimensions)
-        throw DimensionError("Can't flatten! wrong number of indicies");
+AxisCollection::FlattenIndices(const std::vector<size_t>& indices_) const{
+    if(indices_.size() != fNDimensions)
+        throw DimensionError("Can't flatten! wrong number of indices");
 
     if(fNDimensions == 1)
-        return indicies_.at(0);
+        return indices_.at(0);
 
-    size_t index = indicies_.back();
+    size_t index = indices_.back();
     for (size_t i = 0; i < fNDimensions-1; i++){
-        size_t x = indicies_[i];
+        size_t x = indices_[i];
         for(size_t j = i+1; j < fNDimensions; j++)
             x *= fAxisNbins[j];
         index += x;
@@ -70,11 +70,11 @@ AxisCollection::FindBin(const std::vector<double>& vals_) const{
     if (vals_.size() != fNDimensions)
         throw DimensionError("Can't find bin! wrong number of vals");
 
-    std::vector<size_t> indicies(fNDimensions, 0);
+    std::vector<size_t> indices(fNDimensions, 0);
     for (size_t i = 0; i < fNDimensions; i++)
-        indicies[i] = fAxes.at(i).FindBin(vals_[i]);
+        indices[i] = fAxes.at(i).FindBin(vals_[i]);
 
-    return FlattenIndicies(indicies);
+    return FlattenIndices(indices);
 }
 
 size_t 
@@ -91,11 +91,11 @@ AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
 }
 
 std::vector<size_t>
-AxisCollection::UnpackIndicies(size_t index_) const{
-    std::vector<size_t> indicies(fNDimensions, 0);
+AxisCollection::UnpackIndices(size_t index_) const{
+    std::vector<size_t> indices(fNDimensions, 0);
     for(size_t i = 0; i < fNDimensions; i++)
-        indicies[i] = UnflattenIndex(index_, i);
-    return indicies;
+        indices[i] = UnflattenIndex(index_, i);
+    return indices;
 }
 
 bool 

@@ -106,13 +106,13 @@ Histogram::Empty(){
 }
 
 size_t 
-Histogram::FlattenIndicies(const std::vector<size_t>& indicies_) const{
-    return fAxes.FlattenIndicies(indicies_);
+Histogram::FlattenIndices(const std::vector<size_t>& indices_) const{
+    return fAxes.FlattenIndices(indices_);
 }
 
 std::vector<size_t> 
-Histogram::UnpackIndicies(size_t bin_) const{
-    return fAxes.UnpackIndicies(bin_);
+Histogram::UnpackIndices(size_t bin_) const{
+    return fAxes.UnpackIndices(bin_);
 }
 
 std::vector<double> 
@@ -153,4 +153,42 @@ Histogram::Variances() const{
         variances[i] -= means.at(i) * means.at(i);
 
     return variances;
+}
+
+Histogram
+Histogram::Marginalise(const std::vector<size_t>& indices_) const{
+    // check the pdf does contain the indices asked for      
+    for(size_t i = 0; i < indices_.size(); i++){
+        if (indices_.at(i) >= fNDims)
+            throw DimensionError("Marginalise Histogram::Tried to project out non existent dim!");
+    }
+    // Get the axes you are interested in, in the order requested
+    AxisCollection newAxes;
+    for(size_t i = 0;  i < indices_.size(); i++)
+        newAxes.AddAxis(fAxes.GetAxis(indices_.at(i)));
+
+    // New histogram
+    Histogram marginalised(newAxes);
+
+    std::vector<size_t> oldIndices(fNDims);
+    std::vector<size_t> newIndices(indices_.size());
+    size_t newBin = -1;
+
+    // Now loop over the bins in old and fill new pdfs 
+    for(size_t bin = 0; bin < fNBins; bin++){
+        for(size_t i = 0; i < fNDims; i++)
+            oldIndices[i] = fAxes.UnflattenIndex(bin, i);
+
+        for(size_t i = 0; i < indices_.size(); i++)
+            newIndices[i] = oldIndices.at(indices_.at(i));
+
+        newBin = marginalised.FlattenIndices(newIndices);
+        marginalised.AddBinContent(newBin, fBinContents.at(bin));
+    }
+    return marginalised;
+}
+
+Histogram
+Histogram::Marginalise(size_t index_) const {
+    return Marginalise(std::vector<size_t>(1, index_));
 }

@@ -1,7 +1,7 @@
 /******************************************************************************************************/
 /* A group of Axes that defines the binning for a pdf.                                                */
 /* Each bin is assigned a global bin ID, switch between this global ID and the indicies in each       */
-/* axis using FlattenIndicies and UnpackIndicies                                                      */
+/* axis using FlattenIndices and UnpackIndices                                                      */
 /******************************************************************************************************/
 
 #ifndef __AXIS_COLLECTION__
@@ -22,9 +22,9 @@ class AxisCollection{
     const PdfAxis& GetAxis(size_t axisIndex_) const;
     
     size_t GetNDimensions() const;
-    size_t FlattenIndicies(const std::vector<size_t>& indicies_) const;
+    size_t FlattenIndices(const std::vector<size_t>& indicies_) const;
     size_t  UnflattenIndex(size_t index_, size_t dim_)  const;
-    std::vector<size_t> UnpackIndicies(size_t index_) const;
+    std::vector<size_t> UnpackIndices(size_t index_) const;
 
     void GetBinCentres(size_t bin_, std::vector<double>& output_) const;
     void GetBinLowEdges(size_t bin_, std::vector<double>& output_) const;

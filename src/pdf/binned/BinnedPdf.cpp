@@ -128,13 +128,13 @@ BinnedPdf::Empty(){
 }
 
 size_t 
-BinnedPdf::FlattenIndicies(const std::vector<size_t>& indicies_) const{
-    return fHistogram.FlattenIndicies(indicies_);
+BinnedPdf::FlattenIndices(const std::vector<size_t>& indices_) const{
+    return fHistogram.FlattenIndices(indices_);
 }
 
 std::vector<size_t> 
-BinnedPdf::UnpackIndicies(size_t bin_) const{
-    return fHistogram.UnpackIndicies(bin_);
+BinnedPdf::UnpackIndices(size_t bin_) const{
+    return fHistogram.UnpackIndices(bin_);
 }
 
 std::vector<double> 
