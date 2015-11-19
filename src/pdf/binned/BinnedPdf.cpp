@@ -8,6 +8,11 @@ BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     fNDims = axes_.GetNDimensions();
 }
 
+BinnedPdf::BinnedPdf(const Histogram& histo_){
+    fHistogram = histo_;
+    fNDims     = histo_.GetNDims();
+}
+
 BinnedPdf::BinnedPdf(const BinnedPdf& other_) : Pdf(other_){
     fHistogram.SetAxes(other_.GetAxes());
     fHistogram.SetBinContents(other_.GetBinContents());
@@ -27,6 +32,12 @@ BinnedPdf::operator=(const BinnedPdf& other_){
 const Histogram&
 BinnedPdf::GetHistogram() const{
     return fHistogram;
+}
+
+void
+BinnedPdf::SetHistogram(const Histogram& hist_){
+    fHistogram = hist_;
+    fNDims = hist_.GetNDims();
 }
 
 void 

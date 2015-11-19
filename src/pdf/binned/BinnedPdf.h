@@ -15,6 +15,7 @@ class BinnedPdf : public Pdf{
  public:
     BinnedPdf() {}
     BinnedPdf(const AxisCollection& axes_);
+    BinnedPdf(const Histogram& histo_);
     BinnedPdf(const BinnedPdf& other_);
     BinnedPdf operator=(const BinnedPdf& other_);
 
@@ -43,7 +44,8 @@ class BinnedPdf : public Pdf{
     std::vector<double> Variances() const;
 
     const Histogram& GetHistogram() const;
-    
+    void  SetHistogram(const Histogram&);
+
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
     void   AddBinContent(size_t bin_, double content_);
