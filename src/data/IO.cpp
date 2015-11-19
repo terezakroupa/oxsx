@@ -1,4 +1,4 @@
-#include <DataSetIO.h>
+#include <IO.h>
 #include <DataSet.h>
 #include <OXSXDataSet.h>
 #include <H5Cpp.h>
@@ -6,10 +6,10 @@
 #include <cassert>
 #include <DataExceptions.h>
 
-const char DataSetIO::fDelimiter = ':';
+const char IO::fDelimiter = ':';
 
 void
-DataSetIO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
+IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     // Get the relevant params
     hsize_t nEntries     = dataSet_.GetNEntries();
     hsize_t nObs  = dataSet_.GetNObservables();
@@ -45,7 +45,7 @@ DataSetIO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     H5::StrType   strType(H5::PredType::C_S1, 64);
     H5::DataSpace attSpace(H5S_SCALAR);
     H5::Attribute obsListAtt = theData.createAttribute("observed_quantities", strType, attSpace);
-    obsListAtt.write(strType, FlattenStringVector(observableNames, fDelimiter));
+    obsListAtt.write(strType, FlattenStringVector(observableNames));
 
     H5::Attribute countAtt = theData.createAttribute("n_observables",
                                                      H5::PredType::NATIVE_INT,
@@ -58,7 +58,7 @@ DataSetIO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
 }
 
 OXSXDataSet
-DataSetIO::LoadDataSet(const std::string& filename_){
+IO::LoadDataSet(const std::string& filename_){
     // Get Data Set
     H5::H5File  file(filename_, H5F_ACC_RDONLY);
     H5::DataSet dataSet = file.openDataSet("observations");
@@ -71,6 +71,8 @@ DataSetIO::LoadDataSet(const std::string& filename_){
     nameAtt.read(nameAtt.getDataType(), strreadbuf);
     countAtt.read(countAtt.getDataType(), &nObs);
 
+    
+    
     // Read data out as 1D array
     hsize_t nData = 0;
     dataSet.getSpace().getSimpleExtentDims(&nData, NULL);
@@ -79,13 +81,11 @@ DataSetIO::LoadDataSet(const std::string& filename_){
     std::vector<double> flatData(nData, 0);
     dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE);
 
-    assert(nData%nObs == 0); // logic error in writing file (this class!) if assert fails.
-
     // Assemble into an OXSX data set
     OXSXDataSet oxsxDataSet;
 
     // Set the variable names
-    oxsxDataSet.SetObservableNames(UnpackString(strreadbuf, fDelimiter));
+    oxsxDataSet.SetObservableNames(UnpackString(strreadbuf));
 
     // then the data
     std::vector<double> oneEventObs(nObs, 0);
@@ -100,34 +100,44 @@ DataSetIO::LoadDataSet(const std::string& filename_){
 }
 
 std::string
-DataSetIO::FlattenStringVector(const std::vector<std::string>& vec_, char delimiter_){
+IO::FlattenStringVector(const std::vector<std::string>& vec_){
     std::string flatString;
     if(!vec_.size())
         return flatString;
 
     flatString += vec_.at(0);
     for(size_t i = 1; i < vec_.size(); i++)
-        flatString +=  delimiter_ + vec_.at(i);
+        flatString +=  fDelimiter + vec_.at(i);
 
     return flatString;
 }
 
 std::vector<std::string>
-DataSetIO::UnpackString(const std::string& str_, char delimiter_){
+IO::UnpackString(const std::string& str_){
     // count instances
     unsigned count = 0;
     for (size_t i = 0; i < str_.size(); i++)
-        if(str_.at(i) == delimiter_)
+        if(str_.at(i) == fDelimiter)
             count++;
 
     std::vector<std::string> strs(count + 1); // one more string than delimiter a:b
     size_t currentStr = 0;
     for(size_t i = 0; i < str_.size(); i++){
-        if(str_[i] == delimiter_)
+        if(str_[i] == fDelimiter)
             currentStr++;
         else
             strs[currentStr] += str_[i];
     }
     
     return strs;
+}
+
+
+void 
+IO::SaveHistogram(const Histogram& histo_, const std::string& fileName_){
+    H5::H5File file(filename_, H5F_ACC_TRUNC);
+    hsize_t nDims = histo_.GetNDims();
+    hsize_t nBins = histo_.GetNBins();
+    
+    std
 }
