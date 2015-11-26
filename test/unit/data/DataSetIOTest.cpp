@@ -1,6 +1,6 @@
 #include <catch.hpp>
 #include <ROOTNtuple.h>
-#include <DataSetIO.h>
+#include <IO.h>
 #include <OXSXDataSet.h>
 
 TEST_CASE("Writing a data set to disk  and reading back"){
