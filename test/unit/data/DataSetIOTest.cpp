@@ -25,8 +25,8 @@ TEST_CASE("Writing a data set to disk  and reading back"){
     origDataSet.SetObservableNames(names);
     
 
-    DataSetIO::SaveDataSet(origDataSet, "data_set_io_root_test.h5");
-    OXSXDataSet loadedSet = DataSetIO::LoadDataSet("data_set_io_root_test.h5");
+    IO::SaveDataSet(origDataSet, "data_set_io_root_test.h5");
+    OXSXDataSet loadedSet = IO::LoadDataSet("data_set_io_root_test.h5");
 
     SECTION("Names copied correctly"){
         REQUIRE(origDataSet.GetObservableNames() == loadedSet.GetObservableNames());

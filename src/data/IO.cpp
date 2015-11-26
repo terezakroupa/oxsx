@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cassert>
 #include <DataExceptions.h>
+#include <Histogram.h>
 
 const char IO::fDelimiter = ':';
 
@@ -133,11 +134,13 @@ IO::UnpackString(const std::string& str_){
 }
 
 
+
+// FIXME: Needs implementing
 void 
 IO::SaveHistogram(const Histogram& histo_, const std::string& fileName_){
-    H5::H5File file(filename_, H5F_ACC_TRUNC);
+    H5::H5File file(fileName_, H5F_ACC_TRUNC);
     hsize_t nDims = histo_.GetNDims();
     hsize_t nBins = histo_.GetNBins();
     
-    std
+    return;
 }
