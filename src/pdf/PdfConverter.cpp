@@ -64,7 +64,7 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
     // check the pdf does contain the indices asked for
     DataRepresentation dRep = binnedPdf_.GetDataRep();
     std::vector<size_t> oldDataRepIndices = dRep.GetIndices();
-
+        
     if(!indices_.size())
         throw DimensionError("Requested marginalisation with no indices to project!");
 
@@ -82,12 +82,12 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
 
     // Get the axes you are interested in,  in the order requested
     AxisCollection newAxes;
-    for(size_t i = 0;  i < indices_.size(); i++)
-        newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(indices_.at(i)));
+    for(size_t i = 0;  i < relativeIndices.size(); i++)
+      newAxes.AddAxis(binnedPdf_.GetAxes().GetAxis(relativeIndices.at(i)));
 
     // New pdf
     BinnedPdf marginalisedPdf(newAxes);
-    
+
     // Now loop over the bins in old and fill new pdfs
     for(size_t bin = 0; bin < binnedPdf_.GetNBins(); bin++){
         std::vector<size_t> oldIndices = binnedPdf_.UnpackIndices(bin);
@@ -95,8 +95,6 @@ PdfConverter::Marginalise(const BinnedPdf& binnedPdf_,
 
         for(size_t i = 0; i < relativeIndices.size(); i++)
             newIndices.push_back(oldIndices.at(relativeIndices.at(i)));
-        
-        
         size_t newBin = marginalisedPdf.FlattenIndices(newIndices);
 
         marginalisedPdf.AddBinContent(newBin, binnedPdf_.GetBinContent(bin));
