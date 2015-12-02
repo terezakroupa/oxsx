@@ -29,8 +29,8 @@ class ROOTError : public DataException {
 };
 
 // HDF5 IO
-class HdfIOError : public DataException{
+class IOError : public DataException{
  public:
- HdfIOError(const std::string& error_str): DataException(error_str){};
+ IOError(const std::string& error_str): DataException(error_str){};
 };
 #endif
