@@ -51,6 +51,9 @@ class BinnedPdf : public Pdf{
     void   AddBinContent(size_t bin_, double content_);
     void   SetBinContent(size_t bin_, double content_);
     void   Empty();
+
+    BinnedPdf Marginalise(const std::vector<size_t>& indices_) const;
+    BinnedPdf Marginalise(size_t index_) const;
     
  private:
     Histogram fHistogram;

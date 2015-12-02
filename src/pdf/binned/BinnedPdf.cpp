@@ -166,3 +166,21 @@ std::vector<double>
 BinnedPdf::Variances() const{
     return fHistogram.Variances();
 }
+
+BinnedPdf 
+BinnedPdf::Marginalise(const std::vector<size_t>& indices_) const{
+    // Find the relative indicies indicies in 
+    DataRepresentation newRep = DataRepresentation(indices_);
+    std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fDataRep);
+	std::cout << relativeIndices.at(0) << std::endl;
+
+    // Marginalise the histogram
+	BinnedPdf newPdf(fHistogram.Marginalise(relativeIndices));
+	newPdf.SetDataRep(newRep);
+	return newPdf;
+}
+
+BinnedPdf
+BinnedPdf::Marginalise(size_t index_) const{
+    return Marginalise(std::vector<size_t>(1, index_));
+}

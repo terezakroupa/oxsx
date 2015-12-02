@@ -7,7 +7,7 @@
 #ifndef __OXSX_DATA_SET_GENERATOR__
 #define __OXSX_DATA_SET_GENERATOR__
 #include <vector>
-#include <Cut.h>
+#include <CutCollection.h>
 
 class OXSXDataSet;
 class DataSet;
@@ -21,9 +21,7 @@ class DataSetGenerator{
     void SetExpectedRates(const std::vector<double>& rates_);
     void AddDataSet(DataSet* data_, double rates_);
     
-    void AddCut(const Cut&);
-    Cut  GetCut(size_t) const;
-    void SetCuts(const std::vector<Cut>& cuts_);
+    void SetCuts(const CutCollection& cuts_);
 
     OXSXDataSet ExpectedRatesDataSet() const;
     OXSXDataSet PoissonFluctuatedDataSet() const; // needs implementing
@@ -32,7 +30,7 @@ class DataSetGenerator{
  private:
     std::vector<DataSet*>    fDataSets;
     std::vector<double>      fExpectedRates;
-    std::vector<Cut>         fCuts;
+    CutCollection            fCuts;
     EventData                RandomEvent(size_t handleIndex_) const;
 
 };

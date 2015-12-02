@@ -19,7 +19,7 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     // create colon separated string from list of observables
     std::vector<std::string> observableNames = dataSet_.GetObservableNames();
     if (observableNames.size() != nObs)
-        throw HdfIOError("SaveDataSet::Require one name and one name only for each observable");
+        throw IOError("SaveDataSet::Require one name and one name only for each observable");
     
 
     // Set up files
@@ -59,11 +59,19 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
 }
 
 OXSXDataSet
-IO::LoadDataSet(const std::string& filename_){
+IO::LoadDataSet(const std::string& filename_){  
     // Get Data Set
-    H5::H5File  file(filename_, H5F_ACC_RDONLY);
+    H5::H5File file;
+    try{
+	  file.openFile(filename_, H5F_ACC_RDONLY);	  
+	}
+	
+	catch(const H5::FileIException&){
+	  throw IOError("Failed to open data set file : "  + filename_ + "\n check the path");
+	}
+
     H5::DataSet dataSet = file.openDataSet("observations");
- 
+	
     // read meta information
     unsigned nObs = 0;
     H5::Attribute nameAtt  = dataSet.openAttribute("observed_quantities");

@@ -29,19 +29,13 @@ DataSetGenerator::ExpectedRatesDataSet() const{
         for(unsigned j = 0; j < expectedCounts;){
             EventData event_ = RandomEvent(i);
             
-            // check it passes the cuts
-            bool passesCuts = true;
-            for(size_t k = 0; k < fCuts.size(); k++)
-                passesCuts = passesCuts && fCuts.at(k).PassesCut(event_);
-                
-            
-            if (passesCuts){
+            // Add event to new data set if it passes cut
+            if (fCuts.PassesCuts(event_))
                 dataSet.AddEntry(event_);
                 j++;
             }
         }
-    }
-        
+    
     return dataSet;
 }
 
@@ -57,13 +51,8 @@ DataSetGenerator::PoissonFluctuatedDataSet() const{
         for(unsigned j = 0; j < counts;){
             EventData event_ = RandomEvent(i);
             
-            // check it passes the cuts
-            bool passesCuts = true;
-            for(size_t k = 0; k < fCuts.size(); k++)
-                passesCuts = passesCuts && fCuts.at(k).PassesCut(event_);
-                
-            
-            if (passesCuts){
+            // check it passes the cuts                            
+            if (fCuts.PassesCuts(event_)){
                 dataSet.AddEntry(event_);
                 j++;
             }
@@ -88,17 +77,7 @@ DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
 }
 
 void
-DataSetGenerator::AddCut(const Cut& cut_){
-    fCuts.push_back(cut_);
-}
-
-Cut
-DataSetGenerator::GetCut(size_t index_) const{
-    return fCuts.at(index_);
-}
-
-void
-DataSetGenerator::SetCuts(const std::vector<Cut>& cuts_){
+DataSetGenerator::SetCuts(const CutCollection& cuts_){
     fCuts = cuts_;
 }
 
