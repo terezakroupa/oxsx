@@ -119,8 +119,6 @@ IO::LoadDataSet(const std::string& filename_){
 	  hsize_t count[1]  = {100000 * nObs}; // take 100000 events at a time
 
 	  for(unsigned i = 0; i < unsigned(nEntries/100000); i++){
-		if(!(i%100))
-		  std::cout << i << " / " << nEntries/100000 << std::endl;
 		hsize_t offset[1] = {i * 100000 * nObs};
 		dataSpace.selectHyperslab(H5S_SELECT_SET, count, offset, stride, NULL);	   
 		
