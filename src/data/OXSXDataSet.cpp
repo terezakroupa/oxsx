@@ -1,7 +1,7 @@
 #include <OXSXDataSet.h>
 #include <EventData.h>
 #include <DataExceptions.h>
-
+#include <iostream>
 void
 OXSXDataSet::AddEntry(const EventData& evData_){
     // fNObservables is zero at initialisation, after the first time it is set it shouldnt change
@@ -63,4 +63,9 @@ OXSXDataSet::operator+ (const OXSXDataSet& other_){
         AddEntry(other_.GetEntry(i));
     
     return *this;
+}
+
+void
+OXSXDataSet::Reserve(int i){
+  fData->reserve(i);
 }
