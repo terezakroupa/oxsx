@@ -28,6 +28,8 @@ public:
     // concatenate
     OXSXDataSet operator+ (const OXSXDataSet& other_);
 
+	void Reserve(int);
+
 private:
     std::vector<EventData>* fData;
     std::vector<std::string> fObservableNames;
