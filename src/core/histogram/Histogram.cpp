@@ -192,3 +192,18 @@ Histogram
 Histogram::Marginalise(size_t index_) const {
     return Marginalise(std::vector<size_t>(1, index_));
 }
+
+double
+Histogram::GetBinLowEdge(size_t bin_, size_t index_) const{
+    return fAxes.GetBinLowEdge(bin_, index_);
+}
+
+double
+Histogram::GetBinHighEdge(size_t bin_, size_t index_) const{
+    return fAxes.GetBinHighEdge(bin_, index_);
+}
+
+double
+Histogram::GetBinCentre(size_t bin_, size_t index_) const{
+    return fAxes.GetBinCentre(bin_, index_);
+}

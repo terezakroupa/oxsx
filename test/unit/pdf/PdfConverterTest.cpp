@@ -7,6 +7,7 @@
 #include <TFitResult.h>
 #include <math.h>
 #include <iostream>
+#include <TH1D.h>
 
 TEST_CASE("Writing a 1D pdf to a root histogram", "[PdfConverter]"){
     PdfAxis axis("test", -100, 100, 200);
@@ -123,8 +124,8 @@ TEST_CASE("Converting 2D gaussian to binned and marginalise", "[PdfConverter]"){
         indicies.push_back(2);
 
         binnedGaus.SetDataRep(indicies);
-        BinnedPdf xProj = PdfConverter::Marginalise(binnedGaus, 0);
-        BinnedPdf yProj = PdfConverter::Marginalise(binnedGaus, 1);
+        BinnedPdf xProj = binnedGaus.Marginalise(0);
+        BinnedPdf yProj = binnedGaus.Marginalise(1);
 
         
         double xMean = xProj.Means().at(0);

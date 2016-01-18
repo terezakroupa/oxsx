@@ -3,22 +3,20 @@
 /**************************************************************/
 #ifndef __PDF_CONVERTER__
 #define __PDF_CONVERTER__
-#include <TH1D.h>
-#include <vector>
+
 
 class BinnedPdf;
 class IntegrablePdf;
 class AxisCollection;
 class Histogram;
+class TH2D;
+class TH1D;
 
 class PdfConverter{
  public:
-    PdfConverter();
-    ~PdfConverter();
-    
     static BinnedPdf ToBinnedPdf(const IntegrablePdf&, const AxisCollection& axes_);
-    static TH1D      ToTH1D(const BinnedPdf&);
-    static TH1D      ToTH1D(const Histogram&);
-    
+    static TH1D      ToTH1D(const BinnedPdf&, const bool widthCorrect_ = false);
+    static TH1D      ToTH1D(const Histogram&, const bool widthCorrect_ = false);
+	static TH2D      ToTH2D(const Histogram&, const bool widthCorrect_ = false);
 };
 #endif

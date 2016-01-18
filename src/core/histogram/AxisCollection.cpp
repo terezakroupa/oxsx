@@ -182,3 +182,14 @@ AxisCollection::GetBinCentre(size_t bin_, size_t dim_) const{
     
     return fAxes.at(dim_).GetBinCentre(UnflattenIndex(bin_, dim_));
 }
+
+double
+AxisCollection::GetBinWidth(size_t bin_, size_t dim_) const{
+    if(dim_ >= fNDimensions)
+        throw DimensionError("Axis Collection::Bin edge on non existent dimension!");
+
+    if(bin_ >= fNBins)
+        throw OutOfBoundsError("AxisCollection::Called bin edge on out of bounds bin!");
+    
+    return fAxes.at(dim_).GetBinWidth(UnflattenIndex(bin_, dim_));
+}

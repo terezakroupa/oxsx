@@ -1,8 +1,8 @@
 #include <catch.hpp>
-#include <Cut.h>
+#include <BoxCut.h>
 
-TEST_CASE("1D cut"){
-    Cut cut(0);
+TEST_CASE("1D Box cut"){
+    BoxCut cut(0, 1 , 10);
     cut.SetLowerLimit(1);
     cut.SetUpperLimit(10);
     

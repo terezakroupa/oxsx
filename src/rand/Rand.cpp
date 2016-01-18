@@ -18,13 +18,17 @@ Rand::Shoot(int max_){
 
 double 
 Rand::Gaus(double mean_, double sigma_){
-    //    rand3.SetSeed();
     return fRandomGen.Gaus(mean_, sigma_);
 }
 
 void
 Rand::SetSeed(unsigned seed_){
     fRandomGen.SetSeed(seed_);
+}
+
+unsigned
+Rand::GetSeed(){
+    fRandomGen.GetSeed();
 }
 
 int
