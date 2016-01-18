@@ -37,8 +37,19 @@ class PdfAxis{
     double GetBinLowEdge (size_t i) const {return fBinLowEdges.at(i);}
     double GetBinHighEdge(size_t i) const {return fBinHighEdges.at(i);}
     double GetBinCentre  (size_t i) const {return fBinCentres.at(i);}    
+	double GetBinWidth(size_t i) const {return fBinWidths.at(i);}
+
+	std::vector<double> GetBinLowEdges() const {return fBinLowEdges;}
+	std::vector<double> GetBinHighEdges() const {return fBinHighEdges;}
+	std::vector<double> GetBinCentres() const {return fBinCentres;}
+
     std::string GetName() const {return fName;}
     std::string GetLatexName() const {return fLatexName;}
+
+	double GetMaximum() const {return fMax;}
+	double GetMinimum() const {return fMin;}
+
+
  private:
     int fNBins;
     double fMin;
@@ -50,7 +61,7 @@ class PdfAxis{
     std::vector<double> fBinLowEdges;
     std::vector<double> fBinHighEdges;
     std::vector<double> fBinCentres;
-    
+	std::vector<double> fBinWidths;
 };
 
 #endif

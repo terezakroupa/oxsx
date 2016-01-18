@@ -60,7 +60,7 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
 
 OXSXDataSet
 IO::LoadDataSet(const std::string& filename_){  
-  	std::cout << "IO:: Loading " << filename_ << std::endl;
+  	std::cout << "IO::Loading " << filename_ << std::endl;
     // Get Data Set
     H5::H5File file;
     try{
@@ -94,7 +94,7 @@ IO::LoadDataSet(const std::string& filename_){
 	oxsxDataSet.Reserve(nEntries);
 
 	// if the data set is small, just load it up all in one go
-	if(nEntries < 10000){
+	if(nEntries < 1000000){
 	  std::vector<double> flatData(nData, 0);
 	  dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE);
 
@@ -116,7 +116,7 @@ IO::LoadDataSet(const std::string& filename_){
 	  std::vector<double> oneEventObs(nObs, 0);
 
 	  hsize_t stride[1] = {1}; // move along to each entry in data set one at a time
-	  hsize_t count[1]  = {100000 * nObs}; // take 100000 events at a time
+	  hsize_t count[1]  = {100000 * nObs}; // take 100 events at a time
 
 	  for(unsigned i = 0; i < unsigned(nEntries/100000); i++){
 		hsize_t offset[1] = {i * 100000 * nObs};

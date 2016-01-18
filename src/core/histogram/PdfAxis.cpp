@@ -23,6 +23,7 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
     fBinLowEdges.resize(fNBins, 0);    
     fBinHighEdges.resize(fNBins, 0);
     fBinCentres.resize(fNBins, 0);
+	fBinWidths.resize(fNBins, binWidth);
 
     for(size_t i = 0; i < fNBins; i++){
         fBinLowEdges[i]  = fMin  + i          * binWidth;
@@ -51,8 +52,12 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
     fNBins = fBinLowEdges.size();
 
     fBinCentres.resize(fNBins, 0);
-    for(size_t i = 0; i < fBinLowEdges.size(); i++)
-        fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
+	fBinWidths.resize(fNBins, 0);
+
+    for(size_t i = 0; i < fBinLowEdges.size(); i++){
+	    fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
+		fBinWidths[i]  = fBinHighEdges.at(i) - fBinLowEdges.at(i);
+	}
 
     fLatexName = latexName_;
     fMin = fBinLowEdges.at(0);
@@ -69,6 +74,9 @@ PdfAxis::PdfAxis(const PdfAxis& other_){
     fBinHighEdges = other_.fBinHighEdges;
     fBinCentres = other_.fBinCentres;
     fNBins = other_.fNBins;
+	fMax = other_.fMax;
+	fMin = other_.fMin;
+	fBinWidths = other_.fBinWidths;
 }
 
 PdfAxis
@@ -79,14 +87,16 @@ PdfAxis::operator=(const PdfAxis& other_){
     fBinHighEdges = other_.fBinHighEdges;
     fBinCentres = other_.fBinCentres;
     fNBins = other_.fNBins;
+	fMax = other_.fMax;
+	fMin = other_.fMin;
+	fBinWidths = other_.fBinWidths;
     return *this;
 }
 
 
 size_t 
 PdfAxis::FindBin(double value_) const{
-    size_t insertIndex = std::lower_bound(fBinHighEdges.begin(), fBinHighEdges.end(), value_) - 
-        fBinHighEdges.begin();
+  size_t insertIndex = std::lower_bound(fBinHighEdges.begin(), fBinHighEdges.end(), value_) - fBinHighEdges.begin();
     if (insertIndex == fNBins)
         return insertIndex-1;
     return insertIndex;

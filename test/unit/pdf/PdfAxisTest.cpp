@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <PdfAxis.h>
+#include <iostream>
 
 TEST_CASE("Bin Finding For Uniform Binning 1000 bins 0-100", "[PdfAxis]"){
     PdfAxis uniform("uniform axis", 0 , 100, 1000);
@@ -18,7 +19,6 @@ TEST_CASE("Bin Finding For Uniform Binning 1000 bins 0-100", "[PdfAxis]"){
     }
 
 }
-
 
 TEST_CASE("Bin Finding For Custom Binning 1000 bins 0-1001", "[PdfAxis]"){
 
@@ -40,8 +40,10 @@ TEST_CASE("Bin Finding For Custom Binning 1000 bins 0-1001", "[PdfAxis]"){
 
 
     SECTION("First bin behaviour"){
-        REQUIRE(custom.FindBin(0)   == 0);
-        REQUIRE(custom.FindBin(-20) == 0);
-        REQUIRE(custom.GetNBins()   == 1000);
+	         REQUIRE(custom.FindBin(0)   == 0);
+			 REQUIRE(custom.FindBin(-20) == 0);
+			 
+			 REQUIRE(custom.GetNBins()   == 1000);
+
     }
 }
