@@ -6,6 +6,7 @@
 
 #ifndef __OXSX_DATA_SET_GENERATOR__
 #define __OXSX_DATA_SET_GENERATOR__
+#include <cstdlib>
 #include <vector>
 #include <CutCollection.h>
 

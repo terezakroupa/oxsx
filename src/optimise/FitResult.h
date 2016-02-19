@@ -3,6 +3,7 @@
 /****************************************************/
 #ifndef __OXSX_FIT_RESULT__
 #define __OXSX_FIT_RESULT__
+#include <cstdlib>
 #include <vector>
 class Histogram;
 class FitResult{
