@@ -54,8 +54,8 @@ env.Default([objects, lib])
 testenv = Environment(parse_flags = root_libs + root_incs,
                       CCFLAGS = "-O2",
                       CPPPATH = ["Catch/include", "include", hdf5_incs, gsl_include, armadillo_include],
-                      LIBS = ["armadillo", "gsl", "oxsx", "Minuit2"] + hdf_lib_names,
-                      LIBPATH = [gsl_lib, armadillo_lib, "build"]
+                      LIBS = ["armadillo", "gsl", "gslcblas", "oxsx", "Minuit2"] + hdf_lib_names,
+                      LIBPATH = [gsl_lib, armadillo_lib, hdf5_libs, "build"]
                       )
 
 unit_test_files = Glob("test/unit/*/*.cpp") + Glob("test/unit/*.cpp")
