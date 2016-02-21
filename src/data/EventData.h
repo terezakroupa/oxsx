@@ -9,6 +9,7 @@
 
 #ifndef __EVENT_DATA__
 #define __EVENT_DATA__
+#include <cstdlib>
 #include <vector>
 class DataRepresentation;
 
