@@ -1,4 +1,4 @@
-<h1> OXSX </h2>
+<h1> OXSX </h1>
 Signal Extraction framework for the SNO+ experiment
 
 
@@ -8,9 +8,10 @@ Signal Extraction framework for the SNO+ experiment
 3. [SCons](http://www.scons.org/) Is used for the build, also a dependency for RAT
 4. [HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html)
 5. [ROOT](https://root.cern.ch/downloading-root) Should be installed with Minuit2 enabled `./configure --enable-minuit2`
+
+
 <h2>Installation Instructions </h2>
 Follow the installation instructions for each of the above using either the default install location or a different directory if you would prefer.
-
 
 1. Clone this repository with ```git clone https://github.com/jackdunger/oxsx.git --recursive``` if you've already cloned without the recursive flag just run ```git submodule update --init```
 
