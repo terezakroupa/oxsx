@@ -19,7 +19,6 @@ def read_dependencies(filename):
     return dependencies
 
 def check_dependency(conf, dependency):
-    print dependency.name
     print "\nChecking {0} dependencies..".format(dependency.name)
     for header in Split(dependency.check_headers):
         if not conf.CheckCXXHeader(header):
@@ -70,5 +69,6 @@ def update_and_check_env(conf, dependencies):
             conf.env.Append(LIBS = Split(dep.libs))
         if dep.lib_path:
             conf.env.Append(LIBPATH = [dep.lib_path])
+            conf.env.Append(RPATH   = [dep.lib_path])
         check_dependency(conf, dep)
     
