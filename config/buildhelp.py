@@ -14,12 +14,13 @@ def read_dependencies(filename):
             libs   = cparse.get(dep_name, "libs")
             cheads = cparse.get(dep_name, "check_headers")
         except KeyError:
-            print "Incomplete dependency spec for {}, (needs libs & check_headers)".format(dep_name)
+            print "Incomplete dependency spec for {0}, (needs libs & check_headers)".format(dep_name)
         dependencies[dep_name] = Dependency(dep_name, libs, cheads)
     return dependencies
 
 def check_dependency(conf, dependency):
-    print "\nChecking {} dependencies..".format(dependency.name)
+    print dependency.name
+    print "\nChecking {0} dependencies..".format(dependency.name)
     for header in Split(dependency.check_headers):
         if not conf.CheckCXXHeader(header):
             print('!! Cannot locate header {0} ...'.format(header))

@@ -1,5 +1,5 @@
 VALID_FIELDS = ["header_path", "lib_path", "flags", 
-                "install_root", "build"]
+                "build"]
 
 class Dependency(object):
     '''
