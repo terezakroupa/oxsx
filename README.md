@@ -1,4 +1,4 @@
-<h1> OXSX </h2>
+<h1> OXSX </h1>
 Signal Extraction framework for the SNO+ experiment
 
 
@@ -7,23 +7,25 @@ Signal Extraction framework for the SNO+ experiment
 2. [GSL](https://gcc.gnu.org/libstdc++/) - likely you already have this installed, especially if you are running RAT
 3. [SCons](http://www.scons.org/) Is used for the build, also a dependency for RAT
 4. [HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html)
-Follow the installation instructions for each of the above using either the default install location or a different directory if you would prefer.
+5. [ROOT](https://root.cern.ch/downloading-root) Should be installed with Minuit2 enabled `./configure --enable-minuit2`
+
 
 <h2>Installation Instructions </h2>
+Follow the installation instructions for each of the above using either the default install location or a different directory if you would prefer.
 
 1. Clone this repository with ```git clone https://github.com/jackdunger/oxsx.git --recursive``` if you've already cloned without the recursive flag just run ```git submodule update --init```
 
-2. Update env.sh to point to ROOT and scons installs 
+2. If your dependencies are somewhere the compiler can't find them, update config/userconfig.ini. 
 e.g.
- ```ROOT_DIR    =  /software/..../root-5.34.30   ```
- ```SCONS_DIR   =  /software/..../scons-2.3.4```
+ ```
+    [root]
+    header_path : <path/to/headers>
+    lib_path    : <path/to/libraries>
+ ```
 
+3. Run ```scons && scons units```
 
-3. Do the same for GSL,armadillo, HDF5 and if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
-
-4. Run ```source env.sh && scons && scons units```
-
-5. Test the build was sucessful with ```./tests/RunUnits```
+4. Test the build was sucessful with ```./tests/RunUnits```
 
 
 <h3> Compiling Your Own Scripts</h3>
