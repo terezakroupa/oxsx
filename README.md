@@ -15,18 +15,16 @@ Follow the installation instructions for each of the above using either the defa
 
 2. If your dependencies are somewhere the compiler can't find them, update config/userconfig.ini. 
 e.g.
- ```[root]
+ ```
+    \[root\]
     header_path : <path/to/headers>
-    
+    lib
  ```
  ```
 
+3. Run ```scons && scons units```
 
-3. Do the same for GSL,armadillo, HDF5 and if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
-
-4. Run ```source env.sh && scons && scons units```
-
-5. Test the build was sucessful with ```./tests/RunUnits```
+4. Test the build was sucessful with ```./tests/RunUnits```
 
 
 <h3> Compiling Your Own Scripts</h3>
