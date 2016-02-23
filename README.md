@@ -7,9 +7,10 @@ Signal Extraction framework for the SNO+ experiment
 2. [GSL](https://gcc.gnu.org/libstdc++/) - likely you already have this installed, especially if you are running RAT
 3. [SCons](http://www.scons.org/) Is used for the build, also a dependency for RAT
 4. [HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html)
+5. [ROOT](https://root.cern.ch/downloading-root) Should be installed with Minuit2 enabled `./configure --enable-minuit2`
+<h2>Installation Instructions </h2>
 Follow the installation instructions for each of the above using either the default install location or a different directory if you would prefer.
 
-<h2>Installation Instructions </h2>
 
 1. Clone this repository with ```git clone https://github.com/jackdunger/oxsx.git --recursive``` if you've already cloned without the recursive flag just run ```git submodule update --init```
 
