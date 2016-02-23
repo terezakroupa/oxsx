@@ -15,3 +15,5 @@ examples/compile.sh
 *.h5
 env.sh
 include/*
+.*
+config/userconfig.ini

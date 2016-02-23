@@ -1,0 +1,24 @@
+#!/bin/python
+# SConscript responsible for setting up the build environment using the dependencies
+import buildhelp
+import os
+
+env = Environment()
+if env.GetOption('clean'):
+    Return('env')
+
+conf = Configure(env)   
+# sanity check      
+buildhelp.sanity_checks(conf)
+
+# first load the dependencies from the ini
+dependencies = buildhelp.read_dependencies("dependencies.ini")
+
+# now overwrite any options from custom build
+if FindFile("userconfig.ini", "."):
+    buildhelp.parse_user_config("userconfig.ini", dependencies)        
+    
+# update the environment, checking along the way
+buildhelp.update_and_check_env(conf, dependencies)
+env = conf.Finish()
+Return('env')
