@@ -42,5 +42,5 @@ TEST_CASE("Writing a data set to disk  and reading back"){
         REQUIRE(origDataSet.GetEntry(nEntries -1).GetData() == loadedSet.GetEntry(nEntries -1).GetData());
     }
     
-    
+    remove("data_set_io_root_test.h5");
 }
