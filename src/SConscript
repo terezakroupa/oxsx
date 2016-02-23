@@ -1,0 +1,25 @@
+#!python
+import os
+
+Import('env')
+
+# Compile all .cpp files in source tree
+source_dirs  = [x[0] for x in os.walk(".")]
+source_files = []
+for x in source_dirs:
+    source_files += Glob(os.path.join(x,"*.cpp"))
+
+#Copy headers into include dir
+hdrs = []
+for x in source_dirs:
+    hdrs += Glob(os.path.join(x, "*.h")) + Glob(os.path.join(x, "*.hpp")) + Glob(os.path.join(x, "*.hh"))
+
+headers = [Command(os.path.join("#/include", os.path.basename(y.rstr())),
+                   y, Copy("$TARGET", "$SOURCE")) for y in hdrs]
+env.Default(headers)
+
+# Build the library
+objects = [env.Object(x) for x in source_files]
+
+lib = env.Library("liboxsx", objects)
+env.Default([objects, lib])
