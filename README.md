@@ -18,7 +18,7 @@ e.g.
  ```
     [root]
     header_path : <path/to/headers>
-    lib
+    lib_path    : <path/to/libraries>
  ```
 
 3. Run ```scons && scons units```
