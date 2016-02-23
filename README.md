@@ -13,10 +13,13 @@ Follow the installation instructions for each of the above using either the defa
 
 1. Clone this repository with ```git clone https://github.com/jackdunger/oxsx.git --recursive``` if you've already cloned without the recursive flag just run ```git submodule update --init```
 
-2. Update env.sh to point to ROOT and scons installs 
+2. If your dependencies are somewhere the compiler can't find them, update config/userconfig.ini. 
 e.g.
- ```ROOT_DIR    =  /software/..../root-5.34.30   ```
- ```SCONS_DIR   =  /software/..../scons-2.3.4```
+ ```[root]
+    header_path : <path/to/headers>
+    
+ ```
+ ```
 
 
 3. Do the same for GSL,armadillo, HDF5 and if these were installed to system dirs /user/lib etc. these can be left as empty strings ""
