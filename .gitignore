@@ -10,7 +10,7 @@
 build/*
 test/build/*
 *.a
-*\#
+*#
 test/RunUnits
 examples/compile.sh
 *.h5
