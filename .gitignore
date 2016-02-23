@@ -8,6 +8,7 @@
 *.root
 *.out
 build/*
+test/build/*
 *.a
 *\#
 test/RunUnits
