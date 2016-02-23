@@ -23,3 +23,4 @@ objects = [env.Object(x) for x in source_files]
 
 lib = env.Library("liboxsx", objects)
 env.Default([objects, lib])
+Return('lib')
