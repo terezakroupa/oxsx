@@ -21,7 +21,7 @@ def eff_r(x, y, z):
     return (r/R0)**3
 
 
-def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
+def to_eff_r(file_name, tree_name, coord_names, outfile, r_name, coords_to_keep = []):
     # Get in tree
     in_file = TFile(file_name)
     tree    = in_file.Get(tree_name)
@@ -38,12 +38,12 @@ def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
             print "\t".join(branches)
             sys.exit()
     
-    other_branches = set(branches) - set(coord_names) 
+    other_branches = list(set(branches) - set(coord_names)) + coords_to_keep
 
     out_file = TFile(outfile, "RECREATE")
     new_branches = list(other_branches) + [r_name]
     print new_branches
-    nt       = TNtuple("oxsx", "", ":".join(new_branches))
+    nt       = TNtuple("output", "", ":".join(new_branches))
 
     n_events = tree.GetEntries()
     for i, entry in enumerate(tree):
@@ -62,16 +62,17 @@ def to_eff_r(file_name, tree_name, coord_names, outfile, r_name):
 
     print "Written %i entries of branch(es) '%s' \nto tree %s  \nin file %s" %(n_events,
                                                                                ":".join(new_branches),
-                                                                               "oxsx", outfile)
+                                                                               "output", outfile)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', type=str, )
-    parser.add_argument('-treename', metavar='-t', type=str, default = "oxsx")
+    parser.add_argument('-treename', metavar='-t', type=str, default = "output")
     parser.add_argument('coords', metavar = "c", nargs="+", type=str)
     parser.add_argument('-rname', metavar = "r", type=str, default= "r_eff")
     parser.add_argument('-outfile', metavar='-o', type=str, default = "")
+    parser.add_argument('-keep', metavar='-k', nargs="+", type=str, default = "")
     args = parser.parse_args()
     
     
@@ -81,5 +82,5 @@ if __name__ == "__main__":
         outfile += "_reff.root"
         args.outfile = outfile
     to_eff_r(args.filename, args.treename, args.coords,
-             args.outfile, args.rname)
+             args.outfile, args.rname, args.keep)
         
