@@ -3,11 +3,11 @@
 import buildhelp
 import os
 
-env = Environment()
+env = Environment(CXXFLAGS = "-O2")
 if env.GetOption('clean'):
     Return('env')
 
-conf = Configure(env)   
+conf = Configure(env, log_file = "/dev/null")   
 # sanity check      
 buildhelp.sanity_checks(conf)
 
