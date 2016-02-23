@@ -16,3 +16,5 @@ Export('lib')
 env.SConscript("test/unit/SConscript", 
                variant_dir="#/test/unitbuild", duplicate=0)
 
+# now create the executibles for running user scripts
+env.SConscript("bin/SConscript")
