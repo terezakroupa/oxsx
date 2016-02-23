@@ -13,5 +13,6 @@ lib = env.SConscript("src/SConscript",
 Export('lib')
 
 # now build the tests
-env.SConscript("test/unit/SConscript", variant_dir="test/unit/build", duplicate=0)
+env.SConscript("test/unit/SConscript", 
+               variant_dir="#/test/unitbuild", duplicate=0)
 
