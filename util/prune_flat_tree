@@ -68,7 +68,7 @@ if __name__ == "__main__":
     parser.add_argument('-newtreename', type=str, default = "")
     parser.add_argument('branches', nargs="+", type=str)
     parser.add_argument('-outfile', metavar='-o', type=str, default = "")
-    parser.add_argument('-nevents', metavar='-n', type=int, default = -1)
+    parser.add_argument('-nevents', metavar='-nev', type=int, default = -1)
     args = parser.parse_args()
     
     if args.outfile == "":
