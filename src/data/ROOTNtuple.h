@@ -15,7 +15,9 @@ class EventData;
 class ROOTNtuple : public DataSet{
  public:
     ROOTNtuple(const std::string& fileName_, const std::string& treeName_);
-    ~ROOTNtuple();
+    ROOTNtuple(const ROOTNtuple& other_);
+    ROOTNtuple operator=(const ROOTNtuple& other_);
+    ~ROOTNtuple() {}
 
     EventData GetEntry(size_t iEvent_) const;
     unsigned  GetNEntries() const {return fNEntries;}
@@ -26,7 +28,7 @@ class ROOTNtuple : public DataSet{
     
  private:
     unsigned fNEntries;
-    TFile*   fROOTFile;
+    TFile    fROOTFile;
     TNtuple* fNtuple;
     
     EventData Assemble(size_t iEvent_) const;
