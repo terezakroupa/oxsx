@@ -15,8 +15,6 @@ class EventData;
 class ROOTNtuple : public DataSet{
  public:
     ROOTNtuple(const std::string& fileName_, const std::string& treeName_);
-    ROOTNtuple(const ROOTNtuple& other_);
-    ROOTNtuple operator=(const ROOTNtuple& other_);
     ~ROOTNtuple() {}
 
     EventData GetEntry(size_t iEvent_) const;
@@ -27,6 +25,9 @@ class ROOTNtuple : public DataSet{
     void DropBaskets();
     
  private:
+    ROOTNtuple(const ROOTNtuple&);
+    ROOTNtuple operator=(const ROOTNtuple&);
+
     unsigned fNEntries;
     TFile    fROOTFile;
     TNtuple* fNtuple;

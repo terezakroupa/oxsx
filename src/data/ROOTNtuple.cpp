@@ -21,22 +21,6 @@ ROOTNtuple::ROOTNtuple(const std::string& fileName_, const std::string& treeName
    
 }
 
-ROOTNtuple::ROOTNtuple(const ROOTNtuple& other_){
-    fROOTFile.OpenFile(other_.fROOTFile.GetName());
-    fNtuple = dynamic_cast<TNtuple*>(fROOTFile.Get(other_.fNtuple->GetName()));
-    fNtuple = other_.fNtuple;
-    fNObservables = other_.fNObservables;
-}
-
-ROOTNtuple
-ROOTNtuple::operator=(const ROOTNtuple& other_){
-    fROOTFile.OpenFile(other_.fROOTFile.GetName());
-    fNtuple = dynamic_cast<TNtuple*>(fROOTFile.Get(other_.fNtuple->GetName()));
-    fNtuple = other_.fNtuple;
-    fNObservables = other_.fNObservables;
-    return *this;
-}
-
 EventData 
 ROOTNtuple::Assemble(size_t iEvent_) const{
     if (iEvent_ >= fNEntries)
