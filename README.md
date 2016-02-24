@@ -15,14 +15,13 @@ Follow the installation instructions for each of the above using either the defa
 
 1. Clone this repository with ```git clone https://github.com/jackdunger/oxsx.git --recursive``` if you've already cloned without the recursive flag just run ```git submodule update --init```
 
-2. If your dependencies are somewhere the compiler can't find them, copy config/userconfig.ini.template to config/userconfig.ini and add the relevant paths. Missing entries are assumed to be in standard locations
-e.g.
- ```
+2. If your dependencies are somewhere the compiler can't find them, copy `config/userconfig.ini.template` to `config/userconfig.ini` and add the relevant paths. Missing entries are assumed to be in standard locations. e.g.
+    ```
     [root]
     header_path : <path/to/headers>
     lib_path    : <path/to/libraries>
- ```
-
+     ```
+  
 3. Run ```scons && scons units```
 
 4. Test the build was sucessful with ```./tests/RunUnits```
