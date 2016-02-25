@@ -82,14 +82,15 @@ DataSetGenerator::AllValidEvents(){
 
 EventData
 DataSetGenerator::RandomEvent(size_t handleIndex_){
-    if (fSelectedEvents.size() == fDataSets.at(handleIndex_)->GetNEntries() && !fBootstrap){
+    const std::vector<size_t>& selectedEvents = fSelectedEvents.at(handleIndex_);
+
+    if (selectedEvents.size() == fDataSets.at(handleIndex_)->GetNEntries() && !fBootstrap){
         throw DataException("DataSetGenerator::Ran out of events!");
     }
 
     bool uniqueEvent = false;
     unsigned eventNum;
 
-    const std::vector<size_t>& selectedEvents = fSelectedEvents.at(handleIndex_);
     while(!uniqueEvent){
         eventNum = Rand::Shoot(fDataSets.at(handleIndex_)->GetNEntries());
         if (std::find(selectedEvents.begin(), selectedEvents.end(), eventNum) == selectedEvents.end())
