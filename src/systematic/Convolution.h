@@ -13,7 +13,7 @@
 class IntegrablePdf;
 class Convolution : public Systematic{
  public:
-    Convolution():fPdf(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
+    Convolution(): fPdf(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
     ~Convolution();
     void SetPdf(IntegrablePdf* pdf_);
     void SetAxes(const AxisCollection& axes_);
