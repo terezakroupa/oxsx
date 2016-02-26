@@ -67,32 +67,6 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
         fLatexName = name_;
 }
 
-PdfAxis::PdfAxis(const PdfAxis& other_){
-    fName = other_.fName;
-    fLatexName = other_.fLatexName;
-    fBinLowEdges = other_.fBinLowEdges;
-    fBinHighEdges = other_.fBinHighEdges;
-    fBinCentres = other_.fBinCentres;
-    fNBins = other_.fNBins;
-	fMax = other_.fMax;
-	fMin = other_.fMin;
-	fBinWidths = other_.fBinWidths;
-}
-
-PdfAxis
-PdfAxis::operator=(const PdfAxis& other_){
-    fName = other_.fName;
-    fLatexName = other_.fLatexName;
-    fBinLowEdges = other_.fBinLowEdges;
-    fBinHighEdges = other_.fBinHighEdges;
-    fBinCentres = other_.fBinCentres;
-    fNBins = other_.fNBins;
-	fMax = other_.fMax;
-	fMin = other_.fMin;
-	fBinWidths = other_.fBinWidths;
-    return *this;
-}
-
 
 size_t 
 PdfAxis::FindBin(double value_) const{
