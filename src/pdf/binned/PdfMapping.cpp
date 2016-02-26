@@ -39,17 +39,6 @@ PdfMapping::GetComponent(size_t col_, size_t row_) const{
     return fResponse(col_, row_);
 }
 
-PdfMapping 
-PdfMapping::operator = (const PdfMapping& other_){
-    if(this != &other_){
-        fAxes  = other_.fAxes;
-        fNBins = other_.fNBins;
-        fNDims = other_.fNDims;
-        fResponse = other_.fResponse;
-    }
-    return *this;
-}
-
 BinnedPdf
 PdfMapping::operator()
     (const BinnedPdf& pdf_) const{
