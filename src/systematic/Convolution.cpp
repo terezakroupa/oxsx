@@ -148,7 +148,7 @@ Convolution::CacheCompatibleBins(){
     std::vector<size_t> sysIndices(relativeIndices.size(), 0);
     for(size_t i = 0; i < axes.GetNBins(); i++){
       for(size_t dim = 0; dim < relativeIndices.size(); dim++)
-	sysIndices[dim] = axes.UnflattenIndex(i, relativeIndices.at(dim));
+          sysIndices[dim] = axes.UnflattenIndex(i, relativeIndices.at(dim));
 
       fSysBins[i] = fSysAxes.FlattenIndices(sysIndices);
     }
