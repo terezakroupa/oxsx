@@ -22,7 +22,11 @@ DataSetGenerator::ExpectedRatesDataSet() const{
     if(fExpectedRates.size() != fDataSets.size())
         throw DataException("Can't generate fake data: need one rate exactly for each data set");
 
-    OXSXDataSet dataSet;
+    if(!fDataSets.size())
+      throw DataException("Can't generate fake data: no input data sets");
+
+    OXSXDataSet dataSet;    
+    dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
 
@@ -43,8 +47,11 @@ OXSXDataSet
 DataSetGenerator::PoissonFluctuatedDataSet() const{
     if(fExpectedRates.size() != fDataSets.size())
         throw DataException("Can't generate fake data: need one rate exactly for each data set");
+    if(!fDataSets.size())
+      throw DataException("Can't generate fake data: no input data sets");
 
-    OXSXDataSet dataSet;
+    OXSXDataSet dataSet;    
+    dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
 
