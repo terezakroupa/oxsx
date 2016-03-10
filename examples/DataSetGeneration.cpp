@@ -1,6 +1,6 @@
-#include <ROOTNuple.h>        
 #include <DataSetGenerator.h>        
-         
+#include <OXSXDataSet.h>         
+#include <ROOTNtuple.h>
 int main(){        
     // (filename, tree name)        
     ROOTNtuple zeroNuMC("<filename1>", "treename");        
