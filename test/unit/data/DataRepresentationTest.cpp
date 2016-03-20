@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <DataRepresentation.h>
+#include <OXSXDataSet.h>
 
 TEST_CASE("Build from one index"){
     DataRepresentation drep(19);
@@ -58,3 +59,34 @@ TEST_CASE("Looking for the relative indices of 2d rep in 4d rep"){
     REQUIRE(relativeIndices.at(1) == 0);
     
 }
+
+TEST_CASE("Creating a DataRepresentation from a DataSet by observable name"){
+    // create a dummy dataset with some observables in it
+    std::vector<std::string> observables;
+    observables.push_back("obs_1");
+    observables.push_back("obs_2");
+    observables.push_back("obs_3");
+    observables.push_back("obs_4");
+
+    OXSXDataSet dataSet;
+    dataSet.SetObservableNames(observables);
+    
+    // now ask the data set for the representation corresponding to obs_4, obs_3, obs_2
+    std::vector<std::string> requestedObs;
+    requestedObs.push_back("obs_4");
+    requestedObs.push_back("obs_3");
+    requestedObs.push_back("obs_2");
+
+    DataRepresentation generatedRep = dataSet.MakeDataRep(requestedObs);
+
+    //check it did it right
+    REQUIRE(generatedRep.GetLength() == requestedObs.size());
+    for(size_t i = 0; i < requestedObs.size(); i++){
+        size_t generatedIndex = generatedRep.GetIndices().at(i);
+        std::string generatedName = observables.at(generatedIndex);
+        REQUIRE(generatedName == requestedObs.at(i));
+        
+    }
+}
+
+                
