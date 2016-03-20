@@ -14,7 +14,7 @@
 class AxisCollection{
     
  public:
-    AxisCollection():fNDimensions(0), fNBins(0){}
+    AxisCollection() : fNDimensions(0), fNBins(0){}
     size_t  FindBin(const std::vector<double>& vals_) const;
     size_t  GetNBins() const;
     void    AddAxis(const PdfAxis& axis_);

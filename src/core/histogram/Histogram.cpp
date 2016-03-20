@@ -7,13 +7,6 @@ Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
 }
 
-Histogram::Histogram(const Histogram& other_){
-    fAxes = other_.fAxes;
-    fNDims = other_.fNDims;
-    fBinContents = other_.fBinContents;
-    fNBins = fBinContents.size();
-}
-
 void 
 Histogram::SetAxes(const AxisCollection& axes_){
     fAxes  = axes_;

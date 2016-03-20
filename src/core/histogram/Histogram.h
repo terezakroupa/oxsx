@@ -13,7 +13,6 @@ class Histogram{
  public:
     Histogram() : fNBins(0), fNDims(0) {}
     Histogram(const AxisCollection& axes_);
-    Histogram(const Histogram& other_);
     
     double operator() (const std::vector<double>& vals_) const;
     double Integral()  const;
