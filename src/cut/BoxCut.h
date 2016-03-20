@@ -8,7 +8,6 @@ class BoxCut : public Cut{
     BoxCut(size_t dim_, double lower_, double upper_) : fDim(dim_), fUpperLim(upper_), 
                                                         fLowerLim(lower_) {}
 
-    BoxCut(const BoxCut& other_);
     virtual ~BoxCut(){}
     virtual Cut* Clone() const;
 
