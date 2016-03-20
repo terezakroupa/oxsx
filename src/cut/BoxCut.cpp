@@ -14,12 +14,6 @@ BoxCut::PassesCut(const EventData& ev_) const{
 }
 
 
-BoxCut::BoxCut(const BoxCut& other_){
-  fDim = other_.fDim;
-  fUpperLim = other_.fUpperLim;
-  fLowerLim = other_.fLowerLim;
-}
-
 Cut*
 BoxCut::Clone() const{
   return new BoxCut(*this);
