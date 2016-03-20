@@ -22,10 +22,6 @@ class PdfAxis{
     PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_, 
             const std::vector<double>& highEdges_, const std::string& latexName_ = "");
 
-    // Copy Constructors
-    PdfAxis(const PdfAxis&);
-    PdfAxis operator=(const PdfAxis&);
-
     ~PdfAxis() {}
 
     // Find the Bin value_ is in
