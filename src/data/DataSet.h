@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 
+class DataRepresentation;
 class EventData;
 class DataSet{
  public:
@@ -18,6 +19,8 @@ class DataSet{
     virtual unsigned GetNObservables() const {return fNObservables;}
 
     virtual std::vector<std::string> GetObservableNames() const = 0;
+    DataRepresentation MakeDataRep(const std::vector<std::string> observableNames_) const;
+
  protected:
     unsigned fNObservables;
     unsigned fNEntries;
