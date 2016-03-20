@@ -8,16 +8,16 @@ class EventSystematic{
  public:
     virtual EventData operator()(const EventData&) = 0;
     std::vector<double> GetParameters() const;
-    virutal void   SetParameters(const std::vector<double>&);
+    virtual void   SetParameters(const std::vector<double>&);
 
     size_t GetParamCount() const;
     virtual void   SetParameter(size_t index_, double val_);
-    virutal double GetParameter(size_t index_);
+    virtual double GetParameter(size_t index_) const;
 
-    void   SetDataRep(const DataRepresentation&);
+    virtual void   SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
  protected:
     std::vector<double> fParams;
     DataRepresentation  fDataRep;
-}
+};
 #endif
