@@ -1,8 +1,10 @@
 #include <Systematic.h>
+#include <PdfExceptions.h>
 #include <algorithm>
 #include <iostream>
 
-BinnedPdf Systematic::operator() (const BinnedPdf& pdf_) const{
+BinnedPdf 
+Systematic::operator() (const BinnedPdf& pdf_) const{
     BinnedPdf afterSmear = fPdfMapping(pdf_);
     afterSmear.Normalise();
     return afterSmear;
@@ -72,10 +74,22 @@ Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
 
 double
 Systematic::GetParameter(size_t index_) const {
-    return fParams.at(index_);
+    try{
+        return fParams.at(index_);
+    }
+    catch (const std::out_of_range& e){
+        throw OutOfBoundsError("Systematic::GetParameter, parameter of t\
+hat index doesn't exist!");
+    }
 }
 
 void
 Systematic::SetParameter(size_t index_, double val_){
-    fParams[index_] = val_;
+    try{
+        fParams[index_] = val_;
+    }  
+    catch (const std::out_of_range& e){
+        throw OutOfBoundsError("Systematic::SetParameter, parameter of hat index doesn't exist!");
+    }
 }
+
