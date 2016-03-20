@@ -4,8 +4,8 @@ import os
 Import('env')
 
 # Compile all .cpp files in source tree
-source_dirs  = [x[0] for x in os.walk("../src")]
-print source_dirs
+source_dirs  = [x[0] for x in os.walk(Dir("#/src").abspath)]
+
 # replace it with variant_dir locs, scons doesn't know these exist yet
 source_dirs = [x.replace("src", env["SRC_VARIANT_DIR"]) for x in source_dirs]
 
