@@ -4,6 +4,10 @@
 #include <EventData.h>
 #include <stdexcept>
 
+EventScale::EventScale(){
+    fParams = std::vector<double>(1, 1);
+}
+
 EventData
 EventScale::operator()(const EventData& inEvent_){
     // pull out the relevant data point

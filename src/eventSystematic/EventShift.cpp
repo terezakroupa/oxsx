@@ -4,6 +4,10 @@
 #include <EventData.h>
 #include <stdexcept>
 
+EventShift::EventShift(){
+    fParams = std::vector<double>(1, 0);
+}
+
 EventData
 EventShift::operator()(const EventData& inEvent_){
     // pull out the relevant data point

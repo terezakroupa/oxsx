@@ -5,6 +5,7 @@
 
 class EventScale : public EventSystematic{
  public:
+    EventScale(); 
     virtual EventData operator()(const EventData&);
 
     virtual void   SetParameters(const std::vector<double>&);

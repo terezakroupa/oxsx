@@ -56,6 +56,8 @@ EventSystematicManager::GetNSystematics() const{
 
 EventData 
 EventSystematicManager::ApplySystematics(const EventData& event_) const{
+    EventData modified = event_;
     for(size_t i = 0; i < fSystematics.size(); i++)
-        event_ = fSystematics.at(i)->operator()(event_);
+        modified = fSystematics.at(i)->operator()(modified);
+    return modified;
 }
