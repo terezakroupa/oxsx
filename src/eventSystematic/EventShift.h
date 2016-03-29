@@ -5,6 +5,7 @@
 
 class EventShift : public EventSystematic{
  public:
+    EventShift();
     virtual EventData operator()(const EventData&);
 
     virtual void   SetParameters(const std::vector<double>&);
