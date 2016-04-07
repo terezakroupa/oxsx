@@ -1,14 +1,14 @@
 #ifndef __OXSX_GAUSSIAN__
 #define __OXSX_GAUSSIAN__
-#include <Function.h>
+#include <IntegrableFunction.h>
 
-class Gaussian : public Function{
+class Gaussian : public IntegrableFunction{
  public:
     // Constructory things
     Gaussian(size_t nDims_); // means = 0, stdDevs = 1
     Gaussian(double mean_, double stdDev_);
     Gaussian(const std::vector<double>& mean_, 
-              const std::vector<double>& stdDev_);
+             const std::vector<double>& stdDev_);
     virtual   Function* Clone() const;
 
     // Probability
@@ -16,7 +16,7 @@ class Gaussian : public Function{
     double  Cdf(size_t dim_, double val_) const;
     double Integral(const std::vector<double>& mins_, 
                     const std::vector<double>& maxs_) const;
-    double Integral(double mins_, double max_) const;
+    double Integral() const {return 1;} // normalised by definition
 
     // Getters/Setters
     void SetMeansStdDevs(const std::vector<double>& means_, const std::vector<double>& stdDevs_);    

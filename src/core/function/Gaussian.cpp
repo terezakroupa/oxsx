@@ -18,6 +18,10 @@ Gaussian::Initialise(const std::vector<double>& means_, const std::vector<double
     fCdfCutOff = 6; // default val
 }
 
+Gaussian::Gaussian(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
+    Initialise(means_, stdDevs_);
+}
+
 Gaussian::Gaussian(size_t nDims_){
     Initialise(std::vector<double>(nDims_, 0), std::vector<double>(nDims_, 1));
 }
@@ -142,10 +146,6 @@ Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& 
     return integral;  
 }
 
-double 
-Gaussian::Integral(double min_, double max_) const{
-    return Integral(std::vector<double>(1, min_), std::vector<double>(1,max_) );
-}
 
 ////////////////////////
 // Make it fittable   //
