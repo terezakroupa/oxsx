@@ -2,17 +2,19 @@
 #include <Gaussian.h>
 #include <BinnedPdf.h>
 #include <CompositePdf.h>
+#include <AnalyticPdf.h>
 #include <iostream>
 
 TEST_CASE("Combining 1D gaussians", "[CompositePdf]"){
+    Gaussian gausF1(0.5, 0.4);
+    Gaussian gausF2(0.5, 0.3);
 
-    Gaussian gaus1(0.5, 0.4);
-    Gaussian gaus2(0.5, 0.3);
+    AnalyticPdf gaus1(&gausF1);
+    AnalyticPdf gaus2(&gausF2);
 
     DataRepresentation d1(0);
     DataRepresentation d2(2);
     
-
     gaus1.SetDataRep(d1);
 
     gaus2.SetDataRep(d2);
@@ -47,7 +49,9 @@ TEST_CASE("Combining 1D gaussians", "[CompositePdf]"){
     }
 
     SECTION("Second level of recursion"){
-        Gaussian nextPdf = Gaussian(0.9, 0.8);
+        Gaussian nextF = Gaussian(0.9, 0.8);
+
+        AnalyticPdf nextPdf(&nextF);
         nextPdf.SetDataRep(DataRepresentation(3));
         CompositePdf level2 = compositePdf * nextPdf;
         REQUIRE( level2.GetNDims() == 3 );
