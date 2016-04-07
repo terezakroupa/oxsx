@@ -42,6 +42,6 @@ TEST_CASE("Binned NLLH, 3 rates no systematics"){
         double sumNorm    = 3;
         
         lh.SetParams(std::vector<double>(3, 1));
-        REQUIRE(lh.Evaluate() == sumNorm + sumLogProb);
+        REQUIRE(lh.Evaluate() == Approx(sumNorm + sumLogProb));
     }
 }
