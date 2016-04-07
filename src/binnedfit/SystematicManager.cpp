@@ -20,12 +20,12 @@ SystematicManager::SetParameters(const std::vector<double>& params_){
 
     // divide up the systematics into their proper destination
     std::vector<double>::const_iterator it = params_.begin();
-    fSystematics[0] -> SetParameters(std::vector<double>(it, it + fParamCounts.at(0)));
+    fSystematics[0] -> SetParameterValues(std::vector<double>(it, it + fParamCounts.at(0)));
 
     for(size_t i = 1; i < fSystematics.size(); i++){
-        fSystematics[i] -> SetParameters(std::vector<double>(it + fParamCounts.at(i-1), 
-                                                             it  + fParamCounts.at(i-1) + 
-                                                             + fParamCounts.at(i)));
+        fSystematics[i] -> SetParameterValues(std::vector<double>(it + fParamCounts.at(i-1), 
+                                                                  it  + fParamCounts.at(i-1) + 
+                                                                  + fParamCounts.at(i)));
     }
     // construct the response matricies
     for(size_t i = 0; i < fSystematics.size(); i++)
@@ -52,8 +52,8 @@ SystematicManager::GetParameters() const{
 void 
 SystematicManager::Add(Systematic* systematic_){    
     fSystematics.push_back(systematic_);
-    fParamCounts.push_back(systematic_->GetParamCount());
-    fTotalParamCount += systematic_->GetParamCount();
+    fParamCounts.push_back(systematic_->GetParameterCount());
+    fTotalParamCount += systematic_->GetParameterCount();
     fNSystematics++;
 }
 
