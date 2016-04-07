@@ -10,12 +10,13 @@
 
 #ifndef __OXSX_SYSTEMATIC__
 #define __OXSX_SYSTEMATIC__
+#include <FitComponent.h>
 #include <PdfMapping.h>
 #include <BinnedPdf.h>
 #include <DataRepresentation.h>
 #include <vector>
 
-class Systematic{
+class Systematic : public FitComponent{
  public:
     Systematic()   {}
     virtual ~Systematic()  {}
@@ -33,19 +34,10 @@ class Systematic{
     void SetPdfDataRep(const DataRepresentation&);
     DataRepresentation GetPdfDataRep() const;
 
-    virtual void   SetParameters(const std::vector<double>&);
-    virtual std::vector<double> GetParameters() const;
-
-    virtual void   SetParameter(size_t index_, double val_);
-    virtual double GetParameter(size_t index_) const;
-    
-     size_t GetParamCount() const;
-
-     virtual void Construct() {}
+    virtual void Construct() {}
 
  protected:
     PdfMapping fPdfMapping;
-    std::vector<double> fParams;
     DataRepresentation fDataRep;     // the data indicies that this systematic acts on
     DataRepresentation fPdfDataRep;  
     // the data indices  of the pdfs it will act on, needs to be at least the lenth of the 
