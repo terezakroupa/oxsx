@@ -5,6 +5,10 @@
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
 
+
+Pdf::Pdf(const Pdf& other_){
+    fDataRep = other_.fDataRep;    
+}
 unsigned Pdf::GetNDims() const{
     return fNDims;
 }

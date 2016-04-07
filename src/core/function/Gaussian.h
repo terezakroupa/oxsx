@@ -19,7 +19,8 @@ class Gaussian : public IntegrableFunction{
     double Integral() const {return 1;} // normalised by definition
 
     // Getters/Setters
-    void SetMeansStdDevs(const std::vector<double>& means_, const std::vector<double>& stdDevs_);    
+    void SetMeansStdDevs(const std::vector<double>& means_, 
+                         const std::vector<double>& stdDevs_);
     double GetMean(size_t dimension_) const;
     double GetStDev(size_t dimension_) const;    
     std::vector<double> GetMeans() const;
