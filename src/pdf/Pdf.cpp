@@ -8,6 +8,7 @@
 
 Pdf::Pdf(const Pdf& other_){
     fDataRep = other_.fDataRep;    
+    fNDims   = other_.fNDims;
 }
 unsigned Pdf::GetNDims() const{
     return fNDims;

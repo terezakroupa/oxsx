@@ -1,3 +1,4 @@
+
 #include <AnalyticPdf.h>
 #include <PdfExceptions.h>
 #include <IntegrableFunction.h>
@@ -13,7 +14,6 @@ AnalyticPdf::~AnalyticPdf(){
 }
 
 AnalyticPdf::AnalyticPdf(const AnalyticPdf& other_) : Pdf(other_){
-    fNDims = other_.GetNDims();
     fNorm  = other_.fNorm;
     fFunction = dynamic_cast<IntegrableFunction*>(other_.fFunction->Clone());
 }

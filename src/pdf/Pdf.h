@@ -29,7 +29,7 @@ class CompositePdf;
 class Pdf{
  public:
     Pdf() {}
-    Pdf(const Pdf&);
+    Pdf(const Pdf&); // copies fDataRep and fNDims
     virtual ~Pdf() {}
 
     virtual double operator() (const std::vector<double>& vals_) const = 0;
