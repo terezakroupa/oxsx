@@ -2,12 +2,12 @@
 #define __OXSX_GAUSSIAN__
 #include <Function.h>
 
-class Gaussian2 : public Function{
+class Gaussian : public Function{
  public:
     // Constructory things
-    Gaussian2(size_t nDims_); // means = 0, stdDevs = 1
-    Gaussian2(double mean_, double stdDev_);
-    Gaussian2(const std::vector<double>& mean_, 
+    Gaussian(size_t nDims_); // means = 0, stdDevs = 1
+    Gaussian(double mean_, double stdDev_);
+    Gaussian(const std::vector<double>& mean_, 
               const std::vector<double>& stdDev_);
     virtual   Function* Clone() const;
 
