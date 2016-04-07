@@ -10,12 +10,12 @@
 #define __OXSX_CONVOLUTION__
 #include <Systematic.h>
 
-class IntegrablePdf;
+class IntegrableFunction;
 class Convolution : public Systematic{
  public:
-    Convolution(): fPdf(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
+    Convolution(): fFunction(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
     ~Convolution();
-    void SetPdf(IntegrablePdf* pdf_);
+    void SetFunction(IntegrableFunction* function_);
     void SetAxes(const AxisCollection& axes_);
     void Construct();    
 
@@ -25,12 +25,14 @@ class Convolution : public Systematic{
     double GetParameter(size_t index_) const;
     void   SetParameter(size_t index_, double val);
 
+    // Make this fittable, by delegating to the underlying function
+    void MakeFittable();
+
  private:
-    void           Reset();
-    IntegrablePdf* fPdf;
-    size_t         fParameterCount;
-    bool           fHasAxes;
-    bool           fCachedCompatibleBins;
+    void                     Reset();
+    IntegrableFunction*      fFunction;
+    bool                     fHasAxes;
+    bool                     fCachedCompatibleBins;
 
     AxisCollection fSysAxes;
     void  CacheCompatibleBins();

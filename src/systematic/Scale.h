@@ -7,7 +7,7 @@
 
 class Scale : public Systematic{
  public:
-    Scale(unsigned axisIndex_);
+    Scale() : fScaleFactor(1) {}
     void SetAxes(const AxisCollection&);
     const AxisCollection& GetAxes() const;
     
@@ -16,7 +16,10 @@ class Scale : public Systematic{
     
     void Construct();
 
+    // Adjustable scale factor
+    void MakeFittable();
+
  private:
-    unsigned fAxisIndex;
+    double   fScaleFactor;
 };
 #endif
