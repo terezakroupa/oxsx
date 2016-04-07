@@ -1,7 +1,6 @@
 #include <Gaussian.h>
 #include <math.h>
 #include <PdfExceptions.h>
-#include <iostream>
 #include <gsl/gsl_cdf.h>
 #include <sstream>
 
@@ -104,7 +103,7 @@ Gaussian::operator() (const std::vector<double>& vals_) const{
     if (vals_.size() != GetNDims())
         throw DimensionError("Gaussian dimensionality does not match the input vector to evaluate!");
 
-    double exponent;
+    double exponent = 0;
     double mean;
     double stdDev;
     double nDevs;
