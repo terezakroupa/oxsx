@@ -1,4 +1,4 @@
-#include <Gaussian2.h>
+#include <Gaussian.h>
 #include <math.h>
 #include <PdfExceptions.h>
 #include <iostream>
@@ -10,7 +10,7 @@
 /////////////////////////
 
 void
-Gaussian2::Initialise(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
+Gaussian::Initialise(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
     SetMeansStdDevs(means_, stdDevs_);
     SetNDims(means_.size());
     fMeans = means_;
@@ -18,17 +18,17 @@ Gaussian2::Initialise(const std::vector<double>& means_, const std::vector<doubl
     fCdfCutOff = 6; // default val
 }
 
-Gaussian2::Gaussian2(size_t nDims_){
+Gaussian::Gaussian(size_t nDims_){
     Initialise(std::vector<double>(nDims_, 0), std::vector<double>(nDims_, 1));
 }
 
-Gaussian2::Gaussian2(double mean_, double stdDev_){
+Gaussian::Gaussian(double mean_, double stdDev_){
     Initialise(std::vector<double>(1, mean_), std::vector<double>(1, stdDev_));
 }
 
 Function* 
-Gaussian2::Clone() const{
-    return static_cast<Function*> (new Gaussian2(*this));
+Gaussian::Clone() const{
+    return static_cast<Function*> (new Gaussian(*this));
 }
 
 /////////////////////
@@ -36,7 +36,7 @@ Gaussian2::Clone() const{
 /////////////////////
 
 double 
-Gaussian2::GetMean(size_t dimension_) const{
+Gaussian::GetMean(size_t dimension_) const{
     try{
         return fMeans.at(dimension_);
     }
@@ -46,7 +46,7 @@ Gaussian2::GetMean(size_t dimension_) const{
 }
 
 double 
-Gaussian2::GetStDev(size_t dimension_) const{
+Gaussian::GetStDev(size_t dimension_) const{
     try{
         return fStdDevs.at(dimension_);
     }
@@ -56,12 +56,12 @@ Gaussian2::GetStDev(size_t dimension_) const{
 }
 
 std::vector<double>
-Gaussian2::GetMeans() const {
+Gaussian::GetMeans() const {
     return fMeans;
 }
 
 void
-Gaussian2::SetMeansStdDevs(const std::vector<double>& means_, 
+Gaussian::SetMeansStdDevs(const std::vector<double>& means_, 
                            const std::vector<double>& stdDevs_){
     if (means_.size() != stdDevs_.size())
         throw DimensionError("Tried to set Gaussian function with #means != #stdDevs!");
@@ -76,17 +76,17 @@ Gaussian2::SetMeansStdDevs(const std::vector<double>& means_,
 }
 
 std::vector<double>
-Gaussian2::GetStdDevs() const {
+Gaussian::GetStdDevs() const {
     return fStdDevs;
 }
 
 double
-Gaussian2::GetCdfCutOff() const{
+Gaussian::GetCdfCutOff() const{
     return fCdfCutOff;
 }
 
 void 
-Gaussian2::SetCdfCutOff(double cutOff_){
+Gaussian::SetCdfCutOff(double cutOff_){
     fCdfCutOff = cutOff_;
 }
 
@@ -96,7 +96,7 @@ Gaussian2::SetCdfCutOff(double cutOff_){
 /////////////////
 
 double 
-Gaussian2::operator() (const std::vector<double>& vals_) const{
+Gaussian::operator() (const std::vector<double>& vals_) const{
     if (vals_.size() != GetNDims())
         throw DimensionError("Gaussian dimensionality does not match the input vector to evaluate!");
 
@@ -120,7 +120,7 @@ Gaussian2::operator() (const std::vector<double>& vals_) const{
 }
 
 double 
-Gaussian2::Cdf(size_t dim_, double val_) const{
+Gaussian::Cdf(size_t dim_, double val_) const{
     double nDevs = (val_ - GetMean(dim_))/GetStDev(dim_);
     if (nDevs > fCdfCutOff)
         return 1;
@@ -131,9 +131,9 @@ Gaussian2::Cdf(size_t dim_, double val_) const{
 }
 
 double 
-Gaussian2::Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const{
+Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& maxs_) const{
     if(mins_.size() != GetNDims() || maxs_.size() != GetNDims())
-        throw DimensionError("Gaussian2, tried to integrate over interval of wrong dimensionality");
+        throw DimensionError("Gaussian, tried to integrate over interval of wrong dimensionality");
 
     double integral = 1;
     for(size_t i = 0; i < mins_.size(); i++)
@@ -143,7 +143,7 @@ Gaussian2::Integral(const std::vector<double>& mins_, const std::vector<double>&
 }
 
 double 
-Gaussian2::Integral(double min_, double max_) const{
+Gaussian::Integral(double min_, double max_) const{
     return Integral(std::vector<double>(1, min_), std::vector<double>(1,max_) );
 }
 
@@ -152,7 +152,7 @@ Gaussian2::Integral(double min_, double max_) const{
 ////////////////////////
 
 void
-Gaussian2::MakeFittable(){
+Gaussian::MakeFittable(){
     std::stringstream ss1;
     std::stringstream ss2;
 
