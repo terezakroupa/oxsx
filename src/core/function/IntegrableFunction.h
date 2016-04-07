@@ -9,5 +9,7 @@ class IntegrableFunction : public Function{
 
     virtual double Integral(const std::vector<double>& mins_,
                             const std::vector<double>& maxs_) const = 0;
+
+    virtual double Integral() const = 0;
 };
 #endif
