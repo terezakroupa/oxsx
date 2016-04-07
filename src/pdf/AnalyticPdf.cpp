@@ -4,6 +4,7 @@
 
 AnalyticPdf::AnalyticPdf(IntegrableFunction* f_){
     fFunction = dynamic_cast<IntegrableFunction*>(f_->Clone());
+    fNDims    = fFunction->GetNDims();
     fNorm     = 1;
 }
 
@@ -11,7 +12,7 @@ AnalyticPdf::~AnalyticPdf(){
     delete fFunction;
 }
 
-AnalyticPdf::AnalyticPdf(const AnalyticPdf& other_){
+AnalyticPdf::AnalyticPdf(const AnalyticPdf& other_) : Pdf(other_){
     fNDims = other_.GetNDims();
     fNorm  = other_.fNorm;
     fFunction = dynamic_cast<IntegrableFunction*>(other_.fFunction->Clone());
