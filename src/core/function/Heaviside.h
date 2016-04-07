@@ -11,7 +11,7 @@ class Heaviside : public Function{
     double operator()(const std::vector<double>& vals_) const;
 
  private:
-    std::vector<double> fStepPosition;
+    std::vector<double>    fStepPosition;
     std::vector<Sidedness> fSidedness;
 };
 #endif
