@@ -1,5 +1,6 @@
 #include <ComponentManager.h>
 #include <PdfExceptions.h>
+#include <iostream>
 
 void 
 ComponentManager::AddComponent(FitComponent*  componentPtr_){
@@ -50,4 +51,12 @@ ComponentManager::GetParameterNames() const{
 int
 ComponentManager::GetTotalParameterCount() const{
     return fTotalParamCount;
+}
+
+void
+ComponentManager::Clear(){
+    fTotalParamCount = 0;
+    fComponentCount  = 0;
+    fComponents.clear();
+    fParamCounts.clear();
 }
