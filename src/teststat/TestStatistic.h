@@ -1,34 +1,36 @@
-/****************************************/
-/* Abstract base class for an evaluator */
-/****************************************/
-#ifndef __EVALUATOR__
-#define __EVALUATOR__
+/****************************************************************************/
+/* Test Statistics must implement the Evaluate method for optimisation,     */
+/* as well as registering any components that should be adjusted in the fit */
+/*     using AddFitComponent() in the method RegisterFitComponents()        */
+/****************************************************************************/
+#ifndef __OXSX_TEST_STATISTIC__
+#define __OXSX_TEST_STATISTIC__
+#include <ComponentManager.h>
 #include <vector>
 #include <stddef.h>
-class DataSet;
 
+class DataSet;
+class FitComponent;
 class TestStatistic{
  public:
-    TestStatistic(): fDataSet(NULL), fNpdfs(0), fNsystematics(0) {}
+    TestStatistic(): fDataSet(NULL) {}
     virtual ~TestStatistic() {}
 
-    virtual double Evaluate() = 0;
-    virtual void SetParams(const std::vector<double>& params_); 
-    // normalisations then systematics    
-    virtual size_t GetNParams() const {return fNpdfs + fNsystematics;}
+    virtual double Evaluate() = 0;    
+    void   SetParameters(const std::vector<double>& params_);    
+    int    GetParameterCount() const;
     
     virtual void    SetDataSet(DataSet* handle_);
     virtual DataSet* GetDataSet() const;
 
-    size_t GetNpdfs () const;
-    size_t GetNsystematics () const;
-    
+    // Set up all the components for a fit
+    virtual void RegisterFitComponents() = 0;
+
  protected:
     DataSet* fDataSet;
-    std::vector<double> fNormalisations;
-    std::vector<double> fSystematicParams;
-    size_t fNpdfs;
-    size_t fNsystematics;
-    
+    void     AddFitComponent(FitComponent*);
+
+ private:
+    ComponentManager fComponentManager;
 };
 #endif

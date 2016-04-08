@@ -14,17 +14,14 @@ BinnedNLLH::Evaluate(){
         BinData();
     }
 
-    // Adjust Systematics if they have changed
-    fSystematicManager.SetParameters(fSystematicParams);
+    // Construct systematics
+    fSystematicManager.Construct();
 
     // Apply systematics
     fPdfManager.ApplySystematics(fSystematicManager);
 
     // Apply Shrinking
     fPdfManager.ApplyShrink(fPdfShrinker);
-
-    // Set Normalisations
-    fPdfManager.SetNormalisations(fNormalisations);
 
     // loop over bins and calculate the likelihood
     double nLogLH = 0;
@@ -37,15 +34,17 @@ BinnedNLLH::Evaluate(){
 
 
     // Extended LH correction
-    for(size_t i = 0; i < fNormalisations.size(); i++)
-        nLogLH += fNormalisations.at(i);
+    const std::vector<double>& normalisations = fPdfManager.GetNormalisations();
+    for(size_t i = 0; i < normalisations.size(); i++)
+        nLogLH += normalisations.at(i);
             
     // Constraints
-    for(size_t i = 0; i < fSystematicConstraints.size(); i++)
-        nLogLH += fSystematicConstraints.at(i).operator()(fSystematicParams);
+    // FIXME:: Put this back in!
+//     for(size_t i = 0; i < fSystematicConstraints.size(); i++)
+//         nLogLH += fSystematicConstraints.at(i).operator()(fSystematicParams);
     
-    for(size_t i = 0; i < fNormalisationConstraints.size(); i++)
-        nLogLH += fNormalisationConstraints.at(i).operator()(fNormalisations);
+//     for(size_t i = 0; i < fNormalisationConstraints.size(); i++)
+//         nLogLH += fNormalisationConstraints.at(i).operator()(normalisations);
 
     return nLogLH;
 }
@@ -65,13 +64,11 @@ BinnedNLLH::BinData(){
 void
 BinnedNLLH::SetPdfManager(const BinnedPdfManager& man_){
     fPdfManager = man_;
-    fNpdfs = man_.GetNPdfs();
 }
 
 void
 BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
     fSystematicManager = man_;
-    fNsystematics = man_.GetNSystematics();
 }
 
 
@@ -113,13 +110,11 @@ BinnedNLLH::GetSystematicConstraint(size_t index_) const{
 void
 BinnedNLLH::AddPdf(const BinnedPdf& pdf_){
     fPdfManager.AddPdf(pdf_);
-    fNpdfs++;
 }
 
 void 
 BinnedNLLH::AddSystematic(Systematic* sys_){
     fSystematicManager.Add(sys_);
-    fNsystematics++;
 }
 
 void
@@ -170,4 +165,25 @@ void
 BinnedNLLH::AddSystematics(const std::vector<Systematic*> systematics_){
   for(size_t i = 0; i < systematics_.size(); i++)
     AddSystematic(systematics_.at(i));
+}
+
+
+void
+BinnedNLLH::SetNormalisations(const std::vector<double>& norms_){    
+    fPdfManager.SetNormalisations(norms_);
+}
+
+std::vector<double>
+BinnedNLLH::GetNormalisations() const{
+    return fPdfManager.GetNormalisations();
+}
+
+/////////////////////////////////////////////////////////
+// Declare which objects should be adjusted by the fit //
+/////////////////////////////////////////////////////////
+void
+BinnedNLLH::RegisterFitComponents(){
+    AddFitComponent(&fPdfManager);
+    for(size_t i = 0; i < fSystematicManager.GetSystematics().size(); i++)
+        AddFitComponent(fSystematicManager.GetSystematics().at(i));
 }

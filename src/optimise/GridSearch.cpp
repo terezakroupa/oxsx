@@ -40,7 +40,7 @@ const FitResult&
 GridSearch::Optimise(){
     // list of rates followed by list of systematics
     std::vector<double> bestFit;
-    bestFit.resize(pTestStatistic -> GetNParams());
+    bestFit.resize(pTestStatistic -> GetParameterCount());
     fMinVal = 0;
 
 
@@ -70,7 +70,7 @@ GridSearch::Optimise(){
                       << "%" << std::endl;
         }
 
-        pTestStatistic->SetParams(fParams);
+        pTestStatistic->SetParameters(fParams);
         double currentVal = pTestStatistic->Evaluate();
 
         // if maximising, take the negative of the test stat

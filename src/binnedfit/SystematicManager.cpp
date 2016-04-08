@@ -7,26 +7,11 @@ SystematicManager::GetSystematics() const{
 }
 
 void
-SystematicManager::SetParameters(const std::vector<double>& params_){
-    // No parameters or no change? dont do anything
-    if (!params_.size() || params_ == fParams)
+SystematicManager::Construct(){
+    // Dont do anything if there are no systematics
+    if(!fSystematics.size())
         return;
 
-    // wrong number of parameters
-    if (params_.size() != fTotalParamCount)
-        throw WrongNumberOfParameters("Fit routine passed wrong number of systematic params!");
-
-    fParams = params_;
-
-    // divide up the systematics into their proper destination
-    std::vector<double>::const_iterator it = params_.begin();
-    fSystematics[0] -> SetParameterValues(std::vector<double>(it, it + fParamCounts.at(0)));
-
-    for(size_t i = 1; i < fSystematics.size(); i++){
-        fSystematics[i] -> SetParameterValues(std::vector<double>(it + fParamCounts.at(i-1), 
-                                                                  it  + fParamCounts.at(i-1) + 
-                                                                  + fParamCounts.at(i)));
-    }
     // construct the response matricies
     for(size_t i = 0; i < fSystematics.size(); i++)
         fSystematics[i] -> Construct();
@@ -43,17 +28,9 @@ SystematicManager::GetTotalResponse() const{
      return fTotalResponse;
 }
                                         
-
-const std::vector<double>& 
-SystematicManager::GetParameters() const{
-    return fParams;
-}
-
 void 
 SystematicManager::Add(Systematic* systematic_){    
     fSystematics.push_back(systematic_);
-    fParamCounts.push_back(systematic_->GetParameterCount());
-    fTotalParamCount += systematic_->GetParameterCount();
     fNSystematics++;
 }
 
