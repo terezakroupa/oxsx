@@ -162,10 +162,10 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
             return false;
     }
 
-    pTestStatistic -> SetParams(thisStep_);
+    pTestStatistic -> SetParameters(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
     
-    pTestStatistic -> SetParams(proposedStep_);
+    pTestStatistic -> SetParameters(proposedStep_);
     double proposedVal = pTestStatistic -> Evaluate();
 
     if(fFlipSign){

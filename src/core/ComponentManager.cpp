@@ -1,4 +1,5 @@
 #include <ComponentManager.h>
+#include <PdfExceptions.h>
 
 void 
 ComponentManager::AddComponent(FitComponent*  componentPtr_){
@@ -12,7 +13,8 @@ ComponentManager::AddComponent(FitComponent*  componentPtr_){
 void 
 ComponentManager::SetParameters(const std::vector<double>& params_){
     if(params_.size() != fTotalParamCount)
-        throw 0;
+        throw ParameterError("Component Manager:: Passed the wrong number of paramters!");
+
     if(!params_.size())
         return;
 
@@ -43,4 +45,9 @@ ComponentManager::GetParameterNames() const{
         paramNames.insert(paramNames.end(), comps.begin(), comps.end());
     }
     return paramNames;
+}
+
+int
+ComponentManager::GetTotalParameterCount() const{
+    return fTotalParamCount;
 }

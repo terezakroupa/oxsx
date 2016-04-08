@@ -7,12 +7,14 @@
 #include <vector>
 #include <BinnedPdf.h>
 #include <BinnedPdfShrinker.h>
+#include <FitComponent.h>
+
 class EventData;
 class SystematicManager;
 
-class BinnedPdfManager{
+class BinnedPdfManager : public FitComponent{
  public:
-    BinnedPdfManager() {}
+     BinnedPdfManager() : fNPdfs(0) {}
     ~BinnedPdfManager(){}
 
     void   AddPdf(const BinnedPdf&);
@@ -23,18 +25,24 @@ class BinnedPdfManager{
     
     const std::vector<double>& GetNormalisations() const;
     void SetNormalisations(const std::vector<double>& normalisations_);
+
     void ApplySystematics(const SystematicManager& sysMan_);
     void ApplyShrink(const BinnedPdfShrinker&);
 
     const BinnedPdf& GetOriginalPdf(size_t index_) const;
     unsigned GetNPdfs() const;
-    size_t GetNDims() const;
+    size_t   GetNDims() const;
+    
+
+    // Make a fittable component - i.e. rescale the binned pdfs inside to fit
+    void MakeFittable();
 
  private:
     std::vector<BinnedPdf> fOriginalPdfs;
     std::vector<BinnedPdf> fWorkingPdfs;
     std::vector<double>    fNormalisations;
-    std::vector<double>    fCachedParams;
+    int                    fNPdfs;
+    //    std::vector<double>    fCachedParams;
     size_t fNDims;
 };
 #endif

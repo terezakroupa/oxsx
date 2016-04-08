@@ -32,6 +32,9 @@ class BinnedNLLH : public TestStatistic{
     QuadraticConstraint GetSystematicConstraint(size_t index_)    const;
     QuadraticConstraint GetNormalisationConstraint(size_t index_)  const;
 
+    void SetNormalisations(const std::vector<double>& norms_);
+    std::vector<double> GetNormalisations() const;
+
     void  BinData();
     virtual void SetDataSet(DataSet*);
 
@@ -43,6 +46,8 @@ class BinnedNLLH : public TestStatistic{
     void SetBufferAsOverflow(bool b_); // true by default
     bool GetBufferAsOverflow() const;
     
+    // Set up for the fit
+    void RegisterFitComponents(); // decalare which objects should be adjusted by the fit
     
  private:
     BinnedPdfManager  fPdfManager;

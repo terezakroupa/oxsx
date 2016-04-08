@@ -4,6 +4,7 @@
 #include <iostream>
 #include <PdfExceptions.h>
 #include <PdfConverter.h>
+#include <sstream>
 
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
@@ -55,10 +56,12 @@ BinnedPdfManager::ApplySystematics(const SystematicManager& sysMan_){
     // If there are no systematics or they haven't changed, dont transform the working pdfs 
     //  ( = original pdfs from initialisagtion)
     
-    if((!sysMan_.GetSystematics().size()) || sysMan_.GetParameters() == fCachedParams)
+    // FIXME: Do you need some equivilent to the code below for saving time on a grid search??
+//     if((!sysMan_.GetSystematics().size()) || sysMan_.GetParameters() == fCachedParams)
+//         return;
+//    fCachedParams = sysMan_.GetParameters();
+    if(!sysMan_.GetSystematics().size())
         return;
-    fCachedParams = sysMan_.GetParameters();
-
     
     for(size_t j = 0; j < fOriginalPdfs.size(); j++)
       fWorkingPdfs[j] = sysMan_.GetTotalResponse().operator()(fOriginalPdfs[j]);
@@ -73,14 +76,15 @@ void
 BinnedPdfManager::AddPdf(const BinnedPdf& pdf_){
     fOriginalPdfs.push_back(pdf_);
     fWorkingPdfs.push_back(pdf_);
+    fNPdfs++;
 }
 
 void 
 BinnedPdfManager::AddPdfs(const std::vector<BinnedPdf>& pdfs_){
     for(size_t i = 0; i < pdfs_.size(); i++){
-        fOriginalPdfs.push_back(pdfs_.at(i));
-        fWorkingPdfs.push_back(pdfs_.at(i));
+        AddPdf(pdfs_.at(i));
     }
+    fNPdfs += pdfs_.size();
 }
 
 const std::vector<double>&
@@ -102,4 +106,22 @@ BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
         fWorkingPdfs[i].Normalise();
     }
     
+}
+
+
+////////////////////////////////
+// Make this a fit component! //
+////////////////////////////////
+
+void
+BinnedPdfManager::MakeFittable(){
+    Empty();
+    std::stringstream ss;
+    if (fNormalisations.size() < fNPdfs)
+        fNormalisations.resize(fNPdfs, 0);
+    for(size_t i = 0; i < fNPdfs; i++){
+        ss << "Pdf Normalisation #" << i;
+        AddAsParameter(&fNormalisations.at(i), ss.str());
+        ss.str("");
+    }
 }

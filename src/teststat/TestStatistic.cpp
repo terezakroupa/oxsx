@@ -2,29 +2,6 @@
 #include <iostream>
 #include <PdfExceptions.h>
 #include <SystematicExceptions.h>
-
-void 
-TestStatistic::SetParams(const std::vector<double>& params_){
-    fNormalisations.resize(0);
-    fSystematicParams.resize(0);
-
-    try{
-        fNormalisations.insert(fNormalisations.begin(), 
-                               params_.begin(), params_.begin() + fNpdfs);
-
-        fSystematicParams.insert(fSystematicParams.begin(), params_.begin() + fNpdfs, params_.end());
-    }
-
-    catch(const DimensionError& e_){
-        throw DimensionError(std::string("TestStatistic: Wrong number of norms") + e_.what());
-    }
-    catch(const WrongNumberOfParameters& e_){
-        throw WrongNumberOfParameters(std::string("TestStatistic: Wrong number of systematic params sent in") + e_.what());
-    }
-
-}
-
-
 void 
 TestStatistic::SetDataSet(DataSet* dataSet_){
     fDataSet = dataSet_;
@@ -35,12 +12,23 @@ TestStatistic::GetDataSet() const{
     return fDataSet;
 }
 
-size_t 
-TestStatistic::GetNsystematics() const{
-    return fNsystematics;
+void
+TestStatistic::SetParameters(const std::vector<double>& params_){
+    RegisterFitComponents();
+    try{
+        fComponentManager.SetParameters(params_);
+    }
+    catch(const ParameterError& ){
+        throw ParameterError("TestStatistic passed wrong number of parameters!");
+    }
 }
 
-size_t
-TestStatistic::GetNpdfs() const{
-    return fNpdfs;
+int
+TestStatistic::GetParameterCount() const{
+    return fComponentManager.GetTotalParameterCount();
+}
+
+void
+TestStatistic::AddFitComponent(FitComponent* comp_){
+    fComponentManager.AddComponent(comp_);    
 }

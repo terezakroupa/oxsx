@@ -9,15 +9,12 @@ ChiSquare::Evaluate(){
         fCalculatedDataPdf = true;
     }
     
-    // Adjust Systematics                                                                               
-    fSystematicManager.SetParameters(fSystematicParams);
+    // Construct
+    fSystematicManager.Construct();
 
     // Apply systematics
     fPdfManager.ApplySystematics(fSystematicManager);
     
-    // Set Normalisations                                   
-    fPdfManager.SetNormalisations(fNormalisations);
-
     // Now calculate the ChiSquared
     double chiSquare = 0;
     std::vector<double> binCentre(fDataPdf.GetNDims());
@@ -43,4 +40,12 @@ ChiSquare::BinData(){
     }
     
     fDataPdf = dataPdf;
+}
+
+
+void
+ChiSquare::RegisterFitComponents(){
+    AddFitComponent(&fPdfManager);
+    for(size_t i = 0; i < fSystematicManager.GetSystematics().size(); i++)
+        AddFitComponent(fSystematicManager.GetSystematics().at(i));
 }

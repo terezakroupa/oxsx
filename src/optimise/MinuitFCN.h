@@ -13,7 +13,7 @@ class MinuitFCN : public ROOT::Minuit2::FCNBase{
     //these two required by minit
     double Up() const {return fUp;} 
     double operator()(const std::vector<double>& params_) const {
-        fTestStatistic->SetParams(params_);
+        fTestStatistic->SetParameters(params_);
         if(fFlipSign)
             return -1 * fTestStatistic->Evaluate();
 
