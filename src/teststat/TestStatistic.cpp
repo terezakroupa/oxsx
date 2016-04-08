@@ -14,7 +14,8 @@ TestStatistic::GetDataSet() const{
 
 void
 TestStatistic::SetParameters(const std::vector<double>& params_){
-    RegisterFitComponents();
+    fComponentManager.Clear();
+    RegisterFitComponents();   // derived classes implement this to choose fit components
     try{
         fComponentManager.SetParameters(params_);
     }
