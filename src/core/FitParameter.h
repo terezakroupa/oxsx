@@ -6,6 +6,7 @@ class FitParameter{
     virtual ~FitParameter() {}
     virtual double Get() const = 0;
     virtual void   Set(double) = 0;
+    virtual FitParameter* Clone() const = 0;
 };
 
 #endif

@@ -15,6 +15,7 @@ public:
     void   Set(double);
     double Get() const;
 
+    FitParameter* Clone() const;
 private:
     Container& fContainer;
     size_t     fIndex;

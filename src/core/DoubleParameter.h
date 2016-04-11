@@ -7,7 +7,7 @@ class DoubleParameter : public FitParameter{
     DoubleParameter(double& ptr_) : fPtr(ptr_) {}
     double Get() const {return fPtr;}
     void   Set(double d_) {fPtr = d_;}
-    
+    FitParameter* Clone() const {return new DoubleParameter(*this);}
  private:
     double& fPtr;
 };
