@@ -1,6 +1,9 @@
 #ifndef __OXSX_CONTAINER_PARAMETER__
 #define __OXSX_CONTAINER_PARAMETER__
 #include <FitParameter.h>
+#include <stddef.h>
+#include <iterator>
+#include <vector>
 
 // Class definition
 template<typename Container>

@@ -1,5 +1,8 @@
+#include <ContainerParameter.h>
 #include <FitComponent.h>
 #include <SystematicExceptions.h>
+#include <sstream>
+
 //////////////////////
 // PUBLIC INTERFACE //
 //////////////////////
@@ -50,7 +53,6 @@ FitComponent::AddAsParameter(FitParameter* paramPtr_,
     fParamNames.push_back(name_);
     fNParams++;
 }
-
 
 void
 FitComponent::Empty(){
