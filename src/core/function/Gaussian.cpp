@@ -1,6 +1,7 @@
 #include <Gaussian.h>
 #include <math.h>
 #include <PdfExceptions.h>
+#include <ContainerParameter.h>
 #include <gsl/gsl_cdf.h>
 #include <sstream>
 
@@ -158,8 +159,8 @@ Gaussian::MakeFittable(){
     for(size_t i = 0; i < GetNDims(); i++){
         ss1 << "Gaussian Mean " << i;
         ss2 << "Gaussian Std. Dev. " << i;
-        AddAsParameter( &fMeans.at(i), ss1.str());
-        AddAsParameter( &fStdDevs.at(i),  ss2.str());
+        AddAsParameter(new VectorParameter(fMeans, i),  ss1.str());
+        AddAsParameter(new VectorParameter(fStdDevs, i), ss2.str());
         ss1.str("");
         ss2.str("");
     }

@@ -5,6 +5,7 @@
 #include <PdfExceptions.h>
 #include <PdfConverter.h>
 #include <sstream>
+#include <ContainerParameter.h>
 
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
@@ -121,7 +122,7 @@ BinnedPdfManager::MakeFittable(){
         fNormalisations.resize(fNPdfs, 0);
     for(size_t i = 0; i < fNPdfs; i++){
         ss << "Pdf Normalisation #" << i;
-        AddAsParameter(&fNormalisations.at(i), ss.str());
+        AddAsParameter(new VectorParameter(fNormalisations, i), ss.str());
         ss.str("");
     }
 }
