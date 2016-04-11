@@ -24,9 +24,10 @@ class FitComponent{
  protected:
     void         Empty();   
     void         AddAsParameter(FitParameter*, const std::string&);
+    template<typename Container> 
+    void  AddContainerOfParameters(Container& cntr_, 
+                                   const std::string& sharedName_);
 
-
-    template<typename Container> void  AddContainer(Container& cntr_, const std::string& sharedName_);
     void         SetParameterNames(const std::vector<std::string>& names_);
 
     // should only be used for objects owned by this one!

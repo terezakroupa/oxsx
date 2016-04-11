@@ -3,7 +3,8 @@
 
 template<typename Container> 
 void  
-FitComponent::AddContainer(Container& cntr_, const std::string& sharedName_){
+FitComponent::AddContainerOfParameters(Container& cntr_, 
+                                       const std::string& sharedName_){
     std::stringstream ss;
     for(size_t i = 0; i < cntr_.size(); i++){
         ss << sharedName_ << "" << i;

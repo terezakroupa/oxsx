@@ -153,6 +153,8 @@ Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& 
 
 void
 Gaussian::MakeFittable(){
-    AddContainer<std::vector<double> >(fMeans,   "Gaussian Means");
-    AddContainer<std::vector<double> >(fStdDevs, "Gaussian st.devs");
+    AddContainerOfParameters<std::vector<double> >(fMeans,   
+                                                   "Gaussian Means");
+    AddContainerOfParameters<std::vector<double> >(fStdDevs, 
+                                                   "Gaussian st.devs");
 }
