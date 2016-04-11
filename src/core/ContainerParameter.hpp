@@ -6,7 +6,7 @@ template<typename Container>
 double
 ContainerParameter<Container>::Get() const{
     if(fIndex >= fContainer.size())
-        throw 0;
+        throw std::out_of_range("Container Parameter is out of bounds!");
     return GetNth(fContainer, fIndex, Category());
 }
 
@@ -14,7 +14,7 @@ template<typename Container>
 void
 ContainerParameter<Container>::Set(double val_){
     if(fIndex >= fContainer.size())
-        throw 0;
+        throw std::out_of_range("Container Parameter is out of bounds!");
     GetNth(fContainer, fIndex, Category()) = val_;
 }
 
