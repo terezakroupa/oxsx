@@ -7,9 +7,10 @@
 #ifndef __OXSX_HISTOGRAM__
 #define __OXSX_HISTOGRAM__
 #include <AxisCollection.h>
+#include <FitComponent.h>
 #include <vector>
 
-class Histogram{
+class Histogram : public FitComponent{
  public:
     Histogram() : fNBins(0), fNDims(0) {}
     Histogram(const AxisCollection& axes_);
@@ -48,6 +49,10 @@ class Histogram{
 	double    GetBinLowEdge(size_t bin_, size_t dim_) const;
 	double    GetBinHighEdge(size_t bin_, size_t dim_) const;
 	double    GetBinCentre(size_t bin_, size_t dim_) const;
+    
+    // Make this fittable, with each bin content adjustable
+    void MakeFittable();
+
  private:
     AxisCollection fAxes;
     std::vector<double> fBinContents;

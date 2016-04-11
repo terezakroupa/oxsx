@@ -1,6 +1,7 @@
 #include <ContainerParameter.h>
 #include <FitComponent.h>
 #include <SystematicExceptions.h>
+#include <iostream>
 #include <sstream>
 
 //////////////////////
@@ -14,6 +15,7 @@ FitComponent::~FitComponent(){
 
 void
 FitComponent::SetParameterValues(const std::vector<double>& vals_){
+    MakeFittable();
     if(vals_.size() != fNParams)
         throw WrongNumberOfParameters("FitComponent::SetParameterValues!");
 
@@ -64,9 +66,11 @@ FitComponent::Empty(){
 
 void
 FitComponent::DelegateFor(FitComponent* other_){
+    other_      -> MakeFittable();
     fNParams    = other_->fNParams;
     fParamNames = other_->fParamNames;
-    fParamPtrs  = other_->fParamPtrs;
+    for(size_t i = 0; i < other_->GetParameterCount(); i++)
+        fParamPtrs.push_back(other_->fParamPtrs[i]->Clone());
 }
 
 void

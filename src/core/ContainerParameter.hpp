@@ -18,6 +18,11 @@ ContainerParameter<Container>::Set(double val_){
     GetNth(fContainer, fIndex, Category()) = val_;
 }
 
+template<typename Container>
+FitParameter*
+ContainerParameter<Container>::Clone() const{
+    return new ContainerParameter<Container>(*this);
+}
 
 //////////////////////////////////////////////////////////////////
 // STANDALONE FUNCTION IMPLEMENTIONS OF GetNTth, compiler will  //
