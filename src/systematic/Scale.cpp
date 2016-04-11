@@ -1,4 +1,5 @@
 #include <Scale.h>
+#include <DoubleParameter.h>
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
 #include <sstream>
@@ -102,5 +103,5 @@ void
 Scale::MakeFittable(){
     std::stringstream ss;
     ss << "Scale factor on axis " << fDataRep.GetIndex(0);
-    AddAsParameter(&fScaleFactor, ss.str());
+    AddAsParameter(new DoubleParameter(fScaleFactor), ss.str());
 }
