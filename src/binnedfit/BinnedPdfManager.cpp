@@ -1,7 +1,6 @@
 #include <BinnedPdfManager.h>
 #include <SystematicManager.h>
 #include <BinnedPdf.h>
-#include <iostream>
 #include <PdfExceptions.h>
 #include <PdfConverter.h>
 #include <sstream>
@@ -117,12 +116,7 @@ BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
 void
 BinnedPdfManager::MakeFittable(){
     Empty();
-    std::stringstream ss;
-    if (fNormalisations.size() < fNPdfs)
+    if(fNormalisations.size() < fNPdfs)
         fNormalisations.resize(fNPdfs, 0);
-    for(size_t i = 0; i < fNPdfs; i++){
-        ss << "Pdf Normalisation #" << i;
-        AddAsParameter(new VectorParameter(fNormalisations, i), ss.str());
-        ss.str("");
-    }
+    AddContainerOfParameters(fNormalisations, "Pdf Normalisation");
 }
