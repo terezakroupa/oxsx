@@ -2,5 +2,6 @@
 
 void
 SpectralFitPdf::MakeFittable(){
+    EmptyParameters();
     DelegateFor(&fHistogram);
 }

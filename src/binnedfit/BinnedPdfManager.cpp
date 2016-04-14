@@ -115,7 +115,7 @@ BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
 
 void
 BinnedPdfManager::MakeFittable(){
-    Empty();
+    EmptyParameters();
     if(fNormalisations.size() < fNPdfs)
         fNormalisations.resize(fNPdfs, 0);
     AddContainerOfParameters(fNormalisations, "Pdf Normalisation");

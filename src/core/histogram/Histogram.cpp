@@ -204,6 +204,7 @@ Histogram::GetBinCentre(size_t bin_, size_t index_) const{
 // Make this fittable, with each bin content adjustable
 void 
 Histogram::MakeFittable(){
+    EmptyParameters();
     AddContainerOfParameters<std::vector<double> >(fBinContents, 
                                                    "Histogram bin content");
 }
