@@ -9,7 +9,13 @@ PdfManager::~PdfManager(){
 
 void 
 PdfManager::AddPdf(Pdf * pdf_){
-    fPdfs.push_back(pdf_->Clone());
+    if (!fPdfs.size())
+        fNDims = pdf_->GetNDims();
+
+    else if(pdf_->GetNDims() != fNDims)
+        throw 0;
+
+    fPdfs.push_back(pdf_->Clone());    
     fNPdfs++;
     fNormalisations.resize(fNPdfs, 0);
 }
@@ -25,6 +31,7 @@ PdfManager::Probability(const EventData& event_) const{
     double prob = 0;
     for(size_t i = 0; i < fPdfs.size(); i++)
         prob += fNormalisations.at(i) * fPdfs.at(i)->Probability(event_);
+    
     return prob;
 }
 
@@ -40,6 +47,15 @@ PdfManager::SetNormalisations(const std::vector<double>& norms_){
     fNormalisations = norms_;
 }
 
+size_t 
+PdfManager::GetNDims() const{
+    return fNDims;
+}
+
+size_t 
+PdfManager::GetNPdfs() const{
+    return fNPdfs;
+}
 
 // Make a fittable component - i.e. rescale pdfs inside to fit
 void

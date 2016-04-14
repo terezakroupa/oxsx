@@ -7,7 +7,8 @@ class Pdf;
 class EventData;
 
 class PdfManager : public FitComponent{
-    PdfManager(): fNPdfs(0) {}
+ public:
+    PdfManager(): fNPdfs(0), fNDims(0) {}
     ~PdfManager(); // free pdf copies
 
     void  AddPdf(Pdf *); // take a copy
@@ -18,8 +19,11 @@ class PdfManager : public FitComponent{
     
     double Probability(const EventData&) const;
     
+    size_t GetNPdfs() const;
+    size_t GetNDims() const;
+    
     // Make a fittable component - i.e. rescale pdfs inside to fit
-    void  MakeFittable();
+    void  MakeFittable();    
 
  private:
     size_t fNPdfs;
