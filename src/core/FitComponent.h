@@ -8,8 +8,8 @@ class FitComponent{
  public:
     // Constructory things
     virtual ~FitComponent();
-    FitComponent(){}
-    FitComponent(const FitComponent&){} 
+    FitComponent() : fNParams(0){}
+    FitComponent(const FitComponent&) : fNParams(0){} 
     // dont do anything, new object has its own params
 
     // Public interface
@@ -22,7 +22,7 @@ class FitComponent{
     virtual void MakeFittable() = 0;
 
  protected:
-    void         Empty();   
+    void         EmptyParameters();   
     void         AddAsParameter(FitParameter*, const std::string&);
     template<typename Container> 
     void  AddContainerOfParameters(Container& cntr_, 

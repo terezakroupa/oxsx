@@ -18,7 +18,7 @@ FitComponent::SetParameterValues(const std::vector<double>& vals_){
     MakeFittable();
     if(vals_.size() != fNParams)
         throw WrongNumberOfParameters("FitComponent::SetParameterValues!");
-
+    
     for(size_t i = 0; i < vals_.size(); i++)
         fParamPtrs.at(i) -> Set(vals_.at(i));
 }
@@ -57,7 +57,7 @@ FitComponent::AddAsParameter(FitParameter* paramPtr_,
 }
 
 void
-FitComponent::Empty(){
+FitComponent::EmptyParameters(){
     fParamPtrs.clear();
     fParamNames.clear();
     fNParams = 0;
@@ -75,6 +75,7 @@ FitComponent::DelegateFor(FitComponent* other_){
 
 void
 FitComponent::SetParameterNames(const std::vector<std::string>& names_){
+    MakeFittable();
     if(names_.size() != fNParams)
         throw WrongNumberOfParameters("FitComponent::SetParameterNames(-) : wrong number of names!");
     fParamNames = names_;

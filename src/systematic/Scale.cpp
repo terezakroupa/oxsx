@@ -101,6 +101,7 @@ Scale::GetScaleFactor() const{
 
 void
 Scale::MakeFittable(){
+    EmptyParameters();
     std::stringstream ss;
     ss << "Scale factor on axis " << fDataRep.GetIndex(0);
     AddAsParameter(new DoubleParameter(fScaleFactor), ss.str());

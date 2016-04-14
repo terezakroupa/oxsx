@@ -122,6 +122,7 @@ Convolution::CacheCompatibleBins(){
 void
 Convolution::MakeFittable(){
     // Just delegate the fitting, but change the names
+    EmptyParameters();
     DelegateFor(fFunction);
     std::vector<std::string> names = fFunction->GetParameterNames();
     for(size_t i = 0; i < names.size(); i++)
