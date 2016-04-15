@@ -5,7 +5,7 @@
 
 EventData::EventData(const std::vector<double>& obs_){
     fObservations = obs_;
-    fNDimensions  = obs_.size(); 
+    fNObservables  = obs_.size(); 
 }
 
 std::vector<double> 
@@ -26,14 +26,14 @@ EventData::GetDatum(size_t index_) const{
 
 std::vector<double> 
 EventData::ToRepresentation(const DataRepresentation& rep_) const{
-    size_t len = rep_.GetLength();
+    size_t nObs = rep_.GetNObservables();
 
-    if (!len)
+    if (!nObs)
         throw RepresentationError("Event Data queried with empty representation!");
 
-    std::vector<double> vals(len, 0); // can you do this better with iterators?
+    std::vector<double> vals(nObs, 0); // can you do this better with iterators?
     try{
-        for(size_t i = 0; i < len; i++)
+        for(size_t i = 0; i < nObs; i++)
             vals[i] = fObservations.at(rep_.GetIndex(i));
     }    
     catch(std::out_of_range&){
