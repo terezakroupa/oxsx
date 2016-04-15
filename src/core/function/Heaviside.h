@@ -5,12 +5,13 @@
 class Heaviside : public Function{
  public:
     enum Sidedness{MAXIMUM, MINIMUM, IGNORE};
-    Heaviside(unsigned nDims_); // assume all ignored
+    Heaviside(int nDims_); // assume all ignored
     void AddConstraint(unsigned dim_, double pos_, Sidedness side_);
 
     double operator()(const std::vector<double>& vals_) const;
 
  private:
+    int fNDims;
     std::vector<double>    fStepPosition;
     std::vector<Sidedness> fSidedness;
 };
