@@ -37,7 +37,7 @@ class Systematic : public FitComponent{
     virtual void Construct() {}
 
  protected:
-    PdfMapping fPdfMapping;
+    PdfMapping         fPdfMapping;
     DataRepresentation fDataRep;     // the data indicies that this systematic acts on
     DataRepresentation fPdfDataRep;  
     // the data indices  of the pdfs it will act on, needs to be at least the lenth of the 
