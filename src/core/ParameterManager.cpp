@@ -34,3 +34,9 @@ size_t
 ParameterManager::GetParameterCount() const{
     return fParamPtrs.size();
 }
+
+void 
+ParameterManager::Add(FitParameter* p_, const std::string& n_){
+    fParamPtrs.push_back(p_->Clone());
+    fNames.push_back(n_);
+}

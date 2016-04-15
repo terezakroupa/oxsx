@@ -2,6 +2,7 @@
 #include <PdfExceptions.h>
 #include <IntegrableFunction.h>
 #include <DataExceptions.h>
+#include <SystematicExceptions.h>
 
 AnalyticPdf::AnalyticPdf(IntegrableFunction* f_){
     fFunction = dynamic_cast<IntegrableFunction*>(f_->Clone());
@@ -66,13 +67,41 @@ AnalyticPdf::GetDataRep() const {
     return fDataRep;
 }
 
-// Fitting this pdf to data means adjusting the underlying function
-void
-AnalyticPdf::MakeFittable(){
-    DelegateFor(fFunction);    
-}
-
 unsigned
 AnalyticPdf::GetNDims() const{
     return fFunction->GetNDims();
+}
+
+// Fitting this pdf to data means adjusting the underlying function
+void
+AnalyticPdf::MakeFittable(){
+    fFunction -> MakeFittable();
+}
+
+std::vector<std::string> 
+AnalyticPdf::GetParameterNames() const{
+    std::vector<std::string> funcNames = fFunction->GetParameterNames();
+    for(size_t i = 0; i < funcNames.size(); i++)
+        funcNames[i] = "Analytic PDF: " + funcNames[i];
+    return funcNames;
+}
+
+std::vector<double>
+AnalyticPdf::GetParameters() const{
+    return fFunction->GetParameters();
+}
+
+size_t 
+AnalyticPdf::GetParameterCount() const{
+    return fFunction->GetParameterCount();
+}
+
+void
+AnalyticPdf::SetParameters(const std::vector<double>& params_){
+    try{
+        fFunction->SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        throw WrongNumberOfParameters("AnalyticPdf passed wrong number of parameters");
+    }
 }

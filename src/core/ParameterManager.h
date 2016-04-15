@@ -4,11 +4,12 @@
 #include <string>
 class FitParameter;
 class ParameterManager{
+ public:
     ~ParameterManager(); // frees fParamPtrs
-    void AddParameter(FitParameter*, const std::string&); // copies 
+    void Add(FitParameter*, const std::string&); // copies 
     template<typename Container>
-    void AddContainerOfParameters(Container&,
-                                  const std::string& nameBase_);
+    void AddContainer(Container&,
+                      const std::string& nameBase_);
     
     std::vector<std::string> GetParameterNames() const;
     size_t GetParameterCount() const;
