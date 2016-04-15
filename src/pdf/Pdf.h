@@ -24,29 +24,18 @@
 #include <DataRepresentation.h>
 #include <EventData.h>
 
-class CompositePdf; 
-
 class Pdf{
  public:
-    Pdf() {}
-    Pdf(const Pdf&); // copies fDataRep and fNDims
     virtual ~Pdf() {}
 
-    virtual double operator() (const std::vector<double>& vals_) const = 0;
-    virtual double Probability (const EventData&) const; // name hiding -> need dif name
+    virtual double operator()  (const std::vector<double>& vals_) const = 0;
+    virtual double Probability (const EventData&) const = 0;
     
     virtual double Integral() const = 0;
 
-    virtual void   Normalise() = 0;
+    virtual void   Normalise()   = 0;
     virtual Pdf*   Clone() const = 0;
 
-    unsigned GetNDims() const;
-    
-    void SetDataRep(const DataRepresentation&);
-    DataRepresentation GetDataRep() const;
-
- protected:
-    unsigned fNDims;
-    DataRepresentation fDataRep;
+    virtual unsigned GetNDims() const = 0;    
 };
 #endif

@@ -20,12 +20,13 @@ class CompositePdf : public Pdf{
 
     virtual double operator() (const std::vector<double>& vals_) const;
     virtual double Probability(const EventData&) const;
-    virtual Pdf* Clone() const; // required for futher compositions
+    virtual Pdf*   Clone() const; // required for futher compositions
 
     virtual double Integral()  const;
     virtual void   Normalise();
-    
+    unsigned GetNDims() const;
  private:
+    
     std::vector<Pdf*> fPdfPtrs;
 };
 
