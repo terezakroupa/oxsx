@@ -20,10 +20,10 @@ class EventData{
     double GetDatum(size_t) const;
     std::vector<double> ToRepresentation(const DataRepresentation&) const;
 
-    size_t GetNDimensions() const {return fNDimensions;}
+    size_t GetNObservables() const {return fNObservables;}
 
  private:
-    size_t fNDimensions;
+    size_t fNObservables;
     std::vector<double> fObservations;
     
 };
