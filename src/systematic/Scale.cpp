@@ -19,7 +19,7 @@ Scale::Construct(){
     if (fScaleFactor <= 0)
         throw ParameterError("Scale factor must be >0 !");
     
-    if(fDataRep.GetLength() != 1)
+    if(fDataRep.GetNObservables() != 1)
         throw RepresentationError("Scale systematic must have a 1D representation!");
 
     const AxisCollection& axes       = fPdfMapping.GetAxes(); 
