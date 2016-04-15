@@ -12,8 +12,8 @@
 void
 Gaussian::Initialise(const std::vector<double>& means_, const std::vector<double>& stdDevs_){
     SetMeansStdDevs(means_, stdDevs_);
-    SetNDims(means_.size());
-    fMeans = means_;
+    fNDims   = means_.size() ;
+    fMeans   = means_;
     fStdDevs = stdDevs_;
     fCdfCutOff = 6; // default val
 }
@@ -66,7 +66,7 @@ Gaussian::GetMeans() const {
 
 void
 Gaussian::SetMeansStdDevs(const std::vector<double>& means_, 
-                           const std::vector<double>& stdDevs_){
+                          const std::vector<double>& stdDevs_){
     if (means_.size() != stdDevs_.size())
         throw DimensionError("Tried to set Gaussian function with #means != #stdDevs!");
 
@@ -76,7 +76,7 @@ Gaussian::SetMeansStdDevs(const std::vector<double>& means_,
 
     fMeans = means_;
     fStdDevs = stdDevs_;
-    SetNDims(means_.size());
+    fNDims = means_.size();
 }
 
 std::vector<double>
@@ -94,6 +94,10 @@ Gaussian::SetCdfCutOff(double cutOff_){
     fCdfCutOff = cutOff_;
 }
 
+int 
+Gaussian::GetNDims() const{
+    return fNDims;
+}
 
 /////////////////
 // Probability //

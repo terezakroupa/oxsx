@@ -27,6 +27,7 @@ class Gaussian : public IntegrableFunction{
     std::vector<double> GetStdDevs() const;
     double GetCdfCutOff() const;
     void   SetCdfCutOff(double);
+    int    GetNDims() const;
 
     // Make this object fittable
     void MakeFittable();
@@ -35,8 +36,9 @@ class Gaussian : public IntegrableFunction{
     void   Initialise(const std::vector<double>& means_, const std::vector<double>& stdDevs_);
     std::vector<double> fMeans;
     std::vector<double> fStdDevs;
-
+    
     double fCdfCutOff; // number of stDevs away from the mean 
                        // assumed to be zero or 1 for speed integration
+    int fNDims;
 };
 #endif

@@ -3,8 +3,8 @@
 #include <SystematicExceptions.h>
 #include <iostream>
 
-Heaviside::Heaviside(unsigned nDims_){
-    SetNDims(nDims_);
+Heaviside::Heaviside(int nDims_){
+    fNDims = nDims_;
     fStepPosition.resize(nDims_, 0);
     fSidedness.resize(nDims_, IGNORE);
 }
