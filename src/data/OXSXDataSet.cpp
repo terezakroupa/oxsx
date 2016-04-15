@@ -6,12 +6,12 @@ void
 OXSXDataSet::AddEntry(const EventData& evData_){
     // fNObservables is zero at initialisation, after the first time it is set it shouldnt change
     if(!fNObservables)
-        fNObservables = evData_.GetNDimensions();
+        fNObservables = evData_.GetNObservables();
 
-    else if (fNObservables != evData_.GetNDimensions())
+    else if (fNObservables != evData_.GetNObservables())
         throw DataException("OXSXDataSet::Event added to data set doesn't match existing dimensions");
 
-    if(!evData_.GetNDimensions())
+    if(!evData_.GetNObservables())
         throw DataException("OXSXDataSet::Tried to add empty event to data set");
 
     fData -> push_back(evData_);
@@ -68,4 +68,9 @@ OXSXDataSet::operator+ (const OXSXDataSet& other_){
 void
 OXSXDataSet::Reserve(int i){
   fData->reserve(i);
+}
+
+unsigned
+OXSXDataSet::GetNObservables() const{
+    return fNObservables;
 }
