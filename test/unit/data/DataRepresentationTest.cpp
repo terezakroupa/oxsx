@@ -4,7 +4,7 @@
 
 TEST_CASE("Build from one index"){
     DataRepresentation drep(19);
-    REQUIRE(drep.GetLength() == 1);
+    REQUIRE(drep.GetNObservables() == 1);
     REQUIRE(drep.GetIndex(0) == 19);
 }
 
@@ -15,14 +15,14 @@ TEST_CASE("Build from vec"){
     indices.push_back(11);
 
     DataRepresentation drep(indices);
-    REQUIRE(drep.GetLength() == 3);
+    REQUIRE(drep.GetNObservables() == 3);
     REQUIRE(drep.GetIndex(0) == 5);
     REQUIRE(drep.GetIndex(1) == 9);
     REQUIRE(drep.GetIndex(2) == 11);
 
     SECTION("Then copy construct"){
         DataRepresentation drep2(drep);
-        REQUIRE(drep2.GetLength() == 3);
+        REQUIRE(drep2.GetNObservables() == 3);
         REQUIRE(drep2.GetIndex(0) == 5);
         REQUIRE(drep2.GetIndex(1) == 9);
         REQUIRE(drep2.GetIndex(2) == 11);
@@ -80,7 +80,7 @@ TEST_CASE("Creating a DataRepresentation from a DataSet by observable name"){
     DataRepresentation generatedRep = dataSet.MakeDataRep(requestedObs);
 
     //check it did it right
-    REQUIRE(generatedRep.GetLength() == requestedObs.size());
+    REQUIRE(generatedRep.GetNObservables() == requestedObs.size());
     for(size_t i = 0; i < requestedObs.size(); i++){
         size_t generatedIndex = generatedRep.GetIndices().at(i);
         std::string generatedName = observables.at(generatedIndex);
