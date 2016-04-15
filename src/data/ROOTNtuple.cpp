@@ -18,9 +18,6 @@ ROOTNtuple::ROOTNtuple(const std::string& fileName_, const std::string& treeName
         throw ROOTError("ROOTNtuple::Tree does not exist, or isn't an ntuple! " + treeName_);
     }        
 
-    fNEntries = fNtuple -> GetEntries();
-    fNObservables = fNtuple -> GetNvar();
-   
 }
 
 ROOTNtuple::~ROOTNtuple(){
@@ -36,7 +33,7 @@ ROOTNtuple::Assemble(size_t iEvent_) const{
 
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
-    return EventData(std::vector<double> (vals, vals + fNObservables));
+    return EventData(std::vector<double> (vals, vals + GetNObservables()));
     
 }
 
@@ -49,8 +46,9 @@ ROOTNtuple::GetEntry(size_t iEvent_) const{
 
 std::vector<std::string>
 ROOTNtuple::GetObservableNames() const{
-    std::vector<std::string> names(fNObservables);
-    for(unsigned i = 0; i < fNObservables; i++)
+    unsigned nObs = GetNObservables();
+    std::vector<std::string> names(nObs);
+    for(unsigned i = 0; i < nObs; i++)
         names[i] = (fNtuple -> GetListOfBranches()->At(i) -> GetName());
     return names;
     
@@ -69,4 +67,14 @@ ROOTNtuple::DropBaskets(){
   if(!fNtuple)
     return;
   fNtuple->DropBaskets();
+}
+
+unsigned
+ROOTNtuple::GetNEntries() const{
+    return fNtuple->GetEntries();
+}
+
+unsigned
+ROOTNtuple::GetNObservables() const{
+    return fNtuple->GetNvar();
 }
