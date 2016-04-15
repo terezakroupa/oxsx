@@ -10,10 +10,9 @@ BinnedNLLH::Evaluate(){
     if(!fDataSet && !fCalculatedDataPdf) 
         throw DataException("BinnedNNLH function called with no data set and no DataPdf! set one of these first");
     
-    if (!fCalculatedDataPdf){
+    if (!fCalculatedDataPdf)
         BinData();
-    }
-
+    
     // Construct systematics
     fSystematicManager.Construct();
 
