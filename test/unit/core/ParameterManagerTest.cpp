@@ -9,10 +9,13 @@
 TEST_CASE("Do parameters register correctly?"){
     ParameterManager paramMan;
     std::vector<double> vecParams(10, 0);
-    double doubleParam;
+    double doubleParam = 0;
+    double doubleParam2 = 0;
     std::list<double> listParams(10, 0);
     
     paramMan.Add(new DoubleParameter(doubleParam), "double");
+    paramMan.AddDouble(doubleParam2, "double2");
+
     paramMan.AddContainer<std::list<double> >(listParams, "list");
     for(size_t i = 0; i < vecParams.size(); i++){
         std::stringstream ss;
@@ -24,11 +27,12 @@ TEST_CASE("Do parameters register correctly?"){
     }
 
     SECTION("Parameter values"){
-        REQUIRE(paramMan.GetParameterCount() == 21);
-        REQUIRE(paramMan.GetParameters() == std::vector<double>(21, 0));
+        REQUIRE(paramMan.GetParameterCount() == 22);
+        REQUIRE(paramMan.GetParameters() == std::vector<double>(22, 0));
     }
     SECTION("Parameter Names"){
         std::vector<std::string> expectedNames(1, "double");    
+        expectedNames.push_back("double2");
         for(size_t i = 0; i < listParams.size(); i++){
             std::stringstream ss;
             ss << "list " << i;
@@ -52,7 +56,7 @@ TEST_CASE("Do parameters register correctly?"){
 
 
     SECTION("setting parameter values"){        
-        std::vector<double> newParams(1, 5);
+        std::vector<double> newParams(2, 5);
         std::vector<double>   listVals(10, 20);
         std::vector<double> vectorVals(10, 10);
 
@@ -62,6 +66,7 @@ TEST_CASE("Do parameters register correctly?"){
         paramMan.SetParameters(newParams);
         REQUIRE(paramMan.GetParameters() == newParams);
         REQUIRE(doubleParam == 5);
+        REQUIRE(doubleParam2 == 5);
         REQUIRE(listParams == std::list<double> (10, 20));
         REQUIRE(vecParams == std::vector<double> (10, 10));
 
@@ -69,6 +74,7 @@ TEST_CASE("Do parameters register correctly?"){
         paramMan.SetParameters(newParams);
         REQUIRE(paramMan.GetParameters() == newParams);
         REQUIRE(doubleParam == 5);
+        REQUIRE(doubleParam2 == 5);
         REQUIRE(listParams == std::list<double> (10, 20));
         REQUIRE(vecParams == std::vector<double> (10, 10));
 
