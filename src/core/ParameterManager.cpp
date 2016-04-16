@@ -1,4 +1,5 @@
 #include <ParameterManager.h>
+#include <DoubleParameter.h>
 #include <SystematicExceptions.h>
 #include <iostream>
 ParameterManager::~ParameterManager(){
@@ -38,5 +39,11 @@ ParameterManager::GetParameterCount() const{
 void 
 ParameterManager::Add(FitParameter* p_, const std::string& n_){
     fParamPtrs.push_back(p_->Clone());
+    fNames.push_back(n_);
+}
+
+void 
+ParameterManager::AddDouble(double& d_, const std::string& n_){
+    fParamPtrs.push_back(new DoubleParameter(d_));
     fNames.push_back(n_);
 }

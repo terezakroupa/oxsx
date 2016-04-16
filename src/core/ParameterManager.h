@@ -15,7 +15,8 @@ class ParameterManager{
 
     // Add parameters
     void Add(FitParameter*, const std::string&); // copies 
-    template<typename Container>
+    void AddDouble(double&, const std::string&);
+    template<typename Container>        
     void AddContainer(Container&,
                       const std::string& nameBase_);
 
