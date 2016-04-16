@@ -201,35 +201,3 @@ double
 Histogram::GetBinCentre(size_t bin_, size_t index_) const{
     return fAxes.GetBinCentre(bin_, index_);
 }
-
-// Make this fittable, with each bin content adjustable
-void 
-Histogram::MakeFittable(){
-    fParameterManager.AddContainer<std::vector<double> >(fBinContents, 
-                                                         "Histogram bin content");
-}
-
-std::vector<std::string>
-Histogram::GetParameterNames() const{
-    return fParameterManager.GetParameterNames();
-}
-
-std::vector<double>
-Histogram::GetParameters() const{
-    return fParameterManager.GetParameters();
-}
-
-size_t 
-Histogram::GetParameterCount() const {
-    return fParameterManager.GetParameterCount();
-}
-
-void
-Histogram::SetParameters(const std::vector<double>& params_){
-    try{
-        fParameterManager.SetParameters(params_);
-    }
-    catch(const WrongNumberOfParameters&){
-        throw WrongNumberOfParameters("Histogram passed wrong number of parameters, is it fittable?");        
-    }
-}

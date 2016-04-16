@@ -9,10 +9,11 @@ class SpectralFitPdf : public BinnedPdf, public FitComponent{
     SpectralFitPdf(const AxisCollection& axes_) : BinnedPdf(axes_) {}
 
     // Make this fittable with each bin content adjustable
-    void MakeFittable();
+    void MakeFittable() {}
     std::vector<std::string> GetParameterNames() const;
     std::vector<double> GetParameters() const;
     size_t GetParameterCount() const;
     void   SetParameters(const std::vector<double>&);
+
 };
 #endif
