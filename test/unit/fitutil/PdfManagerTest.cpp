@@ -58,7 +58,7 @@ TEST_CASE("Add a couple of analytic pdfs"){
         pdfMan.MakeFittable();
 
         REQUIRE(pdfMan.GetParameterCount() == 2);
-        REQUIRE(pdfMan.GetParameterValues() == std::vector<double>(2, 0));
+        REQUIRE(pdfMan.GetParameters() == std::vector<double>(2, 0));
         
         std::vector<std::string> expectedNames;
         expectedNames.push_back("Pdf Normalisation 0");
@@ -66,8 +66,8 @@ TEST_CASE("Add a couple of analytic pdfs"){
         REQUIRE(pdfMan.GetParameterNames() == expectedNames);
         
         std::vector<double> newParameters(2, 10);
-        pdfMan.SetParameterValues(newParameters);
-        REQUIRE(pdfMan.GetParameterValues() == newParameters);
+        pdfMan.SetParameters(newParameters);
+        REQUIRE(pdfMan.GetParameters()     == newParameters);
         REQUIRE(pdfMan.GetNormalisations() == newParameters);
     }
 }
