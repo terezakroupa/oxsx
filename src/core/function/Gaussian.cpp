@@ -1,6 +1,7 @@
 #include <Gaussian.h>
 #include <math.h>
 #include <PdfExceptions.h>
+#include <SystematicExceptions.h>
 #include <ContainerParameter.h>
 #include <gsl/gsl_cdf.h>
 #include <sstream>
@@ -154,12 +155,35 @@ Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& 
 ////////////////////////
 // Make it fittable   //
 ////////////////////////
+void
+Gaussian::MakeFittable(){   
+    fParameterManager.AddContainer<std::vector<double> >(fMeans,
+                                                         "Gaussian Means");
+    fParameterManager.AddContainer<std::vector<double> >(fStdDevs,
+                                                         "Gaussian st.devs");    
+}
+
+std::vector<double>
+Gaussian::GetParameters() const{
+    return fParameterManager.GetParameters();
+}
+
+std::vector<std::string>
+Gaussian::GetParameterNames() const{
+    return fParameterManager.GetParameterNames();
+}
 
 void
-Gaussian::MakeFittable(){
-    EmptyParameters();
-    AddContainerOfParameters<std::vector<double> >(fMeans,   
-                                                   "Gaussian Means");
-    AddContainerOfParameters<std::vector<double> >(fStdDevs, 
-                                                   "Gaussian st.devs");
+Gaussian::SetParameters(const std::vector<double>& params_){
+    try{
+        fParameterManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        throw WrongNumberOfParameters("Gaussian passed wrong number of parameters, is it fittable?");
+    }
+}
+
+size_t
+Gaussian::GetParameterCount() const{
+    return fParameterManager.GetParameterCount();
 }

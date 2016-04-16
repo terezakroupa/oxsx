@@ -1,6 +1,8 @@
 #ifndef __OXSX_GAUSSIAN__
 #define __OXSX_GAUSSIAN__
 #include <IntegrableFunction.h>
+#include <FitComponent.h>
+#include <ParameterManager.h>
 
 class Gaussian : public IntegrableFunction{
  public:
@@ -29,16 +31,23 @@ class Gaussian : public IntegrableFunction{
     void   SetCdfCutOff(double);
     int    GetNDims() const;
 
-    // Make this object fittable
+    // Make this object fittable    
     void MakeFittable();
+    std::vector<double> GetParameters() const;
+    std::vector<std::string> GetParameterNames() const;
+    void   SetParameters(const std::vector<double>&);
+    size_t GetParameterCount() const;
+    
 
  private:
-    void   Initialise(const std::vector<double>& means_, const std::vector<double>& stdDevs_);
+    ParameterManager fParameterManager;
     std::vector<double> fMeans;
     std::vector<double> fStdDevs;
     
-    double fCdfCutOff; // number of stDevs away from the mean 
-                       // assumed to be zero or 1 for speed integration
+    double fCdfCutOff; // number of stDevs away from the mean                                       // assumed to be zero or 1 for speed integration
     int fNDims;
+    
+    void   Initialise(const std::vector<double>& means_, 
+                      const std::vector<double>& stdDevs_);
 };
 #endif
