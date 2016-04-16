@@ -13,8 +13,8 @@ TEST_CASE("Three pdfs no systematics"){
     axes.AddAxis(PdfAxis("axis1", -40, 40 , 200));
 
     BinnedPdf pdf1 = PdfConverter::ToBinnedPdf(gaus1, axes);
-    BinnedPdf pdf2 = PdfConverter::ToBinnedPdf(gaus1, axes);    
-    BinnedPdf pdf3 = PdfConverter::ToBinnedPdf(gaus1, axes);
+    BinnedPdf pdf2 = PdfConverter::ToBinnedPdf(gaus2, axes);
+    BinnedPdf pdf3 = PdfConverter::ToBinnedPdf(gaus3, axes);
 
     pdf1.SetDataRep(0);
     pdf2.SetDataRep(0);    
@@ -28,7 +28,6 @@ TEST_CASE("Three pdfs no systematics"){
     pdfMan.AddPdf(pdf1);
     pdfMan.AddPdf(pdf2);
     pdfMan.AddPdf(pdf3);
-
     pdfMan.SetNormalisations(std::vector<double>(3, 1));
 
     SECTION("Bin Probability Method"){

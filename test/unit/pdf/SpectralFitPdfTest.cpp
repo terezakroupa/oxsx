@@ -16,15 +16,15 @@ TEST_CASE(""){
     SECTION("Bin contents are adjustable"){
         fitPdf.MakeFittable();
         REQUIRE(fitPdf.GetParameterCount() == 100);
-        REQUIRE(fitPdf.GetParameterValues() == std::vector<double>(100, 0));
+        REQUIRE(fitPdf.GetParameters() == std::vector<double>(100, 0));
 
         std::vector<double> testConts;
         testConts.reserve(100);
         for(int i = 0; i < 100; i++){
             testConts.push_back(i);                        
         }
-        fitPdf.SetParameterValues(testConts);
-        REQUIRE(fitPdf.GetParameterValues() == testConts);
+        fitPdf.SetParameters(testConts);
+        REQUIRE(fitPdf.GetParameters() == testConts);
         REQUIRE(fitPdf.GetBinContents() == testConts);        
     }
     

@@ -1,14 +1,15 @@
 #include <catch.hpp>
 #include <ComponentManager.h>
-#include <DoubleParameter.h>
-#include <ContainerParameter.h>
-#include "TestComponent.h"
+#include <SpectralFitPdf.h>
 
 TEST_CASE("Stand alone component manager"){
-    ComponentManager cmpMan;
+    // some fake objects
+    AxisCollection axes;
+    axes.AddAxis(PdfAxis("", 0, 10, 100));
+    SpectralFitPdf pdf1(axes);
+    SpectralFitPdf pdf2(axes);
 
-    TestComponent testComp;
-    TestComponent testComp2;
+    ComponentManager cmpMan;
 
     SECTION("initialised correctly"){
         REQUIRE(cmpMan.GetTotalParameterCount() == 0);
@@ -17,18 +18,18 @@ TEST_CASE("Stand alone component manager"){
     }
     
     SECTION("adding a component"){
-        cmpMan.AddComponent(&testComp);
-        REQUIRE(cmpMan.GetTotalParameterCount() == 21);
+        cmpMan.AddComponent(&pdf1);
+        REQUIRE(cmpMan.GetTotalParameterCount() == 100);
     }
 
     SECTION("adding two"){
-        cmpMan.AddComponent(&testComp);
-        cmpMan.AddComponent(&testComp2);
-        REQUIRE(cmpMan.GetTotalParameterCount() == 21 * 2);
+        cmpMan.AddComponent(&pdf1);
+        cmpMan.AddComponent(&pdf2);
+        REQUIRE(cmpMan.GetTotalParameterCount() == 100 * 2);
         
-        cmpMan.SetParameters(std::vector<double> (21 * 2, 8));
-        REQUIRE(testComp.GetParameterValues() == std::vector<double>(21, 8));
-        REQUIRE(testComp2.GetParameterValues() == std::vector<double>(21, 8));
+        cmpMan.SetParameters(std::vector<double> (100 * 2, 8));
+        REQUIRE(pdf1.GetParameters() == std::vector<double>(100, 8));
+        REQUIRE(pdf2.GetParameters() == std::vector<double>(100, 8));
     }
     SECTION("clearing"){
         cmpMan.Clear();
