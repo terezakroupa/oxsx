@@ -1,6 +1,7 @@
 #ifndef __OXSX_PDF_MANAGER__
 #define __OXSX_PDF_MANAGER__
 #include <FitComponent.h>
+#include <ParameterManager.h>
 #include <vector>
 
 class Pdf;
@@ -24,8 +25,13 @@ class PdfManager : public FitComponent{
     
     // Make a fittable component - i.e. rescale pdfs inside to fit
     void  MakeFittable();    
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double> GetParameters() const;
+    size_t GetParameterCount() const;
+    void   SetParameters(const std::vector<double>& params_);
 
  private:
+    ParameterManager fParameterManager;
     size_t fNPdfs;
     size_t fNDims;
     std::vector<Pdf*>   fPdfs;

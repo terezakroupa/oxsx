@@ -7,6 +7,7 @@
 #ifndef __OXSX_HISTOGRAM__
 #define __OXSX_HISTOGRAM__
 #include <AxisCollection.h>
+#include <ParameterManager.h>
 #include <FitComponent.h>
 #include <vector>
 
@@ -52,8 +53,13 @@ class Histogram : public FitComponent{
     
     // Make this fittable, with each bin content adjustable
     void MakeFittable();
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double> GetParameters() const;
+    size_t GetParameterCount() const;
+    void   SetParameters(const std::vector<double>&);
 
  private:
+    ParameterManager fParameterManager;
     AxisCollection fAxes;
     std::vector<double> fBinContents;
     size_t fNBins;

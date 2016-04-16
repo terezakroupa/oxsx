@@ -1,6 +1,6 @@
 #include <ParameterManager.h>
 #include <SystematicExceptions.h>
-
+#include <iostream>
 ParameterManager::~ParameterManager(){
     for(size_t i = 0; i < fParamPtrs.size(); i++)
         delete fParamPtrs[i];

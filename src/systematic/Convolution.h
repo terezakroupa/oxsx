@@ -19,14 +19,12 @@ class Convolution : public Systematic{
     void SetAxes(const AxisCollection& axes_);
     void Construct();    
 
-    void SetParameters(const std::vector<double>& params_);
-    std::vector<double> GetParameters() const;
-
-    double GetParameter(size_t index_) const;
-    void   SetParameter(size_t index_, double val);
-
     // Make this fittable, by delegating to the underlying function
     void MakeFittable();
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double>      GetParameters() const;
+    size_t                   GetParameterCount() const;
+    void                     SetParameters(const std::vector<double>&);
 
  private:
     void                     Reset();
@@ -37,7 +35,9 @@ class Convolution : public Systematic{
     AxisCollection fSysAxes;
     void  CacheCompatibleBins();
     std::vector<std::vector<size_t> > fCompatibleBins;
-    std::vector<size_t> fSysBins; // the systematic subMap bin for each global bin of pdf
+    // the systematic subMap bin for each global bin of pdf
+    std::vector<size_t> fSysBins; 
+    
 };
 #endif
 

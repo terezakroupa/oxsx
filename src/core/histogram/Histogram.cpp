@@ -2,6 +2,7 @@
 #include <iostream>
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
+#include <SystematicExceptions.h>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -204,7 +205,31 @@ Histogram::GetBinCentre(size_t bin_, size_t index_) const{
 // Make this fittable, with each bin content adjustable
 void 
 Histogram::MakeFittable(){
-    EmptyParameters();
-    AddContainerOfParameters<std::vector<double> >(fBinContents, 
-                                                   "Histogram bin content");
+    fParameterManager.AddContainer<std::vector<double> >(fBinContents, 
+                                                         "Histogram bin content");
+}
+
+std::vector<std::string>
+Histogram::GetParameterNames() const{
+    return fParameterManager.GetParameterNames();
+}
+
+std::vector<double>
+Histogram::GetParameters() const{
+    return fParameterManager.GetParameters();
+}
+
+size_t 
+Histogram::GetParameterCount() const {
+    return fParameterManager.GetParameterCount();
+}
+
+void
+Histogram::SetParameters(const std::vector<double>& params_){
+    try{
+        fParameterManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        throw WrongNumberOfParameters("Histogram passed wrong number of parameters, is it fittable?");        
+    }
 }

@@ -10,15 +10,14 @@
 
 #ifndef __OXSX_SYSTEMATIC__
 #define __OXSX_SYSTEMATIC__
-#include <FitComponent.h>
 #include <PdfMapping.h>
 #include <BinnedPdf.h>
+#include <FitComponent.h>
 #include <DataRepresentation.h>
 #include <vector>
 
 class Systematic : public FitComponent{
  public:
-    Systematic()   {}
     virtual ~Systematic()  {}
 
     BinnedPdf 
@@ -34,7 +33,7 @@ class Systematic : public FitComponent{
     void SetPdfDataRep(const DataRepresentation&);
     DataRepresentation GetPdfDataRep() const;
 
-    virtual void Construct() {}
+    virtual void Construct() = 0;
 
  protected:
     PdfMapping         fPdfMapping;

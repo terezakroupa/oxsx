@@ -4,7 +4,7 @@
 #include <PdfExceptions.h>
 #include <PdfConverter.h>
 #include <sstream>
-#include <ContainerParameter.h>
+#include <SystematicExceptions.h>
 
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
@@ -115,8 +115,32 @@ BinnedPdfManager::ApplyShrink(const BinnedPdfShrinker& shrinker_){
 
 void
 BinnedPdfManager::MakeFittable(){
-    EmptyParameters();
     if(fNormalisations.size() < fNPdfs)
         fNormalisations.resize(fNPdfs, 0);
-    AddContainerOfParameters(fNormalisations, "Pdf Normalisation");
+    fParameterManager.AddContainer(fNormalisations, "Pdf Normalisation");
+}
+
+std::vector<std::string>
+BinnedPdfManager::GetParameterNames() const {
+    return fParameterManager.GetParameterNames();
+}
+
+std::vector<double>
+BinnedPdfManager::GetParameters() const{
+    return fParameterManager.GetParameters();
+}
+
+size_t
+BinnedPdfManager::GetParameterCount() const{
+    return fParameterManager.GetParameterCount();
+}
+
+void
+BinnedPdfManager::SetParameters(const std::vector<double>& params_){
+    try{
+        fParameterManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        throw WrongNumberOfParameters("BinnedPdfManager passed wrong number of parameters, is it fittable?");
+    }
 }
