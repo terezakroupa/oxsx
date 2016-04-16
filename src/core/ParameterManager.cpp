@@ -38,7 +38,7 @@ ParameterManager::GetParameterCount() const{
 
 void 
 ParameterManager::Add(FitParameter* p_, const std::string& n_){
-    fParamPtrs.push_back(p_->Clone());
+    fParamPtrs.push_back(p_);
     fNames.push_back(n_);
 }
 
