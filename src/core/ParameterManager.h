@@ -2,15 +2,24 @@
 #define __OXSX_PARAMETER_MANAGER__
 #include <vector>
 #include <string>
+#include <iostream>
 class FitParameter;
 class ParameterManager{
  public:
+    ParameterManager() {}
     ~ParameterManager(); // frees fParamPtrs
+
+    // don't copy the other objects parameter pointers, it has its own
+    ParameterManager(const ParameterManager&) {}
+    ParameterManager operator=(const ParameterManager&) {return ParameterManager();}
+
+    // Add parameters
     void Add(FitParameter*, const std::string&); // copies 
     template<typename Container>
     void AddContainer(Container&,
                       const std::string& nameBase_);
-    
+
+    // Used to implement FitComponent interface
     std::vector<std::string> GetParameterNames() const;
     size_t GetParameterCount() const;
     std::vector<double> GetParameters() const;

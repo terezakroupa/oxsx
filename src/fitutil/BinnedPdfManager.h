@@ -8,6 +8,7 @@
 #include <BinnedPdf.h>
 #include <BinnedPdfShrinker.h>
 #include <FitComponent.h>
+#include <ParameterManager.h>
 
 class EventData;
 class SystematicManager;
@@ -35,8 +36,13 @@ class BinnedPdfManager : public FitComponent{
 
     // Make a fittable component - i.e. rescale the binned pdfs inside to fit
     void MakeFittable();
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double> GetParameters() const;
+    size_t GetParameterCount() const;
+    void SetParameters(const std::vector<double>&);
 
  private:
+    ParameterManager       fParameterManager;
     std::vector<BinnedPdf> fOriginalPdfs;
     std::vector<BinnedPdf> fWorkingPdfs;
     std::vector<double>    fNormalisations;

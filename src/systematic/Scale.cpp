@@ -1,8 +1,10 @@
 #include <Scale.h>
+#include <sstream>
 #include <DoubleParameter.h>
 #include <PdfExceptions.h>
+#include <SystematicExceptions.h>
 #include <DataExceptions.h>
-#include <sstream>
+
 
 void 
 Scale::SetAxes(const AxisCollection& axes_){
@@ -99,10 +101,24 @@ Scale::GetScaleFactor() const{
 // Make this object fittable, so the scale factor is adjustable //
 //////////////////////////////////////////////////////////////////
 
+std::vector<std::string>
+Scale::GetParameterNames() const{
+    return std::vector<std::string>(1, "Scale Factor");
+}
+
+std::vector<double>
+Scale::GetParameters() const{
+    return std::vector<double>(1, fScaleFactor);
+}
+
+size_t
+Scale::GetParameterCount() const{
+    return 1;
+}
+
 void
-Scale::MakeFittable(){
-    EmptyParameters();
-    std::stringstream ss;
-    ss << "Scale factor on axis " << fDataRep.GetIndex(0);
-    AddAsParameter(new DoubleParameter(fScaleFactor), ss.str());
+Scale::SetParameters(const std::vector<double>& params_){
+    if(params_.size() != 1)
+        throw WrongNumberOfParameters("Scale systematic has 1 parameter!");
+    fScaleFactor = params_.at(0);
 }

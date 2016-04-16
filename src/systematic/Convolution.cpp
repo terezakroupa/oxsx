@@ -1,11 +1,9 @@
 #include <Convolution.h>
 #include <IntegrableFunction.h>
-#include <iostream>
 #include <PdfExceptions.h>
 #include <SystematicExceptions.h>
+#include <string>
 
-// Catch the pdf errors from parameter setting and rethrow as systematic exceptions, so they
-// can be treated generically with the other systematics
 void 
 Convolution::SetFunction(IntegrableFunction* function_){
     fFunction = dynamic_cast<IntegrableFunction*>(function_->Clone());
@@ -118,14 +116,41 @@ Convolution::CacheCompatibleBins(){
     fCachedCompatibleBins = true;
 }
 
-// Make this object fittable
+///////////////////////////////
+// Make this object fittable //
+///////////////////////////////
+
 void
 Convolution::MakeFittable(){
-    // Just delegate the fitting, but change the names
-    EmptyParameters();
-    DelegateFor(fFunction);
-    std::vector<std::string> names = fFunction->GetParameterNames();
-    for(size_t i = 0; i < names.size(); i++)
-        names[i] = "Convolution : " + names[i];
-    SetParameterNames(names);
+    fFunction->MakeFittable();
+}
+
+std::vector<std::string>
+Convolution::GetParameterNames() const{
+    std::vector<std::string> param = fFunction->GetParameterNames();
+    for(size_t i = 0; i < param.size(); i++){
+        param[i] = "Convolution : " + param[i];        
+    }
+    return param;
+}
+
+std::vector<double>
+Convolution::GetParameters() const{
+    return fFunction->GetParameters();
+}
+
+size_t
+Convolution::GetParameterCount() const{
+    return fFunction->GetParameterCount();
+}
+
+void
+Convolution::SetParameters(const std::vector<double>& params_){
+    try{
+        fFunction->SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters& e){
+        throw WrongNumberOfParameters(std::string("Convolution : ") 
+                                      + e.what());
+    }
 }

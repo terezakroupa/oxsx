@@ -1,6 +1,7 @@
 #include <PdfManager.h>
 #include <Pdf.h>
 #include <EventData.h>
+#include <SystematicExceptions.h>
 
 PdfManager::~PdfManager(){
     for(size_t i = 0; i < fPdfs.size(); i++)
@@ -60,8 +61,31 @@ PdfManager::GetNPdfs() const{
 // Make a fittable component - i.e. rescale pdfs inside to fit
 void
 PdfManager::MakeFittable(){
-    EmptyParameters();
     fNormalisations.resize(fNPdfs);
-    AddContainerOfParameters<std::vector<double> >(fNormalisations, 
-                                                   "Pdf Normalisation");
+    fParameterManager.AddContainer<std::vector<double> >(fNormalisations, 
+                                                         "Pdf Normalisation");
+}
+
+std::vector<std::string>
+PdfManager::GetParameterNames() const{
+    return fParameterManager.GetParameterNames();
+}
+std::vector<double>
+PdfManager::GetParameters() const{
+    return fParameterManager.GetParameters();
+}
+
+size_t 
+PdfManager::GetParameterCount() const{
+    return fParameterManager.GetParameterCount();
+}
+
+void
+PdfManager::SetParameters(const std::vector<double>& params_){
+    try{
+        fParameterManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        throw WrongNumberOfParameters(" passed to pdf manager");
+    }
 }

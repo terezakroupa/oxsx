@@ -1,6 +1,6 @@
 #ifndef __OXSX_FUNCTION__
 #define __OXSX_FUNCTION__
-#include <IFitComponent.h>
+#include <FitComponent.h>
 #include <vector>
 
 class Function : public FitComponent{

@@ -1,7 +1,7 @@
 #ifndef __OXSX_ANALYTIC_PDF__
 #define __OXSX_ANALYTIC_PDF__
 #include <Pdf.h>
-#include <IFitComponent.h>
+#include <FitComponent.h>
 #include <DataRepresentation.h>
 
 class IntegrableFunction;

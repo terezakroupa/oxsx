@@ -21,7 +21,7 @@ class BinnedPdf : public Pdf{
     double Probability(const EventData&) const;
     double Integral()  const;
     void   Normalise();
-    Pdf*  Clone() const; // required for pdf outer product
+    Pdf*   Clone() const; 
     
     void   Fill(const std::vector<double>& vals_, double weight_ = 1);
     void   Fill(const EventData& data_, double weight_ = 1);
@@ -58,6 +58,7 @@ class BinnedPdf : public Pdf{
 
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
+
  protected:
     DataRepresentation fDataRep;
     Histogram fHistogram;

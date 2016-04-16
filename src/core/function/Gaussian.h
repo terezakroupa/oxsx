@@ -1,7 +1,6 @@
 #ifndef __OXSX_GAUSSIAN__
 #define __OXSX_GAUSSIAN__
 #include <IntegrableFunction.h>
-#include <FitComponent.h>
 #include <ParameterManager.h>
 
 class Gaussian : public IntegrableFunction{

@@ -1,14 +1,14 @@
 /*****************************************/
 /* A simple scale error on an observable */
 /*****************************************/
-#ifndef __SCALE__
+#ifndef __OXSX_SCALE__
 #include <Systematic.h>
 #include <BinnedPdf.h>
 
 class Scale : public Systematic{
  public:
     Scale() : fScaleFactor(1) {}
-    void SetAxes(const AxisCollection&);
+    void  SetAxes(const AxisCollection&);
     const AxisCollection& GetAxes() const;
     
     void   SetScaleFactor(double);
@@ -17,8 +17,12 @@ class Scale : public Systematic{
     void Construct();
 
     // Adjustable scale factor
-    void MakeFittable();
-
+    void   MakeFittable() {}
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double>      GetParameters() const;
+    size_t GetParameterCount() const;
+    void   SetParameters(const std::vector<double>&);
+ 
  private:
     double   fScaleFactor;
 };
