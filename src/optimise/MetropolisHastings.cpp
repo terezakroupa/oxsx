@@ -103,6 +103,7 @@ MetropolisHastings::GetInitialTrial() const{
 
 const FitResult&
 MetropolisHastings::Optimise(TestStatistic* testStat_){
+    testStat_->RegisterFitComponents();
     pTestStatistic = testStat_;
     fNDims = fMinima.size();
     fRejectionRate = 0;
