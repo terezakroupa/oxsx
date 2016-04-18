@@ -1,21 +1,16 @@
 /****************************************/
 /* Abstract base class for an optimiser */
 /****************************************/
-#ifndef __OPTIMISER__
-#define __OPTIMISER__
+#ifndef __OXSX_OPTIMISER__
+#define __OXSX_OPTIMISER__
 #include <vector>
-#include <TestStatistic.h>
 
+class TestStatistic;
 class FitResult;
 
 class Optimiser{
  public:
-    Optimiser(TestStatistic* evaluator_): pTestStatistic(evaluator_){}
     virtual ~Optimiser() {}
-
-    virtual const FitResult& Optimise() = 0;
-
- protected:
-    TestStatistic* pTestStatistic;
+    virtual const FitResult& Optimise(TestStatistic*) = 0;
 };
 #endif
