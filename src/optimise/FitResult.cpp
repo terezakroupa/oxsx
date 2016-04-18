@@ -1,6 +1,11 @@
 #include <FitResult.h>
 #include <Histogram.h>
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <iomanip>
+
 FitResult::~FitResult(){
     delete fStatSpace;
 }
@@ -82,8 +87,6 @@ FitResult::GetParameterNames() const{
 
 void
 FitResult::Print() const{
-  std::cout << fParameterNames.size() << "\t" << fBestFit.size() 
-			<< std::endl;
     if(fParameterNames.size() != fBestFit.size())
         throw 0;
 
@@ -93,4 +96,38 @@ FitResult::Print() const{
                   << fBestFit.at(i)
                   << std::endl;
     }        
+}
+
+void
+FitResult::SaveAs(const std::string& fileName_) const{
+  time_t t = time(0);
+  struct tm * now = localtime(&t);
+  
+  std::ofstream fs(fileName_.c_str());
+  fs << "-----------------------------------"
+	 << "-----------------------------------" << std::endl
+	 << "OXSX Fit Result: "
+	 << now -> tm_year + 1900 << '-' 
+	 << now -> tm_mon + 1 << '-'
+	 << now -> tm_mday
+	 << "  "
+	 << now -> tm_hour
+	 << ":"
+	 << now -> tm_min
+	 << ":"
+	 << now -> tm_sec
+	 << std::endl
+	 << "-----------------------------------"
+	 << "-----------------------------------" << std::endl
+	 << std::endl;
+	   
+  fs << "Best Fit Values: " << std::endl << std::endl;
+  for(size_t i = 0; i < fParameterNames.size(); i++){
+	fs << std::setw(25) 
+	   << fParameterNames.at(i) << "\t\t" 
+	   << std::setw(10) 
+	   << fBestFit.at(i)
+	   << std::endl;
+  }        	  
+  fs.close();
 }
