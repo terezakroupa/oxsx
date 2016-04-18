@@ -1,5 +1,7 @@
 #include <ChiSquare.h>
 #include <DataSet.h>
+#include <sstream>
+#include <SystematicExceptions.h>
 
 double
 ChiSquare::Evaluate(){
@@ -45,7 +47,37 @@ ChiSquare::BinData(){
 
 void
 ChiSquare::RegisterFitComponents(){
-    AddFitComponent(&fPdfManager);
+    fComponentManager.AddComponent(&fPdfManager);
     for(size_t i = 0; i < fSystematicManager.GetSystematics().size(); i++)
-        AddFitComponent(fSystematicManager.GetSystematics().at(i));
+        fComponentManager.AddComponent(fSystematicManager.GetSystematics().at(i));
+}
+
+
+void
+ChiSquare::SetParameters(const std::vector<double>& params_){
+    RegisterFitComponents();
+    try{
+        fComponentManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        std::stringstream ss;
+        ss << "ChiSquare expected " << GetParameterCount()
+           << " parameters, got " << params_.size();
+        throw WrongNumberOfParameters(ss.str());
+    }
+}
+
+std::vector<double> 
+ChiSquare::GetParameters() const{
+    return fComponentManager.GetParameters();
+}
+
+int 
+ChiSquare::GetParameterCount() const{
+    return fComponentManager.GetTotalParameterCount();
+}
+
+std::vector<std::string>
+ChiSquare::GetParameterNames() const{
+    return fComponentManager.GetParameterNames();
 }
