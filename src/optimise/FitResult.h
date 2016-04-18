@@ -5,13 +5,14 @@
 #define __OXSX_FIT_RESULT__
 #include <cstdlib>
 #include <vector>
+#include <string>
+
 class Histogram;
 class FitResult{
  public:
     FitResult() : fStatSpace(NULL), fIsValid(true)  {}
     FitResult(const FitResult&); //deep copy
     FitResult operator=(const FitResult&); //deep copy
-
     ~FitResult(); // frees stat space
 
     void  SetBestFit(const std::vector<double>&);
