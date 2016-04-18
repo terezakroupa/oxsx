@@ -86,12 +86,12 @@ Minuit::Initialise(){
 
 void
 Minuit::Fix(size_t index_){
-    fMinimiser->Fix(index_);
+    fFixedParameters.insert(index_);
 }
 
 void
 Minuit::Release(size_t index_){
-    fMinimiser->Release(index_);
+  fFixedParameters.erase(index_);
 }
 
 void
@@ -104,17 +104,16 @@ Minuit::GetMaxCalls() const {
   return fMaxCalls;
 }
 
-void 
-Minuit::RemoveLimits(size_t index_){
-    fMinimiser -> RemoveLimits(index_);
-}
-
 const FitResult&
 Minuit::Optimise(TestStatistic* testStat_){
     testStat_ -> RegisterFitComponents();
     fMinuitFCN = MinuitFCN(testStat_);
-
 	Initialise();
+
+	std::set<size_t>::iterator it = fFixedParameters.begin();
+	for(; it != fFixedParameters.end(); ++it)
+	  fMinimiser -> Fix(*it);
+
     // defaults are same as ROOT defaults
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 
@@ -123,8 +122,6 @@ Minuit::Optimise(TestStatistic* testStat_){
     fFitResult.SetValid(fnMin.IsValid());
     return fFitResult;
 }
-
-
 
 void 
 Minuit::SetTolerance(double tol_) {
