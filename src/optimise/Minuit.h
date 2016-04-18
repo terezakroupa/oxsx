@@ -2,7 +2,6 @@
 /* Largely inspired by the similar class in RAT, written by P.G.Jones and M.Mottram */
 /************************************************************************************/
 
-// Look at refactoring this 
 #ifndef __OXSX_MINUIT__
 #define __OXSX_MINUIT__
 #include <Optimiser.h>
@@ -11,7 +10,7 @@
 #include <MinuitFCN.h>
 #include <Minuit2/MnApplication.h>
 #include <FitResult.h>
-
+#include <set>
 class TestStatistic;
 
 class Minuit : public Optimiser{
@@ -23,9 +22,8 @@ class Minuit : public Optimiser{
 
     virtual const FitResult& Optimise(TestStatistic*);
 
-    void Fix(size_t index_);        // these three methods only work after a call to Initialise
+    void Fix(size_t index_);
     void Release(size_t index_);
-    void RemoveLimits(size_t index_);
 
     void SetMethod(const std::string&);
     std::string GetMethod() const;
@@ -52,7 +50,7 @@ class Minuit : public Optimiser{
     bool GetMaximising() const  {return fMaximising;}
 
     FitResult GetFitResult() const;
-    
+
  private:
 	void Initialise();
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
@@ -61,6 +59,7 @@ class Minuit : public Optimiser{
 
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
+    std::set<size_t>    fFixedParameters;
 
     unsigned fMaxCalls;
     double   fTolerance;
