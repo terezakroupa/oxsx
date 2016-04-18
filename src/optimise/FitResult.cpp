@@ -34,6 +34,7 @@ FitResult::operator=(const FitResult& other_){
     fIsValid = other_.fIsValid;
     fBestFit = other_.fBestFit;
     fStatSample = other_.fStatSample;
+	fParameterNames = other_.fParameterNames;
     return *this;
 }
 
@@ -43,6 +44,7 @@ FitResult::FitResult(const FitResult& other_){
 
     else
         fStatSpace = new Histogram(*other_.fStatSpace);
+	fParameterNames = other_.fParameterNames;
     fStatSample = other_.fStatSample;
     fBestFit = other_.fBestFit;
     fIsValid = other_.fIsValid;
@@ -80,6 +82,8 @@ FitResult::GetParameterNames() const{
 
 void
 FitResult::Print() const{
+  std::cout << fParameterNames.size() << "\t" << fBestFit.size() 
+			<< std::endl;
     if(fParameterNames.size() != fBestFit.size())
         throw 0;
 
