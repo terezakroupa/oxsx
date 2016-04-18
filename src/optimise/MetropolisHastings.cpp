@@ -1,6 +1,7 @@
 #include <MetropolisHastings.h>
 #include <Rand.h>
 #include <math.h> //sqrt
+#include <TestStatistic.h>
 #include <iostream>
 
 const std::vector<double>&
@@ -101,7 +102,8 @@ MetropolisHastings::GetInitialTrial() const{
 }
 
 const FitResult&
-MetropolisHastings::Optimise(){
+MetropolisHastings::Optimise(TestStatistic* testStat_){
+    pTestStatistic = testStat_;
     fNDims = fMinima.size();
     fRejectionRate = 0;
     fBestFit.resize(fNDims, 0);
