@@ -17,6 +17,9 @@ class FitResult{
     void  SetBestFit(const std::vector<double>&);
     std::vector<double> GetBestFit() const;
 
+    std::vector<std::string> GetParameterNames() const;
+    void SetParameterNames(const std::vector<std::string>&);
+
     void SetStatSpace(const Histogram&);
     const Histogram& GetStatSpace() const; 
 
@@ -26,8 +29,11 @@ class FitResult{
     void SetValid(bool b_);
     bool GetValid() const;
 
+    void Print() const;
+    
  private:
     std::vector<double>   fBestFit;
+    std::vector<std::string> fParameterNames;
     std::vector<std::vector<double> > fStatSample;
     Histogram*            fStatSpace;
     bool fIsValid;
