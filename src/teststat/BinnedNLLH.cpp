@@ -196,7 +196,6 @@ BinnedNLLH::RegisterFitComponents(){
 
 void
 BinnedNLLH::SetParameters(const std::vector<double>& params_){
-    RegisterFitComponents();
     try{
         fComponentManager.SetParameters(params_);
     }

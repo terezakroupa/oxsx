@@ -39,6 +39,7 @@ GridSearch::GetStepSizes() const{
 const FitResult&
 GridSearch::Optimise(TestStatistic* testStat_){
     // list of rates followed by list of systematics
+    testStat_->RegisterFitComponents();
     std::vector<double> bestFit;
     bestFit.resize(testStat_ -> GetParameterCount());
     fMinVal = 0;

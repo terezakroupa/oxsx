@@ -55,7 +55,6 @@ ChiSquare::RegisterFitComponents(){
 
 void
 ChiSquare::SetParameters(const std::vector<double>& params_){
-    RegisterFitComponents();
     try{
         fComponentManager.SetParameters(params_);
     }
