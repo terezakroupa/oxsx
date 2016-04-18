@@ -107,6 +107,7 @@ Minuit::RemoveLimits(size_t index_){
 
 const FitResult&
 Minuit::Optimise(TestStatistic* testStat_){
+    testStat_->RegisterFitComponents();
     fMinuitFCN = MinuitFCN(testStat_);
     if(!fMinimiser)
         Initialise();
