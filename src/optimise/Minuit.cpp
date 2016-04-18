@@ -109,9 +109,8 @@ const FitResult&
 Minuit::Optimise(TestStatistic* testStat_){
     testStat_->RegisterFitComponents();
     fMinuitFCN = MinuitFCN(testStat_);
-    if(!fMinimiser)
-        Initialise();
 
+	Initialise();
     // defaults are same as ROOT defaults
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 

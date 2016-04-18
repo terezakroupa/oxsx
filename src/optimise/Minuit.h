@@ -21,7 +21,6 @@ class Minuit : public Optimiser{
                 fTolerance(0.1), fMaximising(false) {}
     ~Minuit();
 
-    void Initialise();
     virtual const FitResult& Optimise(TestStatistic*);
 
     void Fix(size_t index_);        // these three methods only work after a call to Initialise
@@ -55,6 +54,7 @@ class Minuit : public Optimiser{
     FitResult GetFitResult() const;
     
  private:
+	void Initialise();
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
     std::vector<double> fInitialValues;
     std::vector<double> fInitialErrors;
