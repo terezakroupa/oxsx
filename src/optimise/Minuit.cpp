@@ -95,19 +95,23 @@ Minuit::Release(size_t index_){
 }
 
 void
-Minuit::SetMaxCalls(unsigned max_) {fMaxCalls = max_;}
+Minuit::SetMaxCalls(unsigned max_) {
+  fMaxCalls = max_;
+}
 
 unsigned
-Minuit::GetMaxCalls() const {return fMaxCalls;}
+Minuit::GetMaxCalls() const {
+  return fMaxCalls;
+}
 
 void 
 Minuit::RemoveLimits(size_t index_){
-    fMinimiser->RemoveLimits(index_);
+    fMinimiser -> RemoveLimits(index_);
 }
 
 const FitResult&
 Minuit::Optimise(TestStatistic* testStat_){
-    testStat_->RegisterFitComponents();
+    testStat_ -> RegisterFitComponents();
     fMinuitFCN = MinuitFCN(testStat_);
 
 	Initialise();
@@ -123,10 +127,14 @@ Minuit::Optimise(TestStatistic* testStat_){
 
 
 void 
-Minuit::SetTolerance(double tol_) {fTolerance = tol_;}
+Minuit::SetTolerance(double tol_) {
+  fTolerance = tol_;
+}
 
 double
-Minuit::GetTolerance() const {return fTolerance;}
+Minuit::GetTolerance() const {
+  return fTolerance;
+}
 
 FitResult
 Minuit::GetFitResult() const{
