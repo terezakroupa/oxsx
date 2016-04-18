@@ -5,32 +5,22 @@
 /****************************************************************************/
 #ifndef __OXSX_TEST_STATISTIC__
 #define __OXSX_TEST_STATISTIC__
-#include <ComponentManager.h>
 #include <vector>
+#include <string>
 #include <stddef.h>
 
-class DataSet;
-class FitComponent;
 class TestStatistic{
  public:
-    TestStatistic(): fDataSet(NULL) {}
     virtual ~TestStatistic() {}
 
     virtual double Evaluate() = 0;    
-    void   SetParameters(const std::vector<double>& params_);    
-    int    GetParameterCount() const;
-    
-    virtual void    SetDataSet(DataSet* handle_);
-    virtual DataSet* GetDataSet() const;
+    virtual void   SetParameters(const std::vector<double>& params_) = 0;
+    virtual std::vector<double> GetParameters() const = 0;
+    virtual int    GetParameterCount() const = 0;
 
+    virtual std::vector<std::string> GetParameterNames() const = 0;
+    
     // Set up all the components for a fit
     virtual void RegisterFitComponents() = 0;
-
- protected:
-    DataSet* fDataSet;
-    void     AddFitComponent(FitComponent*);
-
- private:
-    ComponentManager fComponentManager;
 };
 #endif

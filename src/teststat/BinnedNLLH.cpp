@@ -4,6 +4,7 @@
 #include <PdfExceptions.h>
 #include <DataExceptions.h>
 #include <iostream>
+#include <SystematicExceptions.h>
 
 double 
 BinnedNLLH::Evaluate(){
@@ -122,6 +123,11 @@ BinnedNLLH::SetDataSet(DataSet* dataSet_){
     fCalculatedDataPdf = false;
 }
 
+DataSet*
+BinnedNLLH::GetDataSet(){
+    return fDataSet;
+}
+
 void
 BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
   fDataPdf = fPdfShrinker.ShrinkPdf(binnedPdf_);
@@ -177,12 +183,43 @@ BinnedNLLH::GetNormalisations() const{
     return fPdfManager.GetNormalisations();
 }
 
+
 /////////////////////////////////////////////////////////
 // Declare which objects should be adjusted by the fit //
 /////////////////////////////////////////////////////////
 void
 BinnedNLLH::RegisterFitComponents(){
-    AddFitComponent(&fPdfManager);
+    fComponentManager.AddComponent(&fPdfManager);
     for(size_t i = 0; i < fSystematicManager.GetSystematics().size(); i++)
-        AddFitComponent(fSystematicManager.GetSystematics().at(i));
+        fComponentManager.AddComponent(fSystematicManager.GetSystematics().at(i));
+}
+
+void
+BinnedNLLH::SetParameters(const std::vector<double>& params_){
+    RegisterFitComponents();
+    try{
+        fComponentManager.SetParameters(params_);
+    }
+    catch(const WrongNumberOfParameters&){
+        std::stringstream ss;
+        ss << "component manager expected " 
+           << GetParameterCount() << " got " << params_.size();
+        throw WrongNumberOfParameters(ss.str());
+    }
+}
+                                             
+                 
+std::vector<double>
+BinnedNLLH::GetParameters() const{
+    return fComponentManager.GetParameters();
+}
+
+int
+BinnedNLLH::GetParameterCount() const{
+        return fComponentManager.GetTotalParameterCount();
+}
+
+std::vector<std::string>
+BinnedNLLH::GetParameterNames() const{
+    return fComponentManager.GetParameterNames();
 }
