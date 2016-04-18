@@ -85,6 +85,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
        
     } 
     fFitResult.SetBestFit(bestFit);
+    fFitResult.SetParameterNames(testStat_->GetParameterNames());
     return fFitResult;
 }
 
