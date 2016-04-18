@@ -150,6 +150,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     std::cout << "Metropolis Hastings:: acceptance rate = " << 1 - fRejectionRate << std::endl;
 
     fFitResult.SetBestFit(fBestFit);
+    fFitResult.SetParameterNames(pTestStatistic->GetParameterNames());
     fFitResult.SetStatSample(fSample);
     fFitResult.SetValid(true);
     return fFitResult;

@@ -67,3 +67,13 @@ void
 FitResult::SetValid(bool b_){
     fIsValid = b_;
 }
+
+void
+FitResult::SetParameterNames(const std::vector<std::string>& names_){
+    fParameterNames = names_;
+}
+
+std::vector<std::string>
+FitResult::GetParameterNames() const{
+    return fParameterNames;
+}

@@ -116,6 +116,7 @@ Minuit::Optimise(TestStatistic* testStat_){
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 
     fFitResult.SetBestFit(fMinimiser -> Params());
+    fFitResult.SetParameterNames(testStat_->GetParameterNames());
     fFitResult.SetValid(fnMin.IsValid());
     return fFitResult;
 }
