@@ -77,3 +77,16 @@ std::vector<std::string>
 FitResult::GetParameterNames() const{
     return fParameterNames;
 }
+
+void
+FitResult::Print() const{
+    if(fParameterNames.size() != fBestFit.size())
+        throw 0;
+
+    std::cout << "Fit Result: " << std::endl;
+    for(size_t i = 0; i < fParameterNames.size(); i++){
+        std::cout << fParameterNames.at(i) << "\t" 
+                  << fBestFit.at(i)
+                  << std::endl;
+    }        
+}
