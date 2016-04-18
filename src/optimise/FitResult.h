@@ -31,7 +31,7 @@ class FitResult{
     bool GetValid() const;
 
     void Print() const;
-    
+	void SaveAs(const std::string&) const;
  private:
     std::vector<double>   fBestFit;
     std::vector<std::string> fParameterNames;
