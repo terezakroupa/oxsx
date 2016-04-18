@@ -29,7 +29,6 @@ class ROOTNtuple : public DataSet{
     ROOTNtuple(const ROOTNtuple&);
     ROOTNtuple operator=(const ROOTNtuple&);
 
-    unsigned fNEntries;
     TFile*   fROOTFile;
     TNtuple* fNtuple;
     

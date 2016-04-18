@@ -28,7 +28,7 @@ ROOTNtuple::~ROOTNtuple(){
 
 EventData 
 ROOTNtuple::Assemble(size_t iEvent_) const{
-    if (iEvent_ >= fNEntries)
+    if (iEvent_ >= GetNEntries())
         throw DataNotFoundError("Exceeded end of ROOT NTuple");
 
     fNtuple -> GetEntry(iEvent_);
@@ -39,7 +39,7 @@ ROOTNtuple::Assemble(size_t iEvent_) const{
 
 EventData
 ROOTNtuple::GetEntry(size_t iEvent_) const{
-    if(iEvent_ >= fNEntries)
+    if(iEvent_ >= GetNEntries())
         throw DataNotFoundError("Exceeded end of ROOT NTuple");
     return Assemble(iEvent_);
 }
