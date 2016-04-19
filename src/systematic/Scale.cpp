@@ -1,11 +1,7 @@
 #include <Scale.h>
-#include <SystematicExceptions.h>
-#include <iostream>
-
-Scale::Scale(unsigned index_){
-    SetParameters(std::vector<double>(1,1)); //start with scale factor of one
-    fAxisIndex = index_;
-}
+#include <sstream>
+#include <DoubleParameter.h>
+#include <Exceptions.h>
 
 void 
 Scale::SetAxes(const AxisCollection& axes_){
@@ -19,27 +15,29 @@ Scale::GetAxes() const{
 
 void 
 Scale::Construct(){
-    if (GetScaleFactor() <= 0)
-        throw InvalidSystematicParameter("Scale factor must be >0 !");
+    if (fScaleFactor <= 0)
+        throw ValueError("Scale factor must be >0 !");
+    
+    if(fDataRep.GetNObservables() != 1)
+        throw RepresentationError("Scale systematic must have a 1D representation!");
 
-    if (GetParameters().size() != 1)
-        throw WrongNumberOfParameters("More than one parameter passed to scale systematic!");
-    
-    const AxisCollection& axes  = fPdfMapping.GetAxes(); 
+    const AxisCollection& axes       = fPdfMapping.GetAxes(); 
     // the axis to scale
-    const PdfAxis& scaleAxis    = axes.GetAxis(fDataRep.GetDataIndexPos(fAxisIndex));  
-    
-    const size_t nBins          = axes.GetNBins(); 
-    const size_t scaleAxisNBins = scaleAxis.GetNBins(); 
+    const size_t  scaleAxisDataIndex = fDataRep.GetIndex(0);
+    const PdfAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);
+
+
+    const size_t nBins               = axes.GetNBins(); 
+    const size_t scaleAxisNBins      = scaleAxis.GetNBins(); 
  
     for(size_t i = 0; i < nBins; i++){
         // For each old bin, work out the contributions into all of the new bins
         // indices in other components should be unaffected
         std::vector<size_t> oldIndices = axes.UnpackIndices(i);
-        size_t scaleBin = oldIndices.at(fPdfDataRep.GetDataIndexPos(fAxisIndex));
+        size_t scaleBin                = oldIndices.at(fPdfDataRep.GetDataIndexPos(scaleAxisDataIndex));
         
-        double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * GetScaleFactor();
-        double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * GetScaleFactor();
+        double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * fScaleFactor;
+        double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * fScaleFactor;
         double scaledWidth = scaledHigh - scaledLow;
 
         // new bin to map into, mapping only happens if the indices are the same except the one to 
@@ -48,7 +46,7 @@ Scale::Construct(){
         
         std::vector<size_t> newIndices = oldIndices;
         for(size_t j = 0; j < scaleAxisNBins; j++){
-            newIndices[fPdfDataRep.GetDataIndexPos(fAxisIndex)] = j;
+            newIndices[fPdfDataRep.GetDataIndexPos(scaleAxisDataIndex)] = j;
             size_t newScaleBin = j;
                         
             double newLow  = scaleAxis.GetBinLowEdge(newScaleBin);
@@ -87,11 +85,37 @@ Scale::Construct(){
 
 void
 Scale::SetScaleFactor(double scaleFactor_){
-    SetParameter(0, scaleFactor_);
+    fScaleFactor = scaleFactor_;
 }
 
 double
 Scale::GetScaleFactor() const{
-    return GetParameter(0);
+    return fScaleFactor;
 }
 
+
+//////////////////////////////////////////////////////////////////
+// Make this object fittable, so the scale factor is adjustable //
+//////////////////////////////////////////////////////////////////
+
+std::vector<std::string>
+Scale::GetParameterNames() const{
+    return std::vector<std::string>(1, "Scale Factor");
+}
+
+std::vector<double>
+Scale::GetParameters() const{
+    return std::vector<double>(1, fScaleFactor);
+}
+
+size_t
+Scale::GetParameterCount() const{
+    return 1;
+}
+
+void
+Scale::SetParameters(const std::vector<double>& params_){
+    if(params_.size() != 1)
+        throw ParameterCountError("Scale systematic has only 1 parameter!");
+    fScaleFactor = params_.at(0);
+}

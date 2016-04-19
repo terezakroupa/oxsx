@@ -1,6 +1,6 @@
 #include <PdfAxis.h>
 #include <algorithm>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 
 
@@ -15,7 +15,7 @@ PdfAxis::PdfAxis(const std::string& name_, double min_, double max_, size_t nBin
     fMax = max_;
 
     if (fMin >= fMax || !nBins_)
-        throw BinError("Invalid bin specification: min > max or nbins = 0");
+        throw LogicError("PdfAxis: Invalid bin specification: min > max or nbins = 0");
 
     fNBins = nBins_;
     double binWidth =  double(fMax - fMin) /fNBins;
@@ -36,7 +36,7 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
                  const std::vector<double>& highEdges_, const std::string& latexName_){
 
     if (highEdges_.size() != lowEdges_.size() || !lowEdges_.size())
-        throw BinError("Invalid bins  Must have the same number of low and high edges!");
+        throw LogicError("PdfAxis: Invalid bins. Must have the same number of low and high edges!");
 
     fName = name_;
     fBinLowEdges  = lowEdges_;
@@ -44,9 +44,9 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
 
     for(size_t i = 0; i < fBinLowEdges.size(); i++){
         if(i && fBinLowEdges.at(i-1) > fBinLowEdges.at(i))
-            throw BinError("Low edges not ordered!");
+            throw LogicError("PdfAxis: Low edges not ordered!");
         if(fBinLowEdges.at(i) > fBinHighEdges.at(i))
-            throw BinError("Bin Low Edge is bigger than equivilent high edge!");
+            throw LogicError("PdfAxis: Bin Low Edge is bigger than equivilent high edge!");
     }
 
     fNBins = fBinLowEdges.size();

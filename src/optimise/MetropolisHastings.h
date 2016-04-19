@@ -3,15 +3,16 @@
 #include <Optimiser.h>
 #include <FitResult.h>
 
+class TestStatistic;
 class MetropolisHastings : public Optimiser{
  public:
- MetropolisHastings(TestStatistic* stat_) : Optimiser(stat_), fBurnIn(3000), 
-                                            fMaxIter(100000), fThinFactor(1), 
-                                            fMaxVal(0), fFlipSign(false), fTestStatLogged(false)  {}
-
-    ~MetropolisHastings() {}
+     MetropolisHastings() : fBurnIn(3000), 
+                            fMaxIter(100000), fThinFactor(1), 
+                            fMaxVal(0), fFlipSign(false), 
+                            fTestStatLogged(false), pTestStatistic(NULL)
+                            {}               
     
-    const FitResult& Optimise(); 
+    const FitResult& Optimise(TestStatistic*); 
 
     unsigned GetBurnIn() const;
     void     SetBurnIn(unsigned);
@@ -47,10 +48,14 @@ class MetropolisHastings : public Optimiser{
     unsigned fThinFactor;
     unsigned fMaxIter;
     unsigned fNDims;
+    bool     fTestStatLogged;
+    
+    TestStatistic* pTestStatistic;
     std::vector<double> fMaxima;
     std::vector<double> fMinima;
     std::vector<double> fSigmas;
     std::vector<double> fInitialTrial;
+
     bool fFlipSign;
 
     double fRejectionRate;
@@ -66,7 +71,7 @@ class MetropolisHastings : public Optimiser{
     bool   StepAccepted(const std::vector<double>& thisStep_,
                         const std::vector<double>& proposedStep_);
     
-    bool fTestStatLogged;
+
 
 };
 #endif

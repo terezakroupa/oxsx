@@ -1,9 +1,9 @@
 #include <PdfConverter.h>
 #include <BinnedPdf.h>
-#include <IntegrablePdf.h>
+#include <IntegrableFunction.h>
 #include <AxisCollection.h>
 #include <vector>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 #include <algorithm>
 #include <Histogram.h>
@@ -11,7 +11,7 @@
 #include <TH2D.h>
 
 BinnedPdf
-PdfConverter::ToBinnedPdf(const IntegrablePdf& analytic_, const AxisCollection& axes_){
+PdfConverter::ToBinnedPdf(const IntegrableFunction& analytic_, const AxisCollection& axes_){
     if (analytic_.GetNDims() != axes_.GetNDimensions())
         throw DimensionError("PdfConverter::Dimensionality of Pdf doesn't match requested axes!");
 
@@ -102,4 +102,3 @@ PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
 	}
 	return rtHist;
 }
-

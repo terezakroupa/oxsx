@@ -10,32 +10,34 @@
 #define __OXSX_CONVOLUTION__
 #include <Systematic.h>
 
-class IntegrablePdf;
+class IntegrableFunction;
 class Convolution : public Systematic{
  public:
-    Convolution(): fPdf(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
+    Convolution(): fFunction(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
     ~Convolution();
-    void SetPdf(IntegrablePdf* pdf_);
+    void SetFunction(IntegrableFunction* function_);
     void SetAxes(const AxisCollection& axes_);
     void Construct();    
 
-    void SetParameters(const std::vector<double>& params_);
-    std::vector<double> GetParameters() const;
-
-    double GetParameter(size_t index_) const;
-    void   SetParameter(size_t index_, double val);
+    // Make this fittable, by delegating to the underlying function
+    void MakeFittable();
+    std::vector<std::string> GetParameterNames() const;
+    std::vector<double>      GetParameters() const;
+    size_t                   GetParameterCount() const;
+    void                     SetParameters(const std::vector<double>&);
 
  private:
-    void           Reset();
-    IntegrablePdf* fPdf;
-    size_t         fParameterCount;
-    bool           fHasAxes;
-    bool           fCachedCompatibleBins;
+    void                     Reset();
+    IntegrableFunction*      fFunction;
+    bool                     fHasAxes;
+    bool                     fCachedCompatibleBins;
 
     AxisCollection fSysAxes;
     void  CacheCompatibleBins();
     std::vector<std::vector<size_t> > fCompatibleBins;
-    std::vector<size_t> fSysBins; // the systematic subMap bin for each global bin of pdf
+    // the systematic subMap bin for each global bin of pdf
+    std::vector<size_t> fSysBins; 
+    
 };
 #endif
 

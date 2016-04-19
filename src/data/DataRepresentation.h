@@ -23,7 +23,7 @@ class DataRepresentation{
     void SetName(const std::string& name_);
 
     size_t GetIndex(size_t indexNum_) const;
-    size_t GetLength() const;
+    size_t GetNObservables() const;
     
     size_t GetDataIndexPos(size_t dataIndex_) const; // where is data index x in this representation
     // Call this something else
@@ -33,6 +33,6 @@ class DataRepresentation{
     std::vector<size_t> fIndices;
     std::vector< std::pair<size_t, size_t> > fInverse;
     std::string fName;
-    size_t fLen;
+    size_t fNObservables;
 };
 #endif

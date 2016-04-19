@@ -3,11 +3,11 @@
 #include <Optimiser.h>
 #include <vector>
 #include <FitResult.h>
-
+class TestStatistic;
 class GridSearch : public Optimiser{
  public:
-    GridSearch(TestStatistic* stat_) : Optimiser(stat_), fMaximising(false){}
-    virtual const FitResult& Optimise();
+    GridSearch() :  fMaximising(false){}
+    virtual const FitResult& Optimise(TestStatistic*);
     
     void SetMinima(const std::vector<double>&);
     void SetMaxima(const std::vector<double>&);

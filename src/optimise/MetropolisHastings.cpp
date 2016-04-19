@@ -1,6 +1,7 @@
 #include <MetropolisHastings.h>
 #include <Rand.h>
 #include <math.h> //sqrt
+#include <TestStatistic.h>
 #include <iostream>
 
 const std::vector<double>&
@@ -101,7 +102,9 @@ MetropolisHastings::GetInitialTrial() const{
 }
 
 const FitResult&
-MetropolisHastings::Optimise(){
+MetropolisHastings::Optimise(TestStatistic* testStat_){
+    testStat_->RegisterFitComponents();
+    pTestStatistic = testStat_;
     fNDims = fMinima.size();
     fRejectionRate = 0;
     fBestFit.resize(fNDims, 0);
@@ -147,6 +150,7 @@ MetropolisHastings::Optimise(){
     std::cout << "Metropolis Hastings:: acceptance rate = " << 1 - fRejectionRate << std::endl;
 
     fFitResult.SetBestFit(fBestFit);
+    fFitResult.SetParameterNames(pTestStatistic->GetParameterNames());
     fFitResult.SetStatSample(fSample);
     fFitResult.SetValid(true);
     return fFitResult;
@@ -162,10 +166,10 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
             return false;
     }
 
-    pTestStatistic -> SetParams(thisStep_);
+    pTestStatistic -> SetParameters(thisStep_);
     double thisVal = pTestStatistic -> Evaluate();
     
-    pTestStatistic -> SetParams(proposedStep_);
+    pTestStatistic -> SetParameters(proposedStep_);
     double proposedVal = pTestStatistic -> Evaluate();
 
     if(fFlipSign){

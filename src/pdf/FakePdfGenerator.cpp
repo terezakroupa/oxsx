@@ -1,5 +1,5 @@
 #include <FakePdfGenerator.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <stdlib.h>
 #include <Rand.h>
 #include <cmath>
@@ -9,10 +9,10 @@
 BinnedPdf
 FakePdfGenerator::ExpectedRatesPdf() const{
     if(!(fPdfs.size() == fRates.size()))
-        throw DimensionError("FakePdfGenerator::Need exactly one rate for each ");
+        throw LogicError("FakePdfGenerator::Need exactly one rate for each ");
    
     if (!fPdfs.size())
-        throw DimensionError("FakePdfGenerator::No source pdfs!!");
+        throw LogicError("FakePdfGenerator::No source pdfs!!");
 
     BinnedPdf fakePdf(fPdfs.at(0));
     fakePdf.Empty();
@@ -28,10 +28,10 @@ FakePdfGenerator::ExpectedRatesPdf() const{
 BinnedPdf
 FakePdfGenerator::PoissonFluctuatedPdf() const{
     if(!(fPdfs.size() == fRates.size()))
-        throw DimensionError("FakePdfGenerator::Need exactly one rate for each ");
+        throw LogicError("FakePdfGenerator::Need exactly one rate for each ");
    
     if (!fPdfs.size())
-        throw DimensionError("FakePdfGenerator::No source pdfs!!");
+        throw LogicError("FakePdfGenerator::No source pdfs!!");
 
     BinnedPdf fakePdf(fPdfs.at(0));
     fakePdf.Empty();
@@ -47,7 +47,7 @@ FakePdfGenerator::PoissonFluctuatedPdf() const{
 size_t
 FakePdfGenerator::RandomBin(size_t pdfIndex_) const{
     if (!fPdfs.at(pdfIndex_).GetNDims())
-        throw DimensionError("FakePdfGenerator::Pdf of dimension 0!");
+        throw LogicError("FakePdfGenerator::Pdf of dimension 0!");
 
     // construct cdf
     std::vector<double> cdf(fPdfs.at(pdfIndex_).GetNBins(), 0);
