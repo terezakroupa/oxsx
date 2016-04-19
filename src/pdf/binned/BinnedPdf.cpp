@@ -1,6 +1,5 @@
 #include <BinnedPdf.h>
-#include <PdfExceptions.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);

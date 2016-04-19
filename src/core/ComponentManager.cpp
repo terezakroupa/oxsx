@@ -1,5 +1,5 @@
 #include <ComponentManager.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 
 void 
@@ -14,7 +14,8 @@ ComponentManager::AddComponent(FitComponent*  componentPtr_){
 void 
 ComponentManager::SetParameters(const std::vector<double>& params_){
     if(params_.size() != fTotalParamCount)
-        throw WrongNumberOfParameters("Component Manager:: Passed the wrong number of parameters!");
+        throw ParameterCountError("Component Manager", fTotalParamCount, 
+                                  params_.size());
 
     if(!params_.size())
         return;

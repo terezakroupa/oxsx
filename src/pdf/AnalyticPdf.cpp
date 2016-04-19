@@ -1,8 +1,7 @@
 #include <AnalyticPdf.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <IntegrableFunction.h>
-#include <DataExceptions.h>
-#include <SystematicExceptions.h>
+
 
 AnalyticPdf::AnalyticPdf(IntegrableFunction* f_){
     fFunction = dynamic_cast<IntegrableFunction*>(f_->Clone());
@@ -29,8 +28,10 @@ AnalyticPdf::operator()(const std::vector<double>& vals_) const{
     try{
         return fFunction->operator()(vals_)/fNorm;
     }
-    catch(const DimensionError&){
-        throw DimensionError("AnalyticPdf passed wrong number of values!");
+    catch(const DimensionError& e_){
+        throw DimensionError(std::string("AnalyticPdf internal function ::") + e_.what());
+                             
+                             
     }
 }
 
@@ -101,7 +102,8 @@ AnalyticPdf::SetParameters(const std::vector<double>& params_){
     try{
         fFunction->SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        throw WrongNumberOfParameters("AnalyticPdf passed wrong number of parameters");
+    catch(const ParameterCountError& e_){
+        throw ParameterCountError(std::string("AnalyticPdf internal function : ") + e_.what());
+
     }
 }

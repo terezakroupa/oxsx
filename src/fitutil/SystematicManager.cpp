@@ -1,5 +1,4 @@
 #include <SystematicManager.h>
-#include <SystematicExceptions.h>
 
 const std::vector<Systematic*>& 
 SystematicManager::GetSystematics() const{

@@ -1,7 +1,7 @@
 #include <ChiSquare.h>
 #include <DataSet.h>
 #include <sstream>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 
 double
 ChiSquare::Evaluate(){
@@ -58,11 +58,8 @@ ChiSquare::SetParameters(const std::vector<double>& params_){
     try{
         fComponentManager.SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        std::stringstream ss;
-        ss << "ChiSquare expected " << GetParameterCount()
-           << " parameters, got " << params_.size();
-        throw WrongNumberOfParameters(ss.str());
+    catch(const ParameterCountError& e_){
+        throw ParameterCountError(std::string("ChiSquare: ") + e_.what());
     }
 }
 

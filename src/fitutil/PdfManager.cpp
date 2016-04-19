@@ -1,7 +1,7 @@
 #include <PdfManager.h>
 #include <Pdf.h>
 #include <EventData.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 
 PdfManager::~PdfManager(){
     for(size_t i = 0; i < fPdfs.size(); i++)
@@ -14,7 +14,8 @@ PdfManager::AddPdf(Pdf * pdf_){
         fNDims = pdf_->GetNDims();
 
     else if(pdf_->GetNDims() != fNDims)
-        throw 0;
+        throw DimensionError("PdfManager::AddPdf", fNDims, pdf_->GetNDims(),
+                             " dimensions in added pdf");
 
     fPdfs.push_back(pdf_->Clone());    
     fNPdfs++;
@@ -44,7 +45,8 @@ PdfManager::GetNormalisations() const{
 void
 PdfManager::SetNormalisations(const std::vector<double>& norms_){
     if (norms_.size() != fNPdfs)
-        throw 0;
+        throw DimensionError("PdfManager::SetNormalisations", fNPdfs, 
+                             norms_.size());
     fNormalisations = norms_;
 }
 
@@ -85,7 +87,7 @@ PdfManager::SetParameters(const std::vector<double>& params_){
     try{
         fParameterManager.SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        throw WrongNumberOfParameters(" passed to pdf manager");
+    catch(const ParameterCountError& e_){
+        throw ParameterCountError(std::string("PdfManager:: ") + e_.what());
     }
 }

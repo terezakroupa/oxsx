@@ -1,6 +1,6 @@
 #include <ROOTMultiPlot.h>
 #include <PdfConverter.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <BinnedPdf.h>
 #include <iostream>
 //FIXME: add marginalisations for higher D pdfs
@@ -16,7 +16,7 @@ void
 ROOTMultiPlot::AddPdf(const BinnedPdf& pdf_, const std::string name_){
   size_t nDims = pdf_.GetNDims();
   if (nDims != 1)
-    throw DimensionError("ROOTMultiPlot::Added dim  != 1 binned pdf!");
+    throw DimensionError("ROOTMultiPlot::Added dim != 1 binned pdf!");
   
   TH1D rootHist = PdfConverter::ToTH1D(pdf_);
   rootHist.SetDirectory(0);

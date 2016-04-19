@@ -1,14 +1,13 @@
 #include <Convolution.h>
 #include <IntegrableFunction.h>
-#include <PdfExceptions.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 #include <string>
 
 void 
 Convolution::SetFunction(IntegrableFunction* function_){
     fFunction = dynamic_cast<IntegrableFunction*>(function_->Clone());
     if(!fFunction)
-        throw InitialisationError("Non-Integrable function used for convolution!");
+        throw LogicError("Non-Integrable function used for convolution!");
 }
 
 Convolution::~Convolution(){
@@ -24,7 +23,7 @@ Convolution::SetAxes(const AxisCollection& axes_){
 void 
 Convolution::Construct(){
     if (!fFunction || !fHasAxes)
-        throw InitialisationError("Tried to construct convolution without axes or function, or both!!");
+        throw LogicError("Convolution::Construct() : Tried to construct convolution without axes or function, or both!!");
     
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
@@ -149,8 +148,8 @@ Convolution::SetParameters(const std::vector<double>& params_){
     try{
         fFunction->SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters& e){
-        throw WrongNumberOfParameters(std::string("Convolution : ") 
-                                      + e.what());
+    catch(const ParameterCountError& e){
+        throw ParameterCountError(std::string("Convolution : ") 
+                                  + e.what());
     }
 }

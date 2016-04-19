@@ -1,15 +1,13 @@
 #include <BinnedNLLH.h>
 #include <math.h>
 #include <DataSet.h>
-#include <PdfExceptions.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
-#include <SystematicExceptions.h>
 
 double 
 BinnedNLLH::Evaluate(){
     if(!fDataSet && !fCalculatedDataPdf) 
-        throw DataException("BinnedNNLH function called with no data set and no DataPdf! set one of these first");
+        throw LogicError("BinnedNNLH function called with no data set and no DataPdf! set one of these first");
     
     if (!fCalculatedDataPdf)
         BinData();
@@ -199,11 +197,8 @@ BinnedNLLH::SetParameters(const std::vector<double>& params_){
     try{
         fComponentManager.SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        std::stringstream ss;
-        ss << "component manager expected " 
-           << GetParameterCount() << " got " << params_.size();
-        throw WrongNumberOfParameters(ss.str());
+    catch(const ParameterCountError& e_){
+        throw ParameterCountError(std::string("BinnedNLLH::") + e_.what());
     }
 }
                                              

@@ -1,5 +1,5 @@
 #include <DataRepresentation.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 
 DataRepresentation::DataRepresentation(const std::vector<size_t>& indices_){

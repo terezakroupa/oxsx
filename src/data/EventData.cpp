@@ -1,7 +1,6 @@
 #include <EventData.h>
 #include <DataRepresentation.h>
-#include <DataExceptions.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 
 EventData::EventData(const std::vector<double>& obs_){
     fObservations = obs_;
@@ -20,7 +19,7 @@ EventData::GetDatum(size_t index_) const{
     }
 
     catch(const std::out_of_range& e_){
-        throw DimensionError("EventData::Attempted access on non-existent observable");
+        throw NotFoundError(Formatter() << "EventData::Attempted access on non-existent observable " << index_);
     }
 }
 
