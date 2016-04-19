@@ -4,7 +4,7 @@
 #include <H5Cpp.h>
 #include <iostream>
 #include <cassert>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <Histogram.h>
 
 const char IO::fDelimiter = ':';

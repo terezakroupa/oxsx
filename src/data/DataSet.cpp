@@ -1,6 +1,6 @@
 #include <DataSet.h>
 #include <DataRepresentation.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -18,7 +18,7 @@ DataSet::MakeDataRep(const StringVec observableNames_) const{
                                             observableNames_.at(i)
                                             );
         if(pos == availableNames.end())
-            throw RepresentationError("DataSet::Asked for representation containing non-existent variable");
+            throw RepresentationError(Formatter() << "DataSet::Asked for representation containing non-existent variable " << observableNames_.at(i));
         else
             indicies.push_back(pos - availableNames.begin());
     }

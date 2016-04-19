@@ -1,6 +1,5 @@
 #include <SpectralFitPdf.h>
-#include <PdfExceptions.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 #include <sstream>
 
 std::vector<std::string> 
@@ -32,8 +31,9 @@ SpectralFitPdf::SetParameters(const std::vector<double>& params_){
     try{
         fHistogram.SetBinContents(params_);
     }
-    catch(const OutOfBoundsError&){
-        throw WrongNumberOfParameters("SpectralFitPdf passed wrong number of parameters is it fittable?");
+    catch(const NotFoundError&){
+        throw ParameterCountError("SpectralFitPdf", GetNBins(), 
+                                  params_.size(), "is it fittable?");
     }
 }
 

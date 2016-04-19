@@ -1,10 +1,10 @@
 #include <BinnedPdfManager.h>
 #include <SystematicManager.h>
 #include <BinnedPdf.h>
-#include <PdfExceptions.h>
 #include <PdfConverter.h>
+#include <Exceptions.h>
 #include <sstream>
-#include <SystematicExceptions.h>
+
 
 unsigned 
 BinnedPdfManager::GetNPdfs() const{
@@ -38,7 +38,7 @@ BinnedPdfManager::BinProbability(size_t bin_) const{
     }
 
     catch(const std::out_of_range&){
-        throw DimensionError("BinnedPdfManager:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
+        throw LogicError("BinnedPdfManager:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
     }
     return sum;
 }
@@ -47,7 +47,7 @@ BinnedPdfManager::BinProbability(size_t bin_) const{
 void
 BinnedPdfManager::SetNormalisations(const std::vector<double>& normalisations_){
     if (normalisations_.size() != fOriginalPdfs.size())
-        throw DimensionError("BinnedPdfManager: number of norms doesn't match #pdfs");
+        throw LogicError("BinnedPdfManager: number of norms doesn't match #pdfs");
     fNormalisations = normalisations_;
 }
 
@@ -140,7 +140,9 @@ BinnedPdfManager::SetParameters(const std::vector<double>& params_){
     try{
         fParameterManager.SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        throw WrongNumberOfParameters("BinnedPdfManager passed wrong number of parameters, is it fittable?");
+    catch(const ParameterCountError& e_){
+        throw ParameterCountError("BinnedPdfManager:: " + 
+                                  std::string(e_.what())
+                                  );
     }
 }

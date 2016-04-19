@@ -1,10 +1,7 @@
 #include <Scale.h>
 #include <sstream>
 #include <DoubleParameter.h>
-#include <PdfExceptions.h>
-#include <SystematicExceptions.h>
-#include <DataExceptions.h>
-
+#include <Exceptions.h>
 
 void 
 Scale::SetAxes(const AxisCollection& axes_){
@@ -19,7 +16,7 @@ Scale::GetAxes() const{
 void 
 Scale::Construct(){
     if (fScaleFactor <= 0)
-        throw ParameterError("Scale factor must be >0 !");
+        throw ValueError("Scale factor must be >0 !");
     
     if(fDataRep.GetNObservables() != 1)
         throw RepresentationError("Scale systematic must have a 1D representation!");
@@ -119,6 +116,6 @@ Scale::GetParameterCount() const{
 void
 Scale::SetParameters(const std::vector<double>& params_){
     if(params_.size() != 1)
-        throw WrongNumberOfParameters("Scale systematic has 1 parameter!");
+        throw ParameterCountError("Scale systematic has only 1 parameter!");
     fScaleFactor = params_.at(0);
 }

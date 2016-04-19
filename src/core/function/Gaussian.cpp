@@ -1,10 +1,10 @@
 #include <Gaussian.h>
 #include <math.h>
-#include <PdfExceptions.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 #include <ContainerParameter.h>
 #include <gsl/gsl_cdf.h>
 #include <sstream>
+#include <Formatter.hpp>
 
 /////////////////////////
 // Constructory Things //
@@ -46,7 +46,7 @@ Gaussian::GetMean(size_t dimension_) const{
         return fMeans.at(dimension_);
     }
     catch(const std::out_of_range& e_){
-        throw DimensionError("Requested Gaussian mean beyond function dimensionality!");
+        throw NotFoundError("Requested Gaussian mean beyond function dimensionality!");
     }
 }
 
@@ -56,7 +56,7 @@ Gaussian::GetStDev(size_t dimension_) const{
         return fStdDevs.at(dimension_);
     }
     catch(const std::out_of_range& e_){
-        throw DimensionError("Requested Gaussian stdDev beyond function dimensionality!");
+        throw NotFoundError("Requested Gaussian stdDev beyond function dimensionality!");
     }
 }
 
@@ -73,7 +73,7 @@ Gaussian::SetMeansStdDevs(const std::vector<double>& means_,
 
     for(size_t i = 0; i < stdDevs_.size(); i++)
         if(stdDevs_.at(i) <= 0)
-            throw ParameterError("Gaussian standard deviation must be greater than 0!");
+            throw ValueError("Gaussian standard deviation must be greater than 0!");
 
     fMeans = means_;
     fStdDevs = stdDevs_;
@@ -178,8 +178,12 @@ Gaussian::SetParameters(const std::vector<double>& params_){
     try{
         fParameterManager.SetParameters(params_);
     }
-    catch(const WrongNumberOfParameters&){
-        throw WrongNumberOfParameters("Gaussian passed wrong number of parameters, is it fittable?");
+    catch(const ParameterCountError&){
+        throw ParameterCountError("Gaussian", 
+                                  GetParameterCount(), params_.size(), 
+                                  Formatter() << GetNDims() 
+                                  << " means and sigmas"
+                                  );
     }
 }
 

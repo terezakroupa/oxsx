@@ -1,7 +1,8 @@
 #include <CompositePdf.h>
 #include <EventData.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
+
 CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
     fPdfPtrs.push_back(p2_ -> Clone());  

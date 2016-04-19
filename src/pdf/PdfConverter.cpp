@@ -3,7 +3,7 @@
 #include <IntegrableFunction.h>
 #include <AxisCollection.h>
 #include <vector>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 #include <algorithm>
 #include <Histogram.h>
@@ -102,4 +102,3 @@ PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
 	}
 	return rtHist;
 }
-

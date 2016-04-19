@@ -4,7 +4,6 @@
 #include <sstream>
 #include <Histogram.h>
 #include <FitResult.h>
-#include <SystematicExceptions.h>
 
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){

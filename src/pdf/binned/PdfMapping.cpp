@@ -1,7 +1,7 @@
 #include <PdfMapping.h>
 #include <BinnedPdf.h>
 #include <iostream>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 
 // Initialise the detector response to zero
 void 
@@ -26,7 +26,7 @@ PdfMapping::SetResponse(const arma::sp_mat& response_){
 void 
 PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
     if (col_ >= fNBins || row_ >= fNBins)
-        throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
+        throw NotFoundError(Formatter() << "Attempted out of bounds access on response matrix (" << row_ <<  "," << col_ << "). Is it initialised with axes?");
 
     fResponse(col_,row_) = val_; 
 }
@@ -34,7 +34,7 @@ PdfMapping::SetComponent(size_t col_, size_t row_, double val_){
 double 
 PdfMapping::GetComponent(size_t col_, size_t row_) const{
     if (col_ >= fNBins || row_ >= fNBins)
-        throw OutOfBoundsError("Attempted out of bounds access on response matrix! is it initialised with axes?");
+        throw NotFoundError(Formatter() << "Attempted out of bounds access on response matrix (" << row_ <<  "," << col_ << "). Is it initialised with axes?");
 
     return fResponse(col_, row_);
 }
@@ -42,11 +42,11 @@ PdfMapping::GetComponent(size_t col_, size_t row_) const{
 BinnedPdf
 PdfMapping::operator() (const BinnedPdf& pdf_) const{
     if (!fNDims){
-        throw DimensionError("Empty PdfMap cannpt be used axes! Needs bins to act on!");
+        throw DimensionError("PdfMapping::operator(), NDims = 0");
     }
     
     if(pdf_.GetNDims() < fNDims){
-        throw DimensionError("Pdf Dimensionality too small for PdfMap to act on");
+        throw DimensionError("PdfMapping::opeator() : pdf Dimensionality too small for PdfMap to act on");
     }
 
 

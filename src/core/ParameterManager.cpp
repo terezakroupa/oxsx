@@ -1,7 +1,8 @@
 #include <ParameterManager.h>
 #include <DoubleParameter.h>
-#include <SystematicExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
+
 ParameterManager::~ParameterManager(){
     for(size_t i = 0; i < fParamPtrs.size(); i++)
         delete fParamPtrs[i];
@@ -10,7 +11,9 @@ ParameterManager::~ParameterManager(){
 void
 ParameterManager::SetParameters(const std::vector<double>& vals_){
     if(vals_.size() != GetParameterCount())
-        throw WrongNumberOfParameters("ParameterManager::SetParameterValues!");
+        throw ParameterCountError("ParameterManager", 
+                                  GetParameterCount(),
+                                  vals_.size());
 
     for(size_t i = 0; i < vals_.size(); i++)
         fParamPtrs.at(i) -> Set(vals_.at(i));

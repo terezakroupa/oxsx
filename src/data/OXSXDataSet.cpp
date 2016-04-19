@@ -1,6 +1,6 @@
 #include <OXSXDataSet.h>
 #include <EventData.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 void
 OXSXDataSet::AddEntry(const EventData& evData_){
@@ -9,10 +9,12 @@ OXSXDataSet::AddEntry(const EventData& evData_){
         fNObservables = evData_.GetNObservables();
 
     else if (fNObservables != evData_.GetNObservables())
-        throw DataException("OXSXDataSet::Event added to data set doesn't match existing dimensions");
+        throw DimensionError("OXSXDataSet::AddEntry", fNObservables, 
+                             evData_.GetNObservables(), 
+                             " observables in event");
 
     if(!evData_.GetNObservables())
-        throw DataException("OXSXDataSet::Tried to add empty event to data set");
+        throw DimensionError("OXSXDataSet::Tried to add empty event to data set!");
 
     fData -> push_back(evData_);
 }
@@ -23,7 +25,7 @@ OXSXDataSet::GetEntry(size_t eventIndex_) const{
     return fData -> at(eventIndex_);
     }
     catch(std::out_of_range&){
-        throw DataNotFoundError("");
+        throw NotFoundError("");
     }
 }
 
