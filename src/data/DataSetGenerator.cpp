@@ -1,7 +1,7 @@
 #include <DataSetGenerator.h>
 #include <DataSet.h>
 #include <OXSXDataSet.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <math.h>
 #include <EventData.h>
 #include <stdlib.h>
@@ -20,10 +20,10 @@ DataSetGenerator::SetExpectedRates(const std::vector<double>& rates_){
 OXSXDataSet
 DataSetGenerator::ExpectedRatesDataSet() const{
     if(fExpectedRates.size() != fDataSets.size())
-        throw DataException("Can't generate fake data: need one rate exactly for each data set");
+        throw LogicError("Can't generate fake data: need one rate exactly for each data set");
 
     if(!fDataSets.size())
-      throw DataException("Can't generate fake data: no input data sets");
+        throw LogicError("Can't generate fake data: no input data sets");
 
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
@@ -46,9 +46,9 @@ DataSetGenerator::ExpectedRatesDataSet() const{
 OXSXDataSet
 DataSetGenerator::PoissonFluctuatedDataSet() const{
     if(fExpectedRates.size() != fDataSets.size())
-        throw DataException("Can't generate fake data: need one rate exactly for each data set");
+        throw LogicError("Can't generate fake data: need one rate exactly for each data set");
     if(!fDataSets.size())
-      throw DataException("Can't generate fake data: no input data sets");
+      throw LogicError("Can't generate fake data: no input data sets");
 
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());

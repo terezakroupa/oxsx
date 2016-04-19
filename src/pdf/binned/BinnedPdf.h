@@ -17,10 +17,11 @@ class BinnedPdf : public Pdf{
     BinnedPdf(const AxisCollection& axes_);
     BinnedPdf(const Histogram& histo_);
 
-    virtual double operator() (const std::vector<double>& vals_) const;
-    virtual double Integral()  const;
-    virtual void   Normalise();
-    virtual  Pdf*  Clone() const; // required for pdf outer product
+    double operator() (const std::vector<double>& vals_) const;
+    double Probability(const EventData&) const;
+    double Integral()  const;
+    void   Normalise();
+    Pdf*   Clone() const; 
     
     void   Fill(const std::vector<double>& vals_, double weight_ = 1);
     void   Fill(const EventData& data_, double weight_ = 1);
@@ -46,14 +47,20 @@ class BinnedPdf : public Pdf{
 
     double GetBinContent(size_t bin_) const;
     size_t GetNBins() const;
-    void   AddBinContent(size_t bin_, double content_);
-    void   SetBinContent(size_t bin_, double content_);
-    void   Empty();
 
+    void     AddBinContent(size_t bin_, double content_);
+    void     SetBinContent(size_t bin_, double content_);
+    void     Empty();
+    unsigned GetNDims() const;
+        
     BinnedPdf Marginalise(const std::vector<size_t>& indices_) const;
     BinnedPdf Marginalise(size_t index_) const;
-    
- private:
+
+    void SetDataRep(const DataRepresentation&);
+    DataRepresentation GetDataRep() const;
+
+ protected:
+    DataRepresentation fDataRep;
     Histogram fHistogram;
 };
 #endif

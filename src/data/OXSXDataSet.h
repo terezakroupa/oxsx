@@ -10,9 +10,10 @@
 #include <DataSet.h>
 #include <EventData.h>
 #include <string>
+
 class OXSXDataSet : public DataSet{
 public:
-    OXSXDataSet() : fData(new std::vector<EventData>()) {} //initialises DataSet::fnObservables to 0
+    OXSXDataSet() : fData(new std::vector<EventData>()), fNObservables(0) {} 
     ~OXSXDataSet(); // frees fData
 
     OXSXDataSet(const OXSXDataSet&); //deep copy
@@ -21,6 +22,7 @@ public:
     void      AddEntry(const EventData&);
     EventData GetEntry(size_t eventIndex_) const;
     unsigned  GetNEntries() const;
+    unsigned  GetNObservables() const;
 
     void SetObservableNames(const std::vector<std::string>& names_);
     std::vector<std::string> GetObservableNames() const;
@@ -30,8 +32,10 @@ public:
 
 	void Reserve(int);
 
+   
 private:
     std::vector<EventData>* fData;
     std::vector<std::string> fObservableNames;
+    unsigned fNObservables;
 };
 #endif

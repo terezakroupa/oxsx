@@ -1,9 +1,15 @@
 #include <AxisCollection.h>
 #include <iostream>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
+#include <Formatter.hpp>
 
-size_t AxisCollection::GetNBins() const {return fNBins;}
-size_t AxisCollection::GetNDimensions() const {return fNDimensions;}
+size_t 
+AxisCollection::GetNBins() const {
+    return fNBins;
+}
+size_t AxisCollection::GetNDimensions() const {
+    return fNDimensions;
+}
 
 const 
 PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
@@ -11,8 +17,12 @@ PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
         return fAxes.at(axisIndex_);
     }
 
-    catch (const std::out_of_range& e_){
-        throw DimensionError(e_.what());
+    catch (const std::out_of_range&){
+        throw NotFoundError(Formatter() << "AxisCollection: asked for axis "
+                            << axisIndex_
+                            << ", there are only 0 - "
+                            << fNDimensions -1
+                            );
     }
 }
 
@@ -31,7 +41,8 @@ AxisCollection::CountBins(){
 void 
 AxisCollection::AddAxis(const PdfAxis& axis_){
     if (HasAxis(axis_.GetName())){
-        throw DimensionError("Can't add axis " + axis_.GetName() + " already exists!"); 
+        throw ValueError(Formatter() << "Can't add axis " 
+                         << axis_.GetName() <<  " already exists!"); 
     }
         
     fAxes.push_back(axis_);
@@ -49,7 +60,9 @@ AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
 size_t 
 AxisCollection::FlattenIndices(const std::vector<size_t>& indices_) const{
     if(indices_.size() != fNDimensions)
-        throw DimensionError("Can't flatten! wrong number of indices");
+        throw DimensionError("AxisCollection::FlattenIndices", 
+                             fNDimensions , indices_.size());
+                             
 
     if(fNDimensions == 1)
         return indices_.at(0);
@@ -68,7 +81,8 @@ AxisCollection::FlattenIndices(const std::vector<size_t>& indices_) const{
 size_t 
 AxisCollection::FindBin(const std::vector<double>& vals_) const{
     if (vals_.size() != fNDimensions)
-        throw DimensionError("Can't find bin! wrong number of vals");
+        throw DimensionError("AxisCollection::FindBin", fNDimensions, 
+                             vals_.size());
 
     std::vector<size_t> indices(fNDimensions, 0);
     for (size_t i = 0; i < fNDimensions; i++)
@@ -83,7 +97,11 @@ AxisCollection::UnflattenIndex(size_t index_, size_t dim_) const{
         return index_;
 
     if (index_ >= fNBins)
-        throw OutOfBoundsError("index out of bounds");
+        throw NotFoundError(Formatter() 
+                            << "Can't unflatten index in non-existent"
+                            << "dimension  "
+                            << dim_);
+
     size_t x =1;
     for (size_t i = dim_+1 ; i < fNDimensions; i++ )
         x *= fAxisNbins[i];
@@ -110,10 +128,12 @@ void
 AxisCollection::GetBinLowEdges(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ > fNBins)
-        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+        throw NotFoundError(Formatter() << "GetBinLowEdges on bin "
+                            << bin_
+                            << " nBins = " << fNBins);
 
     if(output_.size() != fNDimensions)
-        throw DimensionError("wrong size vec passed to get bin edges");
+        throw DimensionError("GetBinEdges: Input return vector.size() != fNDims ");
 
     for(size_t i = 0; i <fNDimensions; i++){
         output_[i] = fAxes[i].GetBinLowEdge(UnflattenIndex(bin_, i));
@@ -124,11 +144,12 @@ void
 AxisCollection::GetBinHighEdges(size_t bin_, std::vector<double>& output_) const{
 
     if(bin_ > fNBins)
-        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
+        throw NotFoundError(Formatter() << "GetBinHighEdges on bin "
+                            << bin_
+                            << " nBins = " << fNBins);
     
-
     if(output_.size() != fNDimensions)
-        throw DimensionError("wrong size vec passed to get bin edges");
+        throw DimensionError("GetBinEdges: Input return vector.size() != fNDims ");
 
     for(size_t i = 0; i <fNDimensions; i++){
         output_[i] = fAxes[i].GetBinHighEdge(UnflattenIndex(bin_, i));
@@ -137,12 +158,14 @@ AxisCollection::GetBinHighEdges(size_t bin_, std::vector<double>& output_) const
 
 void
 AxisCollection::GetBinCentres(size_t bin_, std::vector<double>& output_) const{
-
-    if(bin_ >= fNBins)
-        throw OutOfBoundsError("Bin Edge call on out of bounds bin!");
-
+    if(bin_ > fNBins)
+        throw NotFoundError(Formatter() << "GetBinHighEdges on bin "
+                            << bin_
+                            << " nBins = " << fNBins);
+    
     if(output_.size() != fNDimensions)
-        throw DimensionError("wrong size vec passed to get bin edges");
+        throw DimensionError("GetBinEdges: Input return vector.size() != fNDims ");
+    
 
     for(size_t i = 0; i <fNDimensions; i++){
         output_[i] = fAxes[i].GetBinCentre(UnflattenIndex(bin_, i));
@@ -152,10 +175,10 @@ AxisCollection::GetBinCentres(size_t bin_, std::vector<double>& output_) const{
 double
 AxisCollection::GetBinLowEdge(size_t bin_, size_t dim_) const{
     if(dim_ >= fNDimensions)
-        throw DimensionError("Axis Collection::Bin edge on non existent dimension!");
+        throw NotFoundError(Formatter() << "Axis Collection::Bin edge on non existent dimension " << dim_  << "!" );
 
     if(bin_ >= fNBins)
-        throw OutOfBoundsError("AxisCollection::Called bin edge on out of bounds bin!");
+        throw NotFoundError(Formatter() << "AxisCollection::Called bin edge on out of bounds bin " << bin_ << "!");
     
     return fAxes.at(dim_).GetBinLowEdge(UnflattenIndex(bin_, dim_));
 }
@@ -164,10 +187,10 @@ AxisCollection::GetBinLowEdge(size_t bin_, size_t dim_) const{
 double
 AxisCollection::GetBinHighEdge(size_t bin_, size_t dim_) const{
     if(dim_ >= fNDimensions)
-        throw DimensionError("Axis Collection::Bin edge on non existent dimension!");
+        throw NotFoundError(Formatter() << "Axis Collection::Bin edge on non existent dimension" << dim_ <<  "!");
    
     if(bin_ >= fNBins)
-        throw OutOfBoundsError("AxisCollection::Called bin edge on out of bounds bin!");
+        throw NotFoundError(Formatter() << "AxisCollection::Called bin edge on out of bounds bin " << bin_ << "!");
     
     return fAxes.at(dim_).GetBinHighEdge(UnflattenIndex(bin_, dim_));
 }
@@ -175,10 +198,10 @@ AxisCollection::GetBinHighEdge(size_t bin_, size_t dim_) const{
 double
 AxisCollection::GetBinCentre(size_t bin_, size_t dim_) const{
     if(dim_ >= fNDimensions)
-        throw DimensionError("Axis Collection::Bin edge on non existent dimension!");
-
+        throw NotFoundError(Formatter() << "Axis Collection::Bin center on non existent dimension" << dim_ <<  "!");
+   
     if(bin_ >= fNBins)
-        throw OutOfBoundsError("AxisCollection::Called bin edge on out of bounds bin!");
+        throw NotFoundError(Formatter() << "AxisCollection::Called bin center on out of bounds bin " << bin_ << "!");
     
     return fAxes.at(dim_).GetBinCentre(UnflattenIndex(bin_, dim_));
 }
@@ -186,10 +209,11 @@ AxisCollection::GetBinCentre(size_t bin_, size_t dim_) const{
 double
 AxisCollection::GetBinWidth(size_t bin_, size_t dim_) const{
     if(dim_ >= fNDimensions)
-        throw DimensionError("Axis Collection::Bin edge on non existent dimension!");
-
+        throw NotFoundError(Formatter() << "Axis Collection::Bin width on non existent dimension" << dim_ <<  "!");
+   
     if(bin_ >= fNBins)
-        throw OutOfBoundsError("AxisCollection::Called bin edge on out of bounds bin!");
+        throw NotFoundError(Formatter() 
+                            << "AxisCollection::Called bin width on out of bounds bin " << bin_ << "!");
     
     return fAxes.at(dim_).GetBinWidth(UnflattenIndex(bin_, dim_));
 }

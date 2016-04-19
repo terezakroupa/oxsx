@@ -22,10 +22,8 @@ TEST_CASE("2D gaussian", "[Gaussian]"){
     REQUIRE(gaus.GetStDev(1) == 3);
     
     // organised right
-    REQUIRE(gaus.GetParameters().size() == 4);
-    REQUIRE(gaus.GetParameter(0) == 0);
-    REQUIRE(gaus.GetParameter(1) == 2);
-    REQUIRE(gaus.GetParameter(2) == 1);
+    REQUIRE(gaus.GetMeans().size() == 2);
+    REQUIRE(gaus.GetStdDevs().size() == 2);
     
 }
 
@@ -36,9 +34,7 @@ TEST_CASE("1D gaussian", "[Gaussian]"){
 
         REQUIRE(gaus.GetMean(0) == 0);
         REQUIRE(gaus.GetStDev(0) == 1);
-        
-        REQUIRE(gaus.GetParameters().size() == 2);
-        REQUIRE(gaus.GetParameters().at(1) == gaus.GetStDev(0));
+           
     }
 
     SECTION("Check probability"){
@@ -55,21 +51,9 @@ TEST_CASE("1D gaussian", "[Gaussian]"){
     }
 
     SECTION("Test Integral"){
-        REQUIRE(gaus.Integral(-1,1) == Approx(0.6827));
-        REQUIRE(gaus.Integral(-100,100) == Approx(1));
-        REQUIRE(gaus.Integral(0,0) == Approx(0));
+        REQUIRE(gaus.Integral(std::vector<double>(1,-1),std::vector<double>(1,1)) == Approx(0.6827));
+        REQUIRE(gaus.Integral(std::vector<double>(1, -100), std::vector<double>(1, 100)) == Approx(1));
+        REQUIRE(gaus.Integral(std::vector<double>(1,0), std::vector<double>(1,0)) == Approx(0));
     }
 }
 
-TEST_CASE("Cloning Gaussian PDf"){
-    Gaussian gaus(0, 1);
-    gaus.SetDataRep(0);
-
-    Gaussian * clone = dynamic_cast<Gaussian*>(gaus.Clone());
-        
-    REQUIRE(clone->GetDataRep().GetLength() == 1 );
-    REQUIRE(clone->GetDataRep().GetIndices().at(0) == 0);
-    REQUIRE(clone->GetParameter(0) == 0);
-    REQUIRE(clone->GetParameter(1) == 1);
-    REQUIRE(clone->operator()(std::vector<double>(1,1)) == Approx(0.24197) );
-}

@@ -1,6 +1,5 @@
 #include <BinnedPdfShrinker.h>
-#include <PdfExceptions.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
 
 BinnedPdfShrinker::BinnedPdfShrinker(){
@@ -18,7 +17,7 @@ BinnedPdfShrinker::GetBuffer(size_t dim_) const{
         return fBuffers.at(dim_);
     }
     catch(const std::out_of_range&){
-        throw DimensionError("BinnedPdfShrinker::Requested non-existent buffer boundaries!");
+        throw NotFoundError(Formatter() << "BinnedPdfShrinker::Requested buffer boundaries on non-existent dim " << dim_ << "!");
     }
 }
 
@@ -35,7 +34,7 @@ BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_,
         return axis_;
 
     if (lowerBuff_ > axis_.GetNBins() || upperBuff_ > axis_.GetNBins())
-        throw BinError("BinnedPdfShrinker::Buffersize exceeds number of bins!");
+        throw ValueError("BinnedPdfShrinker::Buffersize exceeds number of bins!");
     
     const size_t oldBinCount = axis_.GetNBins();
     const size_t newBinCount = oldBinCount - upperBuff_ - lowerBuff_;

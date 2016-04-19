@@ -1,6 +1,6 @@
 #include <LineCut.h>
 #include <EventData.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 
 LineCut::LineCut(size_t dim_, double val_, 
                  const std::string& side_){
@@ -19,8 +19,8 @@ LineCut::PassesCut(const EventData& ev_) const{
     try{
         val = ev_.GetDatum(fDim);
     }
-    catch(const DimensionError&){
-        throw DimensionError("Cut::Cut to non-existent data observable requested!");
+    catch(const NotFoundError&){
+        throw NotFoundError("Cut::Cut to non-existent data observable requested!");
     }
     
     if (fSidedness == "lower")
@@ -44,7 +44,7 @@ LineCut::SetSidedness(const std::string& side_){
     if(side_ == "upper" || side_ == "lower")
         fSidedness = side_;
     else
-        throw std::runtime_error("LineCut::Invalid sidedness! should be 'upper' or 'lower'");
+        throw ValueError("LineCut::Invalid sidedness! should be 'upper' or 'lower'");
 } 
 
 std::string 
