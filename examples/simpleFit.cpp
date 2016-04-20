@@ -4,13 +4,13 @@
 #include <BinnedNLLH.h>        
 #include <GridSearch.h>        
 
-const std::string bgMCfile    = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/b8.root";
-const std::string sigMCfile   = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/zeroNu.root";
-const std::string bgTreeName  = "oxsx";
-const std::string sigTreeName = "oxsx";
+const std::string bgMCfile    = "";
+const std::string sigMCfile   = "";
+const std::string bgTreeName  = "";
+const std::string sigTreeName = "";
 
-const std::string dataFile = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/zeroNu.root";
-const std::string dataTreeName = "oxsx";
+const std::string dataFile = "";
+const std::string dataTreeName = "";
 
 int main(){        
     ////////////////////        
