@@ -4,13 +4,13 @@
 #include <BinnedNLLH.h>        
 #include <GridSearch.h>        
 
-const std::string bgMCfile    = "";
-const std::string sigMCfile   = "";
-const std::string bgTreeName  = "";
-const std::string sigTreeName = "";
+const std::string bgMCfile    = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/b8.root";
+const std::string sigMCfile   = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/zeroNu.root";
+const std::string bgTreeName  = "oxsx";
+const std::string sigTreeName = "oxsx";
 
-const std::string dataFile = "";
-const std::string dataTreeName = "";
+const std::string dataFile = "/Users/Jack/snoplus/sigEx/ntuples/rat4.5/ert/zeroNu.root";
+const std::string dataTreeName = "oxsx";
 
 int main(){        
     ////////////////////        
@@ -19,7 +19,7 @@ int main(){
          
     // Set up binning        
     AxisCollection axes;        
-    axes.AddAxis(PdfAxis("energy", 2.48, 2.52, 10, "Energy"));               
+    axes.AddAxis(PdfAxis("energy", 2, 3, 10, "Energy"));
          
     // Only interested in first bit of data ntuple        
     DataRepresentation dataRep(0);        
@@ -67,10 +67,10 @@ int main(){
              
     std::vector<double> minima;
     minima.push_back(0);
-    minima.push_back(1000);
+    minima.push_back(0);
     std::vector<double> maxima;
     maxima.push_back(1000);
-    maxima.push_back(signalMC.GetNEntries() * 1.2);        
+    maxima.push_back(1000);
     std::vector<double> stepsizes(2, 1);
          
     gSearch.SetMaxima(maxima);        
@@ -80,10 +80,10 @@ int main(){
     ////////////        
     // 4. Fit //        
     ////////////        
-    gSearch.Optimise(&lhFunction);
+    FitResult result = gSearch.Optimise(&lhFunction);
          
-    std::vector<double> fit = gSearch.GetFitResult().GetBestFit();        
-    fit.Print();
-    fit.SaveAs("simpleFit_result.txt");
+    std::vector<double> fit = result.GetBestFit();        
+    result.Print();
+    result.SaveAs("simpleFit_result.txt");
     return 0;        
 }
