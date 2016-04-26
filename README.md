@@ -6,7 +6,7 @@ Signal Extraction framework for the SNO+ experiment
 1. [Armadillo](http://arma.sourceforge.net/) is a linear algebra package used for quick matrix multiplication
 2. [GSL](https://gcc.gnu.org/libstdc++/) - likely you already have this installed, especially if you are running RAT
 3. [SCons](http://www.scons.org/) Is used for the build, also a dependency for RAT
-4. [HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html)
+4. [HDF5](https://www.hdfgroup.org/HDF5/release/obtain5.html) Should be configured to install with c++ support ```./configure --enable-cxx && make && make install```
 5. [ROOT](https://root.cern.ch/downloading-root) Should be installed with Minuit2 enabled `./configure --enable-minuit2`
 
 
@@ -24,7 +24,7 @@ Follow the installation instructions for each of the above using either the defa
   
 3. Run ```scons && scons units```
 
-4. Test the build was sucessful with ```./tests/RunUnits```
+4. Test the build was sucessful with ```./test/RunUnits```
 
 
 <h3> Compiling Your Own Scripts</h3>
