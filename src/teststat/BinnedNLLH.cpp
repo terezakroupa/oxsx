@@ -216,7 +216,7 @@ BinnedNLLH::GetParameters() const{
 
 int
 BinnedNLLH::GetParameterCount() const{
-        return fComponentManager.GetTotalParameterCount();
+    return fComponentManager.GetTotalParameterCount();
 }
 
 std::vector<std::string>
