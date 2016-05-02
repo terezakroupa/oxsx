@@ -2,6 +2,7 @@
 #include <math.h>
 #include <DataSet.h>
 #include <Exceptions.h>
+#include <PdfFiller.h>
 #include <iostream>
 
 double 
@@ -51,10 +52,7 @@ void
 BinnedNLLH::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
-    for(size_t i = 0; i < fDataSet -> GetNEntries(); i++){
-        EventData dat = fDataSet -> GetEntry(i);
-        dataPdf.Fill(dat);
-    }
+    PdfFiller::FillPdf(dataPdf, *fDataSet, fCuts);
     fDataPdf = fPdfShrinker.ShrinkPdf(dataPdf);
     fCalculatedDataPdf = true;
 }
@@ -181,6 +179,14 @@ BinnedNLLH::GetNormalisations() const{
     return fPdfManager.GetNormalisations();
 }
 
+void
+BinnedNLLH::AddCut(const Cut& cut_){
+    fCuts.AddCut(cut_);
+}
+
+void BinnedNLLH::SetCuts(const CutCollection& cuts_){
+    fCuts = cuts_;
+}
 
 /////////////////////////////////////////////////////////
 // Declare which objects should be adjusted by the fit //
