@@ -16,8 +16,6 @@ class EventData;
 
 class DataSetGenerator{
  public:
-    DataSetGenerator() {}
-    ~DataSetGenerator() {}
     void SetDataSets(const std::vector<DataSet*> sets_);
     void SetExpectedRates(const std::vector<double>& rates_);
     void AddDataSet(DataSet* data_, double rates_);
@@ -33,7 +31,6 @@ class DataSetGenerator{
     std::vector<double>      fExpectedRates;
     CutCollection            fCuts;
     EventData                RandomEvent(size_t handleIndex_) const;
-
 };
 
 #endif
