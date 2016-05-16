@@ -1,7 +1,9 @@
 #include <BayesIntervalCalc.h>
 #include <Exceptions.h>
 #include <Histogram.h>
+#include <gsl/gsl_sf_gamma.h> // imcomplete gamma function
 #include <iostream>
+#include <cmath>
 
 double
 BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
@@ -44,4 +46,19 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
 
     return upperEdge - (upperEdge - lowerEdge) * (sum - cl_)/content;
          
+}
+
+double
+BayesIntervalCalc::OneSidedUpperInterval(double expectedCounts_, int observedCounts_, double upperEdge_){
+    return (gsl_sf_gamma_inc_Q(observedCounts_ + 1, expectedCounts_ + upperEdge_ ) - gsl_sf_gamma_inc_Q(observedCounts_ +1, expectedCounts_))/ (1 - gsl_sf_gamma_inc_Q(observedCounts_ + 1, expectedCounts_));
+}
+
+double 
+BayesIntervalCalc::UpperBound(double expectedCounts_, int observedCounts_, double cl_, double tolerance_, double startValue_){
+    double currentCL = 0;
+    double limit = 0;
+    while(std::abs(currentCL - cl_) > tolerance_){
+        currentCL = OneSidedUpperInterval(expectedCounts_, observedCounts_, limit);
+    }
+    return limit;
 }
