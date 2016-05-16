@@ -1,5 +1,5 @@
 #include <BoolCut.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <EventData.h>
 
 bool
@@ -8,8 +8,8 @@ BoolCut::PassesCut(const EventData& ev_) const{
   try{
     val = ev_.GetDatum(fDim);
   }
-  catch(const DimensionError&){
-    throw DimensionError("Cut::Cut to non-existent data observable requested!");
+  catch(const NotFoundError&){
+    throw NotFoundError("Cut::Cut to non-existent data observable requested!");
   }
 
   return val == fVal;

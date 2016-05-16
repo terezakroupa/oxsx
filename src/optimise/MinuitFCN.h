@@ -8,12 +8,17 @@
 
 class MinuitFCN : public ROOT::Minuit2::FCNBase{
  public:
-    MinuitFCN(TestStatistic* statistic_) : fTestStatistic(statistic_), fUp(0.5), fFlipSign(false){}
+    MinuitFCN() :fTestStatistic(NULL), fUp(0.5), fFlipSign(false) {}
+    MinuitFCN(TestStatistic* statistic_) : fTestStatistic(statistic_), 
+                                           fUp(0.5), fFlipSign(false){}
 
     //these two required by minit
     double Up() const {return fUp;} 
     double operator()(const std::vector<double>& params_) const {
-        fTestStatistic->SetParams(params_);
+        if(!fTestStatistic)
+            throw 0;
+
+        fTestStatistic->SetParameters(params_);
         if(fFlipSign)
             return -1 * fTestStatistic->Evaluate();
 

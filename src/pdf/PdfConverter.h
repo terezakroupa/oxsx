@@ -1,3 +1,4 @@
+
 /**************************************************************/
 /* Static Utility class for doing a variety of pdfconversions */
 /**************************************************************/
@@ -6,7 +7,7 @@
 
 
 class BinnedPdf;
-class IntegrablePdf;
+class IntegrableFunction;
 class AxisCollection;
 class Histogram;
 class TH2D;
@@ -14,9 +15,10 @@ class TH1D;
 
 class PdfConverter{
  public:
-    static BinnedPdf ToBinnedPdf(const IntegrablePdf&, const AxisCollection& axes_);
+    static BinnedPdf ToBinnedPdf(const IntegrableFunction&, const AxisCollection& axes_);
     static TH1D      ToTH1D(const BinnedPdf&, const bool widthCorrect_ = false);
     static TH1D      ToTH1D(const Histogram&, const bool widthCorrect_ = false);
 	static TH2D      ToTH2D(const Histogram&, const bool widthCorrect_ = false);
+	static TH2D      ToTH2D(const BinnedPdf&, const bool widthCorrect_ = false);
 };
 #endif

@@ -24,7 +24,6 @@ TEST_CASE("Writing a data set to disk  and reading back"){
     names.push_back("var3");
     origDataSet.SetObservableNames(names);
     
-
     IO::SaveDataSet(origDataSet, "data_set_io_root_test.h5");
     OXSXDataSet loadedSet = IO::LoadDataSet("data_set_io_root_test.h5");
 

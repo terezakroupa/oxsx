@@ -2,30 +2,28 @@
 /* Largely inspired by the similar class in RAT, written by P.G.Jones and M.Mottram */
 /************************************************************************************/
 
-// Look at refactoring this 
-#ifndef __MINUIT__
-#define __MINUIT__
+#ifndef __OXSX_MINUIT__
+#define __OXSX_MINUIT__
 #include <Optimiser.h>
 #include <string>
 #include <vector>
 #include <MinuitFCN.h>
 #include <Minuit2/MnApplication.h>
 #include <FitResult.h>
-
+#include <set>
 class TestStatistic;
 
 class Minuit : public Optimiser{
  public:
- Minuit(TestStatistic* stat_) : Optimiser(stat_), fMinuitFCN(stat_), fMethod("Migrad"),
-                                fMinimiser(NULL), fMaxCalls(0), fTolerance(0.1), fMaximising(false) {}
+    Minuit() :  fMethod("Migrad"),
+                fMinimiser(NULL), fMaxCalls(0), 
+                fTolerance(0.1), fMaximising(false) {}
     ~Minuit();
 
-    void Initialise();
-    virtual const FitResult& Optimise();
+    virtual const FitResult& Optimise(TestStatistic*);
 
-    void Fix(size_t index_);        // these three methods only work after a call to Initialise
+    void Fix(size_t index_);
     void Release(size_t index_);
-    void RemoveLimits(size_t index_);
 
     void SetMethod(const std::string&);
     std::string GetMethod() const;
@@ -52,14 +50,16 @@ class Minuit : public Optimiser{
     bool GetMaximising() const  {return fMaximising;}
 
     FitResult GetFitResult() const;
-    
+
  private:
+	void Initialise();
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
     std::vector<double> fInitialValues;
     std::vector<double> fInitialErrors;
 
     std::vector<double> fMinima;
     std::vector<double> fMaxima;
+    std::set<size_t>    fFixedParameters;
 
     unsigned fMaxCalls;
     double   fTolerance;

@@ -4,7 +4,6 @@
 #include <sstream>
 #include <Histogram.h>
 #include <FitResult.h>
-#include <SystematicExceptions.h>
 
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
@@ -37,10 +36,11 @@ GridSearch::GetStepSizes() const{
 }
 
 const FitResult&
-GridSearch::Optimise(){
+GridSearch::Optimise(TestStatistic* testStat_){
     // list of rates followed by list of systematics
+    testStat_->RegisterFitComponents();
     std::vector<double> bestFit;
-    bestFit.resize(pTestStatistic -> GetNParams());
+    bestFit.resize(testStat_ -> GetParameterCount());
     fMinVal = 0;
 
 
@@ -70,8 +70,8 @@ GridSearch::Optimise(){
                       << "%" << std::endl;
         }
 
-        pTestStatistic->SetParams(fParams);
-        double currentVal = pTestStatistic->Evaluate();
+        testStat_ -> SetParameters(fParams);
+        double currentVal = testStat_ -> Evaluate();
 
         // if maximising, take the negative of the test stat
         if(fMaximising)
@@ -84,6 +84,7 @@ GridSearch::Optimise(){
        
     } 
     fFitResult.SetBestFit(bestFit);
+    fFitResult.SetParameterNames(testStat_->GetParameterNames());
     return fFitResult;
 }
 

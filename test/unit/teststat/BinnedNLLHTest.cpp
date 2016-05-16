@@ -36,12 +36,13 @@ TEST_CASE("Binned NLLH, 3 rates no systematics"){
     data.AddEntry(EventData(std::vector<double>(1, 0)));
     
     lh.SetDataSet(&data);
-
+    
+    lh.RegisterFitComponents();
     SECTION("Correct Probability"){
         double sumLogProb = -log(prob1 + prob2 + prob3);
         double sumNorm    = 3;
         
-        lh.SetParams(std::vector<double>(3, 1));
-        REQUIRE(lh.Evaluate() == sumNorm + sumLogProb);
+        lh.SetParameters(std::vector<double>(3, 1));
+        REQUIRE(lh.Evaluate() == Approx(sumNorm + sumLogProb));
     }
 }

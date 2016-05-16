@@ -1,20 +1,18 @@
 #include <CompositePdf.h>
 #include <EventData.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <iostream>
+
 CompositePdf::CompositePdf(const Pdf* p1_, const Pdf* p2_) {
     fPdfPtrs.push_back(p1_ -> Clone());
-    fPdfPtrs.push_back(p2_ -> Clone());
-    fNDims = p1_ -> GetNDims() + p2_ -> GetNDims();
+    fPdfPtrs.push_back(p2_ -> Clone());  
 
 }
 
 CompositePdf::CompositePdf(const std::vector<Pdf*>& pdfs_){
     // if one of the pdfs is composite itself the copy will happen recursively all the way down
-    fNDims = 0;
     for(size_t i = 0; i < pdfs_.size(); i++){
         fPdfPtrs.push_back(pdfs_[i] -> Clone());
-        fNDims += pdfs_[i] -> GetNDims();
     }
 }
 CompositePdf::~CompositePdf() {
@@ -71,3 +69,10 @@ operator * (const Pdf& pdf1_, const Pdf& pdf2_){
 }
 
 
+unsigned
+CompositePdf::GetNDims() const{
+    unsigned nDims = 0;
+    for(size_t i = 0; i < fPdfPtrs.size(); i++)
+        nDims += fPdfPtrs.at(i)->GetNDims();
+    return nDims;
+}

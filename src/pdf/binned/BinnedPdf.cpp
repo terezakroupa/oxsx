@@ -1,15 +1,22 @@
 #include <BinnedPdf.h>
-#include <PdfExceptions.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
 
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);
-    fNDims = axes_.GetNDimensions();
 }
 
 BinnedPdf::BinnedPdf(const Histogram& histo_){
     fHistogram = histo_;
-    fNDims     = histo_.GetNDims();
+}
+
+void
+BinnedPdf::SetDataRep(const DataRepresentation& rep_){
+    fDataRep = rep_;
+}
+
+DataRepresentation
+BinnedPdf::GetDataRep() const {
+    return fDataRep;
 }
 
 const Histogram&
@@ -20,7 +27,6 @@ BinnedPdf::GetHistogram() const{
 void
 BinnedPdf::SetHistogram(const Histogram& hist_){
     fHistogram = hist_;
-    fNDims = hist_.GetNDims();
 }
 
 void 
@@ -48,6 +54,19 @@ BinnedPdf::Clone() const{
     return static_cast<Pdf*>(new BinnedPdf(*this));
 }
 
+
+double
+BinnedPdf::Probability(const EventData& oberservations_) const{
+    try{
+        return operator()(oberservations_.ToRepresentation(fDataRep));
+    }
+
+    catch(const RepresentationError& e_){
+        throw RepresentationError("BinnedPdf::Probability() failed with  " 
+                                  + std::string(e_.what()) 
+                                  + " is the rep set correctly?");
+    }
+}
 //////////////////////////////////////////////////////////////////////////////////////////
 // All methods below this line just forward the call to the underlying histogram object //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +97,10 @@ BinnedPdf::Normalise(){
     fHistogram.Normalise();
 }
 
+void
+BinnedPdf::Scale(double s_){
+    fHistogram.Scale(s_);
+}
 
 void 
 BinnedPdf::Fill(const std::vector<double>& vals_, double weight_){
@@ -114,6 +137,11 @@ BinnedPdf::SetBinContent(size_t bin_, double content_){
 size_t 
 BinnedPdf::GetNBins() const{
     return fHistogram.GetNBins();
+}
+
+unsigned
+BinnedPdf::GetNDims() const{
+    return fHistogram.GetNDims();
 }
 
 void 
@@ -166,3 +194,4 @@ BinnedPdf
 BinnedPdf::Marginalise(size_t index_) const{
     return Marginalise(std::vector<size_t>(1, index_));
 }
+

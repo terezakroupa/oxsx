@@ -32,20 +32,6 @@ Systematic::SetPdfDataRep(const DataRepresentation& rep_) {fPdfDataRep = rep_;}
 DataRepresentation
 Systematic::GetPdfDataRep() const {return fPdfDataRep;}
 
-void
-Systematic::SetParameters(const std::vector<double>& params_) {
-    fParams = params_;
-}
-
-std::vector<double>
-Systematic::GetParameters() const {return fParams;}
-
-// use this, so that you get the derived class method
-// e.g. in the convolution you want to know the number of parameters in the underlying pdf
-size_t
-Systematic::GetParamCount() const {return this->GetParameters().size();}
-
-
 bool
 Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     std::vector<size_t> bin1Indices = fPdfMapping.GetAxes().UnpackIndices(bin1_);
@@ -70,26 +56,4 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
 bool
 Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
     return std::find(vec_.begin(), vec_.end(), val_) != vec_.end();
-}
-
-double
-Systematic::GetParameter(size_t index_) const {
-    try{
-        return fParams.at(index_);
-    }
-    catch (const std::out_of_range& e){
-        throw OutOfBoundsError("Systematic::GetParameter, parameter of t\
-hat index doesn't exist!");
-    }
-}
-
-void
-Systematic::SetParameter(size_t index_, double val_){
-    try{
-        fParams[index_] = val_;
-    }  
-    catch (const std::out_of_range& e){
-        throw OutOfBoundsError("Systematic::SetParameter, parameter of hat index doesn't exist!");
-    }
-}
 

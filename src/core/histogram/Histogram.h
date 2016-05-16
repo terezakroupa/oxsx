@@ -17,6 +17,7 @@ class Histogram{
     double operator() (const std::vector<double>& vals_) const;
     double Integral()  const;
     void   Normalise();
+    void   Scale(double);
     
     void   Fill(const std::vector<double>& vals_, double weight_ = 1);
     void   Fill(double val_, double weight_ = 1);
@@ -45,9 +46,10 @@ class Histogram{
     Histogram Marginalise(const std::vector<size_t>& indices_) const;
     Histogram Marginalise(size_t index_) const;
 	
-	double    GetBinLowEdge(size_t bin_, size_t dim_) const;
-	double    GetBinHighEdge(size_t bin_, size_t dim_) const;
-	double    GetBinCentre(size_t bin_, size_t dim_) const;
+    double    GetBinLowEdge(size_t bin_, size_t dim_) const;
+    double    GetBinHighEdge(size_t bin_, size_t dim_) const;
+    double    GetBinCentre(size_t bin_, size_t dim_) const;
+    
  private:
     AxisCollection fAxes;
     std::vector<double> fBinContents;

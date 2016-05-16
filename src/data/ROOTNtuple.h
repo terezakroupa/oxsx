@@ -18,7 +18,8 @@ class ROOTNtuple : public DataSet{
     ~ROOTNtuple();
 
     EventData GetEntry(size_t iEvent_) const;
-    unsigned  GetNEntries() const {return fNEntries;}
+    unsigned  GetNEntries() const;
+    unsigned  GetNObservables() const;
     std::vector<std::string> GetObservableNames() const;
 
     void LoadBaskets();
@@ -28,7 +29,6 @@ class ROOTNtuple : public DataSet{
     ROOTNtuple(const ROOTNtuple&);
     ROOTNtuple operator=(const ROOTNtuple&);
 
-    unsigned fNEntries;
     TFile*   fROOTFile;
     TNtuple* fNtuple;
     

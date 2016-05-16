@@ -1,7 +1,7 @@
 #include <Histogram.h>
 #include <iostream>
-#include <PdfExceptions.h>
-#include <DataExceptions.h>
+#include <Exceptions.h>
+#include <Formatter.hpp>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -41,10 +41,16 @@ Histogram::Normalise(){
         fBinContents[i] /= sum;
 }
 
+void
+Histogram::Scale(double s_){
+    for(size_t i = 0; i < fNBins; i++)
+        fBinContents[i] *= s_;
+}
+
 void 
 Histogram::Fill(const std::vector<double>& vals_, double weight_){
-    if(vals_.size() != fNDims)
-        throw DimensionError("Tried to fill pdf with wrong number of vals");
+    if(vals_.size() != fNDims)                             
+        throw DimensionError("Histogram::Fill", fNDims, vals_.size());
 
     fBinContents[FindBin(vals_)] += weight_;
 }
@@ -64,21 +70,25 @@ Histogram::FindBin(const std::vector<double>& vals_) const{
 double 
 Histogram::GetBinContent(size_t bin_) const{
     if(bin_ > fNBins)
-        throw OutOfBoundsError("Out of bounds bin access attempted!");
+        throw NotFoundError(Formatter() 
+                             << "Out of bounds bin access attempted on bin "
+                             << bin_ <<  " !");
     return fBinContents[bin_];
 }
 
 void 
 Histogram::AddBinContent(size_t bin_, double content_){
     if(bin_ > fNBins)
-        throw OutOfBoundsError("Tried to add bin contents to non existent bin");
+        throw NotFoundError(Formatter() 
+                             << "Out of bounds bin access attempted on bin "
+                             << bin_ <<  " !");
     fBinContents[bin_] += content_;
 }
 
 void 
 Histogram::SetBinContent(size_t bin_, double content_){
     if(bin_ > fNBins)
-        throw OutOfBoundsError("Tried to set contents of non-existent bin");
+        throw NotFoundError(Formatter()  << "Out of bounds bin access attempted on bin " << bin_ <<  " !");
     fBinContents[bin_] = content_;
 }
 
@@ -115,7 +125,9 @@ Histogram::GetBinContents() const{
 void 
 Histogram::SetBinContents(const std::vector<double>& data_){
     if (data_.size() != fNBins)
-        throw BinError("Set data that doesn't match binned pdf binning");
+        throw DimensionError("Histogram::SetBinConents", fNDims, 
+                             data_.size());
+
     fBinContents = data_;
     fNBins = fBinContents.size();
 }
@@ -153,7 +165,7 @@ Histogram::Marginalise(const std::vector<size_t>& indices_) const{
     // check the pdf does contain the indices asked for      
     for(size_t i = 0; i < indices_.size(); i++){
         if (indices_.at(i) >= fNDims)
-            throw DimensionError("Marginalise Histogram::Tried to project out non existent dim!");
+            throw NotFoundError(Formatter() << "Histogram::Marginalise::Tried to project out non existent dim " << indices_.at(i)<< "!");
     }
     // Get the axes you are interested in, in the order requested
     AxisCollection newAxes;
@@ -200,3 +212,4 @@ double
 Histogram::GetBinCentre(size_t bin_, size_t index_) const{
     return fAxes.GetBinCentre(bin_, index_);
 }
+

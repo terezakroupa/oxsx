@@ -1,5 +1,5 @@
 #include <BayesIntervalCalc.h>
-#include <PdfExceptions.h>
+#include <Exceptions.h>
 #include <Histogram.h>
 #include <iostream>
 
@@ -7,14 +7,16 @@ double
 BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
     // Makes no sense for an empty histogram
     if(!posterior_.Integral())
-        throw 0;
+        throw ValueError("BayesIntervalCalc::Empty histogram passed!");
     
     if(cl_ <= 0)
-        throw 0;
+        throw ValueError(Formatter() << "BayesIntervalCalc:: cl = " << cl_
+                         << " , must be >0!");
     
     // only works for 1D histograms currently
     if(posterior_.GetNDims() != 1)
-        throw DimensionError("Unable to produce upper limit on posteriors dim != 1. Marginalise?");
+        throw DimensionError("BayesIntervalCal", 1, posterior_.GetNDims(), 
+                             "Only implemented for 1D, marginalise?");
 
     posterior_.Normalise();
 

@@ -1,6 +1,11 @@
 #include <FitResult.h>
 #include <Histogram.h>
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+#include <iomanip>
+
 FitResult::~FitResult(){
     delete fStatSpace;
 }
@@ -34,6 +39,7 @@ FitResult::operator=(const FitResult& other_){
     fIsValid = other_.fIsValid;
     fBestFit = other_.fBestFit;
     fStatSample = other_.fStatSample;
+	fParameterNames = other_.fParameterNames;
     return *this;
 }
 
@@ -43,6 +49,7 @@ FitResult::FitResult(const FitResult& other_){
 
     else
         fStatSpace = new Histogram(*other_.fStatSpace);
+	fParameterNames = other_.fParameterNames;
     fStatSample = other_.fStatSample;
     fBestFit = other_.fBestFit;
     fIsValid = other_.fIsValid;
@@ -66,4 +73,61 @@ FitResult::GetValid() const {
 void
 FitResult::SetValid(bool b_){
     fIsValid = b_;
+}
+
+void
+FitResult::SetParameterNames(const std::vector<std::string>& names_){
+    fParameterNames = names_;
+}
+
+std::vector<std::string>
+FitResult::GetParameterNames() const{
+    return fParameterNames;
+}
+
+void
+FitResult::Print() const{
+    if(fParameterNames.size() != fBestFit.size())
+        throw 0;
+
+    std::cout << "Fit Result: " << std::endl;
+    for(size_t i = 0; i < fParameterNames.size(); i++){
+        std::cout << fParameterNames.at(i) << "\t" 
+                  << fBestFit.at(i)
+                  << std::endl;
+    }        
+}
+
+void
+FitResult::SaveAs(const std::string& fileName_) const{
+  time_t t = time(0);
+  struct tm * now = localtime(&t);
+  
+  std::ofstream fs(fileName_.c_str());
+  fs << "-----------------------------------"
+	 << "-----------------------------------" << std::endl
+	 << "OXSX Fit Result: "
+	 << now -> tm_year + 1900 << '-' 
+	 << now -> tm_mon + 1 << '-'
+	 << now -> tm_mday
+	 << "  "
+	 << now -> tm_hour
+	 << ":"
+	 << now -> tm_min
+	 << ":"
+	 << now -> tm_sec
+	 << std::endl
+	 << "-----------------------------------"
+	 << "-----------------------------------" << std::endl
+	 << std::endl;
+	   
+  fs << "Best Fit Values: " << std::endl << std::endl;
+  for(size_t i = 0; i < fParameterNames.size(); i++){
+	fs << std::setw(25) 
+	   << fParameterNames.at(i) << "\t\t" 
+	   << std::setw(10) 
+	   << fBestFit.at(i)
+	   << std::endl;
+  }        	  
+  fs.close();
 }
