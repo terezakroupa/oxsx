@@ -193,6 +193,7 @@ void BinnedNLLH::SetCuts(const CutCollection& cuts_){
 /////////////////////////////////////////////////////////
 void
 BinnedNLLH::RegisterFitComponents(){
+    fComponentManager.Clear();
     fComponentManager.AddComponent(&fPdfManager);
     for(size_t i = 0; i < fSystematicManager.GetSystematics().size(); i++)
         fComponentManager.AddComponent(fSystematicManager.GetSystematics().at(i));
