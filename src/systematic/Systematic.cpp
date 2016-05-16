@@ -56,4 +56,4 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
 bool
 Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
     return std::find(vec_.begin(), vec_.end(), val_) != vec_.end();
-
+}
