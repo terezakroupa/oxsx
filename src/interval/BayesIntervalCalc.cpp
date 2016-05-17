@@ -27,16 +27,13 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
     int    critBin  = 0;
     double integral = 0;
     double sum = 0;
-    while(true){
+    while(sum < cl_){
         sum = 0;              
         for(size_t i = 0; i < critBin; i++){
             sum += posterior_.GetBinContent(i);
         }
-        if (sum < cl_)
-            critBin++;
-        else
-            break;
-        
+
+        critBin++;        
     }
 
     // now interpolate between the bins    
@@ -50,7 +47,7 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
 
 double
 BayesIntervalCalc::OneSidedUpperInterval(double expectedCounts_, int observedCounts_, double upperEdge_){
-    return (gsl_sf_gamma_inc_Q(observedCounts_ + 1, expectedCounts_ + upperEdge_ ) - gsl_sf_gamma_inc_Q(observedCounts_ +1, expectedCounts_))/ (1 - gsl_sf_gamma_inc_Q(observedCounts_ + 1, expectedCounts_));
+    return (gsl_sf_gamma_inc_P(observedCounts_ + 1, expectedCounts_ + upperEdge_ ) - gsl_sf_gamma_inc_P(observedCounts_ +1, expectedCounts_))/ (1 - gsl_sf_gamma_inc_P(observedCounts_ + 1, expectedCounts_));
 }
 
 double 
@@ -58,6 +55,7 @@ BayesIntervalCalc::UpperBound(double expectedCounts_, int observedCounts_, doubl
     double currentCL = 0;
     double limit = 0;
     while(std::abs(currentCL - cl_) > tolerance_){
+        limit += tolerance_;
         currentCL = OneSidedUpperInterval(expectedCounts_, observedCounts_, limit);
     }
     return limit;
