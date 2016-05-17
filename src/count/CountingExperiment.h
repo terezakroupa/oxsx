@@ -2,30 +2,34 @@
 #define __OXSX_COUNTING_EXPERIMENT__
 #include <CutCollection.h>
 #include <EventSystematicManager.h>
+#include <CountingResult.h>
+#include <string>
 
 class DataSet;
 class EventSystematic;
 class CountingExperiment{
  public:
-    CountingExperiment() : fBackgroundCount(-1), fDataCount(-1) {}
-    void   CountData(DataSet*);
-    void   CountBackgrounds();
+    void CountData(DataSet*);
+    void CountBackgrounds();
+    void CountSignal();
 
-    double GetBackgroundCount() const;
-    int    GetDataCount() const;
-
-    void AddCut(const Cut&);
-    void AddSystematic(EventSystematic*);
-    void AddBackground(DataSet* mcData_, double rate_);    
+    void AddCut(const Cut&, const std::string& name_);
+    void AddSystematic(EventSystematic*, const std::string& name_);
+    void AddBackground(DataSet* mcData_, double rate_, const std::string& name_);
+    void SetSignal(DataSet* mcData_, const std::string& name_);
+    const CountingResult& GetCountingResult() const;
 
  private:
-    CutCollection          fCuts;
-    EventSystematicManager fSystematics;
-    std::vector<double>    fBackgroundNorms;
-    std::vector<DataSet*>  fBackgroundDataSets;
-    DataSet*               fTestDataSet;
+    CutCollection            fCuts;
+    EventSystematicManager   fSystematics;
+    std::vector<DataSet*>    fBackgroundDataSets;
+    std::vector<double>      fBackgroundNorms;
+    DataSet*                 fTestDataSet;
+    DataSet*                 fSignalDataSet;
 
-    double fBackgroundCount;
-    int    fDataCount;
+    std::vector<std::string> fBackgroundNames;
+    std::string              fSignalName;
+    std::vector<std::string> fSystematicNames;
+    CountingResult           fResult;
 };
 #endif
