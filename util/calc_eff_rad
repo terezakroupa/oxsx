@@ -72,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument('coords', metavar = "c", nargs="+", type=str)
     parser.add_argument('-rname', metavar = "r", type=str, default= "r_eff")
     parser.add_argument('-outfile', metavar='-o', type=str, default = "")
-    parser.add_argument('-keep', metavar='-k', nargs="+", type=str, default = "")
+    parser.add_argument('-keep', metavar='-k', nargs="+", type=str, default = [])
     args = parser.parse_args()
     
     
