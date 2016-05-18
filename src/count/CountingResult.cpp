@@ -51,6 +51,12 @@ CountingResult::Print() const{
     std::cout << AsString() << std::endl;
 }
 
+
+const std::vector<double>& 
+CountingResult::GetExpectedRates() const{
+    return fExpectedRates;
+}
+
 void 
 CountingResult::SaveAs(const std::string& fileName_) const{
     time_t t = time(0);
