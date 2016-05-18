@@ -26,6 +26,26 @@ CountingResult::SetObservedCounts(int counts_){
     fObservedCounts = counts_;
 }
 
+double
+CountingResult::GetExpectedCounts() const{
+    return std::accumulate(fExpectedRates.begin(), fExpectedRates.end(),
+                           0.);
+}
+
+int 
+CountingResult::GetObservedCounts() const{
+    return fObservedCounts;
+}
+
+void 
+CountingResult::SetSignal(double sigEff_, const std::string& name_, const CutLog& log_){
+    fSignalName = name_;
+    fSignalLog  = log_;
+    fSignalLog.CalculateMeta();
+    fSignalEfficiency = sigEff_;
+    
+}
+
 void
 CountingResult::Print() const{
     std::cout << AsString() << std::endl;
@@ -58,7 +78,7 @@ CountingResult::SaveAs(const std::string& fileName_) const{
 std::string
 CountingResult::AsString() const{
     Formatter resultString;
-    resultString << "------Background Counts:----------------------------------------------\n";
+    resultString << "------Backgrounds:----------------------------------------------------\n";
     for(size_t i = 0; i < fBackgroundLogs.size(); i++){
         resultString << "------------------------\n"
                      << fBackgroundNames.at(i) << "\n"
@@ -68,54 +88,58 @@ CountingResult::AsString() const{
         
     }
 
-    resultString << "------Signal Counts:----------------------------------------------\n";
+    resultString << "------Signal----------------------------------------------------------\n";
     resultString << "------------------------\n"
                  << fSignalName << "\n"
                  << "------------------------\n"
                  << fSignalLog.AsString()
-                 << "\nOverall Signal Efficiency "
-                 << fSignalEfficiency
                  << "\n\n";
     
-    resultString << "------Test Data Counts:----------------------------------------------\n"
+    resultString << "------Test:-----------------------------------------------------------\n"
                  << fDataLog.AsString()
                  << "\n\n";
     
-    resultString << "------Totals:--------------------------------------------------------\n"
-                 << std::setw(38)
+    resultString << "------Summary:--------------------------------------------------------\n";
+    resultString << "------------------------\n" 
                  << std::left
-                 << "Total Expected Background Counts:" 
+                 << std::setw(18)
+                 << "Background"
+                 << std::left
+                 << std::setw(10)
+                 << "Counts";
+
+    for(size_t i = 0; i < fExpectedRates.size(); i++){
+        resultString << "\n"
+                     << std::setw(18)
+                     << std::left
+                     << fBackgroundNames.at(i)
+                     << std::setw(10)
+                     << std::left
+                     << fExpectedRates.at(i)
+                     << "\n";
+    }
+        
+    resultString << std::setw(18)
+                 << std::left
+                 << "Total :" 
                  << std::setw(10)
                  << std::left
                  << GetExpectedCounts()
-                 << "\n"
-                 << std::setw(38)
+                 << "\n------------------------\n"
+                 << std::setw(18)
                  << std::left
-                 << "Total Counts after cuts for Data Set: "
+                 << "Signal Efficiency"
+                 << std::setw(10)
+                 << std::left
+                 << fSignalEfficiency
+                 << "\n------------------------\n"
+                 << std::setw(18)
+                 << std::left
+                 << "Observed: "
                  << std::setw(10)
                  << std::left
                  << fObservedCounts
-                 << "\n";
-
+                 << "\n"
+                 << "----------------------------------------------------------------------\n";
     return resultString;
-}
-
-double
-CountingResult::GetExpectedCounts() const{
-    return std::accumulate(fExpectedRates.begin(), fExpectedRates.end(),
-                           0.);
-}
-
-int 
-CountingResult::GetObservedCounts() const{
-    return fObservedCounts;
-}
-
-void 
-CountingResult::SetSignal(double sigEff_, const std::string& name_, const CutLog& log_){
-    fSignalName = name_;
-    fSignalLog  = log_;
-    fSignalLog.CalculateMeta();
-    fSignalEfficiency = sigEff_;
-    
 }

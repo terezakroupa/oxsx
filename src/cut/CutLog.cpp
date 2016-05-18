@@ -12,7 +12,7 @@ CutLog::CalculateMeta(){
     fRemainderCounts.reserve(fCutCounts.size());
     fRemainderPercentages.reserve(fCutCounts.size());
     fCutPercentages.reserve(fCutCounts.size());
-    
+
     int numRemaining = fNEvents;
     for(size_t i = 0; i < fCutCounts.size(); i++){
         numRemaining -= fCutCounts.at(i);
@@ -23,7 +23,7 @@ CutLog::CalculateMeta(){
     }
 }
 
-void 
+void
 CutLog::LogPass(){
     fNEvents++;
 }
@@ -42,7 +42,7 @@ CutLog::GetCutCounts() const{
 }
 
 std::vector<double>
-CutLog::GetCutPercentages() const{   
+CutLog::GetCutPercentages() const{
     return fCutPercentages;
 }
 
@@ -54,37 +54,53 @@ CutLog::GetCutNames() const{
 std::string
 CutLog::AsString() const{
     if (fCutCounts.size() != fCutNames.size())
-        throw LogicError(Formatter() << "CutLog::AsString() there are " 
-                         << fCutCounts.size() 
-                         << " cut counts and " 
+        throw LogicError(Formatter() << "CutLog::AsString() there are "
+                         << fCutCounts.size()
+                         << " cut counts and "
                          << fCutNames.size() << " names!");
     Formatter outString;
-    outString << "#s cut:\n";
-    for(size_t i = 0; i < fCutNames.size(); i++)
+    outString << std::left
+              << std::setw(15)
+              << "Cut"
+              << std::left
+              << std::setw(15)
+              << "# cut"
+              << std::left
+              << std::setw(9)
+              << "(%)"
+              << std::left
+              << std::setw(15)
+              << "# remaining"
+              << std::left
+              << std::setw(9)
+              << "(%)";
+
+    outString << "\n";
+    for(size_t i = 0; i < fCutNames.size(); i++){
         outString << std::left
-                  << std::setw(17)
-                  << fCutNames.at(i)  << "\t" 
+                  << std::setw(15)
+                  << fCutNames.at(i)
                   << std::left
-                  << std::setw(17)
-                  << fCutCounts.at(i) << "\t"
+                  << std::setw(15)
+                  << fCutCounts.at(i)
+                  << std::left 
+                  << std::setw(9)
+                  << std::setprecision(3)
+                  << fCutPercentages.at(i)                  
                   << std::left
-                  << std::setw(1)
-                  << "(" << fCutPercentages.at(i) << "%)"
+                  << std::setw(15)
+                  << fRemainderCounts.at(i)
+                  << std::left
+                  << std::setw(9)
+                  << std::setprecision(3)
+                  << fRemainderPercentages.at(i)
                   << "\n";
 
-    outString << "\n#s remaining after cut:\n";
-    outString << std::setw(17) << std::left << "Total event count\t" << fNEvents << "\n";
-    for(size_t i = 0; i < fCutNames.size(); i++)
-        outString << std::setw(17)
-                  << std::left 
-                  << fCutNames.at(i)  << "\t" 
-                  << std::setw(17)
-                  << std::left
-                  << fRemainderCounts.at(i) << "\t"
-                  << std::left
-                  << std::setw(1)
-                  << "(" << fRemainderPercentages.at(i) << "%)"
-                  << "\n";
+
+    }
+    
+    
+
 
     return outString;
 }
