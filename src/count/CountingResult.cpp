@@ -115,7 +115,7 @@ CountingResult::AsString() const{
                      << fBackgroundNames.at(i)
                      << std::setw(10)
                      << std::left
-                     << fExpectedRates.at(i)
+                     << fExpectedRates.at(i);
     }
         
     resultString << "\n"
