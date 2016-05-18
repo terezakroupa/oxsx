@@ -102,7 +102,7 @@ CountingResult::AsString() const{
     resultString << "------Summary:--------------------------------------------------------\n";
     resultString << "------------------------\n" 
                  << std::left
-                 << std::setw(18)
+                 << std::setw(25)
                  << "Background"
                  << std::left
                  << std::setw(10)
@@ -110,13 +110,12 @@ CountingResult::AsString() const{
 
     for(size_t i = 0; i < fExpectedRates.size(); i++){
         resultString << "\n"
-                     << std::setw(18)
+                     << std::setw(25)
                      << std::left
                      << fBackgroundNames.at(i)
                      << std::setw(10)
                      << std::left
                      << fExpectedRates.at(i)
-                     << "\n";
     }
         
     resultString << std::setw(18)
