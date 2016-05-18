@@ -1,6 +1,5 @@
 #include <EventSystematicManager.h>
 #include <EventSystematic.h>
-#include <SystematicExceptions.h>
 #include <EventData.h>
 
 void 
