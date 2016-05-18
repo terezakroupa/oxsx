@@ -8,6 +8,7 @@ void
 CountingExperiment::CountData(DataSet* testData_){
     int dataCount = 0;
     CutLog cutLog = (fCuts.GetCutNames());
+    std::cout << "Data Set" << std::endl;
     for(size_t i = 0; i < testData_-> GetNEntries(); i++){
         EventData transformed = fSystematics.ApplySystematics(testData_ -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
@@ -21,6 +22,7 @@ void
 CountingExperiment::CountBackgrounds(){
     // loop over all the background types
     for(size_t i = 0; i < fBackgroundDataSets.size(); i++){
+        std::cout << fBackgroundNames.at(i) << std::endl;
         DataSet* dataSet = fBackgroundDataSets.at(i);
         int eventsPassed = 0;
         CutLog cutLog(fCuts.GetCutNames());
@@ -40,6 +42,7 @@ void
 CountingExperiment::CountSignal(){
     int signalCount = 0;
     CutLog cutLog = (fCuts.GetCutNames());
+    std::cout << fSignalName << std::endl;
     for(size_t i = 0; i < fSignalDataSet -> GetNEntries(); i++){
         EventData transformed = fSystematics.ApplySystematics(fSignalDataSet -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
