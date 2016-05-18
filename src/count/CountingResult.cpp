@@ -118,7 +118,8 @@ CountingResult::AsString() const{
                      << fExpectedRates.at(i)
     }
         
-    resultString << std::setw(18)
+    resultString << "\n"
+                 << std::setw(25)
                  << std::left
                  << "Total :" 
                  << std::setw(10)
