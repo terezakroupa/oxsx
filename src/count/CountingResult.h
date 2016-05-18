@@ -17,6 +17,8 @@ class CountingResult{
     int    GetObservedCounts() const;
     double GetExpectedCounts() const;
 
+    const std::vector<double>& GetExpectedRates() const;
+
     void Print() const;
     void SaveAs(const std::string& filename_) const;
     std::string AsString() const;
