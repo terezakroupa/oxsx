@@ -8,7 +8,6 @@ void
 CountingExperiment::CountData(DataSet* testData_){
     int dataCount = 0;
     CutLog cutLog = (fCuts.GetCutNames());
-    std::cout << "Data Set" << std::endl;
     for(size_t i = 0; i < testData_-> GetNEntries(); i++){
         EventData transformed = fSystematics.ApplySystematics(testData_ -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
