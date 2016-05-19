@@ -25,7 +25,7 @@ class DataSetGenerator{
     void SetCuts(const CutCollection& cuts_);
 
     OXSXDataSet ExpectedRatesDataSet() const;
-    OXSXDataSet PoissonFluctuatedDataSet() const; // needs implementing
+    OXSXDataSet PoissonFluctuatedDataSet() const; 
     OXSXDataSet AllValidEvents() const; // needs implementing
     
  private:
@@ -33,6 +33,9 @@ class DataSetGenerator{
     std::vector<double>      fExpectedRates;
     CutCollection            fCuts;
     EventData                RandomEvent(size_t handleIndex_) const;
+    EventData                RandomEventFromList(size_t handleIndex_, 
+                                                 const std::vector<size_t>&) const;
+    std::vector<size_t> EventsPassingCuts(size_t handleIndex_) const;
 
 };
 

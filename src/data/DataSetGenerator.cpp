@@ -27,18 +27,13 @@ DataSetGenerator::ExpectedRatesDataSet() const{
 
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
+
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
+        std::vector<size_t> passingIndicies = EventsPassingCuts(i);
 
-        for(unsigned j = 0; j < expectedCounts;){
-            EventData event_ = RandomEvent(i);
-            
-            // Add event to new data set if it passes cut
-            if (fCuts.PassesCuts(event_)){
-                dataSet.AddEntry(event_);
-                j++;
-            }
-        }
+        for(unsigned j = 0; j < expectedCounts; j++)
+            dataSet.AddEntry(RandomEventFromList(i, passingIndicies));        
     }
     
     return dataSet;
@@ -78,6 +73,13 @@ DataSetGenerator::RandomEvent(size_t handleIndex_) const{
     return fDataSets.at(handleIndex_)->GetEntry(eventNum);
 }
 
+EventData
+DataSetGenerator::RandomEventFromList(size_t handleIndex_, 
+                                      const std::vector<size_t>& nums_) const{
+    unsigned eventNum = Rand::Shoot(nums_.size());
+    return fDataSets.at(handleIndex_)->GetEntry(nums_.at(eventNum));
+}
+
 void
 DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
@@ -89,3 +91,14 @@ DataSetGenerator::SetCuts(const CutCollection& cuts_){
     fCuts = cuts_;
 }
 
+std::vector<size_t>
+DataSetGenerator::EventsPassingCuts(size_t handleIndex_) const{
+    std::vector<size_t> passingIndicies;
+    passingIndicies.reserve(fDataSets.at(handleIndex_) -> GetNEntries() /2);
+    
+    for(size_t i = 0; i < fDataSets.at(handleIndex_) -> GetNEntries(); i++){
+        if(fCuts.PassesCuts(fDataSets.at(handleIndex_)->GetEntry(i)))
+            passingIndicies.push_back(i);
+    }
+    return passingIndicies;
+}
