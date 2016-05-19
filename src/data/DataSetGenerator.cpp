@@ -25,17 +25,17 @@ DataSetGenerator::ExpectedRatesDataSet() const{
     if(!fDataSets.size())
         throw LogicError("Can't generate fake data: no input data sets");
 
-    OXSXDataSet dataSet;    
+    OXSXDataSet dataSet;
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
 
     for(size_t i = 0; i < fDataSets.size(); i++){
-        unsigned expectedCounts = round(fExpectedRates.at(i));
+        int expectedCounts = round(fExpectedRates.at(i));
         std::vector<size_t> passingIndicies = EventsPassingCuts(i);
 
         for(unsigned j = 0; j < expectedCounts; j++)
-            dataSet.AddEntry(RandomEventFromList(i, passingIndicies));        
+            dataSet.AddEntry(RandomEventFromList(i, passingIndicies));
     }
-    
+
     return dataSet;
 }
 
@@ -46,25 +46,17 @@ DataSetGenerator::PoissonFluctuatedDataSet() const{
     if(!fDataSets.size())
       throw LogicError("Can't generate fake data: no input data sets");
 
-    OXSXDataSet dataSet;    
+    OXSXDataSet dataSet;
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
-
-        for(unsigned j = 0; j < counts;){
-            EventData event_ = RandomEvent(i);
-            
-            // check it passes the cuts                            
-            if (fCuts.PassesCuts(event_)){
-                dataSet.AddEntry(event_);
-                j++;
-            }
-        }
+        std::vector<size_t> passingIndicies = EventsPassingCuts(i);
+        for(unsigned j = 0; j < counts; j++)
+            dataSet.AddEntry(RandomEventFromList(i, passingIndicies));
     }
-        
+
     return dataSet;
 }
-    
 
 
 EventData
@@ -74,7 +66,7 @@ DataSetGenerator::RandomEvent(size_t handleIndex_) const{
 }
 
 EventData
-DataSetGenerator::RandomEventFromList(size_t handleIndex_, 
+DataSetGenerator::RandomEventFromList(size_t handleIndex_,
                                       const std::vector<size_t>& nums_) const{
     unsigned eventNum = Rand::Shoot(nums_.size());
     return fDataSets.at(handleIndex_)->GetEntry(nums_.at(eventNum));
@@ -95,7 +87,7 @@ std::vector<size_t>
 DataSetGenerator::EventsPassingCuts(size_t handleIndex_) const{
     std::vector<size_t> passingIndicies;
     passingIndicies.reserve(fDataSets.at(handleIndex_) -> GetNEntries() /2);
-    
+
     for(size_t i = 0; i < fDataSets.at(handleIndex_) -> GetNEntries(); i++){
         if(fCuts.PassesCuts(fDataSets.at(handleIndex_)->GetEntry(i)))
             passingIndicies.push_back(i);
