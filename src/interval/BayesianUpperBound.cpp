@@ -1,16 +1,16 @@
-#include <BayesIntervalCalc.h>
+#include <BayesianUpperBound.h>
 #include <Exceptions.h>
 #include <Histogram.h>
 #include <iostream>
 
 double
-BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
+BayesianUpperBound::Evaluate(const Histogram& posterior_){
     // Makes no sense for an empty histogram
     if(!posterior_.Integral())
-        throw ValueError("BayesIntervalCalc::Empty histogram passed!");
+        throw ValueError("BayesianUpperBound::Empty histogram passed!");
     
-    if(cl_ <= 0)
-        throw ValueError(Formatter() << "BayesIntervalCalc:: cl = " << cl_
+    if(fCl <= 0)
+        throw ValueError(Formatter() << "BayesianUpperBound:: cl = " << fCl
                          << " , must be >0!");
     
     // only works for 1D histograms currently
@@ -18,9 +18,8 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
         throw DimensionError("BayesIntervalCal", 1, posterior_.GetNDims(), 
                              "Only implemented for 1D, marginalise?");
 
-    posterior_.Normalise();
 
-    // Integrate from the minimum to x until the total probability exceeds cl_
+    // Integrate from the minimum to x until the total probability exceeds fCl
     // find the first bin <b> for which the integral  <0>-><b> > cl
     int    critBin  = 0;
     double integral = 0;
@@ -30,7 +29,7 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
         for(size_t i = 0; i < critBin; i++){
             sum += posterior_.GetBinContent(i);
         }
-        if (sum < cl_)
+        if (sum < fCl)
             critBin++;
         else
             break;
@@ -42,6 +41,6 @@ BayesIntervalCalc::UpperBound(Histogram posterior_, double cl_){
     double lowerEdge = posterior_.GetAxes().GetBinLowEdge(critBin, 0);
     double content   = posterior_.GetBinContent(critBin);
 
-    return upperEdge - (upperEdge - lowerEdge) * (sum - cl_)/content;
+    return upperEdge - (upperEdge - lowerEdge) * (sum - fCl)/content;
          
 }
