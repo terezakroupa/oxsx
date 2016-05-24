@@ -1,8 +1,10 @@
 #include <Systematic.h>
+#include <Exceptions.h>
 #include <algorithm>
 #include <iostream>
 
-BinnedPdf Systematic::operator() (const BinnedPdf& pdf_) const{
+BinnedPdf 
+Systematic::operator() (const BinnedPdf& pdf_) const{
     BinnedPdf afterSmear = fPdfMapping(pdf_);
     afterSmear.Normalise();
     return afterSmear;
