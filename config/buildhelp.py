@@ -124,14 +124,12 @@ def fix_dylib_for_darwin(target, source, env):
 
 def find_library(library_name):
     """
-    Look for a library in the standard install locations, return None if not found
+    Look for a library in the standard install locations, raise ValueError if not found
     """
     for path in (os.path.join(os.environ["HOME"],"lib"), "/usr/lib", "/usr/local/lib"):
         for libext in ("a", "dylib", "so"):
             file_name = "lib{0}.{1}".format(library_name, libext)
-            try:
-                if os.path.exists(os.path.join(path, file_name)):
-                    return path
-            except:
-                pass
+            if os.path.exists(os.path.join(path, file_name)):
+                return path
+
     raise ValueError
