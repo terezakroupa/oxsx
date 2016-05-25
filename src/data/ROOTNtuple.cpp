@@ -1,4 +1,5 @@
 #include <ROOTNtuple.h>
+#include <TNtuple.h>
 #include <EventData.h>
 #include <iostream>
 #include <Exceptions.h>
