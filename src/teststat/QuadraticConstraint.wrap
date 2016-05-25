@@ -1,0 +1,3 @@
+class_<QuadraticConstraint>(m, "QuadraticConstraint")
+.def(init<size_t, double, double>())
+.def("__call__", &QuadraticConstraint::operator());

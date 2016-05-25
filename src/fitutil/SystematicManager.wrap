@@ -1,0 +1,7 @@
+class_<SystematicManager>(m, "SystematicManager")
+.def(init<>())
+.def("add", &SystematicManager::Add)
+.def("get_systematics", &SystematicManager::GetSystematics, return_value_policy::reference_internal)
+.def("get_n_systematics", &SystematicManager::GetNSystematics)
+.def("get_total_response", &SystematicManager::GetTotalResponse, return_value_policy::reference_internal)
+.def("construct", &SystematicManager::Construct);

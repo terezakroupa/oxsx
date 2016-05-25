@@ -1,0 +1,12 @@
+// Unsure of conversion here
+//Pdf* PdfPointer(const Pdf& p) = (return &p;);
+
+class_<CompositePdf>(m, "CompositePdf", base<Pdf>())
+.def(init<const Pdf*, const Pdf*>())
+//.def(init<std::vector<Pdf*> >())
+.def("__call__", &CompositePdf::operator())
+.def("probability", &CompositePdf::Probability)
+.def("clone", &CompositePdf::Clone)
+.def("integral", &CompositePdf::Integral)
+.def("normalise", &CompositePdf::Normalise)
+.def("get_n_dims", &CompositePdf::GetNDims);

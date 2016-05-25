@@ -1,0 +1,8 @@
+class_<LineCut>(m, "LineCut", base<Cut>())
+.def(init<size_t, double, std::string>())
+.def("clone", &LineCut::Clone)
+.def("passes_cut", &LineCut::PassesCut)
+.def("set_cut_value", &LineCut::SetCutValue)
+.def("get_cut_value", &LineCut::GetCutValue)
+.def("set_sidedness", &LineCut::SetSidedness)
+.def("get_sidedness", &LineCut::GetSidedness);

@@ -1,0 +1,8 @@
+class_<Rand>(m, "Rand")
+.def(init<>())
+.def_static("uniform", &Rand::Uniform, arg("max_") = 1)
+.def_static("gaus", &Rand::Gaus, arg("mean_") = 0, arg("sigma_") = 1)
+.def_static("set_seed", &Rand::SetSeed, arg("seed_") = 0)
+.def_static("get_seed", &Rand::GetSeed)
+.def_static("poisson", &Rand::Poisson)
+.def_static("shoot", &Rand::Shoot);

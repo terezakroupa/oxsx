@@ -1,0 +1,5 @@
+class_<IO>(m, "IO")
+.def_static("save_data_set", &IO::SaveDataSet)
+.def_static("load_data_set", &IO::LoadDataSet)
+.def_static("save_histogram", &IO::SaveHistogram);
+//.def_static("load_histogram", &IO::LoadHistogram); // not implemented

@@ -6,10 +6,10 @@
 // Initialise the detector response to zero
 void 
 PdfMapping::SetAxes(const AxisCollection& axes_){
-    fAxes  = axes_;
-    fNBins = axes_.GetNBins();
-    fNDims = axes_.GetNDimensions();
-    fResponse = arma::sp_mat(fNBins, fNBins);
+  fAxes  = axes_;
+  fNBins = axes_.GetNBins();
+  fNDims = axes_.GetNDimensions();
+  fResponse = arma::sp_mat(fNBins, fNBins);
 }
 
 

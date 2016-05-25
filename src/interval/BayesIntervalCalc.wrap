@@ -1,0 +1,2 @@
+class_<BayesIntervalCalc>(m, "BayesIntervalCalc")
+.def_static("upper_bound", &BayesIntervalCalc::UpperBound);

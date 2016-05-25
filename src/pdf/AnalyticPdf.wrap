@@ -1,0 +1,15 @@
+class_<AnalyticPdf>(m, "AnalyticPdf")
+.def(init<IntegrableFunction*>())
+.def("clone", &AnalyticPdf::Clone) // with boost we have to manage new object here...
+.def("__call__", &AnalyticPdf::operator())
+.def("probability", &AnalyticPdf::Probability)
+.def("integral", &AnalyticPdf::Integral)
+.def("normalise", &AnalyticPdf::Normalise)
+.def("set_data_rep", &AnalyticPdf::SetDataRep)
+.def("get_data_rep", &AnalyticPdf::GetDataRep)
+.def("get_n_dims", &AnalyticPdf::GetNDims)
+.def("make_fittable", &AnalyticPdf::MakeFittable)
+.def("get_parameter_names", &AnalyticPdf::GetParameterNames)
+.def("get_parameters", &AnalyticPdf::GetParameters)
+.def("get_parameter_count", &AnalyticPdf::GetParameterCount)
+.def("set_parameters", &AnalyticPdf::SetParameters);

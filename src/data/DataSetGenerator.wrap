@@ -1,0 +1,9 @@
+class_<DataSetGenerator>(m, "DataSetGenerator")
+.def(init<>())
+.def("set_data_sets", &DataSetGenerator::SetDataSets)
+.def("set_expected_rates", &DataSetGenerator::SetExpectedRates)
+.def("add_data_set", &DataSetGenerator::AddDataSet)
+.def("set_cuts", &DataSetGenerator::SetCuts)
+.def("expected_rates_data_set", &DataSetGenerator::ExpectedRatesDataSet);
+//.def("poisson_fluctuated_data_set", &DataSetGenerator::PoissonFluctuatedDataSet) // not implemented
+//.def("all_valid_events", &DataSetGenerator::AllValidEvents); // not implemented

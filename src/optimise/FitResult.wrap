@@ -1,0 +1,14 @@
+class_<FitResult>(m, "FitResult")
+.def(init<>())
+.def("set_best_fit", &FitResult::SetBestFit)
+.def("get_best_fit", &FitResult::GetBestFit)
+.def("set_valid", &FitResult::SetValid)
+.def("get_valid", &FitResult::GetValid)
+.def("set_stat_space", &FitResult::SetStatSpace)
+.def("get_stat_space", &FitResult::GetStatSpace, return_value_policy::reference_internal)
+.def("set_stat_sample", &FitResult::SetStatSample)
+.def("get_stat_sample", &FitResult::GetStatSample, return_value_policy::reference_internal)
+.def("get_valid", &FitResult::GetValid)
+.def("set_valid", &FitResult::SetValid)
+.def("print_result", &FitResult::Print) // override native python __str__?
+.def("save_as", &FitResult::SaveAs);

@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+import os
+from distutils.sysconfig import get_python_lib
+
+Import('env')
+buildenv = env.Clone()
+
+# Have to include all cpp files (unless we add to the list each time)
+buildenv.Append(LIBPATH = '#/build')
+buildenv.Append(LIBS = 'oxsx')
+buildenv.Append(LINKFLAGS = ",".join("-rpath {0}".format(l) for l in env['RPATH']))
+buildenv.Append(CPPPATH = '#/src')
+buildenv.Append(CPPPATH = '#/pybind11/include')
+buildenv.Append(CXXFLAGS = ' -std=c++11')
+shlib = buildenv.SharedLibrary('oxsx', ['oxsx_pybind.cpp'],
+                               SHLIBSUFFIX='.so', SHLIBPREFIX='')
+
+# Install to pythonpath
+install_dir = get_python_lib()
+install = Install(install_dir, shlib)
+
+env.Alias("bindings", [shlib, install])
+

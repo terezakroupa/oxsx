@@ -1,0 +1,3 @@
+class_<FitParameter>(m, "FitParameter")
+.def("get", &FitParameter::Get)
+.def("set", &FitParameter::Set);

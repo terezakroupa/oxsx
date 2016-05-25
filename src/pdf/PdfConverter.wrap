@@ -1,0 +1,2 @@
+class_<PdfConverter>(m, "PdfConverter")
+.def_static("to_binned_pdf", &PdfConverter::ToBinnedPdf);

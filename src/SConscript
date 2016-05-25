@@ -20,6 +20,7 @@ for x in source_dirs:
 
 headers = [Command(os.path.join("#/include", os.path.basename(y.rstr())),
                    y, Copy("$TARGET", "$SOURCE")) for y in hdrs]
+
 env.Default(headers)
 
 # Build the library

@@ -1,5 +1,5 @@
 from dependency   import Dependency, VALID_FIELDS
-from ConfigParser import ConfigParser
+from ConfigParser import ConfigParser, NoOptionError
 from SCons.Script import Split, Glob, Copy, File, Dir, Exit
 from platform import system
 from subprocess import check_call
@@ -14,8 +14,9 @@ def read_dependencies(filename):
         try:
             libs   = cparse.get(dep_name, "libs")
             cheads = cparse.get(dep_name, "check_headers")
-        except KeyError:
+        except NoOptionError:
             print "Incomplete dependency spec for {0}, (needs libs & check_headers)".format(dep_name)
+            raise
         dependencies[dep_name] = Dependency(dep_name, libs, cheads)
     return dependencies
 
@@ -31,7 +32,7 @@ def check_dependency(conf, dependency):
         if not conf.CheckLib(lib):
             print('!! Cannot locate library {0}'.format(lib))
             Exit(0)
-        
+
 
 def sanity_checks(conf):
     if not conf.CheckCXX():
@@ -75,6 +76,7 @@ def update_and_check_env(conf, dependencies):
                 conf.env.Append(LINKFLAGS = "-rpath {0}".format(dep.lib_path))
         check_dependency(conf, dep)
     
+
 def create_gsl_cpy_commands(conf, dependencies, copy_folder):
     '''
     Create os dependent commands. On darwin: copy all gsl libs, fix
@@ -84,12 +86,13 @@ def create_gsl_cpy_commands(conf, dependencies, copy_folder):
     if conf.env["SYSTEM"] == "Darwin" and dependencies["gsl"].lib_path:
         lib_path = dependencies["gsl"].lib_path
         commands = []
-        
+
         for lib in Glob(os.path.join(lib_path, "*")):
             new_path = os.path.join(copy_folder, 
                                     os.path.basename(lib.rstr()))
             action = [Copy("$TARGET", "$SOURCE")]
-            if ("0.dylib" in lib.rstr()):
+            
+            if "dylib" in lib.rstr():
                 action += [fix_dylib_for_darwin]
 
             kw = {
@@ -97,9 +100,8 @@ def create_gsl_cpy_commands(conf, dependencies, copy_folder):
                 'source' : '{0}'.format(lib),
                 'action' : action
                 }
-
             commands.append(kw)
-        
+
         dependencies["gsl"].lib_path = Dir(copy_folder).abspath
         return commands
 

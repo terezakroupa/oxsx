@@ -1,0 +1,10 @@
+class_<Convolution>(m, "Convolution", base<Systematic>())
+.def(init<>())
+.def("set_function", &Convolution::SetFunction)
+.def("set_axes", &Convolution::SetAxes, keep_alive<1, 2>())
+.def("construct", &Convolution::Construct)
+.def("make_fittable", &Convolution::MakeFittable)
+.def("get_parameter_names", &Convolution::GetParameterNames)
+.def("get_parameters", &Convolution::GetParameters)
+.def("get_parameter_count", &Convolution::GetParameterCount)
+.def("set_parameters", &Convolution::SetParameters);

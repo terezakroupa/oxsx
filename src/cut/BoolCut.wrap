@@ -1,0 +1,5 @@
+class_<BoolCut>(m, "BoolCut", base<Cut>())
+.def(init<size_t, double>())
+.def(init<BoolCut>())
+.def("passes_cut", &BoolCut::PassesCut)
+.def("clone", &BoolCut::Clone);

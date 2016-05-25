@@ -1,0 +1,12 @@
+class_<GridSearch>(m, "GridSearch", base<Optimiser>())
+.def(init<>())
+.def("optimise", &GridSearch::Optimise, return_value_policy::reference_internal)
+.def("set_minima", &GridSearch::SetMinima)
+.def("set_maxima", &GridSearch::SetMaxima)
+.def("set_step_sizes", &GridSearch::SetStepSizes)
+.def("get_minima", &GridSearch::GetMinima)
+.def("get_maxima", &GridSearch::GetMaxima)
+.def("get_step_sizes", &GridSearch::GetStepSizes)
+.def("get_fit_result", &GridSearch::GetFitResult)
+.def("get_maximising", &GridSearch::GetMaximising)
+.def("set_maximising", &GridSearch::SetMaximising);

@@ -1,0 +1,6 @@
+class_<EventData>(m, "EventData")
+.def(init<const std::vector<double> >())
+.def("get_data", &EventData::GetData)
+.def("get_datum", &EventData::GetDatum)
+.def("to_representation", &EventData::ToRepresentation)
+.def("get_n_observables", &EventData::GetNObservables);

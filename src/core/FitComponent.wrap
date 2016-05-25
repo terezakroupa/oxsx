@@ -1,0 +1,9 @@
+// Pure virtual class
+class_<FitComponent>(m, "FitComponent")
+.def("make_fittable", &FitComponent::MakeFittable)
+.def("get_parameter_names", &FitComponent::GetParameterNames)
+.def("get_parameters", &FitComponent::GetParameters)
+.def("get_parameter_count", &FitComponent::GetParameterCount)
+.def("set_parameters", &FitComponent::SetParameters);
+
+
