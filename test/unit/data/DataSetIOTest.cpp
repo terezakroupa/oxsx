@@ -2,14 +2,14 @@
 #include <ROOTNtuple.h>
 #include <IO.h>
 #include <OXSXDataSet.h>
-
+#include <iostream>
 TEST_CASE("Writing a data set to disk  and reading back"){
     
     // Create fake data set
     OXSXDataSet origDataSet;
     std::vector<double> eventObs(4);
 
-    for(unsigned i = 0; i < 10; i++){
+    for(unsigned i = 0; i < 20; i++){
         for(size_t j = 0; j < eventObs.size(); j++)
             eventObs[j] = j;
         
@@ -25,20 +25,24 @@ TEST_CASE("Writing a data set to disk  and reading back"){
     origDataSet.SetObservableNames(names);
     
     IO::SaveDataSet(origDataSet, "data_set_io_root_test.h5");
-    OXSXDataSet loadedSet = IO::LoadDataSet("data_set_io_root_test.h5");
+    OXSXDataSet* loadedSet = IO::LoadDataSet("data_set_io_root_test.h5");
+	size_t nEntries = origDataSet.GetNEntries();
 
     SECTION("Names copied correctly"){
-        REQUIRE(origDataSet.GetObservableNames() == loadedSet.GetObservableNames());
+        REQUIRE(origDataSet.GetObservableNames() == loadedSet->GetObservableNames());
     }
 
     SECTION("Same Data dimension"){
-        REQUIRE(origDataSet.GetNEntries() == loadedSet.GetNEntries());
-        REQUIRE(origDataSet.GetNObservables() == loadedSet.GetNObservables());
+        REQUIRE(origDataSet.GetNEntries() == loadedSet->GetNEntries());
+        REQUIRE(origDataSet.GetNObservables() == loadedSet->GetNObservables());
     }
+	SECTION("Same number of events"){
+	  REQUIRE(loadedSet->GetNEntries() == nEntries);
+	}
+
     SECTION("Same first and last data"){
-        size_t nEntries = origDataSet.GetNEntries();
-        REQUIRE(origDataSet.GetEntry(0).GetData() == loadedSet.GetEntry(0).GetData());
-        REQUIRE(origDataSet.GetEntry(nEntries -1).GetData() == loadedSet.GetEntry(nEntries -1).GetData());
+        REQUIRE(origDataSet.GetEntry(0).GetData() == loadedSet->GetEntry(0).GetData());
+        REQUIRE(origDataSet.GetEntry(nEntries -1).GetData() == loadedSet->GetEntry(nEntries -1).GetData());
     }
     
     remove("data_set_io_root_test.h5");
