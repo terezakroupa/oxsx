@@ -21,14 +21,14 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     if (observableNames.size() != nObs)
         throw IOError("SaveDataSet::Require one name and one name only for each observable");
     
-	// Set up files
+    // Set up files
     H5::H5File file(filename_, H5F_ACC_TRUNC);
-	// Set up the data set
+    // Set up the data set
     // 1D, ndata long, called "observations". Saved as native doubles on this computer
     H5::DataSpace dataSpace(1, &nData);  
 
-	// Data Set
-	H5::DataSet   theData(file.createDataSet("observations", H5::PredType::NATIVE_DOUBLE, dataSpace));
+    // Data Set
+    H5::DataSet   theData(file.createDataSet("observations", H5::PredType::NATIVE_DOUBLE, dataSpace));
 
     //  Set up the attributes - the number of obs per event and the names of the observables
     //  64 chars max in str to save space
@@ -41,65 +41,65 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
                                                      H5::PredType::NATIVE_INT,
                                                      attSpace);
     countAtt.write(H5::PredType::NATIVE_INT, &nObs);
-    	
-	//  Write the data
-	//  Flatten data into 1D array
+        
+    //  Write the data
+    //  Flatten data into 1D array
     //  HDF5 likes c arrays. Here use a vector and pass pointer to first element 
     //  memory guaranteed to be contiguous
-	//  for very large datasets copying to flatten will give std::bad_alloc so use hyperslabs
-	hsize_t startSlab[1];
-	hsize_t count[1];
-	hsize_t evCount;
-	
-	hsize_t startEntry;
-	hsize_t stopEntry;
-	hsize_t nSlabEntries;
-	
+    //  for very large datasets copying to flatten will give std::bad_alloc so use hyperslabs
+    hsize_t startSlab[1];
+    hsize_t count[1];
+    hsize_t evCount;
+    
+    hsize_t startEntry;
+    hsize_t stopEntry;
+    hsize_t nSlabEntries;
+    
     std::vector<double> flattenedData;
     std::vector<double> eventData;
 
-	// only both to split the data up into chunks of 1e5 to avoid a big copy
-	int nSlabs = nData/10000 + 1;
-	for(int i = 0; i < nSlabs; i++){
-	  /// work out the event range
-	  startEntry =  i * nEntries / nSlabs;
-	  stopEntry  =  (i + 1) * nEntries/ nSlabs;
-	  if(i == (nSlabs - 1))
-		stopEntry = nEntries;
-	  
-	  nSlabEntries = stopEntry - startEntry;
-	  
-	  // work out the data range
-	  startSlab[0] = startEntry * nObs;
-	  count[0] = nSlabEntries * nObs;
-	  dataSpace.selectHyperslab(H5S_SELECT_SET, count, startSlab);
-	  H5::DataSpace mspace(1, count);
+    // only both to split the data up into chunks of 1e5 to avoid a big copy
+    int nSlabs = nData/10000 + 1;
+    for(int i = 0; i < nSlabs; i++){
+      /// work out the event range
+      startEntry =  i * nEntries / nSlabs;
+      stopEntry  =  (i + 1) * nEntries/ nSlabs;
+      if(i == (nSlabs - 1))
+        stopEntry = nEntries;
+      
+      nSlabEntries = stopEntry - startEntry;
+      
+      // work out the data range
+      startSlab[0] = startEntry * nObs;
+      count[0] = nSlabEntries * nObs;
+      dataSpace.selectHyperslab(H5S_SELECT_SET, count, startSlab);
+      H5::DataSpace mspace(1, count);
 
-	  // now flatten those events and write to the hyperslab
-	  flattenedData.clear();
-	  flattenedData.reserve(count[0]);
-	  for(hsize_t j = startEntry; j < stopEntry; j++){
+      // now flatten those events and write to the hyperslab
+      flattenedData.clear();
+      flattenedData.reserve(count[0]);
+      for(hsize_t j = startEntry; j < stopEntry; j++){
         eventData = dataSet_.GetEntry(j).GetData();
         flattenedData.insert(flattenedData.end(), eventData.begin(), eventData.end());
-	  }
-	  theData.write(&flattenedData.at(0), H5::PredType::NATIVE_DOUBLE, dataSpace, mspace);
+      }
+      theData.write(&flattenedData.at(0), H5::PredType::NATIVE_DOUBLE, dataSpace, mspace);
     } // slab loop
 }
 
 OXSXDataSet*
 IO::LoadDataSet(const std::string& filename_){  
-  	std::cout << "IO::Loading " << filename_ << std::endl;
+    std::cout << "IO::Loading " << filename_ << std::endl;
     // Get Data Set
     H5::H5File file;
     try{
-	  file.openFile(filename_, H5F_ACC_RDONLY);	  
-	}
-	
-	catch(const H5::FileIException&){
-	  throw IOError("Failed to open data set file : "  + filename_ + "\n check the path");
-	}
+      file.openFile(filename_, H5F_ACC_RDONLY);   
+    }
+    
+    catch(const H5::FileIException&){
+      throw IOError("Failed to open data set file : "  + filename_ + "\n check the path");
+    }
 
-    H5::DataSet dataSet = file.openDataSet("observations");	
+    H5::DataSet dataSet = file.openDataSet("observations"); 
 
     // read meta information
     unsigned nObs = 0;
@@ -109,77 +109,77 @@ IO::LoadDataSet(const std::string& filename_){
     nameAtt.read(nameAtt.getDataType(), strreadbuf);
     countAtt.read(countAtt.getDataType(), &nObs);    
 
-	// Assemble into an OXSX data set
+    // Assemble into an OXSX data set
     OXSXDataSet* oxsxDataSet = new OXSXDataSet;
 
-	// Set the variable names
+    // Set the variable names
     oxsxDataSet -> SetObservableNames(UnpackString(strreadbuf));
 
     // Read data out as 1D array
     hsize_t nData = 0;
     dataSet.getSpace().getSimpleExtentDims(&nData, NULL);
     size_t nEntries = nData/nObs;
-	oxsxDataSet->Reserve(nEntries);
+    oxsxDataSet->Reserve(nEntries);
 
-	// if the data set is small, just load it up all in one go
-	if(nEntries < 1000000){
-	  std::vector<double> flatData(nData, 0);
-	  dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE);
+    // if the data set is small, just load it up all in one go
+    if(nEntries < 1000000){
+      std::vector<double> flatData(nData, 0);
+      dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE);
 
-	  std::vector<double> oneEventObs(nObs, 0);
-	  for(size_t i = 0; i < nEntries; i++){
+      std::vector<double> oneEventObs(nObs, 0);
+      for(size_t i = 0; i < nEntries; i++){
         for(size_t j = 0; j < nObs; j++)
-		  oneEventObs[j] = flatData.at(i * nObs + j);
+          oneEventObs[j] = flatData.at(i * nObs + j);
         
         oxsxDataSet -> AddEntry(EventData(oneEventObs));
-	  }
-	}
-	
-	// For larger files read in chunks of 100000 events
-	else{
-	  H5::DataSpace dataSpace = dataSet.getSpace();
-	  hsize_t extent[1] = {100000 * nObs};
-	  H5::DataSpace memSpace(1, extent);
-	  std::vector<double> flatData(100000 * nObs, 0);
-	  std::vector<double> oneEventObs(nObs, 0);
+      }
+    }
+    
+    // For larger files read in chunks of 100000 events
+    else{
+      H5::DataSpace dataSpace = dataSet.getSpace();
+      hsize_t extent[1] = {100000 * nObs};
+      H5::DataSpace memSpace(1, extent);
+      std::vector<double> flatData(100000 * nObs, 0);
+      std::vector<double> oneEventObs(nObs, 0);
 
-	  hsize_t stride[1] = {1}; // move along to each entry in data set one at a time
-	  hsize_t count[1]  = {100000 * nObs}; // take 100 events at a time
+      hsize_t stride[1] = {1}; // move along to each entry in data set one at a time
+      hsize_t count[1]  = {100000 * nObs}; // take 100 events at a time
 
-	  for(unsigned i = 0; i < unsigned(nEntries/100000); i++){
-		hsize_t offset[1] = {i * 100000 * nObs};
-		dataSpace.selectHyperslab(H5S_SELECT_SET, count, offset, stride, NULL);	   
-		
-		dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE, memSpace, dataSpace);
-	  
-	   for(size_t j = 0; j < 100000; j++){
+      for(unsigned i = 0; i < unsigned(nEntries/100000); i++){
+        hsize_t offset[1] = {i * 100000 * nObs};
+        dataSpace.selectHyperslab(H5S_SELECT_SET, count, offset, stride, NULL);    
+        
+        dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE, memSpace, dataSpace);
+      
+       for(size_t j = 0; j < 100000; j++){
          for(size_t k = 0; k < nObs; k++){
-	   	  oneEventObs[k] = flatData.at(j * nObs + k);
-		 }
-		 oxsxDataSet->AddEntry(EventData(oneEventObs));
-	   }
-	 	  
-	  } // loop over chunks
+          oneEventObs[k] = flatData.at(j * nObs + k);
+         }
+         oxsxDataSet->AddEntry(EventData(oneEventObs));
+       }
+          
+      } // loop over chunks
 
-	  // Now take care of the left overs
-	  hsize_t nLeftOver = (nEntries % 100000); 
-	  extent[0] = nObs * nLeftOver;
-	  memSpace = H5::DataSpace(1, extent);
-	  flatData.resize(extent[0]);
-	  hsize_t offset[1] = {100000 * (nEntries/100000) * nObs};
-	  dataSpace.selectHyperslab(H5S_SELECT_SET, extent, offset, stride, NULL);
-	  dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE, memSpace, dataSpace);
+      // Now take care of the left overs
+      hsize_t nLeftOver = (nEntries % 100000); 
+      extent[0] = nObs * nLeftOver;
+      memSpace = H5::DataSpace(1, extent);
+      flatData.resize(extent[0]);
+      hsize_t offset[1] = {100000 * (nEntries/100000) * nObs};
+      dataSpace.selectHyperslab(H5S_SELECT_SET, extent, offset, stride, NULL);
+      dataSet.read(&flatData.at(0), H5::PredType::NATIVE_DOUBLE, memSpace, dataSpace);
 
-	  for(size_t i = 0; i < nLeftOver; i++){
-		for(size_t j = 0; j < nObs; j++)
-		  oneEventObs[j] = flatData.at(i * nObs + j);
-		
-		oxsxDataSet->AddEntry(EventData(oneEventObs));
-	  }
-	  
-	} // else.. 
+      for(size_t i = 0; i < nLeftOver; i++){
+        for(size_t j = 0; j < nObs; j++)
+          oneEventObs[j] = flatData.at(i * nObs + j);
+        
+        oxsxDataSet->AddEntry(EventData(oneEventObs));
+      }
+      
+    } // else.. 
 
-	return oxsxDataSet;
+    return oxsxDataSet;
 }
 
 std::string
