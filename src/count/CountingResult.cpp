@@ -1,5 +1,8 @@
 #include <CountingResult.h>
 #include <Formatter.hpp>
+#include <Comparison.hpp>
+#include <utility>
+#include <algorithm>
 #include <numeric>
 #include <fstream>
 #include <iostream>
@@ -113,15 +116,21 @@ CountingResult::AsString() const{
                  << std::left
                  << std::setw(10)
                  << "Counts";
+	
+	std::vector<std::pair<std::string, double> > sortedRatesByName;
+	for(size_t i = 0; i < fExpectedRates.size(); i++){
+	  sortedRatesByName.push_back(std::pair<std::string, double>(fBackgroundNames.at(i), fExpectedRates.at(i)));
+	}	
+	std::sort(sortedRatesByName.begin(), sortedRatesByName.end(), PairSortBySecond<std::string, double, std::greater<double> >());
 
-    for(size_t i = 0; i < fExpectedRates.size(); i++){
+    for(size_t i = 0; i < sortedRatesByName.size(); i++){
         resultString << "\n"
                      << std::setw(25)
                      << std::left
-                     << fBackgroundNames.at(i)
+                     << sortedRatesByName.at(i).first
                      << std::setw(10)
                      << std::left
-                     << fExpectedRates.at(i);
+                     << sortedRatesByName.at(i).second; 
     }
         
     resultString << "\n"
