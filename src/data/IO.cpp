@@ -61,9 +61,10 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
     // only both to split the data up into chunks of 1e5 to avoid a big copy
     int nSlabs = nData/10000 + 1;
     for(int i = 0; i < nSlabs; i++){
+        std::cout << "slab # " << i << " / " << nSlabs << std::endl;
       /// work out the event range
-      startEntry =  i * nEntries / nSlabs;
-      stopEntry  =  (i + 1) * nEntries/ nSlabs;
+      startEntry =  i * (nEntries / nSlabs);
+      stopEntry  =  (i + 1) * (nEntries/ nSlabs);
       if(i == (nSlabs - 1))
         stopEntry = nEntries;
       
@@ -82,7 +83,7 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
         eventData = dataSet_.GetEntry(j).GetData();
         flattenedData.insert(flattenedData.end(), eventData.begin(), eventData.end());
       }
-      theData.write(&flattenedData.at(0), H5::PredType::NATIVE_DOUBLE, dataSpace, mspace);
+      theData.write(&flattenedData.at(0), H5::PredType::NATIVE_DOUBLE, mspace, dataSpace);
     } // slab loop
 }
 
