@@ -9,7 +9,9 @@ TEST_CASE("Writing a data set to disk  and reading back"){
     OXSXDataSet origDataSet;
     std::vector<double> eventObs(4);
 
-    for(unsigned i = 0; i < 20; i++){
+    for(unsigned i = 0; i < 218112619; i++){
+        if(!(i%1000000))
+            std::cout << 100. * i/218112619 << " % " << std::endl;
         for(size_t j = 0; j < eventObs.size(); j++)
             eventObs[j] = j;
         
