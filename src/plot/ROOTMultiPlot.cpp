@@ -2,7 +2,6 @@
 #include <PdfConverter.h>
 #include <Exceptions.h>
 #include <BinnedPdf.h>
-#include <THStack.h>
 #include <iostream>
 
 //FIXME: add marginalisations for higher D pdfs
@@ -15,7 +14,7 @@ ROOTMultiPlot::fColorScheme[fNcolors] = {kRed, kBlue, kViolet,
 					 
 
 void
-ROOTMultiPlot::AddPdf(const BinnedPdf& pdf_, const std::string name_){
+ROOTMultiPlot::AddPdf(const BinnedPdf& pdf_, const std::string& name_){
   size_t nDims = pdf_.GetNDims();
   if (nDims != 1)
     throw DimensionError("ROOTMultiPlot::Added dim != 1 binned pdf!");
@@ -27,7 +26,7 @@ ROOTMultiPlot::AddPdf(const BinnedPdf& pdf_, const std::string name_){
 }
 
 void 
-ROOTMultiPlot::AddPdf(const TH1D& pdf_, const std::string name_){
+ROOTMultiPlot::AddPdf(const TH1D& pdf_, const std::string& name_){
   fHists.push_back(pdf_);
   fNames.push_back(name_);
   fConstructed = false;
@@ -61,8 +60,9 @@ ROOTMultiPlot::Construct(){
   double minX = 0;
 
   for(size_t i = 0; i < fHists.size(); i++){
-    double xUp = fHists.at(i).GetMaximum();    
-    double xLow = fHists.at(i).GetMinimum();
+    TAxis* axis = fHists[i].GetXaxis();
+    double xUp  = axis -> GetBinLowEdge(axis -> GetFirst());
+    double xLow = axis -> GetBinUpEdge(axis  -> GetLast());
 
     if(xUp > maxX || !i)
       maxX = xUp;
@@ -71,25 +71,24 @@ ROOTMultiPlot::Construct(){
   }
   double span = maxX - minX;
   for(size_t i = 0; i < fHists.size(); i++){
-    //    fHists.at(i).GetXaxis() -> SetRange(minX - 0.1 * span, maxX + 0.1 * span);
-    continue;
+      fHists.at(i).GetXaxis() -> SetRangeUser(minX - 0.1 * span, maxX + 0.1 * span);
   }
   
   // draw with legend
   fCanvas.Clear();
   fLegend.Clear();
   fCanvas.cd();
-
-  for(size_t i = 0; i < fNames.size(); i++){
-    fLegend.AddEntry(&fHists.at(i), fNames.at(i).c_str());
-    fHists[i].SetLineColor(fColorScheme[i %fNcolors]);
-  }
-
+  
   if(fStacked)
 	ConstructStacked();
   else
 	ConstructOverlay();
 
+  for(size_t i = 0; i < fNames.size(); i++){
+      fLegend.AddEntry(&fHists.at(i), fNames.at(i).c_str());
+      fHists[i].SetLineColor(fColorScheme[i %fNcolors]);
+  }
+  
   if(fDrawLegend)
     fLegend.Draw("same");
   
@@ -111,8 +110,13 @@ ROOTMultiPlot::ConstructOverlay(){
 
 void
 ROOTMultiPlot::ConstructStacked(){
-  THStack stack("", "");
+  fStack.Clear();
   for(size_t i = 0; i < fNames.size(); i++)
-	stack.Add(&fHists.at(i));
-  stack.Draw();
+	fStack.Add(&fHists.at(i));
+  fStack.Draw();
+}
+
+void
+ROOTMultiPlot::SetDrawLegend(bool b_){
+    fDrawLegend = b_;
 }
