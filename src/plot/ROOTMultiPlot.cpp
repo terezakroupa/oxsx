@@ -2,7 +2,9 @@
 #include <PdfConverter.h>
 #include <Exceptions.h>
 #include <BinnedPdf.h>
+#include <THStack.h>
 #include <iostream>
+
 //FIXME: add marginalisations for higher D pdfs
 const unsigned 
 ROOTMultiPlot::fNcolors = 7;
@@ -28,6 +30,7 @@ void
 ROOTMultiPlot::AddPdf(const TH1D& pdf_, const std::string name_){
   fHists.push_back(pdf_);
   fNames.push_back(name_);
+  fConstructed = false;
 }
 
 void
@@ -73,15 +76,43 @@ ROOTMultiPlot::Construct(){
   }
   
   // draw with legend
+  fCanvas.Clear();
+  fLegend.Clear();
   fCanvas.cd();
+
   for(size_t i = 0; i < fNames.size(); i++){
     fLegend.AddEntry(&fHists.at(i), fNames.at(i).c_str());
     fHists[i].SetLineColor(fColorScheme[i %fNcolors]);
-    fHists.at(i).Draw("same");
-
   }
+
+  if(fStacked)
+	ConstructStacked();
+  else
+	ConstructOverlay();
+
   if(fDrawLegend)
     fLegend.Draw("same");
   
   fConstructed = true;
+}
+
+void
+ROOTMultiPlot::SetStacked(bool b_){
+  fStacked = b_;
+  fConstructed = false;
+}
+
+void
+ROOTMultiPlot::ConstructOverlay(){
+  for(size_t i = 0; i < fNames.size(); i++){
+    fHists.at(i).Draw("same");	
+  }
+}
+
+void
+ROOTMultiPlot::ConstructStacked(){
+  THStack stack("", "");
+  for(size_t i = 0; i < fNames.size(); i++)
+	stack.Add(&fHists.at(i));
+  stack.Draw();
 }

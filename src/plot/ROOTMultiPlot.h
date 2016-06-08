@@ -12,7 +12,7 @@
 class BinnedPdf;
 class ROOTMultiPlot{
  public:
-  ROOTMultiPlot() : fLegend(TLegend(0.7, 0.7, 0.9, 0.9)), fConstructed(false), fDrawLegend(true){}
+  ROOTMultiPlot() : fLegend(TLegend(0.7, 0.7, 0.9, 0.9)), fConstructed(false), fDrawLegend(true), fStacked(false){}
 
   void AddPdf(const BinnedPdf& pdf_, const std::string name_);
   void AddPdf(const TH1D& pdf_, const std::string name_);
@@ -20,10 +20,15 @@ class ROOTMultiPlot{
   void SaveAs(const std::string& filename_);
   TCanvas& GetCanvas();
 
+  void SetStacked(bool b_ = true);
  private:
   bool    fConstructed;
   bool    fDrawLegend;
+  bool    fStacked;
+
   void    Construct();
+  void    ConstructOverlay();
+  void    ConstructStacked();
 
   TCanvas fCanvas;
   TLegend fLegend;
