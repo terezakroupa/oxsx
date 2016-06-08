@@ -104,6 +104,7 @@ ROOTMultiPlot::SetStacked(bool b_){
 void
 ROOTMultiPlot::ConstructOverlay(){
   for(size_t i = 0; i < fNames.size(); i++){
+    fHists[i].SetFillColor(0);
     fHists.at(i).Draw("same");	
   }
 }
@@ -111,8 +112,10 @@ ROOTMultiPlot::ConstructOverlay(){
 void
 ROOTMultiPlot::ConstructStacked(){
   fStack.Clear();
-  for(size_t i = 0; i < fNames.size(); i++)
+  for(size_t i = 0; i < fNames.size(); i++){
 	fStack.Add(&fHists.at(i));
+    fHists[i].SetFillColor(fColorScheme[i %fNcolors]);
+  }
   fStack.Draw();
 }
 
