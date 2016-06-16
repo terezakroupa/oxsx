@@ -67,7 +67,7 @@ ComponentManager::Clear(){
 }
 
 double
-ComponentManager::GetParameter(const std::string& paramName_){
+ComponentManager::GetParameter(const std::string& paramName_) const{
     for(size_t i = 0; i < fComponents.size(); i++){
         FitComponent* component = fComponents[i];
         std::vector<std::string> names = component->GetParameterNames();

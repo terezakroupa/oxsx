@@ -15,7 +15,7 @@ class ComponentManager{
     int                       GetTotalParameterCount() const;
     void                      Clear();
 
-    double GetParameter(const std::string&);
+    double GetParameter(const std::string&) const;
 
  private:
     std::vector<FitComponent*>  fComponents;
