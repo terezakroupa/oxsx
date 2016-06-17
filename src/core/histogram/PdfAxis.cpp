@@ -70,7 +70,7 @@ PdfAxis::PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_,
 
 size_t 
 PdfAxis::FindBin(double value_) const{
-  size_t insertIndex = std::lower_bound(fBinHighEdges.begin(), fBinHighEdges.end(), value_) - fBinHighEdges.begin();
+  size_t insertIndex = std::lower_bound(fBinLowEdges.begin(), fBinLowEdges.end(), value_) - fBinLowEdges.begin();
     if (insertIndex == fNBins)
         return insertIndex-1;
     return insertIndex;
