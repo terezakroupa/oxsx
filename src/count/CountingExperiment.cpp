@@ -3,6 +3,7 @@
 #include <DataSet.h>
 #include <Formatter.hpp>
 #include <iostream>
+#include <cmath>
 
 void
 CountingExperiment::CountData(DataSet* testData_){
@@ -33,7 +34,9 @@ CountingExperiment::CountBackgrounds(){
                 eventsPassed++;
         }
         double counts = (eventsPassed * fBackgroundNorms.at(i) / dataSet->GetNEntries());
-        fResult.AddBackground(counts, fBackgroundNames.at(i), cutLog);
+		// MC statistics introduces a systematic error
+		double error = sqrt(eventsPassed) * fBackgroundNorms.at(i)/dataSet->GetNEntries();
+        fResult.AddBackground(counts, fBackgroundNames.at(i), error, cutLog);
     }
 }
 
@@ -41,7 +44,6 @@ void
 CountingExperiment::CountSignal(){
     int signalCount = 0;
     CutLog cutLog = (fCuts.GetCutNames());
-    std::cout << fSignalName << std::endl;
     for(size_t i = 0; i < fSignalDataSet -> GetNEntries(); i++){
         EventData transformed = fSystematics.ApplySystematics(fSignalDataSet -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
