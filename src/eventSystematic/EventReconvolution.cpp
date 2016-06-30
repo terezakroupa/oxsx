@@ -2,12 +2,13 @@
 #include <EventData.h>
 #include <Formatter.hpp>
 #include <Exceptions.h>
+#include <iostream>
 
 EventData
 EventReconvolution::operator()(const EventData& event_){
     std::vector<double> obs = event_.GetData();
-    double relevantOb = obs[fDataRep.GetIndex(0)];
-    double truthVal   = obs[fDataRep.GetIndex(1)];
+    double relevantOb = obs.at(fDataRep.GetIndex(0));
+    double truthVal   = obs.at(fDataRep.GetIndex(1));
 
     obs[fDataRep.GetIndex(0)] = truthVal + fCorrection * (relevantOb - truthVal);
     return EventData(obs);

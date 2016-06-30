@@ -22,8 +22,6 @@ class PdfAxis{
     PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_, 
             const std::vector<double>& highEdges_, const std::string& latexName_ = "");
 
-    ~PdfAxis() {}
-
     // Find the Bin value_ is in
     size_t FindBin(double value_) const;
 
@@ -57,7 +55,7 @@ class PdfAxis{
     std::vector<double> fBinLowEdges;
     std::vector<double> fBinHighEdges;
     std::vector<double> fBinCentres;
-	std::vector<double> fBinWidths;
+    std::vector<double> fBinWidths;
 };
 
 #endif

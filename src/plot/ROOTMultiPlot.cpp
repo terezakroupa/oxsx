@@ -54,7 +54,7 @@ void
 ROOTMultiPlot::Construct(){
   if(!fHists.size())
     return;
-    
+
   // Setsizes
   double maxX = 0;
   double minX = 0;
@@ -71,9 +71,9 @@ ROOTMultiPlot::Construct(){
   }
   double span = maxX - minX;
   for(size_t i = 0; i < fHists.size(); i++){
-      fHists.at(i).GetXaxis() -> SetRangeUser(minX - 0.1 * span, maxX + 0.1 * span);
+	//      fHists[i].GetXaxis() -> SetRangeUser(minX, maxX);
   }
-  
+
   // draw with legend
   fCanvas.Clear();
   fLegend.Clear();
@@ -104,7 +104,7 @@ ROOTMultiPlot::SetStacked(bool b_){
 void
 ROOTMultiPlot::ConstructOverlay(){
   for(size_t i = 0; i < fNames.size(); i++){
-    fHists[i].SetFillColor(0);
+	fHists[i].SetFillColor(0);
     fHists.at(i).Draw("same");	
   }
 }

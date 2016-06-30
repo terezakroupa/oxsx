@@ -5,6 +5,7 @@
 
 class EventData;
 class EventReconvolution : public EventSystematic, public FitComponent{
+ public:
     EventReconvolution() : fCorrection(1){}
     EventData operator()(const EventData&);
 
