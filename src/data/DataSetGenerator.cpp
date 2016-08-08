@@ -78,20 +78,36 @@ OXSXDataSet
 DataSetGenerator::AllValidEvents(){
     OXSXDataSet dataSet;
     for(size_t i = 0; i < fDataSets.size(); i++){
-	  const std::vector<size_t>& selectedEvents = fSelectedEvents.at(i);
-        for(size_t j = 0; j < fDataSets.at(i) -> GetNEntries(); j++){
-		  if (!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), j) != selectedEvents.end())
-			continue;
-		  
-            EventData event_ = fDataSets.at(i)->GetEntry(j);
+	  for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
+		EventData event_ = fDataSets.at(i)->GetEntry(j);
         if (fCuts.PassesCuts(event_))
-                dataSet.AddEntry(event_);
-            
-        } // events
+		  dataSet.AddEntry(event_);		
+	  } // events
     } // data sets
     return dataSet;
 }
 
+
+std::vector<OXSXDataSet> 
+DataSetGenerator::AllRemainingEvents(){
+  std::vector<OXSXDataSet> remainders;
+
+  for(size_t i = 0; i < fDataSets.size(); i++){
+	OXSXDataSet dataSet;
+	const std::vector<size_t>& selectedEvents = fSelectedEvents.at(i);
+	for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
+	  EventData event_ = fDataSets.at(i)->GetEntry(j);
+	  if(!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), j) != selectedEvents.end())
+		continue;
+	  if (fCuts.PassesCuts(event_))
+		dataSet.AddEntry(event_);	  
+	} // events
+	remainders.push_back(dataSet);
+  } // data sets
+  
+  Reset();
+  return remainders;
+}
 
 EventData
 DataSetGenerator::RandomEvent(size_t handleIndex_){
