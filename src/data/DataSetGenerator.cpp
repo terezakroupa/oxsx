@@ -124,7 +124,7 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
   outData_.Reserve(outData_.GetNEntries() + nEvents_);
   for(size_t i = 0; i < nEvents_; i++){
 	if(!(i%10000))
-	  std::cout << i << "\t" << nEvents_ << std::endl;
+	  std::cout << i << "/" << nEvents_ << std::endl;
 
 	if (!max)
 	  max = eventIndices.size() -1;
