@@ -16,21 +16,31 @@ class EventData;
 
 class DataSetGenerator{
  public:
+    DataSetGenerator() : fBootstrap(false){}
     void SetDataSets(const std::vector<DataSet*> sets_);
     void SetExpectedRates(const std::vector<double>& rates_);
     void AddDataSet(DataSet* data_, double rates_);
     
     void SetCuts(const CutCollection& cuts_);
+    void AddCut(const Cut& cut_);
 
-    OXSXDataSet ExpectedRatesDataSet() const;
-    OXSXDataSet PoissonFluctuatedDataSet() const; // needs implementing
-    OXSXDataSet AllValidEvents() const; // needs implementing
+    bool GetBootstrap() const;
+    void SetBootstrap(bool);
+
+    OXSXDataSet ExpectedRatesDataSet();
+    OXSXDataSet PoissonFluctuatedDataSet(); 
+    OXSXDataSet AllValidEvents();
     
+    void Reset();
+    void ClearDataSets();
+
  private:
     std::vector<DataSet*>    fDataSets;
     std::vector<double>      fExpectedRates;
+    std::vector<std::vector<size_t> > fSelectedEvents;
     CutCollection            fCuts;
-    EventData                RandomEvent(size_t handleIndex_) const;
+    EventData                RandomEvent(size_t handleIndex_);
+    bool                     fBootstrap;
 };
 
 #endif
