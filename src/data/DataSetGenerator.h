@@ -32,15 +32,14 @@ class DataSetGenerator{
     OXSXDataSet AllValidEvents();
 	
 	std::vector<OXSXDataSet> AllRemainingEvents();
-    void Reset();
     void ClearDataSets();
 
  private:
     std::vector<DataSet*>    fDataSets;
     std::vector<double>      fExpectedRates;
-    std::vector<std::vector<size_t> > fSelectedEvents;
-    CutCollection            fCuts;
-    EventData                RandomEvent(size_t handleIndex_);
+	std::vector<std::vector<size_t> > fEventIndicies;
+	std::vector<size_t>      fMaxs;
+    void                     RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_, OXSXDataSet& data_);
     bool                     fBootstrap;
 };
 

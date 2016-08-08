@@ -7,17 +7,19 @@
 #include <stdlib.h>
 #include <math.h>
 #include <algorithm>
-
+#include <iostream>
 void
 DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
     fDataSets = sets_;
+	fEventIndicies.clear();
+	fMaxs.clear();
+	fEventIndicies.resize(sets_.size());
+	fMaxs.resize(sets_.size(), -1);
 }
 
 void
 DataSetGenerator::SetExpectedRates(const std::vector<double>& rates_){
     fExpectedRates = rates_;
-    fSelectedEvents.clear();
-    fSelectedEvents.resize(rates_.size());
 }
 
 OXSXDataSet
@@ -32,18 +34,9 @@ DataSetGenerator::ExpectedRatesDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-
-        for(unsigned j = 0; j < expectedCounts;){
-            EventData event_ = RandomEvent(i);
-            
-            // Add event to new data set if it passes cut
-            if (fCuts.PassesCuts(event_)){
-                dataSet.AddEntry(event_);
-                j++;
-            }
-        }
-    }
-    
+		RandomDrawsNoReplacement(i, expectedCounts, dataSet);
+	}
+		    
     return dataSet;
 }
 
@@ -58,18 +51,8 @@ DataSetGenerator::PoissonFluctuatedDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
-
-        for(unsigned j = 0; j < counts;){
-            EventData event_ = RandomEvent(i);
-            
-            // check it passes the cuts                            
-            if (fCuts.PassesCuts(event_)){
-                dataSet.AddEntry(event_);
-                j++;
-            }
-        }
-    }
-        
+		RandomDrawsNoReplacement(i, counts, dataSet);
+	}        
     return dataSet;
 }
 
@@ -80,8 +63,7 @@ DataSetGenerator::AllValidEvents(){
     for(size_t i = 0; i < fDataSets.size(); i++){
 	  for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
 		EventData event_ = fDataSets.at(i)->GetEntry(j);
-        if (fCuts.PassesCuts(event_))
-		  dataSet.AddEntry(event_);		
+		dataSet.AddEntry(event_);
 	  } // events
     } // data sets
     return dataSet;
@@ -91,62 +73,71 @@ DataSetGenerator::AllValidEvents(){
 std::vector<OXSXDataSet> 
 DataSetGenerator::AllRemainingEvents(){
   std::vector<OXSXDataSet> remainders;
-
   for(size_t i = 0; i < fDataSets.size(); i++){
-	OXSXDataSet dataSet;
-	const std::vector<size_t>& selectedEvents = fSelectedEvents.at(i);
-	for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
-	  EventData event_ = fDataSets.at(i)->GetEntry(j);
-	  if(!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), j) != selectedEvents.end())
-		continue;
-	  if (fCuts.PassesCuts(event_))
-		dataSet.AddEntry(event_);	  
-	} // events
-	remainders.push_back(dataSet);
-  } // data sets
-  
-  Reset();
+	OXSXDataSet data;
+	RandomDrawsNoReplacement(i, fMaxs.at(i), data);
+	remainders.push_back(data);
+  }
   return remainders;
 }
 
-EventData
-DataSetGenerator::RandomEvent(size_t handleIndex_){
-    const std::vector<size_t>& selectedEvents = fSelectedEvents.at(handleIndex_);
+void
+DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
+										   OXSXDataSet& outData_
+										   ){
 
-    if (selectedEvents.size() == fDataSets.at(handleIndex_)->GetNEntries() && !fBootstrap){
-        throw NotFoundError("DataSetGenerator::Ran out of events!");
-    }
+  // see http://stackoverflow.com/questions/196017/unique-non-repeating-random-numbers-in-o1#196065
+  // credit to Robert Gamble http://stackoverflow.com/users/25222/robert-gamble
+  std::vector<size_t>& eventIndices = fEventIndicies[handleIndex_];
+  size_t& max = fMaxs[handleIndex_];
+  DataSet* origData = fDataSets.at(handleIndex_);
+  if(origData->GetNEntries() < nEvents_)
+	throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsNoReplacement() asked for "
+						<< nEvents_ << " but only have " << origData -> GetNEntries() 
+						<< "events!");
 
-    bool uniqueEvent = false;
-    unsigned eventNum;
 
-    while(!uniqueEvent){
-        eventNum = Rand::Shoot(fDataSets.at(handleIndex_)->GetNEntries());
-        if (std::find(selectedEvents.begin(), selectedEvents.end(), eventNum) == selectedEvents.end())
-            uniqueEvent = true;
-    }
-    
-    if (!fBootstrap)
-        fSelectedEvents[handleIndex_].push_back(eventNum);
-    return fDataSets.at(handleIndex_)->GetEntry(eventNum);
+  if(!eventIndices.size()){
+	eventIndices.reserve(origData->GetNEntries());
+	for(size_t i = 0; i < origData -> GetNEntries(); i++)
+	  eventIndices.push_back(i);
+	max = eventIndices.size() - 1; // the effective end of the array
+  }
+
+
+  size_t cache = -1; // for swapping
+  size_t draw  = -1; // the random draw 
+
+  outData_.Reserve(outData_.GetNEntries() + nEvents_);
+  for(size_t i = 0; i < nEvents_; i++){
+	if (!max)
+	  max = eventIndices.size() -1;
+	// draw
+	draw = Rand::Shoot(max);
+
+	// swap
+	cache =	eventIndices[draw];
+	eventIndices[draw] = eventIndices[max];
+	eventIndices[max]  = cache;
+
+	// return 
+	outData_.AddEntry(origData -> GetEntry(eventIndices[max]));
+
+	// deincrement
+	max--;
+  }
+
+  return;
 }
 
 void
 DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
-    fSelectedEvents.push_back(std::vector<size_t>());
+	fEventIndicies.push_back(std::vector<size_t>());
+	fMaxs.push_back(-1);
 }
 
-void
-DataSetGenerator::SetCuts(const CutCollection& cuts_){
-    fCuts = cuts_;
-}
-
-void
-DataSetGenerator::AddCut(const Cut& cut_){
-    fCuts.AddCut(cut_);
-}
 
 bool
 DataSetGenerator::GetBootstrap() const{
@@ -159,14 +150,9 @@ DataSetGenerator::SetBootstrap(bool b_){
 }
 
 void 
-DataSetGenerator::Reset(){
-    for(size_t i = 0; i < fExpectedRates.size(); i++)
-        fSelectedEvents[i].clear();
-}
-
-void 
 DataSetGenerator::ClearDataSets(){
     fExpectedRates.clear();
-    fSelectedEvents.clear();
+	fEventIndicies.clear();
+	fMaxs.clear();
     fDataSets.clear();
 }
