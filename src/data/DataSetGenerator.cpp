@@ -2,10 +2,11 @@
 #include <DataSet.h>
 #include <OXSXDataSet.h>
 #include <Exceptions.h>
-#include <math.h>
 #include <EventData.h>
-#include <stdlib.h>
 #include <Rand.h>
+#include <stdlib.h>
+#include <math.h>
+#include <algorithm>
 
 void
 DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
@@ -77,11 +78,13 @@ OXSXDataSet
 DataSetGenerator::AllValidEvents(){
     OXSXDataSet dataSet;
     for(size_t i = 0; i < fDataSets.size(); i++){
-        for(unsigned j = 0; j < fDataSets.at(i) -> GetNEntries(); j++){
+	  const std::vector<size_t>& selectedEvents = fSelectedEvents.at(i);
+        for(size_t j = 0; j < fDataSets.at(i) -> GetNEntries(); j++){
+		  if (!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), j) != selectedEvents.end())
+			continue;
+		  
             EventData event_ = fDataSets.at(i)->GetEntry(j);
-            if (!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), eventNum) != selectedEvents.end())
-                continue;
-            if (fCuts.PassesCuts(event_))
+        if (fCuts.PassesCuts(event_))
                 dataSet.AddEntry(event_);
             
         } // events
@@ -95,7 +98,7 @@ DataSetGenerator::RandomEvent(size_t handleIndex_){
     const std::vector<size_t>& selectedEvents = fSelectedEvents.at(handleIndex_);
 
     if (selectedEvents.size() == fDataSets.at(handleIndex_)->GetNEntries() && !fBootstrap){
-        throw DataException("DataSetGenerator::Ran out of events!");
+        throw NotFoundError("DataSetGenerator::Ran out of events!");
     }
 
     bool uniqueEvent = false;
