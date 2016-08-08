@@ -79,6 +79,8 @@ DataSetGenerator::AllValidEvents(){
     for(size_t i = 0; i < fDataSets.size(); i++){
         for(unsigned j = 0; j < fDataSets.at(i) -> GetNEntries(); j++){
             EventData event_ = fDataSets.at(i)->GetEntry(j);
+            if (!fBootstrap && std::find(selectedEvents.begin(), selectedEvents.end(), eventNum) != selectedEvents.end())
+                continue;
             if (fCuts.PassesCuts(event_))
                 dataSet.AddEntry(event_);
             
