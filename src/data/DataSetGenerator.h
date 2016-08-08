@@ -31,9 +31,9 @@ class DataSetGenerator{
     OXSXDataSet PoissonFluctuatedDataSet(); 
     OXSXDataSet AllValidEvents();
 	
-	std::vector<OXSXDataSet> AllRemainingEvents();
+	std::vector<OXSXDataSet*> AllRemainingEvents();
     void ClearDataSets();
-
+	void Reset();
  private:
     std::vector<DataSet*>    fDataSets;
     std::vector<double>      fExpectedRates;
