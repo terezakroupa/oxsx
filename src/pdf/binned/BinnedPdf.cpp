@@ -1,5 +1,6 @@
 #include <BinnedPdf.h>
 #include <Exceptions.h>
+#include <Combinations.hpp>
 
 BinnedPdf::BinnedPdf(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);
@@ -67,6 +68,8 @@ BinnedPdf::Probability(const EventData& oberservations_) const{
                                   + " is the rep set correctly?");
     }
 }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // All methods below this line just forward the call to the underlying histogram object //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -193,5 +196,22 @@ BinnedPdf::Marginalise(const std::vector<size_t>& indices_) const{
 BinnedPdf
 BinnedPdf::Marginalise(size_t index_) const{
     return Marginalise(std::vector<size_t>(1, index_));
+}
+
+std::map<std::string, BinnedPdf> 
+BinnedPdf::GetAllProjections() const{
+  std::map<std::string, BinnedPdf> returnPdfs;
+  // work out all the possible combinations of the indicies
+  std::vector<std::vector<size_t> > projectionIndices = AllCombinations<size_t>(SequentialElements(size_t(0), size_t(GetNDims())));
+  for(size_t i = 0; i < projectionIndices.size(); i++){
+	  std::vector<size_t> indicesToKeep = projectionIndices.at(i);
+	  // create a unique name based on observables
+	  Formatter fm;
+	  for(size_t j = 0; j < indicesToKeep.size(); j++){
+		fm << GetAxes().GetAxis(j).GetName() << " ";
+	  }
+	  returnPdfs[fm] = Marginalise(indicesToKeep);
+  }
+  return returnPdfs;
 }
 

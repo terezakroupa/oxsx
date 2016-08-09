@@ -8,6 +8,7 @@
 #define __OXSX_HISTOGRAM__
 #include <AxisCollection.h>
 #include <vector>
+#include <map>
 
 class Histogram{
  public:
@@ -45,6 +46,7 @@ class Histogram{
 
     Histogram Marginalise(const std::vector<size_t>& indices_) const;
     Histogram Marginalise(size_t index_) const;
+	std::map<std::string, Histogram> GetAllProjections() const;
 	
     double    GetBinLowEdge(size_t bin_, size_t dim_) const;
     double    GetBinHighEdge(size_t bin_, size_t dim_) const;

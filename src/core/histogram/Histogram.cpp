@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Exceptions.h>
 #include <Formatter.hpp>
+#include <Combinations.hpp>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -197,6 +198,25 @@ Histogram
 Histogram::Marginalise(size_t index_) const {
     return Marginalise(std::vector<size_t>(1, index_));
 }
+
+std::map<std::string, Histogram>
+Histogram::GetAllProjections() const{
+  std::map<std::string, Histogram> returnHists;
+  // work out all the possible combinations of the indicies
+  std::vector<std::vector<size_t> > projectionIndices = AllCombinations<size_t>(SequentialElements(size_t(0), fNDims));
+  for(size_t i = 0; i < projectionIndices.size(); i++){
+	std::vector<size_t> indicesToKeep = projectionIndices.at(i);
+
+    // create a unique name based on observables
+    Formatter fm;
+    for(size_t j = 0; j < indicesToKeep.size(); j++){
+      fm << fAxes.GetAxis(j).GetName() << " ";
+	}
+	returnHists[fm] = Marginalise(indicesToKeep);
+  }
+  return returnHists;
+}
+
 
 double
 Histogram::GetBinLowEdge(size_t bin_, size_t index_) const{

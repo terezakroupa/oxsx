@@ -10,6 +10,8 @@
 #include <Histogram.h>
 #include <Pdf.h>
 #include <vector>
+#include <map>
+#include <string>
 
 class BinnedPdf : public Pdf{
  public:
@@ -56,7 +58,8 @@ class BinnedPdf : public Pdf{
         
     BinnedPdf Marginalise(const std::vector<size_t>& indices_) const;
     BinnedPdf Marginalise(size_t index_) const;
-
+	std::map<std::string, BinnedPdf> GetAllProjections() const;
+	
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
 

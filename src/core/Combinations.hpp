@@ -4,6 +4,18 @@
 #include <Exceptions.h>
 
 template<typename T>
+std::vector<T>
+SequentialElements(T init_, T nElements_){
+  typedef std::vector<T> TVec;
+  TVec returnVec;
+  returnVec.reserve(nElements_);
+  for(T i = init_; i < nElements_; i++){
+	returnVec.push_back(i);
+  }
+  return returnVec;
+}
+
+template<typename T>
 std::vector<std::vector<T> >
 AllCombinations(const std::vector<T>& vals_){
   typedef std::vector<std::vector<T> > TVecVec;
