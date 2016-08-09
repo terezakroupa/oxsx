@@ -2,6 +2,7 @@
 #include <IO.h>
 #include <Histogram.h>
 #include <Combinations.hpp>
+#include <cstdio>
 
 TEST_CASE("Writing a histogram to disk  and reading back"){
     // make any old histogram
@@ -15,7 +16,7 @@ TEST_CASE("Writing a histogram to disk  and reading back"){
     
     // save it to disk and read it back
     IO::SaveHistogram(origHisto, "tmp_test_histogram_io.h5");
-    Histogram loadedHisto = IO::LoadHistogram("testOrigHistogramWrite.h5");
+    Histogram loadedHisto = IO::LoadHistogram("tmp_test_histogram_io.h5");
 
     SECTION("SAME AXES"){
         for(unsigned i = 0; i < origHisto.GetNDims(); i++){
@@ -33,6 +34,6 @@ TEST_CASE("Writing a histogram to disk  and reading back"){
         REQUIRE(origHisto.GetBinContents() == loadedHisto.GetBinContents());
     }
 
-    remove("tmp_test_histogram_io.h5");
+	std::remove("tmp_test_histogram_io.h5");
 }
 
