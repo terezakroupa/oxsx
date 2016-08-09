@@ -17,20 +17,6 @@ SequentialElements(T init_, T nElements_){
 
 template<typename T>
 std::vector<std::vector<T> >
-AllCombinations(const std::vector<T>& vals_){
-  typedef std::vector<std::vector<T> > TVecVec;
-  typedef std::vector<T> TVec;
-
-  TVecVec allCombs;  
-  for(size_t i = 1; i < vals_.size(); i++){
-    TVecVec iLengthCombs = FixedLengthCombinations(vals_, i);
-    allCombs.insert(allCombs.end(), iLengthCombs.begin(), iLengthCombs.end());
-  }
-  return allCombs;
-}
-
-template<typename T>
-std::vector<std::vector<T> >
 FixedLengthCombinations(const std::vector<T>& vals_, int nElements_){
   typedef std::vector<std::vector<T> > TVecVec;
   typedef std::vector<T> TVec;
@@ -48,7 +34,7 @@ FixedLengthCombinations(const std::vector<T>& vals_, int nElements_){
   } // nElements = 1
 
   else{
-    TVecVec reducedCombs = FixedLengthCombinations(vals_, nElements_ - 1);
+    TVecVec reducedCombs = FixedLengthCombinations<T>(vals_, nElements_ - 1);
     for(size_t i = 0; i < vals_.size(); i++){
       for(size_t j = 0; j < reducedCombs.size(); j++){
         TVec oneComb = reducedCombs.at(j);
@@ -60,4 +46,19 @@ FixedLengthCombinations(const std::vector<T>& vals_, int nElements_){
 
   return returnVec;
 }
+
+template<typename T>
+std::vector<std::vector<T> >
+AllCombinations(const std::vector<T>& vals_){
+  typedef std::vector<std::vector<T> > TVecVec;
+  typedef std::vector<T> TVec;
+
+  TVecVec allCombs;  
+  for(size_t i = 1; i < vals_.size(); i++){
+    TVecVec iLengthCombs = FixedLengthCombinations<T>(vals_, i);
+    allCombs.insert(allCombs.end(), iLengthCombs.begin(), iLengthCombs.end());
+  }
+  return allCombs;
+}
+
 #endif
