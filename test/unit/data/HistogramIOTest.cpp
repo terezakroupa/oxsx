@@ -2,7 +2,6 @@
 #include <IO.h>
 #include <Histogram.h>
 #include <Combinations.hpp>
-#include <algorithm>
 
 TEST_CASE("Writing a histogram to disk  and reading back"){
     // make any old histogram
