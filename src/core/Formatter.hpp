@@ -9,6 +9,8 @@ message formatting - this does. See stack overflow 12261915
 
 class Formatter{
 public:
+    Formatter(){}
+    ~Formatter() {}
     template<typename Type>
     Formatter& operator <<(const Type& val_){
         fStringStream << val_;
