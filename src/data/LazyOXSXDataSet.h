@@ -12,27 +12,27 @@
 
 class LazyOXSXDataSet : public DataSet{
 public:
- LazyOXSXDataSet(const std::string& filename_) : fFileName(filename_), fDataSet(NULL){ Register();}
+    LazyOXSXDataSet(const std::string& filename_) : fFileName(filename_), fDataSet(NULL){ Register();}
     ~LazyOXSXDataSet(); // frees fData
-	LazyOXSXDataSet(const LazyOXSXDataSet&);
-	LazyOXSXDataSet operator=(const LazyOXSXDataSet&);
+    LazyOXSXDataSet(const LazyOXSXDataSet&);
+    LazyOXSXDataSet operator=(const LazyOXSXDataSet&);
 
-	// Memory management
-	void Load() const;
-	void Close() const;
-	
-	void Register();
-	void Deregister();
+    // Memory management
+    void Load() const;
+    void Close() const;
+    
+    void Register();
+    void Deregister();
 
-	// DataSet interface
+    // DataSet interface
     unsigned  GetNEntries() const;
     unsigned  GetNObservables() const;
-	EventData GetEntry(size_t) const;
+    EventData GetEntry(size_t) const;
     std::vector<std::string> GetObservableNames() const;
      
 private:
-	static std::vector<LazyOXSXDataSet*> fFiles;
-	std::string fFileName;	
-	mutable OXSXDataSet* fDataSet;	
+    static std::vector<LazyOXSXDataSet*> fFiles;
+    std::string fFileName;  
+    mutable OXSXDataSet* fDataSet;  
 };
 #endif
