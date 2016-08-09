@@ -6,6 +6,7 @@
 #include <cassert>
 #include <Exceptions.h>
 #include <Histogram.h>
+#include <Formatter.hpp>
 
 const char IO::fDelimiter = ':';
 
@@ -217,13 +218,144 @@ IO::UnpackString(const std::string& str_){
 }
 
 
-
-// FIXME: Needs implementing
 void 
 IO::SaveHistogram(const Histogram& histo_, const std::string& fileName_){
+    hsize_t nDims[] = {histo_.GetNDims()};
+    hsize_t nBins[] = {histo_.GetNBins()};
+    std::vector<double> contents = histo_.GetBinContents();
+
+    // create the file
     H5::H5File file(fileName_, H5F_ACC_TRUNC);
-    hsize_t nDims = histo_.GetNDims();
-    hsize_t nBins = histo_.GetNBins();
+
+     // Save nDims, nBins, names and latex names as attributes. Main data is the list of bin contents
+    H5::DataSpace dataSpace(1, nBins);
+    H5::DataSet   theData(file.createDataSet("histogram", H5::PredType::NATIVE_DOUBLE, dataSpace));
+
+    // grab axis names
+    std::vector<std::string> axisNames;
+    std::vector<std::string> axisLatexNames;
+    for(size_t i = 0; i < histo_.GetNDims(); i++){
+        axisNames.push_back(histo_.GetAxes().GetAxis(i).GetName());
+        axisLatexNames.push_back(histo_.GetAxes().GetAxis(i).GetLatexName());
+    }
+
+    // save axes names and latex names
+    H5::StrType   strType(H5::PredType::C_S1, 64);
+    H5::DataSpace attSpace(H5S_SCALAR);
+
+    H5::Attribute nameListAtt = theData.createAttribute("axis_names", strType, attSpace);
+    nameListAtt.write(strType, FlattenStringVector(axisNames));
+
+    H5::Attribute latexNameListAtt = theData.createAttribute("axis_latex_names", strType, attSpace);
+    latexNameListAtt.write(strType, FlattenStringVector(axisLatexNames));
+
+    // save nbins, ndims
+    H5::Attribute dimAtt = theData.createAttribute("n_dims",
+                                                   H5::PredType::NATIVE_INT,
+                                                   attSpace);
+    H5::Attribute binAtt = theData.createAttribute("n_bins",
+                                                   H5::PredType::NATIVE_INT,
+                                                   attSpace);
+    binAtt.write(H5::PredType::NATIVE_INT, &nBins);
+    dimAtt.write(H5::PredType::NATIVE_INT, &nDims);
+
+    // save the bin boundaries as attributes
+    for(size_t i = 0; i < histo_.GetNDims(); i++){
+        std::vector<double> lowEdges = histo_.GetAxes().GetAxis(i).GetBinLowEdges();
+        std::vector<double> highEdges = histo_.GetAxes().GetAxis(i).GetBinHighEdges();
+        hsize_t axisBins = histo_.GetAxes().GetAxis(i).GetNBins();
+        H5::DataSpace binSpace(1, &axisBins);
+        H5::Attribute lowEdgeAtt = theData.createAttribute(Formatter() << i << "_lows",
+                                                           H5::PredType::NATIVE_DOUBLE,
+                                                           binSpace);
+
+        H5::Attribute highEdgeAtt = theData.createAttribute(Formatter() << i << "_highs",
+                                                            H5::PredType::NATIVE_DOUBLE,
+                                                            binSpace);
+
+        lowEdgeAtt.write(H5::PredType::NATIVE_DOUBLE, &lowEdges[0]);
+        highEdgeAtt.write(H5::PredType::NATIVE_DOUBLE, &highEdges[0]);
+    }
+
+    // now save the bin contents    
+    theData.write(&contents[0], H5::PredType::NATIVE_DOUBLE, dataSpace);
     
     return;
+}
+
+Histogram
+IO::LoadHistogram(const std::string& fileName_){
+    std::cout << "IO::Loading " << fileName_ << std::endl;
+
+    // Get Data Set
+    H5::H5File file;
+    try{
+        file.openFile(fileName_, H5F_ACC_RDONLY);
+    }
+
+    catch(const H5::FileIException&){
+        throw IOError("Failed to open histogram file : "  + fileName_ + "\n check the path");
+    }
+    
+    H5::DataSet dataSet = file.openDataSet("histogram");
+    
+    // read the attributes
+    int nDims;
+    int nBins;
+    H5std_string axisLatexNamesReadbuf("");
+    H5std_string axisNamesReadbuf("");
+
+
+    /// first the names
+    H5::Attribute axisNameAtt  = dataSet.openAttribute("axis_names");
+    H5::Attribute axisLatexNameAtt  = dataSet.openAttribute("axis_latex_names");
+    axisNameAtt.read(axisNameAtt.getDataType(), axisNamesReadbuf);
+    axisLatexNameAtt.read(axisLatexNameAtt.getDataType(), axisLatexNamesReadbuf);
+    
+    /// now the numbers
+    H5::Attribute nBinsAtt  = dataSet.openAttribute("n_bins");
+    H5::Attribute nDimsAtt  = dataSet.openAttribute("n_dims");
+    nBinsAtt.read(nBinsAtt.getDataType(), &nBins);
+    nDimsAtt.read(nDimsAtt.getDataType(), &nDims);
+    
+    //  now read the bin contents
+    hsize_t nData = 0;
+    dataSet.getSpace().getSimpleExtentDims(&nData, NULL);
+    std::vector<double> binContents(nData, 0);
+    dataSet.read(&binContents[0], H5::PredType::NATIVE_DOUBLE);
+
+    // Now read the axis information and use it to build axes objects in memory
+    // first build the axes
+    AxisCollection axes;
+    std::vector<std::string> axisNames = UnpackString(axisNamesReadbuf);
+    std::vector<std::string> axisLatexNames = UnpackString(axisLatexNamesReadbuf);
+    for(int i = 0; i < nDims; i++){
+        // how many bins in this axis
+        //        H5::Attribute axisBins = dataSet.openAttribute(Formatter() << i << "_nBins");
+        
+        // open up the attributes
+        H5::Attribute lowEdgeAttribute = dataSet.openAttribute(Formatter() << i << "_lows");
+        H5::Attribute highEdgeAttribute = dataSet.openAttribute(Formatter() << i << "_highs");
+
+        /// work out how many bin edges there are
+        hsize_t nLowEdges = 0;
+        hsize_t nHighEdges = 0;
+
+        lowEdgeAttribute.getSpace().getSimpleExtentDims(&nLowEdges, NULL);        
+        highEdgeAttribute.getSpace().getSimpleExtentDims(&nHighEdges, NULL);
+        
+        // read them
+        std::vector<double> lowEdges(nLowEdges, 0);
+        std::vector<double> highEdges(nHighEdges, 0);
+        H5::DataSpace dataSpace = lowEdgeAttribute.getSpace();
+        lowEdgeAttribute.read(H5::PredType::NATIVE_DOUBLE, &lowEdges[0]);
+        highEdgeAttribute.read(H5::PredType::NATIVE_DOUBLE, &highEdges[0]);
+
+        axes.AddAxis(PdfAxis(axisNames.at(i), lowEdges, highEdges, axisLatexNames.at(i)));
+    }
+
+    Histogram loadedHisto(axes);
+    loadedHisto.SetBinContents(binContents);
+
+    return loadedHisto;
 }
