@@ -1,10 +1,12 @@
 #include <MetropolisHastings.h>
 #include <Rand.h>
-#include <math.h> //sqrt
 #include <TestStatistic.h>
 #include <Exceptions.h>
+#include <HistTools.h>
 #include <Formatter.hpp>
+#include <Combinations.hpp>
 #include <iostream>
+#include <math.h> //sqrt
 
 const std::vector<double>&
 MetropolisHastings::GetSigmas() const{
@@ -93,6 +95,27 @@ MetropolisHastings::SetTestStatLogged(bool b_){
     fTestStatLogged = b_;
 }
 
+
+bool 
+MetropolisHastings::GetSaveFullHistogram() const{
+    return fSaveFullHistogram;
+}
+
+void
+MetropolisHastings::SetSaveFullHistogram(bool b_){
+    fSaveFullHistogram = b_;
+}
+
+void
+MetropolisHastings::SetHistogramAxes(const AxisCollection& template_){
+    fHistogramAxes = template_;
+}
+             
+AxisCollection
+MetropolisHastings::GetHistogramAxes() const{
+    return fHistogramAxes;
+}                                                        
+
 void
 MetropolisHastings::SetInitialTrial(const std::vector<double>& trial_){
     fInitialTrial = trial_;
@@ -128,14 +151,8 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
                          << ")"
                          << "\n If initial trial is specified it should be one per fit parameter"
                          );    
-    // Set up the histogram 
-    AxisCollection axes;
-    std::vector<std::string> paramNames = pTestStatistic->GetParameterNames();
-    for(size_t i = 0; i < fMinima.size(); i++){
-        axes.AddAxis(PdfAxis(paramNames.at(i), fMinima.at(i), fMaxima.at(i), 
-                             int(pow(fMaxIter, 1./fMinima.size()))));
-    }
-    fHist = Histogram(axes);
+
+    InitialiseHistograms();
 
     // 1. Choose a random starting point or the user defined one
     std::vector<double> currentStep;
@@ -159,7 +176,13 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
         // a. Save the point in question if you are past burn-in phase and according to thinning
         if (i > fBurnIn && !(i%fThinFactor)){
             fSample.push_back(currentStep);
-            fHist.Fill(currentStep);
+
+            if(fSaveFullHistogram)
+                fHist.Fill(currentStep);
+
+            else{
+                FillProjections(currentStep);
+            }
         }
       
         if(!(i%1000))
@@ -269,3 +292,60 @@ MetropolisHastings::JumpDraw(const std::vector<double>& thisStep_) const{
 //     return newPoint;                                                                            //
 // }                                                                                               //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void
+MetropolisHastings::InitialiseHistograms(){
+    // Create histogram(s)
+    // If the binning is specified, use that
+    AxisCollection histAxes;
+    if(fHistogramAxes.GetNDimensions()){
+        histAxes = fHistogramAxes;
+    }
+
+
+    // otherwise take a guess
+    else{
+        std::vector<std::string> paramNames = pTestStatistic->GetParameterNames();
+        for(size_t i = 0; i < fMinima.size(); i++){
+            histAxes.AddAxis(PdfAxis(paramNames.at(i), fMinima.at(i), fMaxima.at(i), 
+                                 int(pow(fMaxIter, 1./fMinima.size()))));
+        }
+    }
+    
+    // Set up the histogram, either with a big ND histogram
+    if(fSaveFullHistogram){
+        fHist = Histogram(histAxes);
+    }
+    
+    
+    // otherwise just save the visualisable projections    
+    else{
+        // 2D
+        std::vector<size_t> dimensionList = SequentialElements<size_t>(size_t(0), histAxes.GetNDimensions());
+        f2DProjectionIndices  = FixedLengthCombinationsNoDuplicates<size_t>(dimensionList, 2);
+        f2DProjections        = HistTools::MakeAllHists(histAxes, f2DProjectionIndices);
+        
+        // 1D
+        f1DProjections = HistTools::MakeAllHists(histAxes, 
+                                                 FixedLengthCombinationsNoDuplicates<size_t>(dimensionList, 1));
+    }
+}
+
+
+void
+MetropolisHastings::FillProjections(const std::vector<double>& params_){
+    // 1D
+    for(size_t i = 0; i < params_.size(); i++)
+        f1DProjections[i].Fill(params_.at(i));
+
+    // 2D
+    std::vector<double> fillVals(2, 0);
+    for(size_t i = 0; i < f2DProjectionIndices.size(); i++){
+        const std::vector<size_t>& dimsToFill = f2DProjectionIndices.at(i);
+        Histogram& histToFill = f2DProjections[i];
+        fillVals[0] = params_.at(dimsToFill.at(0));        
+        fillVals[1] = params_.at(dimsToFill.at(1));
+        histToFill.Fill(fillVals);
+    }
+}

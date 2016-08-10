@@ -10,7 +10,8 @@ class MetropolisHastings : public Optimiser{
      MetropolisHastings() : fBurnIn(3000), 
                             fMaxIter(100000), fThinFactor(1), 
                             fMaxVal(0), fFlipSign(false), 
-                            fTestStatLogged(false), pTestStatistic(NULL)
+                            fTestStatLogged(false), pTestStatistic(NULL),
+                            fSaveFullHistogram(false)
                             {}               
     
     const FitResult& Optimise(TestStatistic*); 
@@ -41,32 +42,48 @@ class MetropolisHastings : public Optimiser{
     bool GetTestStatLogged() const;
     void SetTestStatLogged(bool b_);
 
+    bool GetSaveFullHistogram() const;
+    void SetSaveFullHistogram(bool);
+    void SetHistogramAxes(const AxisCollection&);
+    AxisCollection GetHistogramAxes() const;
+
     void SetInitialTrial(const std::vector<double>&);
     std::vector<double> GetInitialTrial() const;
 
  private:
-    unsigned fBurnIn;
-    unsigned fThinFactor;
-    unsigned fMaxIter;
-    unsigned fNDims;
-    bool     fTestStatLogged;
-    
-    TestStatistic* pTestStatistic;
+    // configuration
+    unsigned  fBurnIn;
+    unsigned  fThinFactor;
+    unsigned  fMaxIter;
+    unsigned  fNDims;
+    bool      fTestStatLogged;
+    bool      fFlipSign;
+    bool      fSaveFullHistogram;
+    AxisCollection fHistogramAxes;
+
     std::vector<double> fMaxima;
     std::vector<double> fMinima;
     std::vector<double> fSigmas;
     std::vector<double> fInitialTrial;
 
-    bool fFlipSign;
+    // internal copy
+    TestStatistic* pTestStatistic;
 
+    // results
     double fRejectionRate;
 
-    std::vector< std::vector<double> > fSample;
+    std::vector<Histogram>            f1DProjections;
+    std::vector<std::vector<size_t> > f2DProjectionIndices;
+    std::vector<Histogram>            f2DProjections;
+
     Histogram fHist;
+    std::vector< std::vector<double> > fSample;
+
     FitResult fFitResult;
     std::vector<double> fBestFit;
     double fMaxVal;
     
+    // private functions
     std::vector<double> JumpDraw(const std::vector<double>& thisStep_) const; 
     inline double JumpProbRatio(const std::vector<double>& thisStep_, 
                                 const std::vector<double>& proposedStep_) const {return 1;}
@@ -74,7 +91,8 @@ class MetropolisHastings : public Optimiser{
     bool   StepAccepted(const std::vector<double>& thisStep_,
                         const std::vector<double>& proposedStep_);
     
-
+    void    InitialiseHistograms();
+    void    FillProjections(const std::vector<double>&);
 
 };
 #endif
