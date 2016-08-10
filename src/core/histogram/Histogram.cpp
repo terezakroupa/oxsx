@@ -1,8 +1,9 @@
 #include <Histogram.h>
-#include <iostream>
 #include <Exceptions.h>
 #include <Formatter.hpp>
 #include <Combinations.hpp>
+#include <iostream>
+#include <set>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -203,14 +204,14 @@ std::map<std::string, Histogram>
 Histogram::GetAllProjections() const{
   std::map<std::string, Histogram> returnHists;
   // work out all the possible combinations of the indicies
-  std::vector<std::vector<size_t> > projectionIndices = AllCombinations<size_t>(SequentialElements(size_t(0), fNDims));
+  std::vector<std::vector<size_t> > projectionIndices = AllCombinationsShorterThanNoDuplicates<size_t>(SequentialElements(size_t(0), fNDims), 2);
+
   for(size_t i = 0; i < projectionIndices.size(); i++){
 	std::vector<size_t> indicesToKeep = projectionIndices.at(i);
-
     // create a unique name based on observables
     Formatter fm;
     for(size_t j = 0; j < indicesToKeep.size(); j++){
-      fm << fAxes.GetAxis(j).GetName() << " ";
+      fm << fAxes.GetAxis(indicesToKeep.at(j)).GetName() << "_";
 	}
 	returnHists[fm] = Marginalise(indicesToKeep);
   }

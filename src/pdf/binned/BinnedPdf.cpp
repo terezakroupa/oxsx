@@ -202,7 +202,7 @@ std::map<std::string, BinnedPdf>
 BinnedPdf::GetAllProjections() const{
   std::map<std::string, BinnedPdf> returnPdfs;
   // work out all the possible combinations of the indicies
-  std::vector<std::vector<size_t> > projectionIndices = AllCombinations<size_t>(SequentialElements(size_t(0), size_t(GetNDims())));
+  std::vector<std::vector<size_t> > projectionIndices = AllCombinationsShorterThanNoDuplicates<size_t>(SequentialElements(size_t(0), size_t(GetNDims())), 2);
   for(size_t i = 0; i < projectionIndices.size(); i++){
 	  std::vector<size_t> indicesToKeep = projectionIndices.at(i);
 	  // create a unique name based on observables
