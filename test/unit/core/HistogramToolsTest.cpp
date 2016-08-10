@@ -7,13 +7,12 @@
 
 TEST_CASE("Producing all the possible 2D histograms from a set of axes"){    
     // make the axes
-    std::vector<PdfAxis> axes;
+    AxisCollection axes;
     std::stringstream ss;
-    for(int i = 0; i < 10; i++){
-        axes.push_back(PdfAxis(Formatter() << i, 0, 1, 1));
-    }
+    for(int i = 0; i < 4; i++)
+        axes.AddAxis(PdfAxis(Formatter() << i, 0, 1, 1));
     
-    std::vector<size_t> dimensionList = SequentialElements<size_t>(size_t(0), axes.size());
+    std::vector<size_t> dimensionList = SequentialElements<size_t>(size_t(0), axes.GetNDimensions());
     std::vector<std::vector<size_t> > l2combinations = FixedLengthCombinationsNoDuplicates<size_t>(dimensionList, 2);
 
     std::vector<Histogram> hists = HistTools::MakeAllHists(axes, l2combinations);
