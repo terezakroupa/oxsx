@@ -61,4 +61,20 @@ AllCombinations(const std::vector<T>& vals_){
   return allCombs;
 }
 
+template<typename T>
+std::vector<std::vector<T> >
+AllCombinationsShorterThan(const std::vector<T>& vals_, size_t maxLen_){
+  typedef std::vector<std::vector<T> > TVecVec;
+  typedef std::vector<T> TVec;
+  
+  TVecVec allCombs;  
+  for(size_t i = 1; i <= maxLen_; i++){
+    TVecVec iLengthCombs = FixedLengthCombinations<T>(vals_, i);
+    allCombs.insert(allCombs.end(), iLengthCombs.begin(), iLengthCombs.end());
+  }
+  return allCombs;
+}
+  
+
+
 #endif
