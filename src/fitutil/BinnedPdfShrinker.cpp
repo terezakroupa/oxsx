@@ -29,11 +29,12 @@ BinnedPdfShrinker::GetBuffers() const{
 PdfAxis
 BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
                               const unsigned upperBuff_) {
+
     // no buffer no problem
     if (!lowerBuff_ && !upperBuff_)
         return axis_;
 
-    if (lowerBuff_ > axis_.GetNBins() || upperBuff_ > axis_.GetNBins())
+    if ((lowerBuff_  + upperBuff_) >= axis_.GetNBins())
         throw ValueError("BinnedPdfShrinker::Buffersize exceeds number of bins!");
     
     const size_t oldBinCount = axis_.GetNBins();
@@ -67,7 +68,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     AxisCollection newAxes;
     const std::vector<size_t> pdfDataIndices = pdf_.GetDataRep().GetIndices();
     size_t dataIndex = 0;
-    
+	
     for(size_t i = 0; i < nDims; i++){
         dataIndex = pdfDataIndices.at(i);
         if (!fBuffers.count(dataIndex))
