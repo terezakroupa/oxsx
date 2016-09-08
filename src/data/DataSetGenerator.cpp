@@ -73,16 +73,20 @@ DataSetGenerator::AllValidEvents(){
 
 std::vector<OXSXDataSet*> 
 DataSetGenerator::AllRemainingEvents(){
-  std::vector<OXSXDataSet*> remainders(fDataSets.size(), new OXSXDataSet());
-  for(size_t i = 0; i < fDataSets.size(); i++){
-	remainders[i]->SetObservableNames(fDataSets.at(0)->GetObservableNames());
+  std::vector<OXSXDataSet*> remainders(fDataSets.size(), NULL);
+  for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
+	remainders[iDS] = new OXSXDataSet();
+	remainders[iDS]->SetObservableNames(fDataSets.at(0)->GetObservableNames());
+  }
+  for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
+	size_t nEvents = fMaxs.at(iDS);
+	if (!nEvents) 
+	  nEvents = fDataSets.at(iDS) -> GetNEntries();
 
-	size_t nEvents = fMaxs.at(i);
-	if (!nEvents)
-	  nEvents = fDataSets.at(i)->GetNEntries();
+	const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
 
-	for(size_t j = 0; j < nEvents; j++){
-	  remainders[i]->AddEntry(fDataSets.at(i)->GetEntry(j));
+	for(size_t jEV = 0; jEV <= nEvents; jEV++){	  
+	  remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));
 	}
   }
   Reset();
