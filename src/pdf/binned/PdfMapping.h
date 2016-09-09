@@ -9,6 +9,7 @@
 #ifndef __PDF_MAPPING__
 #define __PDF_MAPPING__
 #include <AxisCollection.h>
+#define ARMA_DONT_USE_CXX11
 #include <armadillo>
 class BinnedPdf;
 
