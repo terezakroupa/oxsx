@@ -1,4 +1,4 @@
-#include <PdfMapping.h>
+ #include <PdfMapping.h>
 #include <BinnedPdf.h>
 #include <iostream>
 #include <Exceptions.h>
@@ -57,11 +57,20 @@ PdfMapping::operator() (const BinnedPdf& pdf_) const{
     BinnedPdf observedPdf(pdf_.GetAxes());
     observedPdf.SetDataRep(pdf_.GetDataRep());
     
-    // convert to armadillo vec
-    arma::vec newContents = fResponse * arma::vec(pdf_.GetBinContents());
+    arma::vec newContents;
+    try{
+        // convert to armadillo vec
+        newContents = fResponse * arma::vec(pdf_.GetBinContents());
+    }
+    catch(const std::logic_error& e_){
+        throw DimensionError(Formatter() << "PdfMapping::operator() : matrix multiplation failed Pdf has "
+                                         << pdf_.GetNBins() << " bins,  matrix built for " << fAxes.GetNBins()
+                             );
+    }
+
     // armadillo function for quick transfer to std::vector double
     observedPdf.SetBinContents(arma::conv_to<std::vector<double> >::from((newContents)));
-       
+              
     return observedPdf;
 }
 
