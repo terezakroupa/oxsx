@@ -42,11 +42,15 @@ PdfMapping::GetComponent(size_t col_, size_t row_) const{
 BinnedPdf
 PdfMapping::operator() (const BinnedPdf& pdf_) const{
     if (!fNDims){
-        throw DimensionError("PdfMapping::operator(), NDims = 0");
+        throw DimensionError("PdfMapping::operator() :  NDims = 0, have you set the axes?");
     }
     
     if(pdf_.GetNDims() < fNDims){
-        throw DimensionError("PdfMapping::opeator() : pdf Dimensionality too small for PdfMap to act on");
+        throw DimensionError(Formatter() << "PdfMapping::opeator() : PDF Dimensionality ("
+                                         << pdf_.GetNDims() << ")" 
+                                         << " too small for PdfMap ("
+                                         << fNDims
+                                         << " ) to act on");
     }
 
 

@@ -5,9 +5,14 @@
 
 BinnedPdf 
 Systematic::operator() (const BinnedPdf& pdf_) const{
-    BinnedPdf afterSmear = fPdfMapping(pdf_);
-    afterSmear.Normalise();
-    return afterSmear;
+    try{
+        BinnedPdf afterSmear = fPdfMapping(pdf_);
+        afterSmear.Normalise();
+        return afterSmear;
+    }
+    catch(const DimensionError& e_){
+        throw DimensionError(std::string("Failed to apply systematic :: ") + e_.what());
+    }
 }
 
 void 
