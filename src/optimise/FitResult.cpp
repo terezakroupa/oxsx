@@ -42,6 +42,8 @@ FitResult::operator=(const FitResult& other_){
     fBestFit = other_.fBestFit;
     fStatSample = other_.fStatSample;
 	fParameterNames = other_.fParameterNames;
+	f1DProjections = other_.f1DProjections;
+	f2DProjections = other_.f2DProjections;
     return *this;
 }
 
@@ -55,6 +57,8 @@ FitResult::FitResult(const FitResult& other_){
     fStatSample = other_.fStatSample;
     fBestFit = other_.fBestFit;
     fIsValid = other_.fIsValid;
+	f1DProjections = other_.f1DProjections;
+	f2DProjections = other_.f2DProjections;
 }
 
 const std::vector<std::vector<double> >&
@@ -134,4 +138,24 @@ FitResult::SaveAs(const std::string& fileName_) const{
 	   << std::endl;
   }        	  
   fs.close();
+}
+
+void 
+FitResult::Set1DProjections(const HistMap& hists_){
+  f1DProjections = hists_;
+}
+
+void 
+FitResult::Set2DProjections(const HistMap& hists_){
+  f2DProjections = hists_;
+}
+
+HistMap 
+FitResult::Get1DProjections() const{
+  return f1DProjections;
+}
+
+HistMap 
+FitResult::Get2DProjections() const{
+  return f2DProjections;
 }
