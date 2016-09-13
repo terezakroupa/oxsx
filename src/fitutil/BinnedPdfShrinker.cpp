@@ -29,13 +29,14 @@ BinnedPdfShrinker::GetBuffers() const{
 PdfAxis
 BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
                               const unsigned upperBuff_) {
-
     // no buffer no problem
     if (!lowerBuff_ && !upperBuff_)
         return axis_;
 
     if ((lowerBuff_  + upperBuff_) >= axis_.GetNBins())
-        throw ValueError("BinnedPdfShrinker::Buffersize exceeds number of bins!");
+        throw ValueError(Formatter() << "BinnedPdfShrinker::Buffersize ("
+                                     << lowerBuff_ << ", "  << upperBuff_ << ")" 
+                                     << " exceeds number of bins (" << axis_.GetNBins() << ")");
     
     const size_t oldBinCount = axis_.GetNBins();
     const size_t newBinCount = oldBinCount - upperBuff_ - lowerBuff_;

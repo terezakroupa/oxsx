@@ -34,7 +34,7 @@ class PdfMapping{
     const AxisCollection& GetAxes() const;
     void SetAxes(const AxisCollection& axes_);
     size_t GetNBins() const {return fNBins;}
-    
+    size_t GetNDims() const {return fNDims;}
     void SetZeros();
  private:
     AxisCollection fAxes;

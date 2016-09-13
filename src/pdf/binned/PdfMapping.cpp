@@ -63,8 +63,8 @@ PdfMapping::operator() (const BinnedPdf& pdf_) const{
         newContents = fResponse * arma::vec(pdf_.GetBinContents());
     }
     catch(const std::logic_error& e_){
-        throw DimensionError(Formatter() << "PdfMapping::operator() : matrix multiplation failed Pdf has "
-                                         << pdf_.GetNBins() << " bins,  matrix built for " << fAxes.GetNBins()
+        throw DimensionError(Formatter() << "PdfMapping::operator() : matrix multiplation failed. Pdf has "
+                                         << pdf_.GetNBins() << " bins, but matrix built for " << fAxes.GetNBins()
                              );
     }
 

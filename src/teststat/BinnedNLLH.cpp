@@ -13,6 +13,11 @@ BinnedNLLH::Evaluate(){
     if (!fCalculatedDataPdf)
         BinData();
     
+    if(!fAlreadyShrunk){
+        fDataPdf = fPdfShrinker.ShrinkPdf(fDataPdf);
+        fAlreadyShrunk = true;
+    }
+
     // Construct systematics
     fSystematicManager.Construct();
 
@@ -50,7 +55,6 @@ BinnedNLLH::BinData(){
     BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
     PdfFiller::FillPdf(dataPdf, *fDataSet, fCuts);
-    fDataPdf = fPdfShrinker.ShrinkPdf(dataPdf);
     fCalculatedDataPdf = true;
 }
 
@@ -87,8 +91,8 @@ BinnedNLLH::GetDataSet(){
 
 void
 BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
-  fDataPdf = fPdfShrinker.ShrinkPdf(binnedPdf_);
-  fCalculatedDataPdf = true;
+    fDataPdf = binnedPdf_;
+    fCalculatedDataPdf = true;
 }
 
 BinnedPdf

@@ -14,7 +14,7 @@
 class DataSet;
 class BinnedNLLH : public TestStatistic{
  public:
-    BinnedNLLH() : fCalculatedDataPdf(false), fDataSet(NULL) {}
+    BinnedNLLH() : fCalculatedDataPdf(false), fAlreadyShrunk(false), fDataSet(NULL) {}
 
     void   SetPdfManager(const BinnedPdfManager&);
     void   SetSystematicManager(const SystematicManager&);
@@ -64,6 +64,7 @@ class BinnedNLLH : public TestStatistic{
 
     BinnedPdf fDataPdf;
     bool      fCalculatedDataPdf;
+    bool      fAlreadyShrunk;
     ComponentManager fComponentManager;    
 };
 #endif
