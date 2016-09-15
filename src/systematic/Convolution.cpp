@@ -2,16 +2,20 @@
 #include <IntegrableFunction.h>
 #include <Exceptions.h>
 #include <string>
-
+#include <UnconditionalDistribution.h>
 void 
 Convolution::SetFunction(IntegrableFunction* function_){
-    fFunction = dynamic_cast<IntegrableFunction*>(function_->Clone());
-    if(!fFunction)
-        throw LogicError("Non-Integrable function used for convolution!");
+    // wrap this up if position independent kernal of the form P(x | x2) = P(x - x2)
+    fDist = static_cast<ConditionalDistribution*>(new UnconditionalDistribution(function_));
+}
+
+void
+Convolution::SetConditionalDistribution(ConditionalDistribution* c_){
+    fDist = c_->Clone();
 }
 
 Convolution::~Convolution(){
-    delete fFunction;
+    delete fDist;
 }
 
 void 
@@ -22,8 +26,8 @@ Convolution::SetAxes(const AxisCollection& axes_){
 
 void 
 Convolution::Construct(){
-    if (!fFunction || !fHasAxes)
-        throw LogicError("Convolution::Construct() : Tried to construct convolution without axes or function, or both!!");
+    if (!fDist || !fHasAxes)
+        throw LogicError("Convolution::Construct() : Tried to construct convolution without axes or function/distribution, or both!!");
     
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
@@ -50,11 +54,7 @@ Convolution::Construct(){
             fSysAxes.GetBinLowEdges(destBin, lowEdges);
             fSysAxes.GetBinHighEdges(destBin, highEdges);
             
-            for(size_t i = 0; i < fSysAxes.GetNDimensions(); i++){
-                lowEdges[i] -= binCentres.at(i);
-                highEdges[i] -= binCentres.at(i);
-            }
-	    subMap.SetComponent(destBin, origBin, fFunction -> Integral(lowEdges, highEdges));
+			subMap.SetComponent(destBin, origBin, fDist -> Integral(lowEdges, highEdges, binCentres));
         }        
     }
 
@@ -122,12 +122,12 @@ Convolution::CacheCompatibleBins(){
 
 void
 Convolution::MakeFittable(){
-    fFunction->MakeFittable();
+    fDist->MakeFittable();
 }
 
 std::vector<std::string>
 Convolution::GetParameterNames() const{
-    std::vector<std::string> param = fFunction->GetParameterNames();
+    std::vector<std::string> param = fDist->GetParameterNames();
     for(size_t i = 0; i < param.size(); i++){
         param[i] = "Convolution : " + param[i];        
     }
@@ -136,18 +136,18 @@ Convolution::GetParameterNames() const{
 
 std::vector<double>
 Convolution::GetParameters() const{
-    return fFunction->GetParameters();
+    return fDist->GetParameters();
 }
 
 size_t
 Convolution::GetParameterCount() const{
-    return fFunction->GetParameterCount();
+    return fDist->GetParameterCount();
 }
 
 void
 Convolution::SetParameters(const std::vector<double>& params_){
     try{
-        fFunction->SetParameters(params_);
+        fDist->SetParameters(params_);
     }
     catch(const ParameterCountError& e){
         throw ParameterCountError(std::string("Convolution : ") 
