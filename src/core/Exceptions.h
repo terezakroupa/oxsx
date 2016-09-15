@@ -64,4 +64,16 @@ class LogicError : public OXSXException{
  public:
  LogicError(const std::string& errorStr_) : OXSXException(errorStr_) {}
 };
+
+// NULL pointer access
+class NULLPointerAccessError : public OXSXException{
+ public:
+ NULLPointerAccessError(const std::string& errorStr_) : OXSXException(errorStr_) {}
+ NULLPointerAccessError(const std::string& caller_, 
+						const std::string& errorStr_ = "") 
+   : OXSXException(
+				   Formatter() << caller_ 
+				   << "Attempted access on NULL pointer. " << errorStr_ 
+				   ) {}  
+};
 #endif
