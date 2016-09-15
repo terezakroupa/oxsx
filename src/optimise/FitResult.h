@@ -3,11 +3,14 @@
 /****************************************************/
 #ifndef __OXSX_FIT_RESULT__
 #define __OXSX_FIT_RESULT__
+#include <Histogram.h>
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <map>
 
-class Histogram;
+typedef std::map<std::string, Histogram> HistMap;
+
 class FitResult{
  public:
     FitResult() : fStatSpace(NULL), fIsValid(true)  {}
@@ -32,11 +35,22 @@ class FitResult{
 
     void Print() const;
 	void SaveAs(const std::string&) const;
+
+	void Set1DProjections(const HistMap&);
+	void Set2DProjections(const HistMap&);
+
+	HistMap Get1DProjections() const;
+	HistMap Get2DProjections() const;
+
+
  private:
-    std::vector<double>   fBestFit;
-    std::vector<std::string> fParameterNames;
+    std::vector<double>               fBestFit;
+    std::vector<std::string>          fParameterNames;
     std::vector<std::vector<double> > fStatSample;
-    Histogram*            fStatSpace;
+    Histogram*    fStatSpace;
+	HistMap f1DProjections;
+	HistMap f2DProjections;
+	
     bool fIsValid;
 };
 #endif
