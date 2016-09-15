@@ -5,7 +5,7 @@
 #ifndef __OXSX_RAND__
 #define __OXSX_RAND__
 #include <TRandom3.h>
-
+class Function;
 class Rand{
  public:
     static double Uniform(double max_ = 1);
@@ -14,6 +14,8 @@ class Rand{
     static unsigned GetSeed();
     static int    Poisson(double rate_);
     static int    Shoot(int max_);
+	// Fix me : currently just 1D
+	static double VonNeumannSample(Function* f_, double xMin_, double xMax_, double yMax_);
 
  private:
     static TRandom3 fRandomGen;
