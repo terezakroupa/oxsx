@@ -13,11 +13,7 @@
 
 class OXSXDataSet : public DataSet{
 public:
-    OXSXDataSet() : fData(new std::vector<EventData>()), fNObservables(0) {} 
-    ~OXSXDataSet(); // frees fData
-
-    OXSXDataSet(const OXSXDataSet&); //deep copy
-    OXSXDataSet operator=(const OXSXDataSet&);
+    OXSXDataSet() : fNObservables(0) {} 
 
     void      AddEntry(const EventData&);
     EventData GetEntry(size_t eventIndex_) const;
@@ -34,7 +30,7 @@ public:
 
    
 private:
-    std::vector<EventData>* fData;
+    std::vector<EventData>   fData;
     std::vector<std::string> fObservableNames;
     unsigned fNObservables;
 };
