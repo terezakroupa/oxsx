@@ -5,6 +5,7 @@
 #include <gsl/gsl_cdf.h>
 #include <sstream>
 #include <Formatter.hpp>
+#include <Rand.h>
 
 /////////////////////////
 // Constructory Things //
@@ -29,6 +30,10 @@ Gaussian::Gaussian(size_t nDims_){
 
 Gaussian::Gaussian(double mean_, double stdDev_){
     Initialise(std::vector<double>(1, mean_), std::vector<double>(1, stdDev_));
+}
+
+Gaussian::Gaussian(){
+  Initialise(std::vector<double>(1, 0), std::vector<double>(0, 1));
 }
 
 Function* 
@@ -151,6 +156,15 @@ Gaussian::Integral(const std::vector<double>& mins_, const std::vector<double>& 
     return integral;  
 }
 
+
+std::vector<double>
+Gaussian::Sample() const{
+  std::vector<double> sample(GetNDims(), 0);
+  for(size_t i = 0; i < GetNDims(); i++){
+	sample[i] = Rand::Gaus(fMeans.at(i), fStdDevs.at(i));
+  }
+  return sample;
+}
 
 ////////////////////////
 // Make it fittable   //

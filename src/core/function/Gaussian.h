@@ -6,6 +6,7 @@
 class Gaussian : public IntegrableFunction{
  public:
     // Constructory things
+    Gaussian();
     Gaussian(size_t nDims_); // means = 0, stdDevs = 1
     Gaussian(double mean_, double stdDev_);
     Gaussian(const std::vector<double>& mean_, 
@@ -18,6 +19,8 @@ class Gaussian : public IntegrableFunction{
     double Integral(const std::vector<double>& mins_, 
                     const std::vector<double>& maxs_) const;
     double Integral() const {return 1;} // normalised by definition
+	std::vector<double> Sample() const;
+
 
     // Getters/Setters
     void SetMeansStdDevs(const std::vector<double>& means_, 
