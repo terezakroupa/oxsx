@@ -1,10 +1,10 @@
 #include <MetropolisHastings.h>
-#include <Rand.h>
 #include <TestStatistic.h>
 #include <Exceptions.h>
 #include <HistTools.h>
 #include <Formatter.hpp>
 #include <Combinations.hpp>
+#include <Rand.h>
 #include <iostream>
 #include <math.h> //sqrt
 
