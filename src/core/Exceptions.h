@@ -73,7 +73,7 @@ class NULLPointerAccessError : public OXSXException{
 						const std::string& errorStr_ = "") 
    : OXSXException(
 				   Formatter() << caller_ 
-				   << "Attempted access on NULL pointer. " << errorStr_ 
+				   << " Attempted access on NULL pointer. " << errorStr_ 
 				   ) {}  
 };
 #endif
