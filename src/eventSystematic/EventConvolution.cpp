@@ -19,6 +19,7 @@ EventConvolution::EventConvolution(const EventConvolution& other_){
 	fDist = other_.fDist -> Clone();
   else
   	fDist = NULL;
+  fDataRep = other_.fDataRep;
 }
 
 EventConvolution
@@ -27,7 +28,7 @@ EventConvolution::operator=(const EventConvolution& other_){
   	fDist = other_.fDist -> Clone();
   else								   
   	fDist = NULL;
-
+  fDataRep = other_.fDataRep;
   return *this;
 }
 
