@@ -8,6 +8,7 @@ class IntegrableFunction;
 class UnconditionalDistribution : public ConditionalDistribution{
  public:  
   // Constructors/Destructor
+  UnconditionalDistribution(): fFunction(NULL) {}
   UnconditionalDistribution(IntegrableFunction*);
   ~UnconditionalDistribution();
   UnconditionalDistribution(const UnconditionalDistribution&);

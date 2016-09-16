@@ -9,7 +9,10 @@
 //////////////////////////////
 
 UnconditionalDistribution::UnconditionalDistribution(IntegrableFunction* f_){
-  fFunction = static_cast<IntegrableFunction*>(f_->Clone());
+  if(fFunction)
+	fFunction = static_cast<IntegrableFunction*>(f_->Clone());
+  else
+	fFunction = NULL;
 }
 
 UnconditionalDistribution::~UnconditionalDistribution(){
@@ -17,12 +20,18 @@ UnconditionalDistribution::~UnconditionalDistribution(){
 }
 
 UnconditionalDistribution::UnconditionalDistribution(const UnconditionalDistribution& other_){
-  fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
+  if(other_.fFunction)
+	fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
+  else
+	fFunction = NULL;
 }
 
 UnconditionalDistribution
 UnconditionalDistribution::operator=(const UnconditionalDistribution& other_){
-  fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
+  if(other_.fFunction)
+	fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
+  else
+	fFunction = NULL;
 }
 
 std::vector<double>

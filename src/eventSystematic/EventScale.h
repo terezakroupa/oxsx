@@ -4,7 +4,7 @@
 #include <FitComponent.h>
 #include <vector>
 
-class EventScale : public EventSystematic, public FitComponent{
+class EventScale : public EventSystematic{
  public:
     EventScale() : fScale(1) {}  
     virtual EventData operator()(const EventData&);

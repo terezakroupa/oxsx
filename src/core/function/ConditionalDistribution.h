@@ -5,6 +5,7 @@
 
 class ConditionalDistribution : public FitComponent{
  public:
+  virtual ~ConditionalDistribution() {};
   virtual ConditionalDistribution* Clone() const = 0;
   virtual double ConditionalProbability(const std::vector<double>& x_, 
 										const std::vector<double>& x2_) = 0;

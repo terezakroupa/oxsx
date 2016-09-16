@@ -4,7 +4,7 @@
 #include <FitComponent.h>
 #include <vector>
 
-class EventShift : public EventSystematic, public FitComponent{
+class EventShift : public EventSystematic{
  public:
     EventShift() : fShift(0) {}
     EventData operator()(const EventData&);
