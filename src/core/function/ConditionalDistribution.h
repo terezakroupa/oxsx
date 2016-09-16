@@ -14,7 +14,7 @@ class ConditionalDistribution : public FitComponent{
 						  const std::vector<double>& x2_) const = 0;
 
   virtual double Integral(double x2_) const = 0;
-  std::vector<double> Diff(const std::vector<double>& x_, 
-						   const std::vector<double>& x2_) const;
+
+  virtual std::vector<double> Sample(const std::vector<double>& x2_) const = 0;
 };
 #endif

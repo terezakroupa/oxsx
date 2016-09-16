@@ -11,5 +11,6 @@ class IntegrableFunction : public Function{
                             const std::vector<double>& maxs_) const = 0;
 
     virtual double Integral() const = 0;
+	virtual std::vector<double> Sample() const = 0;
 };
 #endif

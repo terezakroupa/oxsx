@@ -23,7 +23,7 @@ class UnconditionalDistribution : public ConditionalDistribution{
 						  const std::vector<double>& x2_) const;
   
   virtual double Integral(double x2_) const;
-
+  std::vector<double> Sample(const std::vector<double>& x2_) const;
 
   // Elementwise difference between x and x2
   std::vector<double> Diff(const std::vector<double>& x_, 

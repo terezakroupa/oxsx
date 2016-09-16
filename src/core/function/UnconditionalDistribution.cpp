@@ -53,7 +53,11 @@ UnconditionalDistribution::ConditionalProbability(const std::vector<double>& x_,
   return fFunction->operator()(Diff(x_, x2_));
 }
 
-
+std::vector<double> 
+UnconditionalDistribution::Sample(const std::vector<double>& x2_) const{
+  std::vector<double> samp = fFunction->Sample();
+  return Diff(samp, x2_);
+}
 double
 UnconditionalDistribution::Integral(const std::vector<double>& mins_,
 									const std::vector<double>& maxs_,
