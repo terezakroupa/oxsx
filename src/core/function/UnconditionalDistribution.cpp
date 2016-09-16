@@ -45,6 +45,15 @@ UnconditionalDistribution::Diff(const std::vector<double>& x_,
   return diff;
 }
 
+std::vector<double>
+UnconditionalDistribution::Sum(const std::vector<double>& x_, 
+							   const std::vector<double>& x2_) const{
+  std::vector<double> sum = x_;
+  std::transform(sum.begin(), sum.end(), x2_.begin(), 
+				 sum.begin(), std::plus<double>());
+  return sum;
+}
+
 ConditionalDistribution*
 UnconditionalDistribution::Clone() const{
   return static_cast<ConditionalDistribution*>(new UnconditionalDistribution(*this));
@@ -70,7 +79,7 @@ UnconditionalDistribution::Sample(const std::vector<double>& x2_) const{
 	throw NULLPointerAccessError("UnconditionalDistribution::Integral",
                                  "Have you set the function?");
   std::vector<double> samp = fFunction->Sample();
-  return Diff(samp, x2_);
+  return Sum(samp, x2_);
 }
 double
 UnconditionalDistribution::Integral(const std::vector<double>& mins_,
