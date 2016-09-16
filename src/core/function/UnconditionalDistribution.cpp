@@ -9,10 +9,11 @@
 //////////////////////////////
 
 UnconditionalDistribution::UnconditionalDistribution(IntegrableFunction* f_){
-  if(fFunction)
+  if(f_)
 	fFunction = static_cast<IntegrableFunction*>(f_->Clone());
+  
   else
-	fFunction = NULL;
+	fFunction = NULL;  
 }
 
 UnconditionalDistribution::~UnconditionalDistribution(){
