@@ -32,6 +32,7 @@ UnconditionalDistribution::operator=(const UnconditionalDistribution& other_){
 	fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
   else
 	fFunction = NULL;
+  return *this;
 }
 
 std::vector<double>
@@ -64,6 +65,9 @@ UnconditionalDistribution::ConditionalProbability(const std::vector<double>& x_,
 
 std::vector<double> 
 UnconditionalDistribution::Sample(const std::vector<double>& x2_) const{
+  if(!fFunction)
+	throw NULLPointerAccessError("UnconditionalDistribution::Integral",
+                                 "Have you set the function?");
   std::vector<double> samp = fFunction->Sample();
   return Diff(samp, x2_);
 }
