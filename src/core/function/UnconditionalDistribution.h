@@ -30,6 +30,9 @@ class UnconditionalDistribution : public ConditionalDistribution{
   std::vector<double> Diff(const std::vector<double>& x_, 
 						   const std::vector<double>& x2_) const;
 
+  std::vector<double> Sum(const std::vector<double>& x_, 
+                          const std::vector<double>& x2_) const;
+
   // Fit Component Interface - defer to the underlying function
   void MakeFittable();
   std::vector<std::string> GetParameterNames() const;
