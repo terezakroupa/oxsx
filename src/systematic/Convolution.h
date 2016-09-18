@@ -10,14 +10,14 @@
 #define __OXSX_CONVOLUTION__
 #include <Systematic.h>
 
-class ConditionalDistribution;
+class ConditDist;
 class IntegrableFunction;
 class Convolution : public Systematic{
  public:
     Convolution(): fDist(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
     ~Convolution();
     void SetFunction(IntegrableFunction* function_);
-    void SetConditionalDistribution(ConditionalDistribution* function_);
+    void SetConditDist(ConditDist* function_);
     void SetAxes(const AxisCollection& axes_);
     void Construct();    
 
@@ -30,7 +30,7 @@ class Convolution : public Systematic{
 
  private:
     void                     Reset();
-    ConditionalDistribution* fDist;
+    ConditDist*              fDist;
     bool                     fHasAxes;
     bool                     fCachedCompatibleBins;
 

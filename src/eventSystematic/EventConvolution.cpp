@@ -1,6 +1,6 @@
 #include <EventConvolution.h>
 #include <IntegrableFunction.h>
-#include <JumpDistribution.h>
+#include <JumpDist.h>
 #include <Exceptions.h>
 #include <Rand.h>
 #include <EventData.h>
@@ -45,12 +45,12 @@ EventConvolution::SetFunction(IntegrableFunction* f_){
 	if(f_->GetNDims() != 1)
 	  throw DimensionError("EventConvolution::SetFunction", 1, 
 						   f_->GetNDims(), "Only implemented for 1D functions");
-	fDist = static_cast<ConditionalDistribution*>(new JumpDistribution(f_));
+	fDist = static_cast<ConditDist*>(new JumpDist(f_));
   }	
 }
 
 void
-EventConvolution::SetConditionalDistribution(ConditionalDistribution* c_){
+EventConvolution::SetConditDist(ConditDist* c_){
   if(!c_)
 	fDist = NULL;
   else

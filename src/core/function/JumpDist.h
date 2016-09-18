@@ -1,21 +1,21 @@
 #ifndef __OXSX_JUMP_DISTRIBUTION__
 #define __OXSX_JUMP_DISTRIBUTION__
-#include <ConditionalDistribution.h>
+#include <ConditDist.h>
 #include <vector>
 #include <string>
 
 class IntegrableFunction;
-class JumpDistribution : public ConditionalDistribution{
+class JumpDist : public ConditDist{
  public:  
   // Constructors/Destructor
-  JumpDistribution(): fFunction(NULL) {}
-  JumpDistribution(IntegrableFunction*);
-  ~JumpDistribution();
-  JumpDistribution(const JumpDistribution&);
-  JumpDistribution operator=(const JumpDistribution&);
-  ConditionalDistribution* Clone() const;
+  JumpDist(): fFunction(NULL) {}
+  JumpDist(IntegrableFunction*);
+  ~JumpDist();
+  JumpDist(const JumpDist&);
+  JumpDist operator=(const JumpDist&);
+  ConditDist* Clone() const;
 
-  // Conditional Distribution Interface, just execute the function on x - x2
+  // ConditDist Interface, just execute the function on x - x2
   virtual double ConditionalProbability(const std::vector<double>& x_,
 										const std::vector<double>& x2_);
   

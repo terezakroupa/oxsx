@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 class IntegrableFunction;
-class ConditionalDistribution;
+class ConditDist;
 class EventData;
 class EventConvolution : public EventSystematic{
  public:
@@ -17,7 +17,7 @@ class EventConvolution : public EventSystematic{
 
   // Get/Set
   void SetFunction(IntegrableFunction* f);
-  void SetConditionalDistribution(ConditionalDistribution* f);
+  void SetConditDist(ConditDist* f);
 
   // Event Systematic interface
   EventData operator()(const EventData&);
@@ -30,6 +30,6 @@ class EventConvolution : public EventSystematic{
   void   SetParameters(const std::vector<double>&);
 
  private:
-  ConditionalDistribution* fDist;
+  ConditDist* fDist;
 };
 #endif

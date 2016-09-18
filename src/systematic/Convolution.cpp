@@ -1,16 +1,16 @@
 #include <Convolution.h>
 #include <IntegrableFunction.h>
 #include <Exceptions.h>
-#include <JumpDistribution.h>
+#include <JumpDist.h>
 #include <string>
 void 
 Convolution::SetFunction(IntegrableFunction* function_){
     // wrap this up if position independent kernal of the form P(x | x2) = P(x - x2)
-    fDist = static_cast<ConditionalDistribution*>(new JumpDistribution(function_));
+    fDist = static_cast<ConditDist*>(new JumpDist(function_));
 }
 
 void
-Convolution::SetConditionalDistribution(ConditionalDistribution* c_){
+Convolution::SetConditDist(ConditDist* c_){
     fDist = c_->Clone();
 }
 
