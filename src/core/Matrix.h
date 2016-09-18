@@ -13,14 +13,14 @@
 #include <armadillo>
 class BinnedPhysDist;
 
-class PdfMapping{
+class Matrix{
  public:
-    PdfMapping() :fNBins(0), fNDims(0) {}
-    ~PdfMapping() {}
+    Matrix() :fNBins(0), fNDims(0) {}
+    ~Matrix() {}
 
-    BinnedPhysDist operator() (const BinnedPhysDist& pdf_) const;
+    std::vector<double> operator() (const std::vector<double>& input_) const;
 
-    void SetResponse(const arma::sp_mat& response_);
+    void   SetResponse(const arma::sp_mat& response_);
 
     void   SetComponent(size_t column_, size_t row_, double val_);
     double GetComponent(size_t column_, size_t row_) const;
@@ -29,16 +29,17 @@ class PdfMapping{
                        const std::vector<unsigned>& colIndices_,
                        const std::vector<double>& values_);
 
-    PdfMapping operator*=(const PdfMapping& other_);
+    Matrix operator*=(const Matrix& other_);
 
     const AxisCollection& GetAxes() const;
-    void SetAxes(const AxisCollection& axes_);
+    void   SetAxes(const AxisCollection& axes_);
     size_t GetNBins() const {return fNBins;}
     size_t GetNDims() const {return fNDims;}
-    void SetZeros();
+    void   SetZeros();
+
  private:
     AxisCollection fAxes;
-    arma::sp_mat fResponse;
+    arma::sp_mat fArmaMat;
     unsigned fNBins;
     unsigned fNDims;
 };
