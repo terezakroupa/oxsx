@@ -11,15 +11,15 @@
 #include <vector>
 #include <string>
 
-class PdfAxis{
+class BinAxis{
  public:
     // Equal bin widths
-    PdfAxis(const std::string& name_, double min_, double max_, size_t nBins_,
+    BinAxis(const std::string& name_, double min_, double max_, size_t nBins_,
             const std::string& latexName_ = "");
 
 
     // Variable width
-    PdfAxis(const std::string& name_, const std::vector<double>& lowEdges_, 
+    BinAxis(const std::string& name_, const std::vector<double>& lowEdges_, 
             const std::vector<double>& highEdges_, const std::string& latexName_ = "");
 
     // Find the Bin value_ is in

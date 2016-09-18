@@ -34,7 +34,7 @@ PdfConverter::ToTH1D(const BinnedPhysDist& pdf_, const bool widthCorrect_){
     if(pdf_.GetNDims() != 1)
         throw DimensionError("Only a 1D pdf can be represented by a TH1D");
  
-    const PdfAxis& axis  = pdf_.GetAxes().GetAxis(0);
+    const BinAxis& axis  = pdf_.GetAxes().GetAxis(0);
     const unsigned nBins = axis.GetNBins(); 
 	std::vector<double> lowEdges  = axis.GetBinLowEdges();
 	std::vector<double> highEdges = axis.GetBinHighEdges();
@@ -59,7 +59,7 @@ PdfConverter::ToTH1D(const Histogram& histo_, const bool widthCorrect_){
     if(histo_.GetNDims() != 1)
         throw DimensionError("Only a 1D pdf can be represented by a TH1D");
  
-    const PdfAxis& axis  = histo_.GetAxes().GetAxis(0);
+    const BinAxis& axis  = histo_.GetAxes().GetAxis(0);
     const unsigned nBins = axis.GetNBins(); 
 	std::vector<double> lowEdges = axis.GetBinLowEdges();
 	std::vector<double> highEdges = axis.GetBinHighEdges();
@@ -81,8 +81,8 @@ PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
     if(histo_.GetNDims() != 2)
 	  throw DimensionError("Only a 2D pdf can be represented by a TH2D");
 	
-	const PdfAxis& axis0 = histo_.GetAxes().GetAxis(0);
-	const PdfAxis& axis1 = histo_.GetAxes().GetAxis(1);
+	const BinAxis& axis0 = histo_.GetAxes().GetAxis(0);
+	const BinAxis& axis1 = histo_.GetAxes().GetAxis(1);
 	const unsigned nBinsX = axis0.GetNBins();
 	const unsigned nBinsY = axis1.GetNBins();
 

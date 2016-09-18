@@ -7,7 +7,7 @@
 #ifndef __AXIS_COLLECTION__
 #define __AXIS_COLLECTION__
 
-#include <PdfAxis.h>
+#include <BinAxis.h>
 #include <vector>
 #include <exception>
 
@@ -17,9 +17,9 @@ class AxisCollection{
     AxisCollection() : fNDimensions(0), fNBins(0){}
     size_t  FindBin(const std::vector<double>& vals_) const;
     size_t  GetNBins() const;
-    void    AddAxis(const PdfAxis& axis_);
-    void    AddAxes(const std::vector<PdfAxis>& axes_);
-    const PdfAxis& GetAxis(size_t axisIndex_) const;
+    void    AddAxis(const BinAxis& axis_);
+    void    AddAxes(const std::vector<BinAxis>& axes_);
+    const BinAxis& GetAxis(size_t axisIndex_) const;
     
     size_t GetNDimensions() const;
     size_t FlattenIndices(const std::vector<size_t>& indicies_) const;
@@ -36,7 +36,7 @@ class AxisCollection{
 	double GetBinWidth(size_t bin_, size_t dim_)    const;
 	
  private:
-    std::vector<PdfAxis> fAxes;
+    std::vector<BinAxis> fAxes;
     std::vector<size_t> fAxisNbins;
     size_t fNBins;
     size_t fNDimensions;

@@ -12,7 +12,7 @@ size_t AxisCollection::GetNDimensions() const {
 }
 
 const 
-PdfAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
+BinAxis& AxisCollection::GetAxis(size_t axisIndex_) const{
     try {
         return fAxes.at(axisIndex_);
     }
@@ -39,7 +39,7 @@ AxisCollection::CountBins(){
 }
 
 void 
-AxisCollection::AddAxis(const PdfAxis& axis_){
+AxisCollection::AddAxis(const BinAxis& axis_){
     if (HasAxis(axis_.GetName())){
         throw ValueError(Formatter() << "Can't add axis " 
                          << axis_.GetName() <<  " already exists!"); 
@@ -52,7 +52,7 @@ AxisCollection::AddAxis(const PdfAxis& axis_){
 }
 
 void 
-AxisCollection::AddAxes(const std::vector<PdfAxis>& axes_){
+AxisCollection::AddAxes(const std::vector<BinAxis>& axes_){
     for(size_t i = 0; i < axes_.size(); i++)
         AddAxis(axes_[i]);
 }

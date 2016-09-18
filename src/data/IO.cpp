@@ -351,7 +351,7 @@ IO::LoadHistogram(const std::string& fileName_){
         lowEdgeAttribute.read(H5::PredType::NATIVE_DOUBLE, &lowEdges[0]);
         highEdgeAttribute.read(H5::PredType::NATIVE_DOUBLE, &highEdges[0]);
 
-        axes.AddAxis(PdfAxis(axisNames.at(i), lowEdges, highEdges, axisLatexNames.at(i)));
+        axes.AddAxis(BinAxis(axisNames.at(i), lowEdges, highEdges, axisLatexNames.at(i)));
     }
 
     Histogram loadedHisto(axes);
