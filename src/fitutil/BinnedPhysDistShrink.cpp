@@ -26,8 +26,8 @@ BinnedPhysDistShrink::GetBuffers() const{
     return fBuffers;
 }
 
-PdfAxis
-BinnedPhysDistShrink::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
+BinAxis
+BinnedPhysDistShrink::ShrinkAxis(const BinAxis& axis_, const unsigned lowerBuff_, 
                               const unsigned upperBuff_) {
     // no buffer no problem
     if (!lowerBuff_ && !upperBuff_)
@@ -51,7 +51,7 @@ BinnedPhysDistShrink::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_
         highEdges[i]  = axis_.GetBinHighEdge(equivilentOldBin);
     }
     
-    return PdfAxis(axis_.GetName(), lowEdges, highEdges, axis_.GetLatexName());
+    return BinAxis(axis_.GetName(), lowEdges, highEdges, axis_.GetLatexName());
 }
 
 BinnedPhysDist

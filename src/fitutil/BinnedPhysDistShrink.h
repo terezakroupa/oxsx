@@ -16,8 +16,8 @@ class BinnedPhysDistShrink{
     BinnedPhysDistShrink();
     ~BinnedPhysDistShrink(){}
 
-    static PdfAxis ShrinkAxis(const PdfAxis&, const unsigned lowerBuff_, 
-                              const unsigned upperBuff_);    
+    BinAxis ShrinkAxis(const BinAxis&, const unsigned lowerBuff_, 
+                       const unsigned upperBuff_);    
     BinnedPhysDist ShrinkPdf(const BinnedPhysDist& pdf_) const;
     
     void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
