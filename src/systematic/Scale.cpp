@@ -5,12 +5,12 @@
 
 void 
 Scale::SetAxes(const AxisCollection& axes_){
-    fPdfMapping.SetAxes(axes_);
+    fResponse.SetAxes(axes_);
 }
 
 const AxisCollection& 
 Scale::GetAxes() const{
-    return fPdfMapping.GetAxes();
+    return fResponse.GetAxes();
 }
 
 void 
@@ -21,10 +21,10 @@ Scale::Construct(){
     if(fDataRep.GetNObservables() != 1)
         throw RepresentationError("Scale systematic must have a 1D representation!");
 
-    const AxisCollection& axes       = fPdfMapping.GetAxes(); 
+    const AxisCollection& axes       = fResponse.GetAxes(); 
     // the axis to scale
     const size_t  scaleAxisDataIndex = fDataRep.GetIndex(0);
-    const PdfAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);
+    const BinAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);
 
 
     const size_t nBins               = axes.GetNBins(); 
@@ -76,7 +76,7 @@ Scale::Construct(){
                 
             }
             
-            fPdfMapping.SetComponent(axes.FlattenIndices(newIndices), i, contribution);
+            fResponse.SetComponent(axes.FlattenIndices(newIndices), i, contribution);
         }
                
     }

@@ -10,7 +10,7 @@
 
 #ifndef __OXSX_SYSTEMATIC__
 #define __OXSX_SYSTEMATIC__
-#include <PdfMapping.h>
+#include <Matrix.h>
 #include <BinnedPhysDist.h>
 #include <FitComponent.h>
 #include <DataRepresentation.h>
@@ -24,8 +24,8 @@ class Systematic : public FitComponent{
     operator()(const BinnedPhysDist& pdf_) const;
         
     void 
-    SetResponse(const PdfMapping& responseMatrix_);
-    const PdfMapping& GetResponse() const;
+    SetResponse(const Matrix& responseMatrix_);
+    const Matrix& GetResponse() const;
         
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;
@@ -36,7 +36,7 @@ class Systematic : public FitComponent{
     virtual void Construct() = 0;
 
  protected:
-    PdfMapping         fPdfMapping;
+    Matrix fResponse;
     DataRepresentation fDataRep;     // the data indicies that this systematic acts on
     DataRepresentation fPdfDataRep;  
     // the data indices  of the pdfs it will act on, needs to be at least the lenth of the 

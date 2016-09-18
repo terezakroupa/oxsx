@@ -6,7 +6,8 @@
 BinnedPhysDist 
 Systematic::operator() (const BinnedPhysDist& pdf_) const{
     try{
-        BinnedPhysDist afterSmear = fPdfMapping(pdf_);
+        BinnedPhysDist afterSmear = pdf_;
+        afterSmear.SetBinContents(fResponse(pdf_.GetBinContents()));
         afterSmear.Normalise();
         return afterSmear;
     }
@@ -16,13 +17,13 @@ Systematic::operator() (const BinnedPhysDist& pdf_) const{
 }
 
 void 
-Systematic::SetResponse(const PdfMapping& responseMatrix_){
-    fPdfMapping = responseMatrix_;
+Systematic::SetResponse(const Matrix& responseMatrix_){
+    fResponse = responseMatrix_;
 }
 
-const PdfMapping& 
+const Matrix& 
 Systematic::GetResponse() const{
-    return fPdfMapping;
+    return fResponse;
 }
 
 void
@@ -39,8 +40,8 @@ Systematic::GetPdfDataRep() const {return fPdfDataRep;}
 
 bool
 Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
-    std::vector<size_t> bin1Indices = fPdfMapping.GetAxes().UnpackIndices(bin1_);
-    std::vector<size_t> bin2Indices = fPdfMapping.GetAxes().UnpackIndices(bin2_);
+    std::vector<size_t> bin1Indices = fResponse.GetAxes().UnpackIndices(bin1_);
+    std::vector<size_t> bin2Indices = fResponse.GetAxes().UnpackIndices(bin2_);
 
     // Where are the indices the systematic cares about in the pdfs index scheme
     std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);

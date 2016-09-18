@@ -20,7 +20,7 @@ Convolution::~Convolution(){
 
 void 
 Convolution::SetAxes(const AxisCollection& axes_){
-    fPdfMapping.SetAxes(axes_);
+    fResponse.SetAxes(axes_);
     fHasAxes = true;
 }
 
@@ -32,9 +32,9 @@ Convolution::Construct(){
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
 
-    size_t nBins = fPdfMapping.GetNBins();
-    size_t nDims = fPdfMapping.GetAxes().GetNDimensions();
-    const AxisCollection& axes = fPdfMapping.GetAxes();
+    size_t nBins = fResponse.GetNBins();
+    size_t nDims = fResponse.GetAxes().GetNDimensions();
+    const AxisCollection& axes = fResponse.GetAxes();
     std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
 
     // Work out the transition probabilitites within this sub set of the bins
@@ -42,7 +42,7 @@ Convolution::Construct(){
     std::vector<double> lowEdges(fSysAxes.GetNDimensions());
     std::vector<double> highEdges(fSysAxes.GetNDimensions());
 
-    PdfMapping subMap;
+    Matrix subMap;
     subMap.SetAxes(fSysAxes);
 
     for (size_t origBin = 0; origBin < fSysAxes.GetNBins(); origBin++){
@@ -78,17 +78,17 @@ Convolution::Construct(){
         }
     }
         
-    fPdfMapping.SetComponents(nonZeroRowIndices, nonZeroColIndices, values);
+    fResponse.SetComponents(nonZeroRowIndices, nonZeroColIndices, values);
 }
 
 
 void
 Convolution::CacheCompatibleBins(){
-    fCompatibleBins.resize(fPdfMapping.GetNBins());
+    fCompatibleBins.resize(fResponse.GetNBins());
     // only need to look at one side of the matrix, its symmetric
-    for(size_t i = 0; i < fPdfMapping.GetNBins(); i++){
+    for(size_t i = 0; i < fResponse.GetNBins(); i++){
         fCompatibleBins.at(i).push_back(i); // always true
-        for(size_t j = i+1;  j < fPdfMapping.GetNBins(); j++){
+        for(size_t j = i+1;  j < fResponse.GetNBins(); j++){
             if(BinsCompatible(i , j)){
                 fCompatibleBins.at(i).push_back(j);
                 fCompatibleBins.at(j).push_back(i);
@@ -97,7 +97,7 @@ Convolution::CacheCompatibleBins(){
     }
 
     std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
-    const AxisCollection& axes = fPdfMapping.GetAxes();
+    const AxisCollection& axes = fResponse.GetAxes();
 
     //  get the axes that this systematic will act on
     fSysAxes = AxisCollection();
@@ -105,7 +105,7 @@ Convolution::CacheCompatibleBins(){
       fSysAxes.AddAxis(axes.GetAxis(relativeIndices.at(i)));
     
     // cache the equivilent index in the binning system of the systematic
-    fSysBins.resize(fPdfMapping.GetNBins());
+    fSysBins.resize(fResponse.GetNBins());
     std::vector<size_t> sysIndices(relativeIndices.size(), 0);
     for(size_t i = 0; i < axes.GetNBins(); i++){
       for(size_t dim = 0; dim < relativeIndices.size(); dim++)
