@@ -17,8 +17,7 @@ class CompositePhysDist : public PhysDist{
     CompositePhysDist(const PhysDist* p1_, const PhysDist* p2_);
     CompositePhysDist(const std::vector<PhysDist*>& pdfs_); 
     virtual ~CompositePhysDist();
-
-    virtual double operator() (const std::vector<double>& vals_) const;
+        
     virtual double Probability(const EventData&) const;
     virtual PhysDist*   Clone() const; // required for futher compositions
 

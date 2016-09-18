@@ -56,20 +56,6 @@ BinnedPhysDist::Clone() const{
 }
 
 
-double
-BinnedPhysDist::Probability(const EventData& oberservations_) const{
-    try{
-        return operator()(oberservations_.ToRepresentation(fDataRep));
-    }
-
-    catch(const RepresentationError& e_){
-        throw RepresentationError("BinnedPhysDist::Probability() failed with  " 
-                                  + std::string(e_.what()) 
-                                  + " is the rep set correctly?");
-    }
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 // All methods below this line just forward the call to the underlying histogram object //
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -86,8 +72,21 @@ BinnedPhysDist::GetAxes() const{
 }
 
 double 
-BinnedPhysDist::operator() (const std::vector<double>& vals_) const{
-    return fHistogram.operator()(vals_);
+BinnedPhysDist::Probability(const std::vector<double>& vals_) const{
+    return fHistogram.GetBinContent(fHistogram.FindBin(vals_))/fHistogram.Integral();
+}
+
+double
+BinnedPhysDist::Probability(const EventData& oberservations_) const{
+    try{
+        return Probability(oberservations_.ToRepresentation(fDataRep));
+    }
+
+    catch(const RepresentationError& e_){
+        throw RepresentationError("BinnedPhysDist::Probability() failed with  " 
+                                  + std::string(e_.what()) 
+                                  + " is the rep set correctly?");
+    }
 }
 
 double 

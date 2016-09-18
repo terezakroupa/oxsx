@@ -10,7 +10,6 @@ class PhysDist{
     virtual ~PhysDist() {}
     virtual PhysDist*   Clone() const = 0;
 
-    virtual double operator()  (const std::vector<double>& vals_) const = 0;
     virtual double Probability (const EventData&) const = 0;
     
     virtual double Integral() const = 0;

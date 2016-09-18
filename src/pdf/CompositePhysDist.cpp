@@ -21,20 +21,6 @@ CompositePhysDist::~CompositePhysDist() {
 }
 
 double 
-CompositePhysDist::operator() (const std::vector<double>& vals_) const{
-    double prob = 1;
-    try{
-        for(size_t i = 0; i < fDistPtrs.size(); i++)
-            prob *= fDistPtrs[i] -> operator() (vals_);
-    }
-
-    catch(const DimensionError& e_){
-        throw DimensionError("Passed vector of values into composite where pdfs are not all same dim! Use Probability() if you want the data distributed across the internal pdfs");
-    }
-    return prob;
-}
-
-double 
 CompositePhysDist::Probability(const EventData& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fDistPtrs.size(); i++)

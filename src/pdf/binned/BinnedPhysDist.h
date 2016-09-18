@@ -20,8 +20,8 @@ class BinnedPhysDist : public PhysDist{
     BinnedPhysDist(const Histogram& histo_);
     PhysDist*   Clone() const; 
 
-    double operator() (const std::vector<double>& vals_) const;
     double Probability(const EventData&) const;
+    double Probability(const std::vector<double>&) const;
     double Integral()  const;
     void   Normalise();
     void   Scale(double s_);

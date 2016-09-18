@@ -24,7 +24,7 @@ AnalyticPhysDist::Clone() const{
 }
 
 double
-AnalyticPhysDist::operator()(const std::vector<double>& vals_) const{    
+AnalyticPhysDist::Probability(const std::vector<double>& vals_) const{    
     try{
         return fFunction->operator()(vals_)/fNorm;
     }
@@ -38,7 +38,7 @@ AnalyticPhysDist::operator()(const std::vector<double>& vals_) const{
 double
 AnalyticPhysDist::Probability(const EventData& event_) const{
     try{
-        return operator()(event_.ToRepresentation(fDataRep));
+        return Probability(event_.ToRepresentation(fDataRep));
     }
 
     catch(const RepresentationError& e_){
