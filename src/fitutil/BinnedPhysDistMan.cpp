@@ -51,18 +51,14 @@ BinnedPhysDistMan::SetNormalisations(const std::vector<double>& normalisations_)
 
 void
 BinnedPhysDistMan::ApplySystematics(const SystematicManager& sysMan_){
-    // If there are no systematics or they haven't changed, dont transform the working pdfs 
-    //  ( = original pdfs from initialisagtion)
+    // If there are no systematics dont do anything
+    //  ( working pdfs = original pdfs from initialisation)
     
-    // FIXME: Do you need some equivilent to the code below for saving time on a grid search??
-//     if((!sysMan_.GetSystematics().size()) || sysMan_.GetParameters() == fCachedParams)
-//         return;
-//    fCachedParams = sysMan_.GetParameters();
     if(!sysMan_.GetSystematics().size())
         return;
     
     for(size_t j = 0; j < fOriginalPdfs.size(); j++)
-      fWorkingPdfs[j] = sysMan_.GetTotalResponse().operator()(fOriginalPdfs[j]);
+        fWorkingPdfs[j].SetBinContents(sysMan_.GetTotalResponse().operator()(fOriginalPdfs.at(j).GetBinContents()));
 }
 
 const BinnedPhysDist&
@@ -100,7 +96,7 @@ BinnedPhysDistMan::ApplyShrink(const BinnedPhysDistShrink& shrinker_){
         return;
 
     for (size_t i = 0; i < fWorkingPdfs.size(); i++){
-        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+        fWorkingPdfs[i] = shrinker_.ShrinkBinnedPhysDist(fWorkingPdfs.at(i));
         fWorkingPdfs[i].Normalise();
     }
     
