@@ -1,4 +1,4 @@
-#include <JumpDist.h>
+#include <JumpPDF.h>
 #include <PDF.h>
 #include <Exceptions.h>
 #include <algorithm>
@@ -8,7 +8,7 @@
 // CONSTRUCTORS/DESTRUCTORS //
 //////////////////////////////
 
-JumpDist::JumpDist(PDF* f_){
+JumpPDF::JumpPDF(PDF* f_){
   if(f_)
 	fPDF = static_cast<PDF*>(f_->Clone());
   
@@ -16,19 +16,19 @@ JumpDist::JumpDist(PDF* f_){
 	fPDF = NULL;  
 }
 
-JumpDist::~JumpDist(){
+JumpPDF::~JumpPDF(){
   delete fPDF;
 }
 
-JumpDist::JumpDist(const JumpDist& other_){
+JumpPDF::JumpPDF(const JumpPDF& other_){
   if(other_.fPDF)
 	fPDF = static_cast<PDF*>(other_.fPDF->Clone());
   else
 	fPDF = NULL;
 }
 
-JumpDist
-JumpDist::operator=(const JumpDist& other_){
+JumpPDF
+JumpPDF::operator=(const JumpPDF& other_){
   if(other_.fPDF)
 	fPDF = static_cast<PDF*>(other_.fPDF->Clone());
   else
@@ -37,7 +37,7 @@ JumpDist::operator=(const JumpDist& other_){
 }
 
 std::vector<double>
-JumpDist::Diff(const std::vector<double>& x_, 
+JumpPDF::Diff(const std::vector<double>& x_, 
 								const std::vector<double>& x2_) const{
   std::vector<double> diff = x_;
   std::transform(diff.begin(), diff.end(), x2_.begin(), 
@@ -46,7 +46,7 @@ JumpDist::Diff(const std::vector<double>& x_,
 }
 
 std::vector<double>
-JumpDist::Sum(const std::vector<double>& x_, 
+JumpPDF::Sum(const std::vector<double>& x_, 
 							   const std::vector<double>& x2_) const{
   std::vector<double> sum = x_;
   std::transform(sum.begin(), sum.end(), x2_.begin(), 
@@ -54,9 +54,9 @@ JumpDist::Sum(const std::vector<double>& x_,
   return sum;
 }
 
-ConditDist*
-JumpDist::Clone() const{
-  return static_cast<ConditDist*>(new JumpDist(*this));
+ConditionalPDF*
+JumpPDF::Clone() const{
+  return static_cast<ConditionalPDF*>(new JumpPDF(*this));
 }
 
 ////////////////////////////////////////
@@ -64,29 +64,29 @@ JumpDist::Clone() const{
 ////////////////////////////////////////
 
 double 
-JumpDist::ConditionalProbability(const std::vector<double>& x_,
+JumpPDF::ConditionalProbability(const std::vector<double>& x_,
                                  const std::vector<double>& x2_){
   if(!fPDF)
-    throw NULLPointerAccessError("JumpDist::Probability",
+    throw NULLPointerAccessError("JumpPDF::Probability",
                                  "Have you set the function?");
      
   return fPDF->operator()(Diff(x_, x2_));
 }
 
 std::vector<double> 
-JumpDist::Sample(const std::vector<double>& x2_) const{
+JumpPDF::Sample(const std::vector<double>& x2_) const{
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::Integral",
+	throw NULLPointerAccessError("JumpPDF::Integral",
                                  "Have you set the function?");
   std::vector<double> samp = fPDF->Sample();
   return Sum(samp, x2_);
 }
 double
-JumpDist::Integral(const std::vector<double>& mins_,
+JumpPDF::Integral(const std::vector<double>& mins_,
 									const std::vector<double>& maxs_,
 									const std::vector<double>& x2_) const{
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::Integral",
+	throw NULLPointerAccessError("JumpPDF::Integral",
                                  "Have you set the function?");
   
   return fPDF->Integral(Diff(maxs_, x2_), Diff(mins_, x2_));
@@ -94,9 +94,9 @@ JumpDist::Integral(const std::vector<double>& mins_,
 									  
 
 double 
-JumpDist::Integral(double x2_) const{
+JumpPDF::Integral(double x2_) const{
  if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::Integral",
+	throw NULLPointerAccessError("JumpPDF::Integral",
  								 "Have you set the function?");
  return fPDF->Integral();
 }
@@ -107,43 +107,43 @@ JumpDist::Integral(double x2_) const{
 /////////////////////////////
 
 void
-JumpDist::MakeFittable(){
+JumpPDF::MakeFittable(){
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::MakeFittable",
+	throw NULLPointerAccessError("JumpPDF::MakeFittable",
 								   "Have you set the function?");
 	fPDF->MakeFittable();
 }
 
 std::vector<std::string>
-JumpDist::GetParameterNames() const{
+JumpPDF::GetParameterNames() const{
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::GetParameterNames",
+	throw NULLPointerAccessError("JumpPDF::GetParameterNames",
 								   "Have you set the function?");
   return fPDF->GetParameterNames();
 }
 
 
 std::vector<double>
-JumpDist::GetParameters() const{
+JumpPDF::GetParameters() const{
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::GetParameters",
+	throw NULLPointerAccessError("JumpPDF::GetParameters",
 								   "Have you set the function?");
   return fPDF->GetParameters();
 }
 
 size_t
-JumpDist::GetParameterCount() const{
+JumpPDF::GetParameterCount() const{
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::GetParameterCount",
+	throw NULLPointerAccessError("JumpPDF::GetParameterCount",
 								 "Have you set the function?");
   return fPDF->GetParameterCount();
 }
 
 
 void
-JumpDist::SetParameters(const std::vector<double>& params_){
+JumpPDF::SetParameters(const std::vector<double>& params_){
   if(!fPDF)
-	throw NULLPointerAccessError("JumpDist::SetParameters",
+	throw NULLPointerAccessError("JumpPDF::SetParameters",
 								 "Have you set the function?");
   fPDF->SetParameters(params_);
 }

@@ -1,6 +1,6 @@
 #include <EventConvolution.h>
 #include <PDF.h>
-#include <JumpDist.h>
+#include <JumpPDF.h>
 #include <Exceptions.h>
 #include <Rand.h>
 #include <EventData.h>
@@ -45,12 +45,12 @@ EventConvolution::SetPDF(PDF* f_){
 	if(f_->GetNDims() != 1)
 	  throw DimensionError("EventConvolution::SetFunction", 1, 
 						   f_->GetNDims(), "Only implemented for 1D functions");
-	fDist = static_cast<ConditDist*>(new JumpDist(f_));
+	fDist = static_cast<ConditionalPDF*>(new JumpPDF(f_));
   }	
 }
 
 void
-EventConvolution::SetConditDist(ConditDist* c_){
+EventConvolution::SetConditionalPDF(ConditionalPDF* c_){
   if(!c_)
 	fDist = NULL;
   else

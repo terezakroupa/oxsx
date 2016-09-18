@@ -1,19 +1,19 @@
-#ifndef __OXSX_JUMP_DISTRIBUTION__
-#define __OXSX_JUMP_DISTRIBUTION__
-#include <ConditDist.h>
+#ifndef __OXSX_JUMP_PDF__
+#define __OXSX_JUMP_PDF__
+#include <ConditionalPDF.h>
 #include <vector>
 #include <string>
 
 class PDF;
-class JumpDist : public ConditDist{
+class JumpPDF : public ConditionalPDF{
  public:  
   // Constructors/Destructor
-  JumpDist(): fPDF(NULL) {}
-  JumpDist(PDF*);
-  ~JumpDist();
-  JumpDist(const JumpDist&);
-  JumpDist operator=(const JumpDist&);
-  ConditDist* Clone() const;
+  JumpPDF(): fPDF(NULL) {}
+  JumpPDF(PDF*);
+  ~JumpPDF();
+  JumpPDF(const JumpPDF&);
+  JumpPDF operator=(const JumpPDF&);
+  ConditionalPDF* Clone() const;
 
   // ConditDist Interface, just execute the function on x - x2
   virtual double ConditionalProbability(const std::vector<double>& x_,

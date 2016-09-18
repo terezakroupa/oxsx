@@ -1,12 +1,12 @@
-#ifndef __OXSX_CONDITDIST__
-#define __OXSX_CONDITDIST__
+#ifndef __OXSX_CONDITIONAL_PDF__
+#define __OXSX_CONDITIONAL_PDF__
 #include <FitComponent.h>
 #include <vector>
 
-class ConditDist : public FitComponent{
+class ConditionalPDF : public FitComponent{
  public:
-  virtual ~ConditDist() {};
-  virtual ConditDist* Clone() const = 0;
+  virtual ~ConditionalPDF() {};
+  virtual ConditionalPDF* Clone() const = 0;
   virtual double ConditionalProbability(const std::vector<double>& x_, 
 										const std::vector<double>& x2_) = 0;
   

@@ -6,7 +6,7 @@
 #include <iostream>
 
 class PDF;
-class ConditDist;
+class ConditionalPDF;
 class EventData;
 class EventConvolution : public EventSystematic{
  public:
@@ -18,7 +18,7 @@ class EventConvolution : public EventSystematic{
 
   // Get/Set
   void SetPDF(PDF* f);
-  void SetConditDist(ConditDist* f);
+  void SetConditionalPDF(ConditionalPDF* f);
 
   // Event Systematic interface
   EventData operator()(const EventData&);
@@ -31,6 +31,6 @@ class EventConvolution : public EventSystematic{
   void   SetParameters(const std::vector<double>&);
 
  private:
-  ConditDist* fDist;
+  ConditionalPDF* fDist;
 };
 #endif

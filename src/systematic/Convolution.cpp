@@ -1,16 +1,16 @@
 #include <Convolution.h>
 #include <PDF.h>
 #include <Exceptions.h>
-#include <JumpDist.h>
+#include <JumpPDF.h>
 #include <string>
 void 
 Convolution::SetFunction(PDF* function_){
     // wrap this up if position independent kernal of the form P(x | x2) = P(x - x2)
-    fDist = static_cast<ConditDist*>(new JumpDist(function_));
+    fDist = static_cast<ConditionalPDF*>(new JumpPDF(function_));
 }
 
 void
-Convolution::SetConditDist(ConditDist* c_){
+Convolution::SetConditionalPDF(ConditionalPDF* c_){
     fDist = c_->Clone();
 }
 
