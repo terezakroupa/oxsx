@@ -24,11 +24,6 @@ Histogram::GetAxes() const{
 }
 
 double 
-Histogram::operator() (const std::vector<double>& vals_) const{
-    return fBinContents.at(FindBin(vals_));
-}
-
-double 
 Histogram::Integral() const{
     double sum = 0;
     for(size_t i = 0; i < fNBins; i++)

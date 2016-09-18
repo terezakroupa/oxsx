@@ -15,7 +15,6 @@ class Histogram{
     Histogram() : fNBins(0), fNDims(0) {}
     Histogram(const AxisCollection& axes_);
     
-    double operator() (const std::vector<double>& vals_) const;
     double Integral()  const;
     void   Normalise();
     void   Scale(double);
