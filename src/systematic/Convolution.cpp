@@ -1,12 +1,12 @@
 #include <Convolution.h>
 #include <IntegrableFunction.h>
 #include <Exceptions.h>
+#include <JumpDistribution.h>
 #include <string>
-#include <UnconditionalDistribution.h>
 void 
 Convolution::SetFunction(IntegrableFunction* function_){
     // wrap this up if position independent kernal of the form P(x | x2) = P(x - x2)
-    fDist = static_cast<ConditionalDistribution*>(new UnconditionalDistribution(function_));
+    fDist = static_cast<ConditionalDistribution*>(new JumpDistribution(function_));
 }
 
 void

@@ -1,4 +1,4 @@
-#include <UnconditionalDistribution.h>
+#include <JumpDistribution.h>
 #include <IntegrableFunction.h>
 #include <Exceptions.h>
 #include <algorithm>
@@ -8,7 +8,7 @@
 // CONSTRUCTORS/DESTRUCTORS //
 //////////////////////////////
 
-UnconditionalDistribution::UnconditionalDistribution(IntegrableFunction* f_){
+JumpDistribution::JumpDistribution(IntegrableFunction* f_){
   if(f_)
 	fFunction = static_cast<IntegrableFunction*>(f_->Clone());
   
@@ -16,19 +16,19 @@ UnconditionalDistribution::UnconditionalDistribution(IntegrableFunction* f_){
 	fFunction = NULL;  
 }
 
-UnconditionalDistribution::~UnconditionalDistribution(){
+JumpDistribution::~JumpDistribution(){
   delete fFunction;
 }
 
-UnconditionalDistribution::UnconditionalDistribution(const UnconditionalDistribution& other_){
+JumpDistribution::JumpDistribution(const JumpDistribution& other_){
   if(other_.fFunction)
 	fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
   else
 	fFunction = NULL;
 }
 
-UnconditionalDistribution
-UnconditionalDistribution::operator=(const UnconditionalDistribution& other_){
+JumpDistribution
+JumpDistribution::operator=(const JumpDistribution& other_){
   if(other_.fFunction)
 	fFunction = static_cast<IntegrableFunction*>(other_.fFunction->Clone());
   else
@@ -37,7 +37,7 @@ UnconditionalDistribution::operator=(const UnconditionalDistribution& other_){
 }
 
 std::vector<double>
-UnconditionalDistribution::Diff(const std::vector<double>& x_, 
+JumpDistribution::Diff(const std::vector<double>& x_, 
 								const std::vector<double>& x2_) const{
   std::vector<double> diff = x_;
   std::transform(diff.begin(), diff.end(), x2_.begin(), 
@@ -46,7 +46,7 @@ UnconditionalDistribution::Diff(const std::vector<double>& x_,
 }
 
 std::vector<double>
-UnconditionalDistribution::Sum(const std::vector<double>& x_, 
+JumpDistribution::Sum(const std::vector<double>& x_, 
 							   const std::vector<double>& x2_) const{
   std::vector<double> sum = x_;
   std::transform(sum.begin(), sum.end(), x2_.begin(), 
@@ -55,8 +55,8 @@ UnconditionalDistribution::Sum(const std::vector<double>& x_,
 }
 
 ConditionalDistribution*
-UnconditionalDistribution::Clone() const{
-  return static_cast<ConditionalDistribution*>(new UnconditionalDistribution(*this));
+JumpDistribution::Clone() const{
+  return static_cast<ConditionalDistribution*>(new JumpDistribution(*this));
 }
 
 ////////////////////////////////////////
@@ -64,29 +64,29 @@ UnconditionalDistribution::Clone() const{
 ////////////////////////////////////////
 
 double 
-UnconditionalDistribution::ConditionalProbability(const std::vector<double>& x_,
+JumpDistribution::ConditionalProbability(const std::vector<double>& x_,
 												  const std::vector<double>& x2_){
   if(!fFunction)
-    throw NULLPointerAccessError("UnconditionalDistribution::Probability",
+    throw NULLPointerAccessError("JumpDistribution::Probability",
                                  "Have you set the function?");
      
   return fFunction->operator()(Diff(x_, x2_));
 }
 
 std::vector<double> 
-UnconditionalDistribution::Sample(const std::vector<double>& x2_) const{
+JumpDistribution::Sample(const std::vector<double>& x2_) const{
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::Integral",
+	throw NULLPointerAccessError("JumpDistribution::Integral",
                                  "Have you set the function?");
   std::vector<double> samp = fFunction->Sample();
   return Sum(samp, x2_);
 }
 double
-UnconditionalDistribution::Integral(const std::vector<double>& mins_,
+JumpDistribution::Integral(const std::vector<double>& mins_,
 									const std::vector<double>& maxs_,
 									const std::vector<double>& x2_) const{
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::Integral",
+	throw NULLPointerAccessError("JumpDistribution::Integral",
                                  "Have you set the function?");
   
   return fFunction->Integral(Diff(maxs_, x2_), Diff(mins_, x2_));
@@ -94,9 +94,9 @@ UnconditionalDistribution::Integral(const std::vector<double>& mins_,
 									  
 
 double 
-UnconditionalDistribution::Integral(double x2_) const{
+JumpDistribution::Integral(double x2_) const{
  if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::Integral",
+	throw NULLPointerAccessError("JumpDistribution::Integral",
  								 "Have you set the function?");
  return fFunction->Integral();
 }
@@ -107,43 +107,43 @@ UnconditionalDistribution::Integral(double x2_) const{
 /////////////////////////////
 
 void
-UnconditionalDistribution::MakeFittable(){
+JumpDistribution::MakeFittable(){
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::MakeFittable",
+	throw NULLPointerAccessError("JumpDistribution::MakeFittable",
 								   "Have you set the function?");
 	fFunction->MakeFittable();
 }
 
 std::vector<std::string>
-UnconditionalDistribution::GetParameterNames() const{
+JumpDistribution::GetParameterNames() const{
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::GetParameterNames",
+	throw NULLPointerAccessError("JumpDistribution::GetParameterNames",
 								   "Have you set the function?");
   return fFunction->GetParameterNames();
 }
 
 
 std::vector<double>
-UnconditionalDistribution::GetParameters() const{
+JumpDistribution::GetParameters() const{
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::GetParameters",
+	throw NULLPointerAccessError("JumpDistribution::GetParameters",
 								   "Have you set the function?");
   return fFunction->GetParameters();
 }
 
 size_t
-UnconditionalDistribution::GetParameterCount() const{
+JumpDistribution::GetParameterCount() const{
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::GetParameterCount",
+	throw NULLPointerAccessError("JumpDistribution::GetParameterCount",
 								 "Have you set the function?");
   return fFunction->GetParameterCount();
 }
 
 
 void
-UnconditionalDistribution::SetParameters(const std::vector<double>& params_){
+JumpDistribution::SetParameters(const std::vector<double>& params_){
   if(!fFunction)
-	throw NULLPointerAccessError("UnconditionalDistribution::SetParameters",
+	throw NULLPointerAccessError("JumpDistribution::SetParameters",
 								 "Have you set the function?");
   fFunction->SetParameters(params_);
 }

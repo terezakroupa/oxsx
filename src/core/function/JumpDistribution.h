@@ -1,18 +1,18 @@
-#ifndef __OXSX_UNCONDITIONAL_DISTRIBUTION__
-#define __OXSX_UNCONDITIONAL_DISTRIBUTION__
+#ifndef __OXSX_JUMP_DISTRIBUTION__
+#define __OXSX_JUMP_DISTRIBUTION__
 #include <ConditionalDistribution.h>
 #include <vector>
 #include <string>
 
 class IntegrableFunction;
-class UnconditionalDistribution : public ConditionalDistribution{
+class JumpDistribution : public ConditionalDistribution{
  public:  
   // Constructors/Destructor
-  UnconditionalDistribution(): fFunction(NULL) {}
-  UnconditionalDistribution(IntegrableFunction*);
-  ~UnconditionalDistribution();
-  UnconditionalDistribution(const UnconditionalDistribution&);
-  UnconditionalDistribution operator=(const UnconditionalDistribution&);
+  JumpDistribution(): fFunction(NULL) {}
+  JumpDistribution(IntegrableFunction*);
+  ~JumpDistribution();
+  JumpDistribution(const JumpDistribution&);
+  JumpDistribution operator=(const JumpDistribution&);
   ConditionalDistribution* Clone() const;
 
   // Conditional Distribution Interface, just execute the function on x - x2
@@ -26,7 +26,7 @@ class UnconditionalDistribution : public ConditionalDistribution{
   virtual double Integral(double x2_) const;
   std::vector<double> Sample(const std::vector<double>& x2_) const;
 
-  // Elementwise difference between x and x2
+  // Elementwise difference/sum between x and x2
   std::vector<double> Diff(const std::vector<double>& x_, 
 						   const std::vector<double>& x2_) const;
 
