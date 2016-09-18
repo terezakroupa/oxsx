@@ -1,26 +1,26 @@
-#ifndef __OXSX_PDF_MANAGER__
-#define __OXSX_PDF_MANAGER__
+#ifndef __OXSX_PHYSDISTMAN__
+#define __OXSX_PHYSDISTMAN__
 #include <FitComponent.h>
 #include <ParameterManager.h>
 #include <vector>
 
-class Pdf;
+class PhysDist;
 class EventData;
 
-class PdfManager : public FitComponent{
+class PhysDistMan : public FitComponent{
  public:
-    PdfManager(): fNPdfs(0), fNDims(0) {}
-    ~PdfManager(); // free pdf copies
+    PhysDistMan(): fNDists(0), fNDims(0) {}
+    ~PhysDistMan(); // free pdf copies
 
-    void  AddPdf(Pdf *); // take a copy
-    void  AddPdfs(const std::vector<Pdf*>& pdfs_);
+    void  AddPhysDist(PhysDist*); // take a copy
+    void  AddPhysDists(const std::vector<PhysDist*>& pdfs_);
 
     const std::vector<double>& GetNormalisations() const;
     void  SetNormalisations(const std::vector<double>&);
     
     double Probability(const EventData&) const;
     
-    size_t GetNPdfs() const;
+    size_t GetNDists() const;
     size_t GetNDims() const;
     
     // Make a fittable component - i.e. rescale pdfs inside to fit
@@ -31,10 +31,10 @@ class PdfManager : public FitComponent{
     void   SetParameters(const std::vector<double>& params_);
 
  private:
-    ParameterManager fParameterManager;
-    size_t fNPdfs;
+    ParameterManager       fParameterManager;
+    size_t fNDists;
     size_t fNDims;
-    std::vector<Pdf*>   fPdfs;
+    std::vector<PhysDist*>   fDists;
     std::vector<double> fNormalisations;
 };
 #endif

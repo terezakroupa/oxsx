@@ -1,40 +1,40 @@
-#include <BinnedPdfShrinker.h>
+#include <BinnedPhysDistShrink.h>
 #include <Exceptions.h>
 #include <iostream>
 
-BinnedPdfShrinker::BinnedPdfShrinker(){
+BinnedPhysDistShrink::BinnedPhysDistShrink(){
     fUsingOverflows = true;
 }
 
 void
-BinnedPdfShrinker::SetBuffer(size_t dim_, unsigned lowerBuff_, unsigned upperBuff_){
+BinnedPhysDistShrink::SetBuffer(size_t dim_, unsigned lowerBuff_, unsigned upperBuff_){
     fBuffers[dim_] = std::pair<unsigned, unsigned> (lowerBuff_, upperBuff_);
 }
 
 std::pair<unsigned, unsigned>
-BinnedPdfShrinker::GetBuffer(size_t dim_) const{
+BinnedPhysDistShrink::GetBuffer(size_t dim_) const{
     try{
         return fBuffers.at(dim_);
     }
     catch(const std::out_of_range&){
-        throw NotFoundError(Formatter() << "BinnedPdfShrinker::Requested buffer boundaries on non-existent dim " << dim_ << "!");
+        throw NotFoundError(Formatter() << "BinnedPhysDistShrink::Requested buffer boundaries on non-existent dim " << dim_ << "!");
     }
 }
 
 std::map<size_t, std::pair<unsigned, unsigned> > 
-BinnedPdfShrinker::GetBuffers() const{
+BinnedPhysDistShrink::GetBuffers() const{
     return fBuffers;
 }
 
 PdfAxis
-BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
+BinnedPhysDistShrink::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_, 
                               const unsigned upperBuff_) {
     // no buffer no problem
     if (!lowerBuff_ && !upperBuff_)
         return axis_;
 
     if ((lowerBuff_  + upperBuff_) >= axis_.GetNBins())
-        throw ValueError(Formatter() << "BinnedPdfShrinker::Buffersize ("
+        throw ValueError(Formatter() << "BinnedPhysDistShrink::Buffersize ("
                                      << lowerBuff_ << ", "  << upperBuff_ << ")" 
                                      << " exceeds number of bins (" << axis_.GetNBins() << ")");
     
@@ -54,8 +54,8 @@ BinnedPdfShrinker::ShrinkAxis(const PdfAxis& axis_, const unsigned lowerBuff_,
     return PdfAxis(axis_.GetName(), lowEdges, highEdges, axis_.GetLatexName());
 }
 
-BinnedPdf
-BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
+BinnedPhysDist
+BinnedPhysDistShrink::ShrinkPdf(const BinnedPhysDist& pdf_) const{
 
     // No buffer no problem. FIXME: what about if all the values are zero?
     if (!fBuffers.size())
@@ -81,7 +81,7 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
     }
 
     // 2. Initialise the new pdf with same data rep
-    BinnedPdf newPdf(newAxes);
+    BinnedPhysDist newPdf(newAxes);
     newPdf.SetDataRep(pdf_.GetDataRep());
 
     // 3. Fill the axes
@@ -131,12 +131,12 @@ BinnedPdfShrinker::ShrinkPdf(const BinnedPdf& pdf_) const{
 }
 
 void
-BinnedPdfShrinker::SetUsingOverflows(bool b_){
+BinnedPhysDistShrink::SetUsingOverflows(bool b_){
     fUsingOverflows = b_;
 }
 
 bool
-BinnedPdfShrinker::GetUsingOverflows() const{
+BinnedPhysDistShrink::GetUsingOverflows() const{
     return fUsingOverflows;
 }
 

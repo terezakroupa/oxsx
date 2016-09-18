@@ -1,9 +1,9 @@
-#include <SpectralFitPdf.h>
+#include <SpectralFitDist.h>
 #include <Exceptions.h>
 #include <sstream>
 
 std::vector<std::string> 
-SpectralFitPdf::GetParameterNames() const{
+SpectralFitDist::GetParameterNames() const{
     std::vector<std::string> names;
     names.reserve(fHistogram.GetNBins());
 
@@ -17,22 +17,22 @@ SpectralFitPdf::GetParameterNames() const{
 }
 
 std::vector<double> 
-SpectralFitPdf::GetParameters() const{
+SpectralFitDist::GetParameters() const{
     return fHistogram.GetBinContents();
 }
 
 size_t
-SpectralFitPdf::GetParameterCount() const{
+SpectralFitDist::GetParameterCount() const{
     return fHistogram.GetNBins();
 }
 
 void
-SpectralFitPdf::SetParameters(const std::vector<double>& params_){
+SpectralFitDist::SetParameters(const std::vector<double>& params_){
     try{
         fHistogram.SetBinContents(params_);
     }
     catch(const NotFoundError&){
-        throw ParameterCountError("SpectralFitPdf", GetNBins(), 
+        throw ParameterCountError("SpectralFitDist", GetNBins(), 
                                   params_.size(), "is it fittable?");
     }
 }

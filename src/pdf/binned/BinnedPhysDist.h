@@ -5,20 +5,20 @@
 /* in the sense that they have a data representation and examine events                           */
 /**************************************************************************************************/
 
-#ifndef __OXSX_BINNED_PDF__
-#define __OXSX_BINNED_PDF__
+#ifndef __OXSX_BINNEDPHYSDIST__
+#define __OXSX_BINNEDPHYSDIST__
 #include <Histogram.h>
-#include <Pdf.h>
+#include <PhysDist.h>
 #include <vector>
 #include <map>
 #include <string>
 
-class BinnedPdf : public Pdf{
+class BinnedPhysDist : public PhysDist{
  public:
-    BinnedPdf() {}
-    BinnedPdf(const AxisCollection& axes_);
-    BinnedPdf(const Histogram& histo_);
-    Pdf*   Clone() const; 
+    BinnedPhysDist() {}
+    BinnedPhysDist(const AxisCollection& axes_);
+    BinnedPhysDist(const Histogram& histo_);
+    PhysDist*   Clone() const; 
 
     double operator() (const std::vector<double>& vals_) const;
     double Probability(const EventData&) const;
@@ -56,9 +56,9 @@ class BinnedPdf : public Pdf{
     void     Empty();
     unsigned GetNDims() const;
         
-    BinnedPdf Marginalise(const std::vector<size_t>& indices_) const;
-    BinnedPdf Marginalise(size_t index_) const;
-	std::map<std::string, BinnedPdf> GetAllProjections() const;
+    BinnedPhysDist Marginalise(const std::vector<size_t>& indices_) const;
+    BinnedPhysDist Marginalise(size_t index_) const;
+	std::map<std::string, BinnedPhysDist> GetAllProjections() const;
 	
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;

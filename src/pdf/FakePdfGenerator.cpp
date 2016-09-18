@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 
-BinnedPdf
+BinnedPhysDist
 FakePdfGenerator::ExpectedRatesPdf() const{
     if(!(fPdfs.size() == fRates.size()))
         throw LogicError("FakePdfGenerator::Need exactly one rate for each ");
@@ -14,7 +14,7 @@ FakePdfGenerator::ExpectedRatesPdf() const{
     if (!fPdfs.size())
         throw LogicError("FakePdfGenerator::No source pdfs!!");
 
-    BinnedPdf fakePdf(fPdfs.at(0));
+    BinnedPhysDist fakePdf(fPdfs.at(0));
     fakePdf.Empty();
     for(size_t i = 0; i < fPdfs.size(); i++){
         unsigned counts = round(fRates.at(i));         
@@ -25,7 +25,7 @@ FakePdfGenerator::ExpectedRatesPdf() const{
     return fakePdf;
 }
 
-BinnedPdf
+BinnedPhysDist
 FakePdfGenerator::PoissonFluctuatedPdf() const{
     if(!(fPdfs.size() == fRates.size()))
         throw LogicError("FakePdfGenerator::Need exactly one rate for each ");
@@ -33,7 +33,7 @@ FakePdfGenerator::PoissonFluctuatedPdf() const{
     if (!fPdfs.size())
         throw LogicError("FakePdfGenerator::No source pdfs!!");
 
-    BinnedPdf fakePdf(fPdfs.at(0));
+    BinnedPhysDist fakePdf(fPdfs.at(0));
     fakePdf.Empty();
     for(size_t i = 0; i < fPdfs.size(); i++){
         unsigned counts = Rand::Poisson(fRates.at(i));         

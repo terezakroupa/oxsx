@@ -1,11 +1,11 @@
 #include <Gaussian.h>
-#include <math.h>
 #include <Exceptions.h>
 #include <ContainerParameter.h>
-#include <gsl/gsl_cdf.h>
-#include <sstream>
 #include <Formatter.hpp>
+#include <gsl/gsl_cdf.h>
 #include <Rand.h>
+#include <sstream>
+#include <math.h>
 
 /////////////////////////
 // Constructory Things //

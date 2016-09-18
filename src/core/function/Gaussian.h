@@ -1,9 +1,9 @@
 #ifndef __OXSX_GAUSSIAN__
 #define __OXSX_GAUSSIAN__
-#include <IntegrableFunction.h>
+#include <PDF.h>
 #include <ParameterManager.h>
 
-class Gaussian : public IntegrableFunction{
+class Gaussian : public PDF{
  public:
     // Constructory things
     Gaussian();

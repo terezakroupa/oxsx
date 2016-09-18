@@ -4,7 +4,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
-class IntegrableFunction;
+
+class PDF;
 class ConditDist;
 class EventData;
 class EventConvolution : public EventSystematic{
@@ -16,7 +17,7 @@ class EventConvolution : public EventSystematic{
   EventConvolution operator=(const EventConvolution&);
 
   // Get/Set
-  void SetFunction(IntegrableFunction* f);
+  void SetPDF(PDF* f);
   void SetConditDist(ConditDist* f);
 
   // Event Systematic interface

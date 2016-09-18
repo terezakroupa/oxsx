@@ -1,9 +1,9 @@
 #ifndef __BinnedNLLH__
 #define __BinnedNLLH__
 #include <TestStatistic.h>
-#include <BinnedPdfManager.h>
+#include <BinnedPhysDistMan.h>
 #include <SystematicManager.h>
-#include <BinnedPdfShrinker.h>
+#include <BinnedPhysDistShrink.h>
 #include <ComponentManager.h>
 #include <DataSet.h>
 #include <CutCollection.h>
@@ -16,13 +16,13 @@ class BinnedNLLH : public TestStatistic{
  public:
     BinnedNLLH() : fCalculatedDataPdf(false), fAlreadyShrunk(false), fDataSet(NULL) {}
 
-    void   SetPdfManager(const BinnedPdfManager&);
+    void   SetPdfManager(const BinnedPhysDistMan&);
     void   SetSystematicManager(const SystematicManager&);
 
-    void   AddPdf(const BinnedPdf&);
+    void   AddPdf(const BinnedPhysDist&);
     void   AddSystematic(Systematic*);
 
-    void   AddPdfs(const std::vector<BinnedPdf>&);
+    void   AddPdfs(const std::vector<BinnedPhysDist>&);
     void   AddSystematics(const std::vector<Systematic*>);
 
     void   SetConstraint(const std::string& paramName_, double mean_, double sigma_);
@@ -32,8 +32,8 @@ class BinnedNLLH : public TestStatistic{
 
     void  BinData();
 
-    void SetDataPdf(const BinnedPdf&);
-    BinnedPdf GetDataPdf() const;
+    void SetDataPdf(const BinnedPhysDist&);
+    BinnedPhysDist GetDataPdf() const;
 
     void SetDataSet(DataSet*);
     DataSet* GetDataSet();
@@ -55,14 +55,14 @@ class BinnedNLLH : public TestStatistic{
     std::vector<std::string> GetParameterNames() const;
 
  private:
-    BinnedPdfManager  fPdfManager;
+    BinnedPhysDistMan  fPdfManager;
     SystematicManager fSystematicManager;
-    BinnedPdfShrinker fPdfShrinker;
+    BinnedPhysDistShrink fPdfShrinker;
     DataSet* fDataSet;
     CutCollection fCuts;
     std::map<std::string, QuadraticConstraint> fConstraints;
 
-    BinnedPdf fDataPdf;
+    BinnedPhysDist fDataPdf;
     bool      fCalculatedDataPdf;
     bool      fAlreadyShrunk;
     ComponentManager fComponentManager;    

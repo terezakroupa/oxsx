@@ -1,37 +1,37 @@
-#include <BinnedPdf.h>
+#include <BinnedPhysDist.h>
 #include <Exceptions.h>
 #include <Combinations.hpp>
 
-BinnedPdf::BinnedPdf(const AxisCollection& axes_){
+BinnedPhysDist::BinnedPhysDist(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);
 }
 
-BinnedPdf::BinnedPdf(const Histogram& histo_){
+BinnedPhysDist::BinnedPhysDist(const Histogram& histo_){
     fHistogram = histo_;
 }
 
 void
-BinnedPdf::SetDataRep(const DataRepresentation& rep_){
+BinnedPhysDist::SetDataRep(const DataRepresentation& rep_){
     fDataRep = rep_;
 }
 
 DataRepresentation
-BinnedPdf::GetDataRep() const {
+BinnedPhysDist::GetDataRep() const {
     return fDataRep;
 }
 
 const Histogram&
-BinnedPdf::GetHistogram() const{
+BinnedPhysDist::GetHistogram() const{
     return fHistogram;
 }
 
 void
-BinnedPdf::SetHistogram(const Histogram& hist_){
+BinnedPhysDist::SetHistogram(const Histogram& hist_){
     fHistogram = hist_;
 }
 
 void 
-BinnedPdf::Fill(const EventData& data_, double weight_){
+BinnedPhysDist::Fill(const EventData& data_, double weight_){
     try{
         fHistogram.Fill(data_.ToRepresentation(fDataRep), weight_);
     }
@@ -41,7 +41,7 @@ BinnedPdf::Fill(const EventData& data_, double weight_){
 }
 
 size_t 
-BinnedPdf::FindBin(const EventData& data_) const{
+BinnedPhysDist::FindBin(const EventData& data_) const{
     try{
         return fHistogram.FindBin(data_.ToRepresentation(fDataRep));    
     }
@@ -50,20 +50,20 @@ BinnedPdf::FindBin(const EventData& data_) const{
     }    
 }
 
-Pdf* 
-BinnedPdf::Clone() const{
-    return static_cast<Pdf*>(new BinnedPdf(*this));
+PhysDist* 
+BinnedPhysDist::Clone() const{
+    return static_cast<PhysDist*>(new BinnedPhysDist(*this));
 }
 
 
 double
-BinnedPdf::Probability(const EventData& oberservations_) const{
+BinnedPhysDist::Probability(const EventData& oberservations_) const{
     try{
         return operator()(oberservations_.ToRepresentation(fDataRep));
     }
 
     catch(const RepresentationError& e_){
-        throw RepresentationError("BinnedPdf::Probability() failed with  " 
+        throw RepresentationError("BinnedPhysDist::Probability() failed with  " 
                                   + std::string(e_.what()) 
                                   + " is the rep set correctly?");
     }
@@ -75,132 +75,132 @@ BinnedPdf::Probability(const EventData& oberservations_) const{
 //////////////////////////////////////////////////////////////////////////////////////////
 
 void 
-BinnedPdf::SetAxes(const AxisCollection& axes_){
+BinnedPhysDist::SetAxes(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);
 
 }
 
 const AxisCollection& 
-BinnedPdf::GetAxes() const{
+BinnedPhysDist::GetAxes() const{
     return fHistogram.GetAxes();
 }
 
 double 
-BinnedPdf::operator() (const std::vector<double>& vals_) const{
+BinnedPhysDist::operator() (const std::vector<double>& vals_) const{
     return fHistogram.operator()(vals_);
 }
 
 double 
-BinnedPdf::Integral() const{
+BinnedPhysDist::Integral() const{
     return fHistogram.Integral();
 }
 
 void 
-BinnedPdf::Normalise(){
+BinnedPhysDist::Normalise(){
     fHistogram.Normalise();
 }
 
 void
-BinnedPdf::Scale(double s_){
+BinnedPhysDist::Scale(double s_){
     fHistogram.Scale(s_);
 }
 
 void 
-BinnedPdf::Fill(const std::vector<double>& vals_, double weight_){
+BinnedPhysDist::Fill(const std::vector<double>& vals_, double weight_){
     fHistogram.Fill(vals_, weight_);
 }
 
 
 void 
-BinnedPdf::Fill(double vals_, double weight_){
+BinnedPhysDist::Fill(double vals_, double weight_){
     fHistogram.Fill(vals_, weight_);
 }
 
 size_t 
-BinnedPdf::FindBin(const std::vector<double>& vals_) const{
+BinnedPhysDist::FindBin(const std::vector<double>& vals_) const{
     return fHistogram.FindBin(vals_);
     
 }
 
 double 
-BinnedPdf::GetBinContent(size_t bin_) const{
+BinnedPhysDist::GetBinContent(size_t bin_) const{
     return fHistogram.GetBinContent(bin_);
 }
 
 void 
-BinnedPdf::AddBinContent(size_t bin_, double content_){
+BinnedPhysDist::AddBinContent(size_t bin_, double content_){
     fHistogram.AddBinContent(bin_, content_);
 }
 
 void 
-BinnedPdf::SetBinContent(size_t bin_, double content_){
+BinnedPhysDist::SetBinContent(size_t bin_, double content_){
     fHistogram.SetBinContent(bin_, content_);
 }
 
 size_t 
-BinnedPdf::GetNBins() const{
+BinnedPhysDist::GetNBins() const{
     return fHistogram.GetNBins();
 }
 
 unsigned
-BinnedPdf::GetNDims() const{
+BinnedPhysDist::GetNDims() const{
     return fHistogram.GetNDims();
 }
 
 void 
-BinnedPdf::Empty(){
+BinnedPhysDist::Empty(){
     fHistogram.Empty();
 }
 
 size_t 
-BinnedPdf::FlattenIndices(const std::vector<size_t>& indices_) const{
+BinnedPhysDist::FlattenIndices(const std::vector<size_t>& indices_) const{
     return fHistogram.FlattenIndices(indices_);
 }
 
 std::vector<size_t> 
-BinnedPdf::UnpackIndices(size_t bin_) const{
+BinnedPhysDist::UnpackIndices(size_t bin_) const{
     return fHistogram.UnpackIndices(bin_);
 }
 
 std::vector<double> 
-BinnedPdf::GetBinContents() const{
+BinnedPhysDist::GetBinContents() const{
     return fHistogram.GetBinContents();
 }
 void 
-BinnedPdf::SetBinContents(const std::vector<double>& data_){
+BinnedPhysDist::SetBinContents(const std::vector<double>& data_){
     return fHistogram.SetBinContents(data_);
 }
 
 std::vector<double>
-BinnedPdf::Means() const{
+BinnedPhysDist::Means() const{
     return fHistogram.Means();
 }
 
 std::vector<double>
-BinnedPdf::Variances() const{
+BinnedPhysDist::Variances() const{
     return fHistogram.Variances();
 }
 
-BinnedPdf 
-BinnedPdf::Marginalise(const std::vector<size_t>& indices_) const{
+BinnedPhysDist 
+BinnedPhysDist::Marginalise(const std::vector<size_t>& indices_) const{
     // Find the relative indicies indicies in 
     DataRepresentation newRep = DataRepresentation(indices_);
     std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fDataRep);
 
     // Marginalise the histogram
-	BinnedPdf newPdf(fHistogram.Marginalise(relativeIndices));
-	newPdf.SetDataRep(newRep);
-	return newPdf;
+	BinnedPhysDist newPhysDist(fHistogram.Marginalise(relativeIndices));
+	newPhysDist.SetDataRep(newRep);
+	return newPhysDist;
 }
 
-BinnedPdf
-BinnedPdf::Marginalise(size_t index_) const{
+BinnedPhysDist
+BinnedPhysDist::Marginalise(size_t index_) const{
     return Marginalise(std::vector<size_t>(1, index_));
 }
 
-std::map<std::string, BinnedPdf> 
-BinnedPdf::GetAllProjections() const{
-  std::map<std::string, BinnedPdf> returnPdfs;
+std::map<std::string, BinnedPhysDist> 
+BinnedPhysDist::GetAllProjections() const{
+  std::map<std::string, BinnedPhysDist> returnDists;
   // work out all the possible combinations of the indicies
   std::vector<std::vector<size_t> > projectionIndices = AllCombinationsShorterThanNoDuplicates<size_t>(SequentialElements(size_t(0), size_t(GetNDims())), 2);
   for(size_t i = 0; i < projectionIndices.size(); i++){
@@ -210,8 +210,8 @@ BinnedPdf::GetAllProjections() const{
 	  for(size_t j = 0; j < indicesToKeep.size(); j++){
 		fm << GetAxes().GetAxis(j).GetName() << " ";
 	  }
-	  returnPdfs[fm] = Marginalise(indicesToKeep);
+	  returnDists[fm] = Marginalise(indicesToKeep);
   }
-  return returnPdfs;
+  return returnDists;
 }
 

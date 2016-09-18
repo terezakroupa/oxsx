@@ -1,10 +1,10 @@
 #include <Convolution.h>
-#include <IntegrableFunction.h>
+#include <PDF.h>
 #include <Exceptions.h>
 #include <JumpDist.h>
 #include <string>
 void 
-Convolution::SetFunction(IntegrableFunction* function_){
+Convolution::SetFunction(PDF* function_){
     // wrap this up if position independent kernal of the form P(x | x2) = P(x - x2)
     fDist = static_cast<ConditDist*>(new JumpDist(function_));
 }

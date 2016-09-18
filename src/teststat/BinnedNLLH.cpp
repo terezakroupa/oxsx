@@ -52,7 +52,7 @@ BinnedNLLH::Evaluate(){
 
 void
 BinnedNLLH::BinData(){
-    fDataPdf =  BinnedPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
+    fDataPdf =  BinnedPhysDist(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     fDataPdf.Empty();
     PdfFiller::FillPdf(fDataPdf, *fDataSet, fCuts);
     fCalculatedDataPdf = true;
@@ -60,7 +60,7 @@ BinnedNLLH::BinData(){
 }
 
 void
-BinnedNLLH::SetPdfManager(const BinnedPdfManager& man_){
+BinnedNLLH::SetPdfManager(const BinnedPhysDistMan& man_){
     fPdfManager = man_;
 }
 
@@ -70,7 +70,7 @@ BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
 }
 
 void
-BinnedNLLH::AddPdf(const BinnedPdf& pdf_){
+BinnedNLLH::AddPdf(const BinnedPhysDist& pdf_){
     fPdfManager.AddPdf(pdf_);
 }
 
@@ -91,12 +91,12 @@ BinnedNLLH::GetDataSet(){
 }
 
 void
-BinnedNLLH::SetDataPdf(const BinnedPdf& binnedPdf_){
+BinnedNLLH::SetDataPdf(const BinnedPhysDist& binnedPdf_){
     fDataPdf = binnedPdf_;
     fCalculatedDataPdf = true;
 }
 
-BinnedPdf
+BinnedPhysDist
 BinnedNLLH::GetDataPdf() const{
     return fDataPdf;
 }
@@ -123,7 +123,7 @@ BinnedNLLH::GetBufferAsOverflow() const{
 }
 
 void
-BinnedNLLH::AddPdfs(const std::vector<BinnedPdf>& pdfs_){
+BinnedNLLH::AddPdfs(const std::vector<BinnedPhysDist>& pdfs_){
   for(size_t i = 0; i < pdfs_.size(); i++)
     AddPdf(pdfs_.at(i));
 }

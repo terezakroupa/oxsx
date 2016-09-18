@@ -1,5 +1,5 @@
  #include <PdfMapping.h>
-#include <BinnedPdf.h>
+#include <BinnedPhysDist.h>
 #include <iostream>
 #include <Exceptions.h>
 
@@ -39,8 +39,8 @@ PdfMapping::GetComponent(size_t col_, size_t row_) const{
     return fResponse(col_, row_);
 }
 
-BinnedPdf
-PdfMapping::operator() (const BinnedPdf& pdf_) const{
+BinnedPhysDist
+PdfMapping::operator() (const BinnedPhysDist& pdf_) const{
     if (!fNDims){
         throw DimensionError("PdfMapping::operator() :  NDims = 0, have you set the axes?");
     }
@@ -54,7 +54,7 @@ PdfMapping::operator() (const BinnedPdf& pdf_) const{
     }
 
 
-    BinnedPdf observedPdf(pdf_.GetAxes());
+    BinnedPhysDist observedPdf(pdf_.GetAxes());
     observedPdf.SetDataRep(pdf_.GetDataRep());
     
     arma::vec newContents;

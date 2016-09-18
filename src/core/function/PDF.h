@@ -1,11 +1,11 @@
-#ifndef __OXSX_INTEGRABLE_FUNCTION__
-#define __OXSX_INTEGRABLE_FUNCTION__
+#ifndef __OXSX_PDF__
+#define __OXSX_PDF__
 #include <Function.h>
 // Remember to implement MakeFittable!!
 
-class IntegrableFunction : public Function{
+class PDF : public Function{
  public:
-    virtual ~IntegrableFunction() {}
+    virtual ~PDF() {}
 
     virtual double Integral(const std::vector<double>& mins_,
                             const std::vector<double>& maxs_) const = 0;

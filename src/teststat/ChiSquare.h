@@ -6,7 +6,7 @@
 #ifndef __OXSX_CHI_SQUARED__
 #define __OXSX_CHI_SQUARED__
 #include <SystematicManager.h>
-#include <BinnedPdfManager.h>
+#include <BinnedPhysDistMan.h>
 #include <TestStatistic.h>
 #include <ComponentManager.h>
 
@@ -29,11 +29,11 @@ class ChiSquare : public TestStatistic{
     
  private:
     bool              fCalculatedDataPdf;
-    BinnedPdf         fDataPdf;
+    BinnedPhysDist    fDataPdf;
     void              BinData();
 
     DataSet*          fDataSet;
-    BinnedPdfManager  fPdfManager;
+    BinnedPhysDistMan fPdfManager;
     SystematicManager fSystematicManager;
     ComponentManager  fComponentManager;
 };

@@ -4,20 +4,21 @@
 /* region. So that systematics can affect the boundary in a smooth physical way                    */
 /***************************************************************************************************/
 
-#ifndef __OXSX_BINNEDPDFSHRINKER__
-#define __OXSX_BINNEDPDFSHRINKER__
+#ifndef __OXSX_BINNEDPHYSDISTSHRINK__
+#define __OXSX_BINNEDPHYSDISTSHRINK__
+#include <BinnedPhysDist.h>
 #include <map>
 #include <utility> // std::pair
-#include <BinnedPdf.h>
 
-class BinnedPdfShrinker{
+
+class BinnedPhysDistShrink{
  public:
-    BinnedPdfShrinker();
-    ~BinnedPdfShrinker(){}
+    BinnedPhysDistShrink();
+    ~BinnedPhysDistShrink(){}
 
     static PdfAxis ShrinkAxis(const PdfAxis&, const unsigned lowerBuff_, 
                               const unsigned upperBuff_);    
-    BinnedPdf ShrinkPdf(const BinnedPdf& pdf_) const;
+    BinnedPhysDist ShrinkPdf(const BinnedPhysDist& pdf_) const;
     
     void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
     std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;

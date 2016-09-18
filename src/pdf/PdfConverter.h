@@ -1,4 +1,3 @@
-
 /**************************************************************/
 /* Static Utility class for doing a variety of pdfconversions */
 /**************************************************************/
@@ -6,8 +5,8 @@
 #define __PDF_CONVERTER__
 
 
-class BinnedPdf;
-class IntegrableFunction;
+class BinnedPhysDist;
+class PDF;
 class AxisCollection;
 class Histogram;
 class TH2D;
@@ -15,10 +14,10 @@ class TH1D;
 
 class PdfConverter{
  public:
-    static BinnedPdf ToBinnedPdf(const IntegrableFunction&, const AxisCollection& axes_);
-    static TH1D      ToTH1D(const BinnedPdf&, const bool widthCorrect_ = false);
+    static BinnedPhysDist ToBinnedPhysDist(const PDF&, const AxisCollection& axes_);
+    static TH1D      ToTH1D(const BinnedPhysDist&, const bool widthCorrect_ = false);
     static TH1D      ToTH1D(const Histogram&, const bool widthCorrect_ = false);
 	static TH2D      ToTH2D(const Histogram&, const bool widthCorrect_ = false);
-	static TH2D      ToTH2D(const BinnedPdf&, const bool widthCorrect_ = false);
+	static TH2D      ToTH2D(const BinnedPhysDist&, const bool widthCorrect_ = false);
 };
 #endif

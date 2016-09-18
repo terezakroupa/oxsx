@@ -3,10 +3,10 @@
 #include <algorithm>
 #include <iostream>
 
-BinnedPdf 
-Systematic::operator() (const BinnedPdf& pdf_) const{
+BinnedPhysDist 
+Systematic::operator() (const BinnedPhysDist& pdf_) const{
     try{
-        BinnedPdf afterSmear = fPdfMapping(pdf_);
+        BinnedPhysDist afterSmear = fPdfMapping(pdf_);
         afterSmear.Normalise();
         return afterSmear;
     }

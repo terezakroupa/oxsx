@@ -1,5 +1,5 @@
 #include <EventConvolution.h>
-#include <IntegrableFunction.h>
+#include <PDF.h>
 #include <JumpDist.h>
 #include <Exceptions.h>
 #include <Rand.h>
@@ -37,7 +37,7 @@ EventConvolution::operator=(const EventConvolution& other_){
 /////////////
 
 void
-EventConvolution::SetFunction(IntegrableFunction* f_){
+EventConvolution::SetPDF(PDF* f_){
   if(!f_)
 	fDist = NULL;
 

@@ -1,6 +1,6 @@
 /*********************************************************************************************/
 /* A square response Matix for the experiment. Takes a binned pdf and applies the detector   */
-/* to produce a new BinnedPdf. Inside is a vector of vectors, component fResponse[i][j] =    */
+/* to produce a new BinnedPhysDist. Inside is a vector of vectors, component fResponse[i][j] =    */
 /* R_i_j = fraction of contents in bin j of original pdf -> bin i in the output pdf          */
 /* the output bin contents are then x'_j = sum(R_i_j * x_j)                                  */
 /* The systematic object is responsible for pdf renormalisation - not here                   */
@@ -11,14 +11,14 @@
 #include <AxisCollection.h>
 #define ARMA_DONT_USE_CXX11
 #include <armadillo>
-class BinnedPdf;
+class BinnedPhysDist;
 
 class PdfMapping{
  public:
     PdfMapping() :fNBins(0), fNDims(0) {}
     ~PdfMapping() {}
 
-    BinnedPdf operator() (const BinnedPdf& pdf_) const;
+    BinnedPhysDist operator() (const BinnedPhysDist& pdf_) const;
 
     void SetResponse(const arma::sp_mat& response_);
 
@@ -41,6 +41,5 @@ class PdfMapping{
     arma::sp_mat fResponse;
     unsigned fNBins;
     unsigned fNDims;
-
 };
 #endif

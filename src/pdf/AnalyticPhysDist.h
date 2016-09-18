@@ -1,16 +1,16 @@
 #ifndef __OXSX_ANALYTIC_PDF__
 #define __OXSX_ANALYTIC_PDF__
-#include <Pdf.h>
+#include <PhysDist.h>
 #include <FitComponent.h>
 #include <DataRepresentation.h>
 
-class IntegrableFunction;
-class AnalyticPdf : public Pdf, public FitComponent{
+class PDF;
+class AnalyticPhysDist : public PhysDist, public FitComponent{
  public:
-    AnalyticPdf(IntegrableFunction*); // make a copy
-    AnalyticPdf(const AnalyticPdf& other_); // deep copy
-    ~AnalyticPdf();         // frees fFunction
-    Pdf* Clone() const;
+    AnalyticPhysDist(PDF*); // make a copy
+    AnalyticPhysDist(const AnalyticPhysDist& other_); // deep copy
+    ~AnalyticPhysDist();         // frees fFunction
+    PhysDist* Clone() const;
     
     double operator()(const std::vector<double>& vals_) const;
     double Probability(const EventData&) const;
@@ -32,7 +32,7 @@ class AnalyticPdf : public Pdf, public FitComponent{
 
  private:
     DataRepresentation  fDataRep;
-    IntegrableFunction* fFunction;
+    PDF*                fFunction;
     double              fNorm;
 };
 #endif

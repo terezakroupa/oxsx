@@ -34,7 +34,7 @@ ChiSquare::Evaluate(){
 void
 ChiSquare::BinData(){
 
-    BinnedPdf dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
+    BinnedPhysDist dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     dataPdf.Empty();
     
     for(size_t i = 0; i < fDataSet -> GetNEntries(); i++){

@@ -6,30 +6,30 @@
 /* each will know where to look from its data representation                                       */
 /***************************************************************************************************/
 
-#ifndef __COMPOSITE_PDF__
-#define __COMPOSITE_PDF__
-#include <Pdf.h>
+#ifndef __COMPOSITE_PHYSDIST__
+#define __COMPOSITE_PHYSDIST__
+#include <PhysDist.h>
 #include <vector>
 class EventData;
 
-class CompositePdf : public Pdf{
+class CompositePhysDist : public PhysDist{
  public:
-    CompositePdf(const Pdf* p1_, const Pdf* p2_);
-    CompositePdf(const std::vector<Pdf*>& pdfs_); 
-    virtual ~CompositePdf();
+    CompositePhysDist(const PhysDist* p1_, const PhysDist* p2_);
+    CompositePhysDist(const std::vector<PhysDist*>& pdfs_); 
+    virtual ~CompositePhysDist();
 
     virtual double operator() (const std::vector<double>& vals_) const;
     virtual double Probability(const EventData&) const;
-    virtual Pdf*   Clone() const; // required for futher compositions
+    virtual PhysDist*   Clone() const; // required for futher compositions
 
     virtual double Integral()  const;
     virtual void   Normalise();
     unsigned GetNDims() const;
  private:
     
-    std::vector<Pdf*> fPdfPtrs;
+    std::vector<PhysDist*> fDistPtrs;
 };
 
-CompositePdf operator * (const Pdf&, const Pdf&);
+CompositePhysDist operator * (const PhysDist&, const PhysDist&);
 
 #endif

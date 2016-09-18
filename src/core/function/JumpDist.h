@@ -4,12 +4,12 @@
 #include <vector>
 #include <string>
 
-class IntegrableFunction;
+class PDF;
 class JumpDist : public ConditDist{
  public:  
   // Constructors/Destructor
-  JumpDist(): fFunction(NULL) {}
-  JumpDist(IntegrableFunction*);
+  JumpDist(): fPDF(NULL) {}
+  JumpDist(PDF*);
   ~JumpDist();
   JumpDist(const JumpDist&);
   JumpDist operator=(const JumpDist&);
@@ -41,6 +41,6 @@ class JumpDist : public ConditDist{
   void SetParameters(const std::vector<double>& params_);
 
  private:
-  IntegrableFunction* fFunction;
+  PDF* fPDF;
 };
 #endif

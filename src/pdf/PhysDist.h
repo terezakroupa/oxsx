@@ -1,14 +1,14 @@
-#ifndef __OXSX_PDF__
-#define __OXSX_PDF__
+#ifndef __OXSX_PHYSDIST__
+#define __OXSX_PHYSDIST__
 #include <vector>
 #include <string>
 #include <DataRepresentation.h>
 #include <EventData.h>
 
-class Pdf{
+class PhysDist{
  public:
-    virtual ~Pdf() {}
-    virtual Pdf*   Clone() const = 0;
+    virtual ~PhysDist() {}
+    virtual PhysDist*   Clone() const = 0;
 
     virtual double operator()  (const std::vector<double>& vals_) const = 0;
     virtual double Probability (const EventData&) const = 0;

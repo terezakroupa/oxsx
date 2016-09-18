@@ -3,12 +3,12 @@
 #include <CutCollection.h>
 #include <EventSystematicManager.h>
 class DataSet;
-class BinnedPdf;
+class BinnedPhysDist;
 
 class PdfFiller{
  public:
   // default is to take all the events
-  static void FillPdf(BinnedPdf&, const DataSet&, 
+  static void FillPdf(BinnedPhysDist&, const DataSet&, 
                       const CutCollection& cuts_ = CutCollection(), EventSystematicManager sysMan_ = EventSystematicManager(), int nEv_ = -1);
 };
 

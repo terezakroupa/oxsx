@@ -3,7 +3,7 @@
 /*****************************************/
 #ifndef __OXSX_SCALE__
 #include <Systematic.h>
-#include <BinnedPdf.h>
+#include <BinnedPhysDist.h>
 
 class Scale : public Systematic{
  public:
