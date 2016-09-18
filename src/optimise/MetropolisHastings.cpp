@@ -311,7 +311,7 @@ MetropolisHastings::InitialiseHistograms(){
     else{
         std::vector<std::string> paramNames = pTestStatistic->GetParameterNames();
         for(size_t i = 0; i < fMinima.size(); i++){
-            histAxes.AddAxis(PdfAxis(paramNames.at(i), fMinima.at(i), fMaxima.at(i), 
+            histAxes.AddAxis(BinAxis(paramNames.at(i), fMinima.at(i), fMaxima.at(i), 
                                  int(pow(fMaxIter, 1./fMinima.size()))));
         }
     }
