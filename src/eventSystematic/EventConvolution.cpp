@@ -109,10 +109,9 @@ EventConvolution::operator()(const Event& event_){
     throw NULLPointerAccessError("EventConvolution::operator()", 
                                  "Have you set the sampling function?");
 
-  double correction = fDist->Sample(event_.ToObsSet(fObservables)).at(0);
+  double newVal = fDist->Sample(event_.ToObsSet(fObservables)).at(0);
 
   std::vector<double> obs = event_.GetData();
-  double relevantOb = obs.at(fObservables.GetIndex(0));
-  obs[fObservables.GetIndex(0)] = relevantOb + correction;
+  obs[fObservables.GetIndex(0)] = newVal;
   return Event(obs);
 }
