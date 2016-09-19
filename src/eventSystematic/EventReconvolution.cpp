@@ -7,10 +7,10 @@
 Event
 EventReconvolution::operator()(const Event& event_){
     std::vector<double> obs = event_.GetData();
-    double relevantOb = obs.at(fDataRep.GetIndex(0));
-    double truthVal   = obs.at(fDataRep.GetIndex(1));
+    double relevantOb = obs.at(fObservables.GetIndex(0));
+    double truthVal   = obs.at(fObservables.GetIndex(1));
 
-    obs[fDataRep.GetIndex(0)] = truthVal + fCorrection * (relevantOb - truthVal);
+    obs[fObservables.GetIndex(0)] = truthVal + fCorrection * (relevantOb - truthVal);
     return Event(obs);
 }
 

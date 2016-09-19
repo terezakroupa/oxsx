@@ -2,7 +2,7 @@
 #define __OXSX_ANALYTIC_ED__
 #include <EventDistribution.h>
 #include <FitComponent.h>
-#include <DataRepresentation.h>
+#include <ObsSet.h>
 
 class PDF;
 class AnalyticED : public EventDistribution, public FitComponent{
@@ -18,8 +18,8 @@ class AnalyticED : public EventDistribution, public FitComponent{
     double Integral() const;
     void   Normalise();
 
-    void SetDataRep(const DataRepresentation&);
-    DataRepresentation GetDataRep() const;
+    void   SetObservables(const ObsSet&);
+    ObsSet GetObservables() const;
     
     unsigned GetNDims() const;
 
@@ -32,8 +32,8 @@ class AnalyticED : public EventDistribution, public FitComponent{
     
 
  private:
-    DataRepresentation  fDataRep;
-    PDF*                fFunction;
-    double              fNorm;
+    ObsSet        fObservables;
+    PDF*          fFunction;
+    double        fNorm;
 };
 #endif

@@ -6,7 +6,7 @@ Event
 EventShift::operator()(const Event& inEvent_){
     // pull out the relevant data point
     std::vector<double> obs = inEvent_.GetData();
-    obs[fDataRep.GetIndex(0)] += GetShift();
+    obs[fObservables.GetIndex(0)] += GetShift();
     return Event(obs);
 }
 

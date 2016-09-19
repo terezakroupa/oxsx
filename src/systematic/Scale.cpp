@@ -18,12 +18,12 @@ Scale::Construct(){
     if (fScaleFactor <= 0)
         throw ValueError("Scale factor must be >0 !");
     
-    if(fDataRep.GetNObservables() != 1)
+    if(fTransObs.GetNObservables() != 1)
         throw RepresentationError("Scale systematic must have a 1D representation!");
 
     const AxisCollection& axes       = fResponse.GetAxes(); 
     // the axis to scale
-    const size_t  scaleAxisDataIndex = fDataRep.GetIndex(0);
+    const size_t  scaleAxisDataIndex = fTransObs.GetIndex(0);
     const BinAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);
 
 
@@ -34,7 +34,7 @@ Scale::Construct(){
         // For each old bin, work out the contributions into all of the new bins
         // indices in other components should be unaffected
         std::vector<size_t> oldIndices = axes.UnpackIndices(i);
-        size_t scaleBin                = oldIndices.at(fPdfDataRep.GetDataIndexPos(scaleAxisDataIndex));
+        size_t scaleBin                = oldIndices.at(fDistObs.GetDataIndexPos(scaleAxisDataIndex));
         
         double scaledLow   = scaleAxis.GetBinLowEdge(scaleBin)  * fScaleFactor;
         double scaledHigh  = scaleAxis.GetBinHighEdge(scaleBin) * fScaleFactor;
@@ -46,7 +46,7 @@ Scale::Construct(){
         
         std::vector<size_t> newIndices = oldIndices;
         for(size_t j = 0; j < scaleAxisNBins; j++){
-            newIndices[fPdfDataRep.GetDataIndexPos(scaleAxisDataIndex)] = j;
+            newIndices[fDistObs.GetDataIndexPos(scaleAxisDataIndex)] = j;
             size_t newScaleBin = j;
                         
             double newLow  = scaleAxis.GetBinLowEdge(newScaleBin);

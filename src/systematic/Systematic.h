@@ -13,7 +13,7 @@
 #include <Matrix.h>
 #include <BinnedED.h>
 #include <FitComponent.h>
-#include <DataRepresentation.h>
+#include <ObsSet.h>
 #include <vector>
 
 class Systematic : public FitComponent{
@@ -27,19 +27,19 @@ class Systematic : public FitComponent{
     SetResponse(const Matrix& responseMatrix_);
     const Matrix& GetResponse() const;
         
-    void SetDataRep(const DataRepresentation&);
-    DataRepresentation GetDataRep() const;
+    void SetTransformationObs(const ObsSet&);
+    ObsSet GetTransformationObs() const;
 
-    void SetPdfDataRep(const DataRepresentation&);
-    DataRepresentation GetPdfDataRep() const;
+    void SetDistributionObs(const ObsSet&);
+    ObsSet GetDistributionObs() const;
 
     virtual void Construct() = 0;
 
  protected:
     Matrix fResponse;
-    DataRepresentation fDataRep;     // the data indicies that this systematic acts on
-    DataRepresentation fPdfDataRep;  
-    // the data indices  of the pdfs it will act on, needs to be at least the lenth of the 
+    ObsSet fTransObs;     // the observables to tranform
+    ObsSet fDistObs;      // the full set of observables for the distriubtion to act on
+    // obs of the pdfs it will act on, needs to be at least the lenth of the 
     // systematics representation
     
     // methods below used for index manipilation between pdf and response

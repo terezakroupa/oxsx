@@ -8,7 +8,7 @@ Event
 EventScale::operator()(const Event& inEvent_){
     // pull out the relevant data point
     std::vector<double> obs = inEvent_.GetData();
-    obs[fDataRep.GetIndex(0)] *= GetScale();
+    obs[fObservables.GetIndex(0)] *= GetScale();
     return Event(obs);
 }
 

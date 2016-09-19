@@ -27,16 +27,24 @@ Systematic::GetResponse() const{
 }
 
 void
-Systematic::SetDataRep(const DataRepresentation& rep_) {fDataRep = rep_;}
+Systematic::SetTransformationObs(const ObsSet& rep_) {
+    fTransObs = rep_;
+}
 
-DataRepresentation
-Systematic::GetDataRep() const {return fDataRep;}
+ObsSet
+Systematic::GetTransformationObs() const {
+    return fTransObs;
+}
 
 void
-Systematic::SetPdfDataRep(const DataRepresentation& rep_) {fPdfDataRep = rep_;}
+Systematic::SetDistributionObs(const ObsSet& rep_) {
+    fDistObs = rep_;
+}
 
-DataRepresentation
-Systematic::GetPdfDataRep() const {return fPdfDataRep;}
+ObsSet
+Systematic::GetDistributionObs() const {
+    return fDistObs;
+}
 
 bool
 Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
@@ -44,7 +52,7 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
     std::vector<size_t> bin2Indices = fResponse.GetAxes().UnpackIndices(bin2_);
 
     // Where are the indices the systematic cares about in the pdfs index scheme
-    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
+    std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
 
     // Do the two global bin numbers have the same indices except for in the dimisensions 
     // this systematic affects?

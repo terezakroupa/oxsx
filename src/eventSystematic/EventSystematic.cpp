@@ -1,11 +1,11 @@
 #include <EventSystematic.h>
 
 void
-EventSystematic::SetDataRep(const DataRepresentation& rep_){
-    fDataRep = rep_;
+EventSystematic::SetDataRep(const ObsSet& rep_){
+    fObservables = rep_;
 }
 
-DataRepresentation
+ObsSet
 EventSystematic::GetDataRep() const{
-    return fDataRep;
+    return fObservables;
 }

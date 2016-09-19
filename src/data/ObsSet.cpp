@@ -1,26 +1,26 @@
-#include <DataRepresentation.h>
+#include <ObsSet.h>
 #include <Exceptions.h>
 #include <iostream>
 
-DataRepresentation::DataRepresentation(const std::vector<size_t>& indices_){
+ObsSet::ObsSet(const std::vector<size_t>& indices_){
     SetIndices(indices_);
 }
 
-DataRepresentation::DataRepresentation(size_t index_){
+ObsSet::ObsSet(size_t index_){
     SetIndices(std::vector<size_t>(1, index_));
 }
 
-DataRepresentation::DataRepresentation(const DataRepresentation& other_){
+ObsSet::ObsSet(const ObsSet& other_){
     fName = other_.fName;
     SetIndices(other_.fIndices);
 }
 
 
 std::vector<size_t>
-DataRepresentation::GetIndices() const {return fIndices;}
+ObsSet::GetIndices() const {return fIndices;}
 
 void 
-DataRepresentation::SetIndices(const std::vector<size_t>& indices_)  {
+ObsSet::SetIndices(const std::vector<size_t>& indices_)  {
     fIndices = indices_;
     fNObservables = indices_.size();
 
@@ -32,20 +32,20 @@ DataRepresentation::SetIndices(const std::vector<size_t>& indices_)  {
 }
 
 std::string
-DataRepresentation::GetName() const {return fName;}
+ObsSet::GetName() const {return fName;}
 
 void
-DataRepresentation::SetName(const std::string& name_) {fName = name_;}
+ObsSet::SetName(const std::string& name_) {fName = name_;}
 
 // FIXME -  needs bounds handling!
 size_t
-DataRepresentation::GetIndex(size_t indexNum_) const{return fIndices.at(indexNum_);}
+ObsSet::GetIndex(size_t indexNum_) const{return fIndices.at(indexNum_);}
 
 size_t
-DataRepresentation::GetNObservables() const {return fNObservables;}
+ObsSet::GetNObservables() const {return fNObservables;}
 
 size_t
-DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
+ObsSet::GetDataIndexPos(size_t dataIndex_) const{
     for(size_t i = 0; i < fInverse.size(); i++){
         if (dataIndex_ == fInverse.at(i).first)
             return fInverse.at(i).second;
@@ -54,7 +54,7 @@ DataRepresentation::GetDataIndexPos(size_t dataIndex_) const{
 }
 
 std::vector<size_t> 
-DataRepresentation::GetRelativeIndices(const DataRepresentation& otherRep_) const{
+ObsSet::GetRelativeIndices(const ObsSet& otherRep_) const{
     // given a longer represetation containing the indices of this rep, where are the shared indices
     // in the big rep
 

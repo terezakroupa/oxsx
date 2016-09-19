@@ -35,7 +35,7 @@ Convolution::Construct(){
     size_t nBins = fResponse.GetNBins();
     size_t nDims = fResponse.GetAxes().GetNDimensions();
     const AxisCollection& axes = fResponse.GetAxes();
-    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
+    std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
 
     // Work out the transition probabilitites within this sub set of the bins
     std::vector<double> binCentres(fSysAxes.GetNDimensions());
@@ -96,7 +96,7 @@ Convolution::CacheCompatibleBins(){
         }
     }
 
-    std::vector<size_t> relativeIndices = fDataRep.GetRelativeIndices(fPdfDataRep);
+    std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
     const AxisCollection& axes = fResponse.GetAxes();
 
     //  get the axes that this systematic will act on

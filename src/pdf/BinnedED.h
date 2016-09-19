@@ -61,11 +61,11 @@ class BinnedED : public EventDistribution{
     BinnedED Marginalise(size_t index_) const;
 	std::map<std::string, BinnedED> GetAllProjections() const;
 	
-    void SetDataRep(const DataRepresentation&);
-    DataRepresentation GetDataRep() const;
+    void SetDataRep(const ObsSet&);
+    ObsSet GetDataRep() const;
 
  protected:
-    DataRepresentation fDataRep;
+    ObsSet    fObservables;
     Histogram fHistogram;
 };
 #endif

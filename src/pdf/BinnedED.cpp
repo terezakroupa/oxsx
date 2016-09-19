@@ -13,13 +13,13 @@ BinnedED::BinnedED(const Histogram& histo_){
 }
 
 void
-BinnedED::SetDataRep(const DataRepresentation& rep_){
-    fDataRep = rep_;
+BinnedED::SetDataRep(const ObsSet& rep_){
+    fObservables = rep_;
 }
 
-DataRepresentation
+ObsSet
 BinnedED::GetDataRep() const {
-    return fDataRep;
+    return fObservables;
 }
 
 const Histogram&
@@ -35,7 +35,7 @@ BinnedED::SetHistogram(const Histogram& hist_){
 void 
 BinnedED::Fill(const Event& data_, double weight_){
     try{
-        fHistogram.Fill(data_.ToRepresentation(fDataRep), weight_);
+        fHistogram.Fill(data_.ToObsSet(fObservables), weight_);
     }
     catch (const DimensionError& e_){
         throw RepresentationError(std::string("Representation in compatible with pdf ") + e_.what());
@@ -45,7 +45,7 @@ BinnedED::Fill(const Event& data_, double weight_){
 size_t 
 BinnedED::FindBin(const Event& data_) const{
     try{
-        return fHistogram.FindBin(data_.ToRepresentation(fDataRep));    
+        return fHistogram.FindBin(data_.ToObsSet(fObservables));    
     }
     catch (const DimensionError& e_){
         throw RepresentationError(std::string("Representation in compatible with pdf ") + e_.what());
@@ -81,7 +81,7 @@ BinnedED::Probability(const std::vector<double>& vals_) const{
 double
 BinnedED::Probability(const Event& oberservations_) const{
     try{
-        return Probability(oberservations_.ToRepresentation(fDataRep));
+        return Probability(oberservations_.ToObsSet(fObservables));
     }
 
     catch(const RepresentationError& e_){
@@ -185,8 +185,8 @@ BinnedED::Variances() const{
 BinnedED 
 BinnedED::Marginalise(const std::vector<size_t>& indices_) const{
     // Find the relative indicies indicies in 
-    DataRepresentation newRep = DataRepresentation(indices_);
-    std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fDataRep);
+    ObsSet newRep = ObsSet(indices_);
+    std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fObservables);
 
     // Marginalise the histogram
 	BinnedED newPhysDist(fHistogram.Marginalise(relativeIndices));

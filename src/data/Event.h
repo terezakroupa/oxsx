@@ -11,14 +11,14 @@
 #define __OXSX_EVENT__
 #include <cstdlib>
 #include <vector>
-class DataRepresentation;
 
+class ObsSet;
 class Event{
  public:
     Event(const std::vector<double>& obs_);
     std::vector<double> GetData() const;
     double GetDatum(size_t) const;
-    std::vector<double> ToRepresentation(const DataRepresentation&) const;
+    std::vector<double> ToObsSet(const ObsSet&) const;
 
     size_t GetNObservables() const {return fNObservables;}
 

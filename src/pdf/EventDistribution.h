@@ -1,6 +1,6 @@
 #ifndef __OXSX_EVENT_DISTRIBUTION__
 #define __OXSX_EVENT_DISTRIBUTION__
-#include <DataRepresentation.h>
+#include <ObsSet.h>
 #include <Event.h>
 #include <vector>
 #include <string>

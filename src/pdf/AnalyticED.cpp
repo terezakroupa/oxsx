@@ -14,7 +14,7 @@ AnalyticED::~AnalyticED(){
 
 AnalyticED::AnalyticED(const AnalyticED& other_){
     fNorm  = other_.fNorm;
-    fDataRep = other_.fDataRep;
+    fObservables = other_.fObservables;
     fFunction = dynamic_cast<PDF*>(other_.fFunction->Clone());
 }
 
@@ -38,7 +38,7 @@ AnalyticED::Probability(const std::vector<double>& vals_) const{
 double
 AnalyticED::Probability(const Event& event_) const{
     try{
-        return Probability(event_.ToRepresentation(fDataRep));
+        return Probability(event_.ToObsSet(fObservables));
     }
 
     catch(const RepresentationError& e_){
@@ -59,13 +59,13 @@ AnalyticED::Normalise(){
 }
 
 void
-AnalyticED::SetDataRep(const DataRepresentation& rep_){
-    fDataRep = rep_;
+AnalyticED::SetObservables(const ObsSet& rep_){
+    fObservables = rep_;
 }
 
-DataRepresentation
-AnalyticED::GetDataRep() const {
-    return fDataRep;
+ObsSet
+AnalyticED::GetObservables() const {
+    return fObservables;
 }
 
 unsigned

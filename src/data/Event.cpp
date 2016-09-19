@@ -1,5 +1,5 @@
 #include <Event.h>
-#include <DataRepresentation.h>
+#include <ObsSet.h>
 #include <Exceptions.h>
 
 Event::Event(const std::vector<double>& obs_){
@@ -24,7 +24,7 @@ Event::GetDatum(size_t index_) const{
 }
 
 std::vector<double> 
-Event::ToRepresentation(const DataRepresentation& rep_) const{
+Event::ToObsSet(const ObsSet& rep_) const{
     size_t nObs = rep_.GetNObservables();
 
     if (!nObs)
