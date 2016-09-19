@@ -36,7 +36,7 @@ AnalyticED::Probability(const std::vector<double>& vals_) const{
 }
 
 double
-AnalyticED::Probability(const EventData& event_) const{
+AnalyticED::Probability(const Event& event_) const{
     try{
         return Probability(event_.ToRepresentation(fDataRep));
     }

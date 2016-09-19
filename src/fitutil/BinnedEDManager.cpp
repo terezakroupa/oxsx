@@ -17,7 +17,7 @@ BinnedEDManager::GetNDims() const{
 }
 
 double 
-BinnedEDManager::Probability(const EventData& data_) const{
+BinnedEDManager::Probability(const Event& data_) const{
     double sum = 0;
 
     for(size_t i = 0; i < fWorkingPdfs.size(); i++){

@@ -3,10 +3,10 @@
 #include <vector>
 
 class EventSystematic;
-class EventData;
+class Event;
 class EventSystematicManager{
  public:    
-    EventData ApplySystematics(const EventData&) const;
+    Event ApplySystematics(const Event&) const;
 
     void Clear();
     void Add(EventSystematic*);

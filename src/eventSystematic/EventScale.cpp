@@ -1,15 +1,15 @@
 #include <EventScale.h>
 #include <Exceptions.h>
-#include <EventData.h>
+#include <Event.h>
 #include <string>
 #include <Formatter.hpp>
 
-EventData
-EventScale::operator()(const EventData& inEvent_){
+Event
+EventScale::operator()(const Event& inEvent_){
     // pull out the relevant data point
     std::vector<double> obs = inEvent_.GetData();
     obs[fDataRep.GetIndex(0)] *= GetScale();
-    return EventData(obs);
+    return Event(obs);
 }
 
 void 

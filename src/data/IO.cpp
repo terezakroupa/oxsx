@@ -132,7 +132,7 @@ IO::LoadDataSet(const std::string& filename_){
         for(size_t j = 0; j < nObs; j++)
           oneEventObs[j] = flatData.at(i * nObs + j);
         
-        oxsxDataSet -> AddEntry(EventData(oneEventObs));
+        oxsxDataSet -> AddEntry(Event(oneEventObs));
       }
     }
     
@@ -157,7 +157,7 @@ IO::LoadDataSet(const std::string& filename_){
          for(size_t k = 0; k < nObs; k++){
           oneEventObs[k] = flatData.at(j * nObs + k);
          }
-         oxsxDataSet->AddEntry(EventData(oneEventObs));
+         oxsxDataSet->AddEntry(Event(oneEventObs));
        }
           
       } // loop over chunks
@@ -175,7 +175,7 @@ IO::LoadDataSet(const std::string& filename_){
               for(size_t j = 0; j < nObs; j++)
                   oneEventObs[j] = flatData.at(i * nObs + j);
               
-              oxsxDataSet->AddEntry(EventData(oneEventObs));
+              oxsxDataSet->AddEntry(Event(oneEventObs));
           }
       }
       

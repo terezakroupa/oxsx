@@ -1,9 +1,9 @@
 #include <OXSXDataSet.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Exceptions.h>
 #include <iostream>
 void
-OXSXDataSet::AddEntry(const EventData& evData_){
+OXSXDataSet::AddEntry(const Event& evData_){
     // fNObservables is zero at initialisation, after the first time it is set it shouldnt change
     if(!fNObservables)
         fNObservables = evData_.GetNObservables();
@@ -19,7 +19,7 @@ OXSXDataSet::AddEntry(const EventData& evData_){
     fData.push_back(evData_);
 }
 
-EventData
+Event
 OXSXDataSet::GetEntry(size_t eventIndex_) const{
     try{
     return fData.at(eventIndex_);

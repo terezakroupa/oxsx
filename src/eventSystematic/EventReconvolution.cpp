@@ -1,17 +1,17 @@
 #include <EventReconvolution.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Formatter.hpp>
 #include <Exceptions.h>
 #include <iostream>
 
-EventData
-EventReconvolution::operator()(const EventData& event_){
+Event
+EventReconvolution::operator()(const Event& event_){
     std::vector<double> obs = event_.GetData();
     double relevantOb = obs.at(fDataRep.GetIndex(0));
     double truthVal   = obs.at(fDataRep.GetIndex(1));
 
     obs[fDataRep.GetIndex(0)] = truthVal + fCorrection * (relevantOb - truthVal);
-    return EventData(obs);
+    return Event(obs);
 }
 
 void

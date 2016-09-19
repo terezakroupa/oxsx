@@ -2,7 +2,7 @@
 #include <DataSet.h>
 #include <OXSXDataSet.h>
 #include <Exceptions.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Rand.h>
 #include <stdlib.h>
 #include <math.h>
@@ -63,7 +63,7 @@ DataSetGenerator::AllValidEvents(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
 	  for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
-		EventData event_ = fDataSets.at(i)->GetEntry(j);
+		Event event_ = fDataSets.at(i)->GetEntry(j);
 		dataSet.AddEntry(event_);
 	  } // events
     } // data sets

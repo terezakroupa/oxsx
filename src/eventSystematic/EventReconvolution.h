@@ -3,11 +3,11 @@
 #include <EventSystematic.h>
 #include <FitComponent.h>
 
-class EventData;
+class Event;
 class EventReconvolution : public EventSystematic{
  public:
     EventReconvolution() : fCorrection(1){}
-    EventData operator()(const EventData&);
+    Event operator()(const Event&);
 
     double GetCorrection() const;
     void   SetCorrection(double);

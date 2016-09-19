@@ -8,10 +8,10 @@
 #include <string>
 
 class DataRepresentation;
-class EventData;
+class Event;
 class DataSet{
  public:
-    virtual EventData GetEntry(size_t iEvent_) const = 0;
+    virtual Event GetEntry(size_t iEvent_) const = 0;
     virtual ~DataSet() {}
 
     virtual unsigned GetNEntries() const = 0; 

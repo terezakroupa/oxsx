@@ -1,19 +1,19 @@
 #include <CutCollection.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Cut.h>
 #include <CutLog.h>
 #include <Formatter.hpp>
 #include <iostream>
 
 bool 
-CutCollection::PassesCuts(const EventData& event_) const{
+CutCollection::PassesCuts(const Event& event_) const{
   for(size_t i = 0; i < fCuts.size(); i++)
     if (!fCuts.at(i)->PassesCut(event_))
         return false;
   return true;
 }
 
-bool CutCollection::PassesCuts(const EventData& event_, CutLog& log_) const{
+bool CutCollection::PassesCuts(const Event& event_, CutLog& log_) const{
     for(size_t i = 0; i < fCuts.size(); i++)
         if(!fCuts.at(i) -> PassesCut(event_)){
             log_.LogCut(i);

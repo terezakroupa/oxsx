@@ -1,6 +1,6 @@
 #include <EventSystematicManager.h>
 #include <EventSystematic.h>
-#include <EventData.h>
+#include <Event.h>
 
 void 
 EventSystematicManager::Clear(){
@@ -23,12 +23,12 @@ EventSystematicManager::GetNSystematics() const{
     return fSystematics.size();
 }
 
-EventData 
-EventSystematicManager::ApplySystematics(const EventData& event_) const{
+Event 
+EventSystematicManager::ApplySystematics(const Event& event_) const{
     if (!fSystematics.size())
         return event_;
 
-    EventData modified = event_;
+    Event modified = event_;
     for(size_t i = 0; i < fSystematics.size(); i++)
         modified = fSystematics.at(i)->operator()(modified);
     return modified;

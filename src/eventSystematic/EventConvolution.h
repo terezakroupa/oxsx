@@ -7,7 +7,7 @@
 
 class PDF;
 class ConditionalPDF;
-class EventData;
+class Event;
 class EventConvolution : public EventSystematic{
  public:
   // Constructors
@@ -21,7 +21,7 @@ class EventConvolution : public EventSystematic{
   void SetConditionalPDF(ConditionalPDF* f);
 
   // Event Systematic interface
-  EventData operator()(const EventData&);
+  Event operator()(const Event&);
   
   // Fit Component interface defers to underlying function
   void MakeFittable();

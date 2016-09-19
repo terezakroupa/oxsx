@@ -7,7 +7,7 @@
 class EventScale : public EventSystematic{
  public:
     EventScale() : fScale(1) {}  
-    virtual EventData operator()(const EventData&);
+    virtual Event operator()(const Event&);
 
     void   SetScale(double);
     double GetScale() const;

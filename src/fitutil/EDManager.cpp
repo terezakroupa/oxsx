@@ -1,6 +1,6 @@
 #include <EDManager.h>
 #include <EventDistribution.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Exceptions.h>
 
 EDManager::~EDManager(){
@@ -29,7 +29,7 @@ EDManager::AddEventDistributions(const std::vector<EventDistribution*>& pdfs_){
 }
 
 double
-EDManager::Probability(const EventData& event_) const{
+EDManager::Probability(const Event& event_) const{
     double prob = 0;
     for(size_t i = 0; i < fDists.size(); i++)
         prob += fNormalisations.at(i) * fDists.at(i)->Probability(event_);

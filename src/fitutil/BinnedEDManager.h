@@ -9,7 +9,7 @@
 #include <ParameterManager.h>
 #include <vector>
 
-class EventData;
+class Event;
 class SystematicManager;
 class BinnedEDShrinker;
 class BinnedEDManager : public FitComponent{
@@ -19,7 +19,7 @@ class BinnedEDManager : public FitComponent{
     void   AddPdf(const BinnedED&);
     void   AddPdfs(const std::vector<BinnedED>&);
 
-    double Probability(const EventData&) const;
+    double Probability(const Event&) const;
     double BinProbability(size_t) const;
     
     const std::vector<double>& GetNormalisations() const;

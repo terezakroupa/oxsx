@@ -7,7 +7,7 @@
 class EventShift : public EventSystematic{
  public:
     EventShift() : fShift(0) {}
-    EventData operator()(const EventData&);
+    Event operator()(const Event&);
     
     void   SetShift(double);
     double GetShift() const;

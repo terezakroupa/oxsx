@@ -1,5 +1,5 @@
 #include <CompositeED.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Exceptions.h>
 #include <iostream>
 
@@ -21,7 +21,7 @@ CompositeED::~CompositeED() {
 }
 
 double 
-CompositeED::Probability(const EventData& data_) const{
+CompositeED::Probability(const Event& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         prob *= fDistPtrs[i] -> Probability(data_);

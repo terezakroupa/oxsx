@@ -1,30 +1,30 @@
-#include <EventData.h>
+#include <Event.h>
 #include <DataRepresentation.h>
 #include <Exceptions.h>
 
-EventData::EventData(const std::vector<double>& obs_){
+Event::Event(const std::vector<double>& obs_){
     fObservations = obs_;
     fNObservables  = obs_.size(); 
 }
 
 std::vector<double> 
-EventData::GetData() const{
+Event::GetData() const{
     return fObservations;
 }
 
 double
-EventData::GetDatum(size_t index_) const{
+Event::GetDatum(size_t index_) const{
     try{
         return fObservations.at(index_);
     }
 
     catch(const std::out_of_range& e_){
-        throw NotFoundError(Formatter() << "EventData::Attempted access on non-existent observable " << index_);
+        throw NotFoundError(Formatter() << "Event::Attempted access on non-existent observable " << index_);
     }
 }
 
 std::vector<double> 
-EventData::ToRepresentation(const DataRepresentation& rep_) const{
+Event::ToRepresentation(const DataRepresentation& rep_) const{
     size_t nObs = rep_.GetNObservables();
 
     if (!nObs)

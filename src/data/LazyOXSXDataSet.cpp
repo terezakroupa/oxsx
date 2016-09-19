@@ -64,7 +64,7 @@ LazyOXSXDataSet::Deregister(){
   fFiles.erase(std::remove(fFiles.begin(), fFiles.end(), this), fFiles.end());
 }
 
-EventData
+Event
 LazyOXSXDataSet::GetEntry(size_t i_) const{
   if(!fDataSet)
 	Load();

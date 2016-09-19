@@ -2,7 +2,7 @@
 #define __OXSX_CUT_COLLECTION__
 #include <vector>
 #include <string>
-class EventData;
+class Event;
 class Cut;
 class CutLog;
 
@@ -13,8 +13,8 @@ class CutCollection{
   CutCollection& operator=(const CutCollection&); // deep copy
   ~CutCollection(); // frees cuts
 
-  bool PassesCuts(const EventData& event_) const;
-  bool PassesCuts(const EventData& event_, CutLog& log_) const;
+  bool PassesCuts(const Event& event_) const;
+  bool PassesCuts(const Event& event_, CutLog& log_) const;
 
   void AddCut(const Cut&);
   void AddCut(const Cut&, const std::string&);

@@ -3,7 +3,7 @@
 #include <JumpPDF.h>
 #include <Exceptions.h>
 #include <Rand.h>
-#include <EventData.h>
+#include <Event.h>
 #include <iostream>
 
 /////////////////////////////
@@ -103,8 +103,8 @@ EventConvolution::SetParameters(const std::vector<double>& params_){
 
 
 // Event Systematic Interface
-EventData
-EventConvolution::operator()(const EventData& event_){
+Event
+EventConvolution::operator()(const Event& event_){
   if(!fDist)
 	throw NULLPointerAccessError("EventConvolution::operator()", 
 								 "Have you set the sampling function?");
@@ -114,5 +114,5 @@ EventConvolution::operator()(const EventData& event_){
   std::vector<double> obs = event_.GetData();
   double relevantOb = obs.at(fDataRep.GetIndex(0));
   obs[fDataRep.GetIndex(0)] = relevantOb + correction;
-  return EventData(obs);
+  return Event(obs);
 }

@@ -11,14 +11,14 @@
 #include <EventDistribution.h>
 #include <vector>
 
-class EventData;
+class Event;
 class CompositeED : public EventDistribution{
  public:
     CompositeED(const EventDistribution* p1_, const EventDistribution* p2_);
     CompositeED(const std::vector<EventDistribution*>& pdfs_); 
     virtual ~CompositeED();
         
-    virtual double Probability(const EventData&) const;
+    virtual double Probability(const Event&) const;
     virtual EventDistribution*   Clone() const; // required for futher compositions
 
     virtual double Integral()  const;

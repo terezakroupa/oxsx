@@ -1,13 +1,13 @@
 /**********************************************************************************************/
 /* OXSX own data object, can be written and read from HTF5 compressed files                   */
-/* Simply a wrapper on a vector of EventData objects, dynamically allocated to stop the stack */
+/* Simply a wrapper on a vector of Event objects, dynamically allocated to stop the stack */
 /* filling up.                                                                                */
 /**********************************************************************************************/
 
 #ifndef __OXSX_LAZY_OXSX_DATA_SET__
 #define __OXSX_LAZY_OXSX_DATA_SET__
 #include <OXSXDataSet.h>
-#include <EventData.h>
+#include <Event.h>
 #include <string>
 
 class LazyOXSXDataSet : public DataSet{
@@ -27,7 +27,7 @@ public:
     // DataSet interface
     unsigned  GetNEntries() const;
     unsigned  GetNObservables() const;
-    EventData GetEntry(size_t) const;
+    Event GetEntry(size_t) const;
     std::vector<std::string> GetObservableNames() const;
      
 private:

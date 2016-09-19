@@ -4,10 +4,10 @@
 #include <FitComponent.h>
 #include <vector>
 
-class EventData;
+class Event;
 class EventSystematic : public FitComponent{
  public:
-    virtual EventData operator()(const EventData&) = 0;
+    virtual Event operator()(const Event&) = 0;
 
     void       SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;

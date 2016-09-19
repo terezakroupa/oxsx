@@ -1,5 +1,5 @@
 #include <CountingExperiment.h>
-#include <EventData.h>
+#include <Event.h>
 #include <DataSet.h>
 #include <Formatter.hpp>
 #include <iostream>
@@ -10,7 +10,7 @@ CountingExperiment::CountData(DataSet* testData_){
     int dataCount = 0;
     CutLog cutLog(fCuts.GetCutNames());
     for(size_t i = 0; i < testData_-> GetNEntries(); i++){
-        EventData transformed = fSystematics.ApplySystematics(testData_ -> GetEntry(i));
+        Event transformed = fSystematics.ApplySystematics(testData_ -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
             dataCount++;
     }    
@@ -29,7 +29,7 @@ CountingExperiment::CountBackgrounds(){
 
         // loop over events
         for(size_t j = 0; j < dataSet -> GetNEntries(); j++){
-            EventData transformed = fSystematics.ApplySystematics(dataSet->GetEntry(j));
+            Event transformed = fSystematics.ApplySystematics(dataSet->GetEntry(j));
             if(fCuts.PassesCuts(transformed, cutLog))
                 eventsPassed++;
         }
@@ -45,7 +45,7 @@ CountingExperiment::CountSignal(){
     int signalCount = 0;
     CutLog cutLog = (fCuts.GetCutNames());
     for(size_t i = 0; i < fSignalDataSet -> GetNEntries(); i++){
-        EventData transformed = fSystematics.ApplySystematics(fSignalDataSet -> GetEntry(i));
+        Event transformed = fSystematics.ApplySystematics(fSignalDataSet -> GetEntry(i));
         if(fCuts.PassesCuts(transformed, cutLog))
             signalCount++;
     }    

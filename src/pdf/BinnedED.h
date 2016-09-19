@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 
+class Event;
 class BinnedED : public EventDistribution{
  public:
     BinnedED() {}
@@ -20,18 +21,18 @@ class BinnedED : public EventDistribution{
     BinnedED(const Histogram& histo_);
     EventDistribution*   Clone() const; 
 
-    double Probability(const EventData&) const;
+    double Probability(const Event&) const;
     double Probability(const std::vector<double>&) const;
     double Integral()  const;
     void   Normalise();
     void   Scale(double s_);
     
     void   Fill(const std::vector<double>& vals_, double weight_ = 1);
-    void   Fill(const EventData& data_, double weight_ = 1);
+    void   Fill(const Event& data_, double weight_ = 1);
     void   Fill(double val_, double weight_ = 1);
 
     size_t FindBin(const std::vector<double>& vals_) const;
-    size_t FindBin(const EventData& data_) const;
+    size_t FindBin(const Event& data_) const;
 
     std::vector<size_t> UnpackIndices(size_t bin_) const;
     size_t FlattenIndices(const std::vector<size_t>& indices_) const;

@@ -1,6 +1,8 @@
 #include <BinnedED.h>
 #include <Exceptions.h>
+#include <Event.h>
 #include <Combinations.hpp>
+
 
 BinnedED::BinnedED(const AxisCollection& axes_){
     fHistogram.SetAxes(axes_);
@@ -31,7 +33,7 @@ BinnedED::SetHistogram(const Histogram& hist_){
 }
 
 void 
-BinnedED::Fill(const EventData& data_, double weight_){
+BinnedED::Fill(const Event& data_, double weight_){
     try{
         fHistogram.Fill(data_.ToRepresentation(fDataRep), weight_);
     }
@@ -41,7 +43,7 @@ BinnedED::Fill(const EventData& data_, double weight_){
 }
 
 size_t 
-BinnedED::FindBin(const EventData& data_) const{
+BinnedED::FindBin(const Event& data_) const{
     try{
         return fHistogram.FindBin(data_.ToRepresentation(fDataRep));    
     }
@@ -77,7 +79,7 @@ BinnedED::Probability(const std::vector<double>& vals_) const{
 }
 
 double
-BinnedED::Probability(const EventData& oberservations_) const{
+BinnedED::Probability(const Event& oberservations_) const{
     try{
         return Probability(oberservations_.ToRepresentation(fDataRep));
     }

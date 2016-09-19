@@ -7,15 +7,15 @@
 /* EventData(4, 2, 1).ToRepresentation(pdfRep) = {2, 4}                                        */
 /***********************************************************************************************/
 
-#ifndef __EVENT_DATA__
-#define __EVENT_DATA__
+#ifndef __OXSX_EVENT__
+#define __OXSX_EVENT__
 #include <cstdlib>
 #include <vector>
 class DataRepresentation;
 
-class EventData{
+class Event{
  public:
-    EventData(const std::vector<double>& obs_);
+    Event(const std::vector<double>& obs_);
     std::vector<double> GetData() const;
     double GetDatum(size_t) const;
     std::vector<double> ToRepresentation(const DataRepresentation&) const;

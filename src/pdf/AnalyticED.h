@@ -12,7 +12,7 @@ class AnalyticED : public EventDistribution, public FitComponent{
     ~AnalyticED();         // frees fFunction
     EventDistribution* Clone() const;
     
-    double Probability(const EventData&) const;
+    double Probability(const Event&) const;
     double Probability(const std::vector<double>&) const;
 
     double Integral() const;

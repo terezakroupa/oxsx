@@ -1,13 +1,13 @@
 #include <EventShift.h>
-#include <EventData.h>
+#include <Event.h>
 #include <Exceptions.h>
 
-EventData
-EventShift::operator()(const EventData& inEvent_){
+Event
+EventShift::operator()(const Event& inEvent_){
     // pull out the relevant data point
     std::vector<double> obs = inEvent_.GetData();
     obs[fDataRep.GetIndex(0)] += GetShift();
-    return EventData(obs);
+    return Event(obs);
 }
 
 void

@@ -1,5 +1,5 @@
 #include <ROOTNtuple.h>
-#include <EventData.h>
+#include <Event.h>
 #include <iostream>
 #include <Exceptions.h>
 #include <TNtuple.h>
@@ -27,18 +27,18 @@ ROOTNtuple::~ROOTNtuple(){
     delete fROOTFile;
 }
 
-EventData 
+Event 
 ROOTNtuple::Assemble(size_t iEvent_) const{
     if (iEvent_ >= GetNEntries())
         throw NotFoundError("Exceeded end of ROOT NTuple");
 
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
-    return EventData(std::vector<double> (vals, vals + GetNObservables()));
+    return Event(std::vector<double> (vals, vals + GetNObservables()));
     
 }
 
-EventData
+Event
 ROOTNtuple::GetEntry(size_t iEvent_) const{
     if(iEvent_ >= GetNEntries())
         throw NotFoundError("Exceeded end of ROOT NTuple");

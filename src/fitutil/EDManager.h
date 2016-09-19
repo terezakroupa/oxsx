@@ -5,7 +5,7 @@
 #include <vector>
 
 class EventDistribution;
-class EventData;
+class Event;
 
 class EDManager : public FitComponent{
  public:
@@ -18,7 +18,7 @@ class EDManager : public FitComponent{
     const std::vector<double>& GetNormalisations() const;
     void  SetNormalisations(const std::vector<double>&);
     
-    double Probability(const EventData&) const;
+    double Probability(const Event&) const;
     
     size_t GetNDists() const;
     size_t GetNDims() const;

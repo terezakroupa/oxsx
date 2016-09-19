@@ -12,7 +12,7 @@
 
 class OXSXDataSet;
 class DataSet;
-class EventData;
+class Event;
 
 class DataSetGenerator{
  public:
