@@ -1,4 +1,4 @@
-#include <PdfConverter.h>
+#include <DistTools.h>
 #include <PDF.h>
 #include <AxisCollection.h>
 #include <Exceptions.h>
@@ -10,9 +10,9 @@
 #include <iostream>
 #include <algorithm>
 Histogram
-PdfConverter::ToHist(const PDF& analytic_, const AxisCollection& axes_){
+DistTools::ToHist(const PDF& analytic_, const AxisCollection& axes_){
     if (analytic_.GetNDims() != axes_.GetNDimensions())
-        throw DimensionError("PdfConverter::Dimensionality of Pdf doesn't match requested axes!");
+        throw DimensionError("DistTools::Dimensionality of Pdf doesn't match requested axes!");
 
     Histogram hist(axes_);
     // Loop over bins
@@ -29,7 +29,7 @@ PdfConverter::ToHist(const PDF& analytic_, const AxisCollection& axes_){
 }
 
 TH1D
-PdfConverter::ToTH1D(const BinnedED& pdf_, const bool widthCorrect_){
+DistTools::ToTH1D(const BinnedED& pdf_, const bool widthCorrect_){
     if(pdf_.GetNDims() != 1)
         throw DimensionError("Only a 1D pdf can be represented by a TH1D");
  
@@ -54,7 +54,7 @@ PdfConverter::ToTH1D(const BinnedED& pdf_, const bool widthCorrect_){
 }
 
 TH1D
-PdfConverter::ToTH1D(const Histogram& histo_, const bool widthCorrect_){
+DistTools::ToTH1D(const Histogram& histo_, const bool widthCorrect_){
     if(histo_.GetNDims() != 1)
         throw DimensionError("Only a 1D pdf can be represented by a TH1D");
  
@@ -76,7 +76,7 @@ PdfConverter::ToTH1D(const Histogram& histo_, const bool widthCorrect_){
 }
 
 TH2D
-PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
+DistTools::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
     if(histo_.GetNDims() != 2)
 	  throw DimensionError("Only a 2D pdf can be represented by a TH2D");
 	
@@ -108,10 +108,10 @@ PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
 }
 
 TH2D
-PdfConverter::ToTH2D(const BinnedED& pdf_, const bool widthCorrect_){
+DistTools::ToTH2D(const BinnedED& pdf_, const bool widthCorrect_){
     if(pdf_.GetNDims() != 2)
 		throw DimensionError("Only a 2D pdf can be represented by a TH2D");
 	
-	TH2D rtHist = PdfConverter::ToTH2D(pdf_.GetHistogram());
+	TH2D rtHist = DistTools::ToTH2D(pdf_.GetHistogram());
 	return rtHist;
 }

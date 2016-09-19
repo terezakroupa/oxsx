@@ -1,9 +1,8 @@
 /**************************************************************/
 /* Static Utility class for doing a variety of pdfconversions */
 /**************************************************************/
-#ifndef __PDF_CONVERTER__
-#define __PDF_CONVERTER__
-
+#ifndef __OXSX_DIST_TOOLS__
+#define __OXSX_DIST_TOOLS__
 
 class BinnedED;
 class PDF;
@@ -12,12 +11,12 @@ class Histogram;
 class TH2D;
 class TH1D;
 
-class PdfConverter{
+class DistTools{
  public:
-    static Histogram ToHist(const PDF&, const AxisCollection& axes_);
-    static TH1D      ToTH1D(const BinnedED&, const bool widthCorrect_ = false);
+    static Histogram ToHist(const PDF&,       const AxisCollection& axes_);
+    static TH1D      ToTH1D(const BinnedED&,  const bool widthCorrect_ = false);
     static TH1D      ToTH1D(const Histogram&, const bool widthCorrect_ = false);
 	static TH2D      ToTH2D(const Histogram&, const bool widthCorrect_ = false);
-	static TH2D      ToTH2D(const BinnedED&, const bool widthCorrect_ = false);
+	static TH2D      ToTH2D(const BinnedED&,  const bool widthCorrect_ = false);
 };
 #endif

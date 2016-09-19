@@ -1,5 +1,5 @@
 #include <ROOTMultiPlot.h>
-#include <PdfConverter.h>
+#include <DistTools.h>
 #include <Exceptions.h>
 #include <BinnedED.h>
 #include <iostream>
@@ -19,7 +19,7 @@ ROOTMultiPlot::AddPdf(const BinnedED& pdf_, const std::string& name_){
   if (nDims != 1)
     throw DimensionError("ROOTMultiPlot::Added dim != 1 binned pdf!");
   
-  TH1D rootHist = PdfConverter::ToTH1D(pdf_);
+  TH1D rootHist = DistTools::ToTH1D(pdf_);
   rootHist.SetDirectory(0);
   rootHist.GetXaxis()->SetTitle(pdf_.GetAxes().GetAxis(0).GetLatexName().c_str());
   AddPdf(rootHist, name_);

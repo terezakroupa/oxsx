@@ -2,7 +2,6 @@
 #include <SystematicManager.h>
 #include <BinnedEDShrinker.h>
 #include <BinnedED.h>
-#include <PdfConverter.h>
 #include <Exceptions.h>
 #include <sstream>
 
