@@ -23,8 +23,7 @@ class Systematic : public FitComponent{
     BinnedED 
     operator()(const BinnedED& pdf_) const;
         
-    void 
-    SetResponse(const Matrix& responseMatrix_);
+    void SetResponse(const Matrix& responseMatrix_);
     const Matrix& GetResponse() const;
         
     void SetTransformationObs(const ObsSet&);
