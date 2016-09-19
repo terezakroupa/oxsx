@@ -1,10 +1,10 @@
-#include  <Matrix.h>
+#include  <SparseMatrix.h>
 #include  <iostream>
 #include  <Exceptions.h>
 
 // Initialise the detector response to zero
 void 
-Matrix::SetAxes(const AxisCollection& axes_){
+SparseMatrix::SetAxes(const AxisCollection& axes_){
     fAxes  = axes_;
     fNBins = axes_.GetNBins();
     fNDims = axes_.GetNDimensions();
@@ -13,17 +13,17 @@ Matrix::SetAxes(const AxisCollection& axes_){
 
 
 const AxisCollection& 
-Matrix::GetAxes() const{
+SparseMatrix::GetAxes() const{
     return fAxes;
 }
 
 void 
-Matrix::SetResponse(const arma::sp_mat& response_){
+SparseMatrix::SetResponse(const arma::sp_mat& response_){
     fArmaMat = response_;
 }
 
 void 
-Matrix::SetComponent(size_t col_, size_t row_, double val_){
+SparseMatrix::SetComponent(size_t col_, size_t row_, double val_){
     if (col_ >= fNBins || row_ >= fNBins)
         throw NotFoundError(Formatter() << "Attempted out of bounds access on response matrix (" << row_ <<  "," << col_ << "). Is it initialised with axes?");
 
@@ -31,7 +31,7 @@ Matrix::SetComponent(size_t col_, size_t row_, double val_){
 }
 
 double 
-Matrix::GetComponent(size_t col_, size_t row_) const{
+SparseMatrix::GetComponent(size_t col_, size_t row_) const{
     if (col_ >= fNBins || row_ >= fNBins)
         throw NotFoundError(Formatter() << "Attempted out of bounds access on response matrix (" << row_ <<  "," << col_ << "). Is it initialised with axes?");
 
@@ -39,13 +39,13 @@ Matrix::GetComponent(size_t col_, size_t row_) const{
 }
 
 std::vector<double>
-Matrix::operator() (const std::vector<double>& input_) const{
+SparseMatrix::operator() (const std::vector<double>& input_) const{
     if (!fNDims){
-        throw DimensionError("Matrix::operator() :  NDims = 0, have you set the axes?");
+        throw DimensionError("SparseMatrix::operator() :  NDims = 0, have you set the axes?");
     }
     
     if(fNBins != input_.size()){
-        throw DimensionError(Formatter() << "Matrix::opeator() : Input vector ("
+        throw DimensionError(Formatter() << "SparseMatrix::opeator() : Input vector ("
                                          << input_.size() << ")" 
                                          << " wrong size for PdfMap ("
                                          << fNDims
@@ -58,7 +58,7 @@ Matrix::operator() (const std::vector<double>& input_) const{
         newContents = fArmaMat * arma::vec(input_);
     }
     catch(const std::logic_error& e_){
-        throw DimensionError(Formatter() << "Matrix::operator() : matrix multiplation failed. Pdf has "
+        throw DimensionError(Formatter() << "SparseMatrix::operator() : matrix multiplation failed. Pdf has "
                              << input_.size() << " bins, but matrix built for " << fAxes.GetNBins()
                              );
     }
@@ -67,14 +67,14 @@ Matrix::operator() (const std::vector<double>& input_) const{
     return arma::conv_to<std::vector<double> >::from((newContents));
 }
 
-Matrix
-Matrix::operator*=(const Matrix& other_){
+SparseMatrix
+SparseMatrix::operator*=(const SparseMatrix& other_){
   fArmaMat = fArmaMat * other_.fArmaMat;
   return *this;
 }
 
 void
-Matrix::SetZeros(){
+SparseMatrix::SetZeros(){
     if(!fNBins)
         return;
     fArmaMat = arma::sp_mat(fNBins, fNBins);
@@ -82,11 +82,11 @@ Matrix::SetZeros(){
 
 // FIXME: unsigned vs. size_t
 void 
-Matrix::SetComponents(const std::vector<unsigned>& rowIndices_,
+SparseMatrix::SetComponents(const std::vector<unsigned>& rowIndices_,
                           const std::vector<unsigned>& colIndices_,
                           const std::vector<double>& values_){
     if(rowIndices_.size() != values_.size() || colIndices_.size() != values_.size())
-        throw DimensionError("Matrix::SetComponent() #values != #locations");
+        throw DimensionError("SparseMatrix::SetComponent() #values != #locations");
 
     arma::umat locs(2, rowIndices_.size());
     locs.row(0) = arma::urowvec(rowIndices_);

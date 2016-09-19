@@ -42,7 +42,7 @@ Convolution::Construct(){
     std::vector<double> lowEdges(fSysAxes.GetNDimensions());
     std::vector<double> highEdges(fSysAxes.GetNDimensions());
 
-    Matrix subMap;
+    SparseMatrix subMap;
     subMap.SetAxes(fSysAxes);
 
     for (size_t origBin = 0; origBin < fSysAxes.GetNBins(); origBin++){

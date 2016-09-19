@@ -17,11 +17,11 @@ Systematic::operator() (const BinnedED& pdf_) const{
 }
 
 void 
-Systematic::SetResponse(const Matrix& responseMatrix_){
+Systematic::SetResponse(const SparseMatrix& responseMatrix_){
     fResponse = responseMatrix_;
 }
 
-const Matrix& 
+const SparseMatrix& 
 Systematic::GetResponse() const{
     return fResponse;
 }

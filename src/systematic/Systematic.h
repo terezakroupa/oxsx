@@ -10,7 +10,7 @@
 
 #ifndef __OXSX_SYSTEMATIC__
 #define __OXSX_SYSTEMATIC__
-#include <Matrix.h>
+#include <SparseMatrix.h>
 #include <BinnedED.h>
 #include <FitComponent.h>
 #include <ObsSet.h>
@@ -23,8 +23,8 @@ class Systematic : public FitComponent{
     BinnedED 
     operator()(const BinnedED& pdf_) const;
         
-    void SetResponse(const Matrix& responseMatrix_);
-    const Matrix& GetResponse() const;
+    void SetResponse(const SparseMatrix& responseMatrix_);
+    const SparseMatrix& GetResponse() const;
         
     void SetTransformationObs(const ObsSet&);
     ObsSet GetTransformationObs() const;
@@ -35,7 +35,7 @@ class Systematic : public FitComponent{
     virtual void Construct() = 0;
 
  protected:
-    Matrix fResponse;
+    SparseMatrix fResponse;
     ObsSet fTransObs;     // the observables to tranform
     ObsSet fDistObs;      // the full set of observables for the distriubtion to act on
     // obs of the pdfs it will act on, needs to be at least the lenth of the 

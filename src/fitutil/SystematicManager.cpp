@@ -22,7 +22,7 @@ SystematicManager::Construct(){
       fTotalResponse *= fSystematics.at(i) -> GetResponse();
 }
 
-const Matrix&
+const SparseMatrix&
 SystematicManager::GetTotalResponse() const{
      return fTotalResponse;
 }

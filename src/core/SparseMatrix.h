@@ -6,17 +6,17 @@
 /* The systematic object is responsible for pdf renormalisation - not here                   */
 /*********************************************************************************************/
 
-#ifndef __PDF_MAPPING__
-#define __PDF_MAPPING__
+#ifndef __OXSX_SPARSE_MATRIX__
+#define __OXSX_SPARSE_MATRIX__
 #include <AxisCollection.h>
 #define ARMA_DONT_USE_CXX11
 #include <armadillo>
 class BinnedPhysDist;
 
-class Matrix{
+class SparseMatrix{
  public:
-    Matrix() :fNBins(0), fNDims(0) {}
-    ~Matrix() {}
+    SparseMatrix() :fNBins(0), fNDims(0) {}
+    ~SparseMatrix() {}
 
     std::vector<double> operator() (const std::vector<double>& input_) const;
 
@@ -29,7 +29,7 @@ class Matrix{
                        const std::vector<unsigned>& colIndices_,
                        const std::vector<double>& values_);
 
-    Matrix operator*=(const Matrix& other_);
+    SparseMatrix operator*=(const SparseMatrix& other_);
 
     const AxisCollection& GetAxes() const;
     void   SetAxes(const AxisCollection& axes_);

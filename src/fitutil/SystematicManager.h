@@ -8,7 +8,7 @@
 #define __SYSTEMATIC_MANAGER__
 #include <vector>
 #include <Systematic.h>
-#include <Matrix.h>
+#include <SparseMatrix.h>
 
 class SystematicManager{
  public:
@@ -19,13 +19,13 @@ class SystematicManager{
     const std::vector<Systematic*>& GetSystematics() const;
     
     size_t GetNSystematics() const;
-    const Matrix& GetTotalResponse() const;
+    const SparseMatrix& GetTotalResponse() const;
 
     void Construct();
     
  private:
     std::vector<Systematic*> fSystematics;
-    Matrix fTotalResponse;
+    SparseMatrix fTotalResponse;
     size_t fNSystematics;
 };
 #endif
