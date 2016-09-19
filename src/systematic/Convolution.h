@@ -14,7 +14,7 @@ class ConditionalPDF;
 class PDF;
 class Convolution : public Systematic{
  public:
-    Convolution(): fDist(NULL), fHasAxes(false), fCachedCompatibleBins(false) {}
+    Convolution(): fDist(NULL), fCachedCompatibleBins(false) {}
     ~Convolution();
     void SetFunction(PDF* function_);
     void SetConditionalPDF(ConditionalPDF* function_);
@@ -30,7 +30,6 @@ class Convolution : public Systematic{
  private:
     void                     Reset();
     ConditionalPDF*          fDist;
-    bool                     fHasAxes;
     bool                     fCachedCompatibleBins;
 
     AxisCollection     fSubMapAxes;

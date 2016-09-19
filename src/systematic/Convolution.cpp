@@ -21,7 +21,7 @@ Convolution::~Convolution(){
 
 void 
 Convolution::Construct(){
-    if (!fDist || !fHasAxes)
+    if (!fDist || !fAxes.GetNBins())
         throw LogicError("Convolution::Construct() : Tried to construct convolution without axes or function/distribution, or both!!");
     
     if(!fCachedCompatibleBins)
