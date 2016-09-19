@@ -9,8 +9,8 @@ class EventSystematic : public FitComponent{
  public:
     virtual Event operator()(const Event&) = 0;
 
-    void   SetDataRep(const ObsSet&);
-    ObsSet GetDataRep() const;
+    void   SetObservables(const ObsSet&);
+    ObsSet GetObservables() const;
     
  protected:   
     ObsSet  fObservables;
