@@ -31,17 +31,17 @@ class BinAxis{
     double GetBinLowEdge (size_t i) const {return fBinLowEdges.at(i);}
     double GetBinHighEdge(size_t i) const {return fBinHighEdges.at(i);}
     double GetBinCentre  (size_t i) const {return fBinCentres.at(i);}    
-	double GetBinWidth(size_t i) const {return fBinWidths.at(i);}
+    double GetBinWidth(size_t i) const {return fBinWidths.at(i);}
 
-	std::vector<double> GetBinLowEdges() const {return fBinLowEdges;}
-	std::vector<double> GetBinHighEdges() const {return fBinHighEdges;}
-	std::vector<double> GetBinCentres() const {return fBinCentres;}
+    std::vector<double> GetBinLowEdges() const {return fBinLowEdges;}
+    std::vector<double> GetBinHighEdges() const {return fBinHighEdges;}
+    std::vector<double> GetBinCentres() const {return fBinCentres;}
 
     std::string GetName() const {return fName;}
     std::string GetLatexName() const {return fLatexName;}
 
-	double GetMaximum() const {return fMax;}
-	double GetMinimum() const {return fMin;}
+    double GetMaximum() const {return fMax;}
+    double GetMinimum() const {return fMin;}
 
 
  private:

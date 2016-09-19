@@ -16,18 +16,18 @@ EventConvolution::~EventConvolution(){
 
 EventConvolution::EventConvolution(const EventConvolution& other_){
   if(other_.fDist)
-	fDist = other_.fDist -> Clone();
+    fDist = other_.fDist -> Clone();
   else
-  	fDist = NULL;
+    fDist = NULL;
   fObservables = other_.fObservables;
 }
 
 EventConvolution
 EventConvolution::operator=(const EventConvolution& other_){ 
   if(other_.fDist)
-  	fDist = other_.fDist -> Clone();
-  else								   
-  	fDist = NULL;
+    fDist = other_.fDist -> Clone();
+  else                                 
+    fDist = NULL;
   fObservables = other_.fObservables;
   return *this;
 }
@@ -39,22 +39,22 @@ EventConvolution::operator=(const EventConvolution& other_){
 void
 EventConvolution::SetPDF(PDF* f_){
   if(!f_)
-	fDist = NULL;
+    fDist = NULL;
 
   else{
-	if(f_->GetNDims() != 1)
-	  throw DimensionError("EventConvolution::SetFunction", 1, 
-						   f_->GetNDims(), "Only implemented for 1D functions");
-	fDist = static_cast<ConditionalPDF*>(new JumpPDF(f_));
-  }	
+    if(f_->GetNDims() != 1)
+      throw DimensionError("EventConvolution::SetFunction", 1, 
+                           f_->GetNDims(), "Only implemented for 1D functions");
+    fDist = static_cast<ConditionalPDF*>(new JumpPDF(f_));
+  } 
 }
 
 void
 EventConvolution::SetConditionalPDF(ConditionalPDF* c_){
   if(!c_)
-	fDist = NULL;
+    fDist = NULL;
   else
-	fDist  = c_->Clone();
+    fDist  = c_->Clone();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -64,40 +64,40 @@ EventConvolution::SetConditionalPDF(ConditionalPDF* c_){
 void
 EventConvolution::MakeFittable(){
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::MakeFittable", 
-								 "Have you set the function?");
+    throw NULLPointerAccessError("EventConvolution::MakeFittable", 
+                                 "Have you set the function?");
   fDist->MakeFittable();
 }
 
 std::vector<std::string> 
 EventConvolution::GetParameterNames() const{
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::GetParameterNames", 
-								 "Have you set the sampling function?");
+    throw NULLPointerAccessError("EventConvolution::GetParameterNames", 
+                                 "Have you set the sampling function?");
   return fDist->GetParameterNames();
 }
 
 std::vector<double> 
 EventConvolution::GetParameters() const{
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::GetParameters", 
-								 "Have you set the sampling function?");
+    throw NULLPointerAccessError("EventConvolution::GetParameters", 
+                                 "Have you set the sampling function?");
   return fDist->GetParameters();
 }
 
 size_t
 EventConvolution::GetParameterCount() const{
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::GetParameterCount", 
-								 "Have you set the sampling function?");
+    throw NULLPointerAccessError("EventConvolution::GetParameterCount", 
+                                 "Have you set the sampling function?");
   return fDist->GetParameterCount();
 }
 
 void
 EventConvolution::SetParameters(const std::vector<double>& params_){
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::SetParameters", 
-								 "Have you set the sampling function?");
+    throw NULLPointerAccessError("EventConvolution::SetParameters", 
+                                 "Have you set the sampling function?");
   return fDist->SetParameters(params_);
 }
 
@@ -106,8 +106,8 @@ EventConvolution::SetParameters(const std::vector<double>& params_){
 Event
 EventConvolution::operator()(const Event& event_){
   if(!fDist)
-	throw NULLPointerAccessError("EventConvolution::operator()", 
-								 "Have you set the sampling function?");
+    throw NULLPointerAccessError("EventConvolution::operator()", 
+                                 "Have you set the sampling function?");
 
   double correction = fDist->Sample(event_.ToObsSet(fObservables)).at(0);
 

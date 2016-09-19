@@ -15,7 +15,7 @@ void
 CountingResult::AddBackground(double expectedRate_, const std::string& name_,
                               double error_, const CutLog& log_){
     fExpectedRates.push_back(expectedRate_);
-	fExpectedRateErrors.push_back(error_);
+    fExpectedRateErrors.push_back(error_);
     fBackgroundNames.push_back(name_);
     fBackgroundLogs.push_back(log_);
     fBackgroundLogs.back().CalculateMeta();
@@ -42,7 +42,7 @@ double
 CountingResult::GetExpectedCountError() const{
   double sqSum = 0;
   for(size_t i = 0; i < fExpectedRateErrors.size(); i++)
-	sqSum += fExpectedRateErrors.at(i) * fExpectedRateErrors.at(i);
+    sqSum += fExpectedRateErrors.at(i) * fExpectedRateErrors.at(i);
   return sqrt(sqSum);
 }
 
@@ -137,14 +137,14 @@ CountingResult::AsString() const{
                  << std::left
                  << std::setw(10)
                  << "Counts";
-	
-	std::vector<std::pair<std::string, double> > sortedRatesByName;
-	std::map<std::string, double> sortedErrorsByName;
-	for(size_t i = 0; i < fExpectedRates.size(); i++){
-	  sortedRatesByName.push_back(std::pair<std::string, double>(fBackgroundNames.at(i), fExpectedRates.at(i)));
-	  sortedErrorsByName[fBackgroundNames.at(i)] = fExpectedRateErrors.at(i);
-	}	
-	std::sort(sortedRatesByName.begin(), sortedRatesByName.end(), PairSortBySecond<std::string, double, std::greater<double> >());
+    
+    std::vector<std::pair<std::string, double> > sortedRatesByName;
+    std::map<std::string, double> sortedErrorsByName;
+    for(size_t i = 0; i < fExpectedRates.size(); i++){
+      sortedRatesByName.push_back(std::pair<std::string, double>(fBackgroundNames.at(i), fExpectedRates.at(i)));
+      sortedErrorsByName[fBackgroundNames.at(i)] = fExpectedRateErrors.at(i);
+    }   
+    std::sort(sortedRatesByName.begin(), sortedRatesByName.end(), PairSortBySecond<std::string, double, std::greater<double> >());
 
     for(size_t i = 0; i < sortedRatesByName.size(); i++){
         resultString << "\n"
@@ -154,8 +154,8 @@ CountingResult::AsString() const{
                      << std::setw(10)
                      << std::left
                      << sortedRatesByName.at(i).second
-					 << " +- " 
-					 << sortedErrorsByName[sortedRatesByName.at(i).first];
+                     << " +- " 
+                     << sortedErrorsByName[sortedRatesByName.at(i).first];
     }
         
     resultString << "\n"
@@ -165,8 +165,8 @@ CountingResult::AsString() const{
                  << std::setw(10)
                  << std::left
                  << GetExpectedCounts()
-				 << " +- "
-				 << GetExpectedCountError()
+                 << " +- "
+                 << GetExpectedCountError()
                  << "\n------------------------\n"
                  << std::setw(18)
                  << std::left

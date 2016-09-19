@@ -34,8 +34,8 @@ CountingExperiment::CountBackgrounds(){
                 eventsPassed++;
         }
         double counts = (eventsPassed * fBackgroundNorms.at(i) / dataSet->GetNEntries());
-		// MC statistics introduces a systematic error
-		double error = sqrt(eventsPassed) * fBackgroundNorms.at(i)/dataSet->GetNEntries();
+        // MC statistics introduces a systematic error
+        double error = sqrt(eventsPassed) * fBackgroundNorms.at(i)/dataSet->GetNEntries();
         fResult.AddBackground(counts, fBackgroundNames.at(i), error, cutLog);
     }
 }

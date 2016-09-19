@@ -8,16 +8,16 @@ class CountingResult{
  public:
     CountingResult() : fObservedCounts(-1), fSignalEfficiency(-1) {}
     void AddBackground(double expectedRate_, const std::string& name_,
-					   double error_, const CutLog&);
+                       double error_, const CutLog&);
     void SetSignal(double sigEff_, const std::string& name_, const CutLog&);
 
     void SetDataLog(const CutLog&);
     void SetObservedCounts(int counts_);
 
     int    GetObservedCounts() const;
-    double GetExpectedCounts() const;	
-	double GetExpectedCountError() const;
-	double GetSignalEfficiency() const;
+    double GetExpectedCounts() const;   
+    double GetExpectedCountError() const;
+    double GetSignalEfficiency() const;
     const std::vector<double>& GetExpectedRates() const;
     const std::vector<double>& GetExpectedRateErrors() const;
 

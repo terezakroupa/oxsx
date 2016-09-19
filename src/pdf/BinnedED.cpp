@@ -189,9 +189,9 @@ BinnedED::Marginalise(const std::vector<size_t>& indices_) const{
     std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fObservables);
 
     // Marginalise the histogram
-	BinnedED newPhysDist(fHistogram.Marginalise(relativeIndices));
-	newPhysDist.SetDataRep(newRep);
-	return newPhysDist;
+    BinnedED newPhysDist(fHistogram.Marginalise(relativeIndices));
+    newPhysDist.SetDataRep(newRep);
+    return newPhysDist;
 }
 
 BinnedED
@@ -205,13 +205,13 @@ BinnedED::GetAllProjections() const{
   // work out all the possible combinations of the indicies
   std::vector<std::vector<size_t> > projectionIndices = AllCombinationsShorterThanNoDuplicates<size_t>(SequentialElements(size_t(0), size_t(GetNDims())), 2);
   for(size_t i = 0; i < projectionIndices.size(); i++){
-	  std::vector<size_t> indicesToKeep = projectionIndices.at(i);
-	  // create a unique name based on observables
-	  Formatter fm;
-	  for(size_t j = 0; j < indicesToKeep.size(); j++){
-		fm << GetAxes().GetAxis(j).GetName() << " ";
-	  }
-	  returnDists[fm] = Marginalise(indicesToKeep);
+      std::vector<size_t> indicesToKeep = projectionIndices.at(i);
+      // create a unique name based on observables
+      Formatter fm;
+      for(size_t j = 0; j < indicesToKeep.size(); j++){
+        fm << GetAxes().GetAxis(j).GetName() << " ";
+      }
+      returnDists[fm] = Marginalise(indicesToKeep);
   }
   return returnDists;
 }

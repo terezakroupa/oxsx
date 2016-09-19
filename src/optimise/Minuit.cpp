@@ -127,11 +127,11 @@ Minuit::Optimise(TestStatistic* testStat_){
                          );
                          
     fMinuitFCN = MinuitFCN(testStat_);
-	Initialise();
+    Initialise();
     
-	std::set<size_t>::iterator it = fFixedParameters.begin();
-	for(; it != fFixedParameters.end(); ++it)
-	  fMinimiser -> Fix(*it);
+    std::set<size_t>::iterator it = fFixedParameters.begin();
+    for(; it != fFixedParameters.end(); ++it)
+      fMinimiser -> Fix(*it);
 
     // defaults are same as ROOT defaults
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 

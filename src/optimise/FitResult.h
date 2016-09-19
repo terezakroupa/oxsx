@@ -34,13 +34,13 @@ class FitResult{
     bool GetValid() const;
 
     void Print() const;
-	void SaveAs(const std::string&) const;
+    void SaveAs(const std::string&) const;
 
-	void Set1DProjections(const HistMap&);
-	void Set2DProjections(const HistMap&);
+    void Set1DProjections(const HistMap&);
+    void Set2DProjections(const HistMap&);
 
-	HistMap Get1DProjections() const;
-	HistMap Get2DProjections() const;
+    HistMap Get1DProjections() const;
+    HistMap Get2DProjections() const;
 
 
  private:
@@ -48,9 +48,9 @@ class FitResult{
     std::vector<std::string>          fParameterNames;
     std::vector<std::vector<double> > fStatSample;
     Histogram*    fStatSpace;
-	HistMap f1DProjections;
-	HistMap f2DProjections;
-	
+    HistMap f1DProjections;
+    HistMap f2DProjections;
+    
     bool fIsValid;
 };
 #endif

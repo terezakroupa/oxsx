@@ -33,8 +33,8 @@ class AxisCollection{
     double GetBinLowEdge(size_t bin_, size_t dim_)  const;
     double GetBinHighEdge(size_t bin_, size_t dim_) const;
     double GetBinCentre(size_t bin_, size_t dim_)   const;
-	double GetBinWidth(size_t bin_, size_t dim_)    const;
-	
+    double GetBinWidth(size_t bin_, size_t dim_)    const;
+    
  private:
     std::vector<BinAxis> fAxes;
     std::vector<size_t> fAxisNbins;

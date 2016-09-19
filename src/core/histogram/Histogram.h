@@ -45,8 +45,8 @@ class Histogram{
 
     Histogram Marginalise(const std::vector<size_t>& indices_) const;
     Histogram Marginalise(size_t index_) const;
-	std::map<std::string, Histogram> GetAllProjections() const;
-	
+    std::map<std::string, Histogram> GetAllProjections() const;
+    
     double    GetBinLowEdge(size_t bin_, size_t dim_) const;
     double    GetBinHighEdge(size_t bin_, size_t dim_) const;
     double    GetBinCentre(size_t bin_, size_t dim_) const;

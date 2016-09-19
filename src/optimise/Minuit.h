@@ -52,7 +52,7 @@ class Minuit : public Optimiser{
     FitResult GetFitResult() const;
 
  private:
-	void Initialise();
+    void Initialise();
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
     std::vector<double> fInitialValues;
     std::vector<double> fInitialErrors;

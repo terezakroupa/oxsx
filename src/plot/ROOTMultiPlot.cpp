@@ -9,9 +9,9 @@ const unsigned
 ROOTMultiPlot::fNcolors = 7;
 const int
 ROOTMultiPlot::fColorScheme[fNcolors] = {kRed, kBlue, kViolet, 
-					 kOrange, kBlue, kBlack,
-					 kMagenta};
-					 
+                     kOrange, kBlue, kBlack,
+                     kMagenta};
+                     
 
 void
 ROOTMultiPlot::AddPdf(const BinnedED& pdf_, const std::string& name_){
@@ -71,7 +71,7 @@ ROOTMultiPlot::Construct(){
   }
   double span = maxX - minX;
   for(size_t i = 0; i < fHists.size(); i++){
-	//      fHists[i].GetXaxis() -> SetRangeUser(minX, maxX);
+    //      fHists[i].GetXaxis() -> SetRangeUser(minX, maxX);
   }
 
   // draw with legend
@@ -80,9 +80,9 @@ ROOTMultiPlot::Construct(){
   fCanvas.cd();
   
   if(fStacked)
-	ConstructStacked();
+    ConstructStacked();
   else
-	ConstructOverlay();
+    ConstructOverlay();
 
   for(size_t i = 0; i < fNames.size(); i++){
       fLegend.AddEntry(&fHists.at(i), fNames.at(i).c_str());
@@ -104,8 +104,8 @@ ROOTMultiPlot::SetStacked(bool b_){
 void
 ROOTMultiPlot::ConstructOverlay(){
   for(size_t i = 0; i < fNames.size(); i++){
-	fHists[i].SetFillColor(0);
-    fHists.at(i).Draw("same");	
+    fHists[i].SetFillColor(0);
+    fHists.at(i).Draw("same");  
   }
 }
 
@@ -113,7 +113,7 @@ void
 ROOTMultiPlot::ConstructStacked(){
   fStack.Clear();
   for(size_t i = 0; i < fNames.size(); i++){
-	fStack.Add(&fHists.at(i));
+    fStack.Add(&fHists.at(i));
     fHists[i].SetFillColor(fColorScheme[i %fNcolors]);
   }
   fStack.Draw();

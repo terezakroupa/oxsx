@@ -93,7 +93,7 @@ class MetropolisHastings : public Optimiser{
     
     void    InitialiseHistograms();
     void    FillProjections(const std::vector<double>&);
-	void    SaveProjections();
+    void    SaveProjections();
 };
 #endif
 

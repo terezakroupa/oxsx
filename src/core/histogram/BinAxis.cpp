@@ -23,7 +23,7 @@ BinAxis::BinAxis(const std::string& name_, double min_, double max_, size_t nBin
     fBinLowEdges.resize(fNBins, 0);    
     fBinHighEdges.resize(fNBins, 0);
     fBinCentres.resize(fNBins, 0);
-	fBinWidths.resize(fNBins, binWidth);
+    fBinWidths.resize(fNBins, binWidth);
 
     for(size_t i = 0; i < fNBins; i++){
         fBinLowEdges[i]  = fMin  + i          * binWidth;
@@ -52,12 +52,12 @@ BinAxis::BinAxis(const std::string& name_, const std::vector<double>& lowEdges_,
     fNBins = fBinLowEdges.size();
 
     fBinCentres.resize(fNBins, 0);
-	fBinWidths.resize(fNBins, 0);
+    fBinWidths.resize(fNBins, 0);
 
     for(size_t i = 0; i < fBinLowEdges.size(); i++){
-	    fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
-		fBinWidths[i]  = fBinHighEdges.at(i) - fBinLowEdges.at(i);
-	}
+        fBinCentres[i] = 0.5 * (fBinLowEdges.at(i) + fBinHighEdges.at(i));
+        fBinWidths[i]  = fBinHighEdges.at(i) - fBinLowEdges.at(i);
+    }
 
     fLatexName = latexName_;
     fMin = fBinLowEdges.at(0);

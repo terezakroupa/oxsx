@@ -11,10 +11,10 @@
 void
 DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
     fDataSets = sets_;
-	fEventIndicies.clear();
-	fMaxs.clear();
-	fEventIndicies.resize(sets_.size());
-	fMaxs.resize(sets_.size(), 0);
+    fEventIndicies.clear();
+    fMaxs.clear();
+    fEventIndicies.resize(sets_.size());
+    fMaxs.resize(sets_.size(), 0);
 }
 
 void
@@ -34,9 +34,9 @@ DataSetGenerator::ExpectedRatesDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-		RandomDrawsNoReplacement(i, expectedCounts, dataSet);
-	}
-		    
+        RandomDrawsNoReplacement(i, expectedCounts, dataSet);
+    }
+            
     return dataSet;
 }
 
@@ -51,8 +51,8 @@ DataSetGenerator::PoissonFluctuatedDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
-		RandomDrawsNoReplacement(i, counts, dataSet);
-	}        
+        RandomDrawsNoReplacement(i, counts, dataSet);
+    }        
     return dataSet;
 }
 
@@ -62,10 +62,10 @@ DataSetGenerator::AllValidEvents(){
     OXSXDataSet dataSet;
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
-	  for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
-		Event event_ = fDataSets.at(i)->GetEntry(j);
-		dataSet.AddEntry(event_);
-	  } // events
+      for(size_t j = 0; j < fDataSets.at(i)->GetNEntries(); j++){
+        Event event_ = fDataSets.at(i)->GetEntry(j);
+        dataSet.AddEntry(event_);
+      } // events
     } // data sets
     return dataSet;
 }
@@ -75,19 +75,19 @@ std::vector<OXSXDataSet*>
 DataSetGenerator::AllRemainingEvents(){
   std::vector<OXSXDataSet*> remainders(fDataSets.size(), NULL);
   for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
-	remainders[iDS] = new OXSXDataSet();
-	remainders[iDS]->SetObservableNames(fDataSets.at(0)->GetObservableNames());
+    remainders[iDS] = new OXSXDataSet();
+    remainders[iDS]->SetObservableNames(fDataSets.at(0)->GetObservableNames());
   }
   for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
-	size_t nEvents = fMaxs.at(iDS);
-	if (!nEvents) 
-	  nEvents = fDataSets.at(iDS) -> GetNEntries();
+    size_t nEvents = fMaxs.at(iDS);
+    if (!nEvents) 
+      nEvents = fDataSets.at(iDS) -> GetNEntries();
 
-	const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
+    const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
 
-	for(size_t jEV = 0; jEV <= nEvents; jEV++){	  
-	  remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));
-	}
+    for(size_t jEV = 0; jEV <= nEvents; jEV++){   
+      remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));
+    }
   }
   Reset();
   return remainders;
@@ -102,8 +102,8 @@ DataSetGenerator::Reset(){
 
 void
 DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
-										   OXSXDataSet& outData_
-										   ){
+                                           OXSXDataSet& outData_
+                                           ){
 
   // see http://stackoverflow.com/questions/196017/unique-non-repeating-random-numbers-in-o1#196065
   // credit to Robert Gamble http://stackoverflow.com/users/25222/robert-gamble
@@ -111,15 +111,15 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
   size_t& max = fMaxs[handleIndex_];
   DataSet* origData = fDataSets.at(handleIndex_);
   if(origData->GetNEntries() < nEvents_)
-	throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsNoReplacement() asked for "
-						<< nEvents_ << " but only have " << origData -> GetNEntries() 
-						<< "events!");
+    throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsNoReplacement() asked for "
+                        << nEvents_ << " but only have " << origData -> GetNEntries() 
+                        << "events!");
 
   if(!eventIndices.size()){
-	eventIndices.reserve(origData->GetNEntries());
-	for(size_t i = 0; i < origData -> GetNEntries(); i++)
-	  eventIndices.push_back(i);
-	max = eventIndices.size() - 1; // the effective end of the array
+    eventIndices.reserve(origData->GetNEntries());
+    for(size_t i = 0; i < origData -> GetNEntries(); i++)
+      eventIndices.push_back(i);
+    max = eventIndices.size() - 1; // the effective end of the array
   }
 
   size_t cache = -1; // for swapping
@@ -127,24 +127,24 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
 
   outData_.Reserve(outData_.GetNEntries() + nEvents_);
   for(size_t i = 0; i < nEvents_; i++){
-	if(!(i%10000))
-	  std::cout << i << "/" << nEvents_ << std::endl;
+    if(!(i%10000))
+      std::cout << i << "/" << nEvents_ << std::endl;
 
-	if (!max)
-	  max = eventIndices.size() -1;
-	// draw
-	draw = Rand::Shoot(max);
+    if (!max)
+      max = eventIndices.size() -1;
+    // draw
+    draw = Rand::Shoot(max);
 
-	// swap
-	cache =	eventIndices[draw];
-	eventIndices[draw] = eventIndices[max];
-	eventIndices[max]  = cache;
+    // swap
+    cache = eventIndices[draw];
+    eventIndices[draw] = eventIndices[max];
+    eventIndices[max]  = cache;
 
-	// return 
-	outData_.AddEntry(origData -> GetEntry(eventIndices[max]));
+    // return 
+    outData_.AddEntry(origData -> GetEntry(eventIndices[max]));
 
-	// deincrement
-	max--;
+    // deincrement
+    max--;
   }
 
   return;
@@ -154,8 +154,8 @@ void
 DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
-	fEventIndicies.push_back(std::vector<size_t>());
-	fMaxs.push_back(0);
+    fEventIndicies.push_back(std::vector<size_t>());
+    fMaxs.push_back(0);
 }
 
 
@@ -172,7 +172,7 @@ DataSetGenerator::SetBootstrap(bool b_){
 void 
 DataSetGenerator::ClearDataSets(){
     fExpectedRates.clear();
-	fEventIndicies.clear();
-	fMaxs.clear();
+    fEventIndicies.clear();
+    fMaxs.clear();
     fDataSets.clear();
 }

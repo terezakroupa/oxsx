@@ -69,7 +69,7 @@ BinnedEDShrinker::ShrinkPdf(const BinnedED& pdf_) const{
     AxisCollection newAxes;
     const std::vector<size_t> pdfDataIndices = pdf_.GetDataRep().GetIndices();
     size_t dataIndex = 0;
-	
+    
     for(size_t i = 0; i < nDims; i++){
         dataIndex = pdfDataIndices.at(i);
         if (!fBuffers.count(dataIndex))

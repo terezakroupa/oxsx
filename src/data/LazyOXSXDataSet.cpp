@@ -23,28 +23,28 @@ LazyOXSXDataSet::operator=(const LazyOXSXDataSet& other_){
 unsigned
 LazyOXSXDataSet::GetNEntries() const{
   if(!fDataSet)
-	Load();
+    Load();
   return fDataSet->GetNEntries();
 }
 
 unsigned
 LazyOXSXDataSet::GetNObservables() const{
   if(!fDataSet)
-	Load();
+    Load();
   return fDataSet->GetNObservables();
 }
 
 std::vector<std::string>
 LazyOXSXDataSet::GetObservableNames() const{
   if(!fDataSet)
-	Load();
+    Load();
   return fDataSet->GetObservableNames();
 }
 
 void
 LazyOXSXDataSet::Load() const{
   for(size_t i = 0; i < fFiles.size(); i++)
-	fFiles[i] -> Close();
+    fFiles[i] -> Close();
   fDataSet = IO::LoadDataSet(fFileName);
 }
 
@@ -67,7 +67,7 @@ LazyOXSXDataSet::Deregister(){
 Event
 LazyOXSXDataSet::GetEntry(size_t i_) const{
   if(!fDataSet)
-	Load();
+    Load();
   return fDataSet->GetEntry(i_);
 }
 std::vector<LazyOXSXDataSet*> LazyOXSXDataSet::fFiles;

@@ -54,7 +54,7 @@ Convolution::Construct(){
             fSysAxes.GetBinLowEdges(destBin, lowEdges);
             fSysAxes.GetBinHighEdges(destBin, highEdges);
             
-			subMap.SetComponent(destBin, origBin, fDist -> Integral(lowEdges, highEdges, binCentres));
+            subMap.SetComponent(destBin, origBin, fDist -> Integral(lowEdges, highEdges, binCentres));
         }        
     }
 

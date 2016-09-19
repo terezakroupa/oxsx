@@ -43,18 +43,18 @@ CutCollection::~CutCollection(){
 CutCollection::CutCollection(const CutCollection& other_){
   fCuts.reserve(other_.fCuts.size());
   for(size_t i = 0; i < other_.fCuts.size(); i++)
-	fCuts.push_back(other_.fCuts.at(i)->Clone());
+    fCuts.push_back(other_.fCuts.at(i)->Clone());
 }
 
 CutCollection&
 CutCollection::operator= (const CutCollection& other_){
   for(size_t i = 0; i < fCuts.size(); i++)
-	delete fCuts.at(i);
+    delete fCuts.at(i);
 
   fCuts.resize(0);
   fCuts.reserve(other_.fCuts.size());
   for(size_t i = 0; i < other_.fCuts.size(); i++)
-	fCuts.push_back(other_.fCuts.at(i)->Clone());
+    fCuts.push_back(other_.fCuts.at(i)->Clone());
   return *this;
 }
 

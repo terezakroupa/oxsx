@@ -169,13 +169,13 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     std::cout << std::endl;
 
     fSample.empty();
-	//    fSample.reserve(fMaxIter - fBurnIn);
+    //    fSample.reserve(fMaxIter - fBurnIn);
    
     // 2. Loop step through the space a fixed number of times and
     for(unsigned i = 0; i < fMaxIter; i++){
         // a. Save the point in question if you are past burn-in phase and according to thinning
         if (i > fBurnIn && !(i%fThinFactor)){
-		  //            fSample.push_back(currentStep);
+          //            fSample.push_back(currentStep);
 
             if(fSaveFullHistogram)
                 fHist.Fill(currentStep);
@@ -187,7 +187,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
       
         if(!(i%100000))
             std::cout << i << "  /  " << fMaxIter 
-		      << "\t" << (i - fRejectionRate) / static_cast<double>(i) << std::endl;
+              << "\t" << (i - fRejectionRate) / static_cast<double>(i) << std::endl;
 
         // b. Propose a new step according to a random jump distribution
         std::vector<double> proposedStep = JumpDraw(currentStep);
@@ -206,8 +206,8 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     fFitResult.SetStatSample(fSample);
     fFitResult.SetStatSpace(fHist);
     fFitResult.SetValid(true);
-	if(!fSaveFullHistogram)
-	  SaveProjections();
+    if(!fSaveFullHistogram)
+      SaveProjections();
 
     return fFitResult;
 }
@@ -357,18 +357,18 @@ void
 MetropolisHastings::SaveProjections(){
   std::map<std::string, Histogram> map1d;
   for(size_t i = 0; i < f1DProjections.size(); i++){
-	const Histogram& hist = f1DProjections.at(i);
-	std::string name = hist.GetAxes().GetAxis(0).GetName();
-	map1d[name + "_projection"] = hist;
+    const Histogram& hist = f1DProjections.at(i);
+    std::string name = hist.GetAxes().GetAxis(0).GetName();
+    map1d[name + "_projection"] = hist;
   }
 
   std::map<std::string, Histogram> map2d;
   for(size_t i = 0; i < f2DProjections.size(); i++){
-	const Histogram& hist = f2DProjections.at(i);
-	std::string name0 = hist.GetAxes().GetAxis(0).GetName();
-	std::string name1 = hist.GetAxes().GetAxis(1).GetName();
+    const Histogram& hist = f2DProjections.at(i);
+    std::string name0 = hist.GetAxes().GetAxis(0).GetName();
+    std::string name1 = hist.GetAxes().GetAxis(1).GetName();
 
-	map2d[name0 + "_" + name1 + "_projection"] = hist;
+    map2d[name0 + "_" + name1 + "_projection"] = hist;
   }
 
   fFitResult.Set1DProjections(map1d);

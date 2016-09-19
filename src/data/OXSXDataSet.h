@@ -26,7 +26,7 @@ public:
     // concatenate
     OXSXDataSet operator+ (const OXSXDataSet& other_);
 
-	void Reserve(int);
+    void Reserve(int);
 
    
 private:
