@@ -15,8 +15,8 @@ class BinnedPhysDist;
 
 class DenseMatrix{
  public:
-    DenseMatrix() :fNBins(0), fNDims(0) {}
-    ~DenseMatrix() {}
+    DenseMatrix() : fNCols(0), fNRows(0) {}
+    DenseMatrix(int cols_, int rows_);
 
     std::vector<double> operator() (const std::vector<double>& input_) const;
 
@@ -24,17 +24,14 @@ class DenseMatrix{
     double GetComponent(size_t column_, size_t row_) const;
     
     DenseMatrix operator*=(const DenseMatrix& other_);
-
-    const AxisCollection& GetAxes() const;
-    void   SetAxes(const AxisCollection& axes_);
-    size_t GetNBins() const {return fNBins;}
-    size_t GetNDims() const {return fNDims;}
+   
     void   SetZeros();
     void   SetToIdentity();
  private:
-    AxisCollection fAxes;
+    // N x M matrix
+    int fNCols;
+    int fNRows;
     arma::mat fArmaMat;
-    unsigned fNBins;
-    unsigned fNDims;
+
 };
 #endif

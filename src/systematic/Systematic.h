@@ -26,16 +26,20 @@ class Systematic : public FitComponent{
     void SetResponse(const SparseMatrix& responseMatrix_);
     const SparseMatrix& GetResponse() const;
         
-    void SetTransformationObs(const ObsSet&);
+    void   SetTransformationObs(const ObsSet&);
     ObsSet GetTransformationObs() const;
 
-    void SetDistributionObs(const ObsSet&);
+    void   SetDistributionObs(const ObsSet&);
     ObsSet GetDistributionObs() const;
+
+    const AxisCollection& GetAxes() const;
+    void  SetAxes(const AxisCollection& axes_);
 
     virtual void Construct() = 0;
 
  protected:
-    SparseMatrix fResponse;
+    SparseMatrix   fResponse;
+    AxisCollection fAxes; // The full bin definition of the distributions
     ObsSet fTransObs;     // the observables to tranform
     ObsSet fDistObs;      // the full set of observables for the distriubtion to act on
     // obs of the pdfs it will act on, needs to be at least the lenth of the 

@@ -15,32 +15,25 @@ class BinnedPhysDist;
 
 class SparseMatrix{
  public:
-    SparseMatrix() :fNBins(0), fNDims(0) {}
-    ~SparseMatrix() {}
-
+    SparseMatrix() : fNRows(0), fNCols(0) {}
+    SparseMatrix(int cols_, int rows_);
     std::vector<double> operator() (const std::vector<double>& input_) const;
-
-    void   SetResponse(const arma::sp_mat& response_);
 
     void   SetComponent(size_t column_, size_t row_, double val_);
     double GetComponent(size_t column_, size_t row_) const;
 
-    void SetComponents(const std::vector<unsigned>& rowIndices_,
-                       const std::vector<unsigned>& colIndices_,
+    void   SetComponents(const std::vector<unsigned>& rowIndices_,
+                         const std::vector<unsigned>& colIndices_,
                        const std::vector<double>& values_);
 
     SparseMatrix operator*=(const SparseMatrix& other_);
-
-    const AxisCollection& GetAxes() const;
-    void   SetAxes(const AxisCollection& axes_);
-    size_t GetNBins() const {return fNBins;}
-    size_t GetNDims() const {return fNDims;}
+    size_t GetNCols() const {return fNRows;}
+    size_t GetNRows() const {return fNCols;}
     void   SetZeros();
 
  private:
-    AxisCollection fAxes;
     arma::sp_mat fArmaMat;
-    unsigned fNBins;
-    unsigned fNDims;
+    int fNCols;
+    int fNRows;
 };
 #endif

@@ -4,16 +4,6 @@
 #include <Exceptions.h>
 
 void 
-Scale::SetAxes(const AxisCollection& axes_){
-    fResponse.SetAxes(axes_);
-}
-
-const AxisCollection& 
-Scale::GetAxes() const{
-    return fResponse.GetAxes();
-}
-
-void 
 Scale::Construct(){
     if (fScaleFactor <= 0)
         throw ValueError("Scale factor must be >0 !");
@@ -21,7 +11,7 @@ Scale::Construct(){
     if(fTransObs.GetNObservables() != 1)
         throw RepresentationError("Scale systematic must have a 1D representation!");
 
-    const AxisCollection& axes       = fResponse.GetAxes(); 
+    const AxisCollection& axes       = fAxes;
     // the axis to scale
     const size_t  scaleAxisDataIndex = fTransObs.GetIndex(0);
     const BinAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);

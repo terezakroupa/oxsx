@@ -18,7 +18,6 @@ class Convolution : public Systematic{
     ~Convolution();
     void SetFunction(PDF* function_);
     void SetConditionalPDF(ConditionalPDF* function_);
-    void SetAxes(const AxisCollection& axes_);
     void Construct();    
 
     // Make this fittable, by delegating to the underlying function
@@ -34,7 +33,7 @@ class Convolution : public Systematic{
     bool                     fHasAxes;
     bool                     fCachedCompatibleBins;
 
-    AxisCollection fSysAxes;
+    AxisCollection     fSubMapAxes;
     void  CacheCompatibleBins();
     std::vector<std::vector<size_t> > fCompatibleBins;
     // the systematic subMap bin for each global bin of pdf
@@ -42,4 +41,3 @@ class Convolution : public Systematic{
     
 };
 #endif
-

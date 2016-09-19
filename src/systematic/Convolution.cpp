@@ -20,12 +20,6 @@ Convolution::~Convolution(){
 }
 
 void 
-Convolution::SetAxes(const AxisCollection& axes_){
-    fResponse.SetAxes(axes_);
-    fHasAxes = true;
-}
-
-void 
 Convolution::Construct(){
     if (!fDist || !fHasAxes)
         throw LogicError("Convolution::Construct() : Tried to construct convolution without axes or function/distribution, or both!!");
@@ -33,27 +27,26 @@ Convolution::Construct(){
     if(!fCachedCompatibleBins)
         CacheCompatibleBins();
 
-    size_t nBins = fResponse.GetNBins();
-    size_t nDims = fResponse.GetAxes().GetNDimensions();
-    const AxisCollection& axes = fResponse.GetAxes();
+    size_t nBins = fAxes.GetNBins();
+    size_t nDims = fAxes.GetNDimensions();
+    const AxisCollection& axes = fAxes;
     std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
 
     // Work out the transition probabilitites within this sub set of the bins
-    std::vector<double> binCentres(fSysAxes.GetNDimensions());
-    std::vector<double> lowEdges(fSysAxes.GetNDimensions());
-    std::vector<double> highEdges(fSysAxes.GetNDimensions());
+    std::vector<double> binCentres(fSubMapAxes.GetNDimensions());
+    std::vector<double> lowEdges(fSubMapAxes.GetNDimensions());
+    std::vector<double> highEdges(fSubMapAxes.GetNDimensions());
 
-    DenseMatrix subMap;
-    subMap.SetAxes(fSysAxes);
+    DenseMatrix subMap(fSubMapAxes.GetNBins(), fSubMapAxes.GetNBins());
 
-    for (size_t origBin = 0; origBin < fSysAxes.GetNBins(); origBin++){
+    for (size_t origBin = 0; origBin < fSubMapAxes.GetNBins(); origBin++){
         // get the centre of the bin. Need to offset by this for a convolution
-        fSysAxes.GetBinCentres(origBin, binCentres);
+        fSubMapAxes.GetBinCentres(origBin, binCentres);
 
         // loop over the bins it can be smeared into 
-        for(size_t destBin = 0; destBin < fSysAxes.GetNBins(); destBin++){
-            fSysAxes.GetBinLowEdges(destBin, lowEdges);
-            fSysAxes.GetBinHighEdges(destBin, highEdges);
+        for(size_t destBin = 0; destBin < fSubMapAxes.GetNBins(); destBin++){
+            fSubMapAxes.GetBinLowEdges(destBin, lowEdges);
+            fSubMapAxes.GetBinHighEdges(destBin, highEdges);
             
             subMap.SetComponent(destBin, origBin, fDist -> Integral(lowEdges, highEdges, binCentres));
         }        
@@ -85,11 +78,11 @@ Convolution::Construct(){
 
 void
 Convolution::CacheCompatibleBins(){
-    fCompatibleBins.resize(fResponse.GetNBins());
+    fCompatibleBins.resize(fAxes.GetNBins());
     // only need to look at one side of the matrix, its symmetric
-    for(size_t i = 0; i < fResponse.GetNBins(); i++){
+    for(size_t i = 0; i < fAxes.GetNBins(); i++){
         fCompatibleBins.at(i).push_back(i); // always true
-        for(size_t j = i+1;  j < fResponse.GetNBins(); j++){
+        for(size_t j = i+1;  j < fAxes.GetNBins(); j++){
             if(BinsCompatible(i , j)){
                 fCompatibleBins.at(i).push_back(j);
                 fCompatibleBins.at(j).push_back(i);
@@ -98,21 +91,21 @@ Convolution::CacheCompatibleBins(){
     }
 
     std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
-    const AxisCollection& axes = fResponse.GetAxes();
+    const AxisCollection& axes = fAxes;
 
     //  get the axes that this systematic will act on
-    fSysAxes = AxisCollection();
+    fSubMapAxes = AxisCollection();
     for(size_t i = 0; i < relativeIndices.size(); i++)
-      fSysAxes.AddAxis(axes.GetAxis(relativeIndices.at(i)));
+      fSubMapAxes.AddAxis(axes.GetAxis(relativeIndices.at(i)));
     
     // cache the equivilent index in the binning system of the systematic
-    fSysBins.resize(fResponse.GetNBins());
+    fSysBins.resize(fAxes.GetNBins());
     std::vector<size_t> sysIndices(relativeIndices.size(), 0);
     for(size_t i = 0; i < axes.GetNBins(); i++){
       for(size_t dim = 0; dim < relativeIndices.size(); dim++)
           sysIndices[dim] = axes.UnflattenIndex(i, relativeIndices.at(dim));
 
-      fSysBins[i] = fSysAxes.FlattenIndices(sysIndices);
+      fSysBins[i] = fSubMapAxes.FlattenIndices(sysIndices);
     }
     fCachedCompatibleBins = true;
 }

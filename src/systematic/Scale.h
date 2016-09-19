@@ -7,9 +7,6 @@
 class Scale : public Systematic{
  public:
     Scale() : fScaleFactor(1) {}
-    void  SetAxes(const AxisCollection&);
-    const AxisCollection& GetAxes() const;
-    
     void   SetScaleFactor(double);
     double GetScaleFactor() const;
     

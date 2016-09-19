@@ -48,8 +48,8 @@ Systematic::GetDistributionObs() const {
 
 bool
 Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
-    std::vector<size_t> bin1Indices = fResponse.GetAxes().UnpackIndices(bin1_);
-    std::vector<size_t> bin2Indices = fResponse.GetAxes().UnpackIndices(bin2_);
+    std::vector<size_t> bin1Indices = fAxes.UnpackIndices(bin1_);
+    std::vector<size_t> bin2Indices = fAxes.UnpackIndices(bin2_);
 
     // Where are the indices the systematic cares about in the pdfs index scheme
     std::vector<size_t> relativeIndices = fTransObs.GetRelativeIndices(fDistObs);
@@ -70,4 +70,15 @@ Systematic::BinsCompatible(size_t bin1_, size_t bin2_) const{
 bool
 Systematic::VectorContains(const std::vector<size_t>& vec_,  size_t val_) const{
     return std::find(vec_.begin(), vec_.end(), val_) != vec_.end();
+}
+
+
+const AxisCollection&
+Systematic::GetAxes() const{
+    return fAxes;
+}
+
+void
+Systematic::SetAxes(const AxisCollection& axes_){
+    fAxes = axes_;
 }
