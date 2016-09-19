@@ -56,9 +56,11 @@ BinnedEDManager::ApplySystematics(const SystematicManager& sysMan_){
     
     if(!sysMan_.GetSystematics().size())
         return;
-    
-    for(size_t j = 0; j < fOriginalPdfs.size(); j++)
+
+    for(size_t j = 0; j < fOriginalPdfs.size(); j++){
+        fWorkingPdfs[j] = fOriginalPdfs.at(j);
         fWorkingPdfs[j].SetBinContents(sysMan_.GetTotalResponse().operator()(fOriginalPdfs.at(j).GetBinContents()));
+    }
 }
 
 const BinnedED&
