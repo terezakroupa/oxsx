@@ -1,7 +1,8 @@
 #include <Convolution.h>
 #include <PDF.h>
-#include <Exceptions.h>
 #include <JumpPDF.h>
+#include <DenseMatrix.h>
+#include <Exceptions.h>
 #include <string>
 void 
 Convolution::SetFunction(PDF* function_){
@@ -42,7 +43,7 @@ Convolution::Construct(){
     std::vector<double> lowEdges(fSysAxes.GetNDimensions());
     std::vector<double> highEdges(fSysAxes.GetNDimensions());
 
-    SparseMatrix subMap;
+    DenseMatrix subMap;
     subMap.SetAxes(fSysAxes);
 
     for (size_t origBin = 0; origBin < fSysAxes.GetNBins(); origBin++){
