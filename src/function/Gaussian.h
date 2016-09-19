@@ -19,7 +19,7 @@ class Gaussian : public PDF{
     double Integral(const std::vector<double>& mins_, 
                     const std::vector<double>& maxs_) const;
     double Integral() const {return 1;} // normalised by definition
-	std::vector<double> Sample() const;
+    std::vector<double> Sample() const;
 
 
     // Getters/Setters

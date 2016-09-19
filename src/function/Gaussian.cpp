@@ -161,7 +161,7 @@ std::vector<double>
 Gaussian::Sample() const{
   std::vector<double> sample(GetNDims(), 0);
   for(size_t i = 0; i < GetNDims(); i++){
-	sample[i] = Rand::Gaus(fMeans.at(i), fStdDevs.at(i));
+    sample[i] = Rand::Gaus(fMeans.at(i), fStdDevs.at(i));
   }
   return sample;
 }
