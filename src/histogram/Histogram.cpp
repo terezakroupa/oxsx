@@ -122,7 +122,7 @@ Histogram::GetBinContents() const{
 void 
 Histogram::SetBinContents(const std::vector<double>& data_){
     if (data_.size() != fNBins)
-        throw DimensionError("Histogram::SetBinConents", fNDims, 
+        throw DimensionError("Histogram::SetBinContents", fNBins, 
                              data_.size());
 
     fBinContents = data_;
