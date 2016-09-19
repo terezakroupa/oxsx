@@ -6,9 +6,9 @@
 double
 ChiSquare::Evaluate(){
     // the first time this is called, bin data into a pdf
-    if (!fCalculatedDataPdf){
+    if (!fCalculatedDataDist){
         BinData();
-        fCalculatedDataPdf = true;
+        fCalculatedDataDist = true;
     }
     
     // Construct
@@ -19,11 +19,11 @@ ChiSquare::Evaluate(){
     
     // Now calculate the ChiSquared
     double chiSquare = 0;
-    std::vector<double> binCentre(fDataPdf.GetNDims());
-    for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
-        fDataPdf.GetAxes().GetBinCentres(i, binCentre);
+    std::vector<double> binCentre(fDataDist.GetNDims());
+    for(size_t i = 0; i < fDataDist.GetNBins(); i++){
+        fDataDist.GetAxes().GetBinCentres(i, binCentre);
         double expected = fPdfManager.Probability(binCentre);
-        double deviation = fDataPdf.GetBinContent(i) - expected;
+        double deviation = fDataDist.GetBinContent(i) - expected;
         chiSquare += deviation * deviation / expected; // poisson errors 
     }
 
@@ -34,14 +34,14 @@ ChiSquare::Evaluate(){
 void
 ChiSquare::BinData(){
 
-    BinnedPhysDist dataPdf(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
-    dataPdf.Empty();
+    BinnedED dataDist(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
+    dataDist.Empty();
     
     for(size_t i = 0; i < fDataSet -> GetNEntries(); i++){
-        dataPdf.Fill(fDataSet -> GetEntry(i));
+        dataDist.Fill(fDataSet -> GetEntry(i));
     }
     
-    fDataPdf = dataPdf;
+    fDataDist = dataDist;
 }
 
 

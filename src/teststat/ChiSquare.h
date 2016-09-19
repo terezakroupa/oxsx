@@ -2,11 +2,10 @@
 /* A routine to calculate a binned chi squared test.                */
 /* NOTE: this can only make sense if all pdfs have the same binning */
 /********************************************************************/
-
 #ifndef __OXSX_CHI_SQUARED__
 #define __OXSX_CHI_SQUARED__
 #include <SystematicManager.h>
-#include <BinnedPhysDistMan.h>
+#include <BinnedEDManager.h>
 #include <TestStatistic.h>
 #include <ComponentManager.h>
 
@@ -14,7 +13,7 @@
 class DataSet;
 class ChiSquare : public TestStatistic{
  public:
-    ChiSquare() : fCalculatedDataPdf(false) {}
+    ChiSquare() : fCalculatedDataDist(false) {}
 
     void SetDataSet(DataSet* d);
     DataSet* GetDataSet();
@@ -28,12 +27,12 @@ class ChiSquare : public TestStatistic{
     std::vector<std::string> GetParameterNames() const;
     
  private:
-    bool              fCalculatedDataPdf;
-    BinnedPhysDist    fDataPdf;
+    bool              fCalculatedDataDist;
+    BinnedED          fDataDist;
     void              BinData();
 
     DataSet*          fDataSet;
-    BinnedPhysDistMan fPdfManager;
+    BinnedEDManager   fPdfManager;
     SystematicManager fSystematicManager;
     ComponentManager  fComponentManager;
 };

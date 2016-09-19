@@ -11,7 +11,7 @@
 #ifndef __OXSX_SYSTEMATIC__
 #define __OXSX_SYSTEMATIC__
 #include <Matrix.h>
-#include <BinnedPhysDist.h>
+#include <BinnedED.h>
 #include <FitComponent.h>
 #include <DataRepresentation.h>
 #include <vector>
@@ -20,8 +20,8 @@ class Systematic : public FitComponent{
  public:
     virtual ~Systematic()  {}
 
-    BinnedPhysDist 
-    operator()(const BinnedPhysDist& pdf_) const;
+    BinnedED 
+    operator()(const BinnedED& pdf_) const;
         
     void 
     SetResponse(const Matrix& responseMatrix_);

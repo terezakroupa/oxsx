@@ -5,20 +5,20 @@
 /* in the sense that they have a data representation and examine events                           */
 /**************************************************************************************************/
 
-#ifndef __OXSX_BINNEDPHYSDIST__
-#define __OXSX_BINNEDPHYSDIST__
+#ifndef __OXSX_BINNED_ED__
+#define __OXSX_BINNED_ED__
 #include <Histogram.h>
-#include <PhysDist.h>
+#include <EventDistribution.h>
 #include <vector>
 #include <map>
 #include <string>
 
-class BinnedPhysDist : public PhysDist{
+class BinnedED : public EventDistribution{
  public:
-    BinnedPhysDist() {}
-    BinnedPhysDist(const AxisCollection& axes_);
-    BinnedPhysDist(const Histogram& histo_);
-    PhysDist*   Clone() const; 
+    BinnedED() {}
+    BinnedED(const AxisCollection& axes_);
+    BinnedED(const Histogram& histo_);
+    EventDistribution*   Clone() const; 
 
     double Probability(const EventData&) const;
     double Probability(const std::vector<double>&) const;
@@ -56,9 +56,9 @@ class BinnedPhysDist : public PhysDist{
     void     Empty();
     unsigned GetNDims() const;
         
-    BinnedPhysDist Marginalise(const std::vector<size_t>& indices_) const;
-    BinnedPhysDist Marginalise(size_t index_) const;
-	std::map<std::string, BinnedPhysDist> GetAllProjections() const;
+    BinnedED Marginalise(const std::vector<size_t>& indices_) const;
+    BinnedED Marginalise(size_t index_) const;
+	std::map<std::string, BinnedED> GetAllProjections() const;
 	
     void SetDataRep(const DataRepresentation&);
     DataRepresentation GetDataRep() const;

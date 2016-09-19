@@ -1,22 +1,23 @@
-#include <BinnedPhysDistMan.h>
+#include <BinnedEDManager.h>
 #include <SystematicManager.h>
-#include <BinnedPhysDist.h>
+#include <BinnedEDShrinker.h>
+#include <BinnedED.h>
 #include <PdfConverter.h>
 #include <Exceptions.h>
 #include <sstream>
 
 unsigned 
-BinnedPhysDistMan::GetNPdfs() const{
+BinnedEDManager::GetNPdfs() const{
     return fOriginalPdfs.size();
 }
 
 size_t
-BinnedPhysDistMan::GetNDims() const{
+BinnedEDManager::GetNDims() const{
     return fNDims;
 }
 
 double 
-BinnedPhysDistMan::Probability(const EventData& data_) const{
+BinnedEDManager::Probability(const EventData& data_) const{
     double sum = 0;
 
     for(size_t i = 0; i < fWorkingPdfs.size(); i++){
@@ -27,7 +28,7 @@ BinnedPhysDistMan::Probability(const EventData& data_) const{
 }
 
 double
-BinnedPhysDistMan::BinProbability(size_t bin_) const{
+BinnedEDManager::BinProbability(size_t bin_) const{
     double sum = 0;
     try{
         for(size_t i = 0; i < fWorkingPdfs.size(); i++){
@@ -36,21 +37,21 @@ BinnedPhysDistMan::BinProbability(size_t bin_) const{
         }
     }
     catch(const std::out_of_range&){
-        throw LogicError("BinnedPhysDistMan:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
+        throw LogicError("BinnedEDManager:: Normalisation vector doesn't match pdf vector - are the normalisations set?");
     }
     return sum;
 }
 
 
 void
-BinnedPhysDistMan::SetNormalisations(const std::vector<double>& normalisations_){
+BinnedEDManager::SetNormalisations(const std::vector<double>& normalisations_){
     if (normalisations_.size() != fOriginalPdfs.size())
-        throw LogicError("BinnedPhysDistMan: number of norms doesn't match #pdfs");
+        throw LogicError("BinnedEDManager: number of norms doesn't match #pdfs");
     fNormalisations = normalisations_;
 }
 
 void
-BinnedPhysDistMan::ApplySystematics(const SystematicManager& sysMan_){
+BinnedEDManager::ApplySystematics(const SystematicManager& sysMan_){
     // If there are no systematics dont do anything
     //  ( working pdfs = original pdfs from initialisation)
     
@@ -61,20 +62,20 @@ BinnedPhysDistMan::ApplySystematics(const SystematicManager& sysMan_){
         fWorkingPdfs[j].SetBinContents(sysMan_.GetTotalResponse().operator()(fOriginalPdfs.at(j).GetBinContents()));
 }
 
-const BinnedPhysDist&
-BinnedPhysDistMan::GetOriginalPdf(size_t index_) const{
+const BinnedED&
+BinnedEDManager::GetOriginalPdf(size_t index_) const{
     return fOriginalPdfs.at(index_);
 }
 
 void
-BinnedPhysDistMan::AddPdf(const BinnedPhysDist& pdf_){
+BinnedEDManager::AddPdf(const BinnedED& pdf_){
     fOriginalPdfs.push_back(pdf_);
     fWorkingPdfs.push_back(pdf_);
     fNPdfs++;
 }
 
 void 
-BinnedPhysDistMan::AddPdfs(const std::vector<BinnedPhysDist>& pdfs_){
+BinnedEDManager::AddPdfs(const std::vector<BinnedED>& pdfs_){
     for(size_t i = 0; i < pdfs_.size(); i++){
         AddPdf(pdfs_.at(i));
     }
@@ -82,12 +83,12 @@ BinnedPhysDistMan::AddPdfs(const std::vector<BinnedPhysDist>& pdfs_){
 }
 
 const std::vector<double>&
-BinnedPhysDistMan::GetNormalisations() const{
+BinnedEDManager::GetNormalisations() const{
     return fNormalisations;
 }
 
 void
-BinnedPhysDistMan::ApplyShrink(const BinnedPhysDistShrink& shrinker_){
+BinnedEDManager::ApplyShrink(const BinnedEDShrinker& shrinker_){
     if (!shrinker_.GetBuffers().size())
         return;
         
@@ -96,7 +97,7 @@ BinnedPhysDistMan::ApplyShrink(const BinnedPhysDistShrink& shrinker_){
         return;
 
     for (size_t i = 0; i < fWorkingPdfs.size(); i++){
-        fWorkingPdfs[i] = shrinker_.ShrinkBinnedPhysDist(fWorkingPdfs.at(i));
+        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
         fWorkingPdfs[i].Normalise();
     }
     
@@ -108,7 +109,7 @@ BinnedPhysDistMan::ApplyShrink(const BinnedPhysDistShrink& shrinker_){
 ////////////////////////////////
 
 void
-BinnedPhysDistMan::MakeFittable(){
+BinnedEDManager::MakeFittable(){
     fParameterManager.Clear();
     if(fNormalisations.size() < fNPdfs)
         fNormalisations.resize(fNPdfs, 0);
@@ -116,27 +117,27 @@ BinnedPhysDistMan::MakeFittable(){
 }
 
 std::vector<std::string>
-BinnedPhysDistMan::GetParameterNames() const {
+BinnedEDManager::GetParameterNames() const {
     return fParameterManager.GetParameterNames();
 }
 
 std::vector<double>
-BinnedPhysDistMan::GetParameters() const{
+BinnedEDManager::GetParameters() const{
     return fParameterManager.GetParameters();
 }
 
 size_t
-BinnedPhysDistMan::GetParameterCount() const{
+BinnedEDManager::GetParameterCount() const{
     return fParameterManager.GetParameterCount();
 }
 
 void
-BinnedPhysDistMan::SetParameters(const std::vector<double>& params_){
+BinnedEDManager::SetParameters(const std::vector<double>& params_){
     try{
         fParameterManager.SetParameters(params_);
     }
     catch(const ParameterCountError& e_){
-        throw ParameterCountError("BinnedPhysDistMan:: " + 
+        throw ParameterCountError("BinnedEDManager:: " + 
                                   std::string(e_.what())
                                   );
     }

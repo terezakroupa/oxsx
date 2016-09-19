@@ -1,19 +1,19 @@
-#ifndef __OXSX_PHYSDISTMAN__
-#define __OXSX_PHYSDISTMAN__
+#ifndef __OXSX_ED_MANAGER__
+#define __OXSX_ED_MANAGER__
 #include <FitComponent.h>
 #include <ParameterManager.h>
 #include <vector>
 
-class PhysDist;
+class EventDistribution;
 class EventData;
 
-class PhysDistMan : public FitComponent{
+class EDManager : public FitComponent{
  public:
-    PhysDistMan(): fNDists(0), fNDims(0) {}
-    ~PhysDistMan(); // free pdf copies
+    EDManager(): fNDists(0), fNDims(0) {}
+    ~EDManager(); // free pdf copies
 
-    void  AddPhysDist(PhysDist*); // take a copy
-    void  AddPhysDists(const std::vector<PhysDist*>& pdfs_);
+    void  AddEventDistribution(EventDistribution*); // take a copy
+    void  AddEventDistributions(const std::vector<EventDistribution*>& pdfs_);
 
     const std::vector<double>& GetNormalisations() const;
     void  SetNormalisations(const std::vector<double>&);
@@ -34,7 +34,7 @@ class PhysDistMan : public FitComponent{
     ParameterManager       fParameterManager;
     size_t fNDists;
     size_t fNDims;
-    std::vector<PhysDist*>   fDists;
+    std::vector<EventDistribution*>   fDists;
     std::vector<double> fNormalisations;
 };
 #endif

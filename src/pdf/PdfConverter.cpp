@@ -1,21 +1,20 @@
 #include <PdfConverter.h>
-#include <BinnedPhysDist.h>
 #include <PDF.h>
 #include <AxisCollection.h>
-#include <vector>
 #include <Exceptions.h>
-#include <iostream>
-#include <algorithm>
 #include <Histogram.h>
+#include <BinnedED.h>
 #include <TH1D.h>
 #include <TH2D.h>
-
-BinnedPhysDist
-PdfConverter::ToBinnedPhysDist(const PDF& analytic_, const AxisCollection& axes_){
+#include <vector>
+#include <iostream>
+#include <algorithm>
+Histogram
+PdfConverter::ToHist(const PDF& analytic_, const AxisCollection& axes_){
     if (analytic_.GetNDims() != axes_.GetNDimensions())
         throw DimensionError("PdfConverter::Dimensionality of Pdf doesn't match requested axes!");
 
-    BinnedPhysDist binnedPdf(axes_);
+    Histogram hist(axes_);
     // Loop over bins
     std::vector<double> lows(axes_.GetNDimensions());
     std::vector<double> highs(axes_.GetNDimensions());
@@ -23,14 +22,14 @@ PdfConverter::ToBinnedPhysDist(const PDF& analytic_, const AxisCollection& axes_
         axes_.GetBinLowEdges(bin, lows);
         axes_.GetBinHighEdges(bin, highs);
 
-        binnedPdf.AddBinContent(bin, analytic_.Integral(lows, highs));
+        hist.AddBinContent(bin, analytic_.Integral(lows, highs));
     }
     
-    return binnedPdf;
+    return hist;
 }
 
 TH1D
-PdfConverter::ToTH1D(const BinnedPhysDist& pdf_, const bool widthCorrect_){
+PdfConverter::ToTH1D(const BinnedED& pdf_, const bool widthCorrect_){
     if(pdf_.GetNDims() != 1)
         throw DimensionError("Only a 1D pdf can be represented by a TH1D");
  
@@ -109,7 +108,7 @@ PdfConverter::ToTH2D(const Histogram& histo_, const bool widthCorrect_){
 }
 
 TH2D
-PdfConverter::ToTH2D(const BinnedPhysDist& pdf_, const bool widthCorrect_){
+PdfConverter::ToTH2D(const BinnedED& pdf_, const bool widthCorrect_){
     if(pdf_.GetNDims() != 2)
 		throw DimensionError("Only a 2D pdf can be represented by a TH2D");
 	

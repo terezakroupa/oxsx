@@ -1,27 +1,27 @@
-#include <CompositePhysDist.h>
+#include <CompositeED.h>
 #include <EventData.h>
 #include <Exceptions.h>
 #include <iostream>
 
-CompositePhysDist::CompositePhysDist(const PhysDist* p1_, const PhysDist* p2_) {
+CompositeED::CompositeED(const EventDistribution* p1_, const EventDistribution* p2_) {
     fDistPtrs.push_back(p1_ -> Clone());
     fDistPtrs.push_back(p2_ -> Clone());  
 
 }
 
-CompositePhysDist::CompositePhysDist(const std::vector<PhysDist*>& pdfs_){
+CompositeED::CompositeED(const std::vector<EventDistribution*>& pdfs_){
     // if one of the pdfs is composite itself the copy will happen recursively all the way down
     for(size_t i = 0; i < pdfs_.size(); i++){
         fDistPtrs.push_back(pdfs_[i] -> Clone());
     }
 }
-CompositePhysDist::~CompositePhysDist() {
+CompositeED::~CompositeED() {
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         delete fDistPtrs[i];
 }
 
 double 
-CompositePhysDist::Probability(const EventData& data_) const{
+CompositeED::Probability(const EventData& data_) const{
     double prob = 1;
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         prob *= fDistPtrs[i] -> Probability(data_);
@@ -29,34 +29,34 @@ CompositePhysDist::Probability(const EventData& data_) const{
 }
 
 void 
-CompositePhysDist::Normalise(){
+CompositeED::Normalise(){
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         fDistPtrs[i] -> Normalise();
 }
 
 double 
-CompositePhysDist::Integral() const{
+CompositeED::Integral() const{
     double integral = 1;
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         integral *= fDistPtrs[i] -> Integral();
     return integral;
 }
 
-PhysDist* 
-CompositePhysDist::Clone() const {
-    PhysDist *cp = new CompositePhysDist(fDistPtrs);
-    return static_cast<PhysDist*>(cp);
+EventDistribution* 
+CompositeED::Clone() const {
+    EventDistribution *cp = new CompositeED(fDistPtrs);
+    return static_cast<EventDistribution*>(cp);
 }
 
 
-CompositePhysDist
-operator * (const PhysDist& pdf1_, const PhysDist& pdf2_){
-    return CompositePhysDist(&pdf1_, &pdf2_);
+CompositeED
+operator * (const EventDistribution& pdf1_, const EventDistribution& pdf2_){
+    return CompositeED(&pdf1_, &pdf2_);
 }
 
 
 unsigned
-CompositePhysDist::GetNDims() const{
+CompositeED::GetNDims() const{
     unsigned nDims = 0;
     for(size_t i = 0; i < fDistPtrs.size(); i++)
         nDims += fDistPtrs.at(i)->GetNDims();

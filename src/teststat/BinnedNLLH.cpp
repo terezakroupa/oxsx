@@ -7,14 +7,14 @@
 
 double 
 BinnedNLLH::Evaluate(){
-    if(!fDataSet && !fCalculatedDataPdf) 
-        throw LogicError("BinnedNNLH function called with no data set and no DataPdf! set one of these first");
+    if(!fDataSet && !fCalculatedDataDist) 
+        throw LogicError("BinnedNNLH function called with no data set and no DataDist! set one of these first");
     
-    if (!fCalculatedDataPdf)
+    if (!fCalculatedDataDist)
         BinData();
     
     if(!fAlreadyShrunk){
-        fDataPdf = fPdfShrinker.ShrinkPdf(fDataPdf);
+        fDataDist = fPdfShrinker.ShrinkPdf(fDataDist);
         fAlreadyShrunk = true;
     }
 
@@ -29,11 +29,11 @@ BinnedNLLH::Evaluate(){
 
     // loop over bins and calculate the likelihood
     double nLogLH = 0;
-    for(size_t i = 0; i < fDataPdf.GetNBins(); i++){
+    for(size_t i = 0; i < fDataDist.GetNBins(); i++){
         double prob = fPdfManager.BinProbability(i);
         if(!prob)
             throw std::runtime_error("BinnedNLLH::Encountered zero probability bin!");
-        nLogLH -= fDataPdf.GetBinContent(i) *  log(prob);        
+        nLogLH -= fDataDist.GetBinContent(i) *  log(prob);        
     }
 
 
@@ -52,15 +52,15 @@ BinnedNLLH::Evaluate(){
 
 void
 BinnedNLLH::BinData(){
-    fDataPdf =  BinnedPhysDist(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
-    fDataPdf.Empty();
-    PdfFiller::FillPdf(fDataPdf, *fDataSet, fCuts);
-    fCalculatedDataPdf = true;
+    fDataDist =  BinnedED(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
+    fDataDist.Empty();
+    PdfFiller::FillPdf(fDataDist, *fDataSet, fCuts);
+    fCalculatedDataDist = true;
     
 }
 
 void
-BinnedNLLH::SetPdfManager(const BinnedPhysDistMan& man_){
+BinnedNLLH::SetPdfManager(const BinnedEDManager& man_){
     fPdfManager = man_;
 }
 
@@ -70,7 +70,7 @@ BinnedNLLH::SetSystematicManager(const SystematicManager& man_){
 }
 
 void
-BinnedNLLH::AddPdf(const BinnedPhysDist& pdf_){
+BinnedNLLH::AddPdf(const BinnedED& pdf_){
     fPdfManager.AddPdf(pdf_);
 }
 
@@ -82,7 +82,7 @@ BinnedNLLH::AddSystematic(Systematic* sys_){
 void
 BinnedNLLH::SetDataSet(DataSet* dataSet_){
     fDataSet = dataSet_;
-    fCalculatedDataPdf = false;
+    fCalculatedDataDist = false;
 }
 
 DataSet*
@@ -91,14 +91,14 @@ BinnedNLLH::GetDataSet(){
 }
 
 void
-BinnedNLLH::SetDataPdf(const BinnedPhysDist& binnedPdf_){
-    fDataPdf = binnedPdf_;
-    fCalculatedDataPdf = true;
+BinnedNLLH::SetDataDist(const BinnedED& binnedPdf_){
+    fDataDist = binnedPdf_;
+    fCalculatedDataDist = true;
 }
 
-BinnedPhysDist
-BinnedNLLH::GetDataPdf() const{
-    return fDataPdf;
+BinnedED
+BinnedNLLH::GetDataDist() const{
+    return fDataDist;
 }
 
 
@@ -123,7 +123,7 @@ BinnedNLLH::GetBufferAsOverflow() const{
 }
 
 void
-BinnedNLLH::AddPdfs(const std::vector<BinnedPhysDist>& pdfs_){
+BinnedNLLH::AddPdfs(const std::vector<BinnedED>& pdfs_){
   for(size_t i = 0; i < pdfs_.size(); i++)
     AddPdf(pdfs_.at(i));
 }

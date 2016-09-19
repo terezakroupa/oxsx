@@ -1,86 +1,86 @@
-#include <AnalyticPhysDist.h>
+#include <AnalyticED.h>
 #include <Exceptions.h>
-#include <PhysDist.h>
+#include <EventDistribution.h>
 #include <PDF.h>
 
-AnalyticPhysDist::AnalyticPhysDist(PDF* f_){
+AnalyticED::AnalyticED(PDF* f_){
     fFunction = dynamic_cast<PDF*>(f_->Clone());
     fNorm     = 1;
 }
 
-AnalyticPhysDist::~AnalyticPhysDist(){
+AnalyticED::~AnalyticED(){
     delete fFunction;
 }
 
-AnalyticPhysDist::AnalyticPhysDist(const AnalyticPhysDist& other_){
+AnalyticED::AnalyticED(const AnalyticED& other_){
     fNorm  = other_.fNorm;
     fDataRep = other_.fDataRep;
     fFunction = dynamic_cast<PDF*>(other_.fFunction->Clone());
 }
 
-PhysDist*
-AnalyticPhysDist::Clone() const{
-    return static_cast<PhysDist*>(new AnalyticPhysDist(*this));
+EventDistribution*
+AnalyticED::Clone() const{
+    return static_cast<EventDistribution*>(new AnalyticED(*this));
 }
 
 double
-AnalyticPhysDist::Probability(const std::vector<double>& vals_) const{    
+AnalyticED::Probability(const std::vector<double>& vals_) const{    
     try{
         return fFunction->operator()(vals_)/fNorm;
     }
     catch(const DimensionError& e_){
-        throw DimensionError(std::string("AnalyticPhysDist internal function ::") + e_.what());
+        throw DimensionError(std::string("AnalyticED internal function ::") + e_.what());
                              
                              
     }
 }
 
 double
-AnalyticPhysDist::Probability(const EventData& event_) const{
+AnalyticED::Probability(const EventData& event_) const{
     try{
         return Probability(event_.ToRepresentation(fDataRep));
     }
 
     catch(const RepresentationError& e_){
-        throw RepresentationError("AnalyticPhysDist::Probability() failed with  "
+        throw RepresentationError("AnalyticED::Probability() failed with  "
                                   + std::string(e_.what()) + 
                                   " is the rep set correctly?");
     }
 }
 
 double 
-AnalyticPhysDist::Integral() const{
-    return fFunction->Integral();
+AnalyticED::Integral() const{
+    return fNorm;
 }
 
 void
-AnalyticPhysDist::Normalise(){
-    fNorm = Integral();
+AnalyticED::Normalise(){
+    fNorm = 1;
 }
 
 void
-AnalyticPhysDist::SetDataRep(const DataRepresentation& rep_){
+AnalyticED::SetDataRep(const DataRepresentation& rep_){
     fDataRep = rep_;
 }
 
 DataRepresentation
-AnalyticPhysDist::GetDataRep() const {
+AnalyticED::GetDataRep() const {
     return fDataRep;
 }
 
 unsigned
-AnalyticPhysDist::GetNDims() const{
+AnalyticED::GetNDims() const{
     return fFunction->GetNDims();
 }
 
 // Fitting this pdf to data means adjusting the underlying function
 void
-AnalyticPhysDist::MakeFittable(){
+AnalyticED::MakeFittable(){
     fFunction -> MakeFittable();
 }
 
 std::vector<std::string> 
-AnalyticPhysDist::GetParameterNames() const{
+AnalyticED::GetParameterNames() const{
     std::vector<std::string> funcNames = fFunction->GetParameterNames();
     for(size_t i = 0; i < funcNames.size(); i++)
         funcNames[i] = "Analytic Dist: " + funcNames[i];
@@ -88,22 +88,22 @@ AnalyticPhysDist::GetParameterNames() const{
 }
 
 std::vector<double>
-AnalyticPhysDist::GetParameters() const{
+AnalyticED::GetParameters() const{
     return fFunction->GetParameters();
 }
 
 size_t 
-AnalyticPhysDist::GetParameterCount() const{
+AnalyticED::GetParameterCount() const{
     return fFunction->GetParameterCount();
 }
 
 void
-AnalyticPhysDist::SetParameters(const std::vector<double>& params_){
+AnalyticED::SetParameters(const std::vector<double>& params_){
     try{
         fFunction->SetParameters(params_);
     }
     catch(const ParameterCountError& e_){
-        throw ParameterCountError(std::string("AnalyticPhysDist internal function : ") + e_.what());
+        throw ParameterCountError(std::string("AnalyticED internal function : ") + e_.what());
 
     }
 }

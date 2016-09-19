@@ -4,21 +4,21 @@
 /* region. So that systematics can affect the boundary in a smooth physical way                    */
 /***************************************************************************************************/
 
-#ifndef __OXSX_BINNEDPHYSDISTSHRINK__
-#define __OXSX_BINNEDPHYSDISTSHRINK__
-#include <BinnedPhysDist.h>
+#ifndef __OXSX_BINNED_ED_SHRINKER__
+#define __OXSX_BINNED_ED_SHRINKER__
+#include <BinnedED.h>
 #include <map>
 #include <utility> // std::pair
 
 
-class BinnedPhysDistShrink{
+class BinnedEDShrinker{
  public:
-    BinnedPhysDistShrink();
-    ~BinnedPhysDistShrink(){}
+    BinnedEDShrinker();
+    ~BinnedEDShrinker(){}
 
     BinAxis ShrinkAxis(const BinAxis&, const unsigned lowerBuff_, 
-                       const unsigned upperBuff_);    
-    BinnedPhysDist ShrinkPdf(const BinnedPhysDist& pdf_) const;
+                       const unsigned upperBuff_) const;
+    BinnedED ShrinkPdf(const BinnedED& pdf_) const;
     
     void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
     std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;
@@ -31,6 +31,6 @@ class BinnedPhysDistShrink{
  private:
     // Pairs of lower/upper buffer sizes in number of bins, keyed by diminension to shrink
     std::map<size_t, std::pair<unsigned, unsigned> > fBuffers; 
-    bool fUsingOverflows; // true at initialisation
+    bool fUsingOverflows; // false at initialisation
 };
 #endif

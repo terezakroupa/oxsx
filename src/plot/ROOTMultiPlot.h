@@ -10,12 +10,12 @@
 #include <string>
 #include <vector>
 
-class BinnedPhysDist;
+class BinnedED;
 class ROOTMultiPlot{
  public:
  ROOTMultiPlot() : fLegend(TLegend(0.7, 0.7, 0.9, 0.9)), fConstructed(false), fDrawLegend(true), fStacked(false){}
 
-  void AddPdf(const BinnedPhysDist& pdf_, const std::string& name_);
+  void AddPdf(const BinnedED& pdf_, const std::string& name_);
   void AddPdf(const TH1D& pdf_, const std::string& name_);
   
   void SaveAs(const std::string& filename_);

@@ -1,20 +1,20 @@
-#include <PhysDistMan.h>
-#include <PhysDist.h>
+#include <EDManager.h>
+#include <EventDistribution.h>
 #include <EventData.h>
 #include <Exceptions.h>
 
-PhysDistMan::~PhysDistMan(){
+EDManager::~EDManager(){
     for(size_t i = 0; i < fDists.size(); i++)
         delete fDists[i];
 }
 
 void 
-PhysDistMan::AddPhysDist(PhysDist * pdf_){
+EDManager::AddEventDistribution(EventDistribution * pdf_){
     if (!fDists.size())
         fNDims = pdf_->GetNDims();
 
     else if(pdf_->GetNDims() != fNDims)
-        throw DimensionError("PhysDistMan::AddPhysDist", fNDims, pdf_->GetNDims(),
+        throw DimensionError("EDManager::AddEventDistribution", fNDims, pdf_->GetNDims(),
                              " dimensions in added pdf");
 
     fDists.push_back(pdf_->Clone());    
@@ -23,13 +23,13 @@ PhysDistMan::AddPhysDist(PhysDist * pdf_){
 }
 
 void
-PhysDistMan::AddPhysDists(const std::vector<PhysDist*>& pdfs_){
+EDManager::AddEventDistributions(const std::vector<EventDistribution*>& pdfs_){
     for(size_t i = 0; i < pdfs_.size(); i++)
-        AddPhysDist(pdfs_.at(i));
+        AddEventDistribution(pdfs_.at(i));
 }
 
 double
-PhysDistMan::Probability(const EventData& event_) const{
+EDManager::Probability(const EventData& event_) const{
     double prob = 0;
     for(size_t i = 0; i < fDists.size(); i++)
         prob += fNormalisations.at(i) * fDists.at(i)->Probability(event_);
@@ -38,31 +38,31 @@ PhysDistMan::Probability(const EventData& event_) const{
 }
 
 const std::vector<double>&
-PhysDistMan::GetNormalisations() const{
+EDManager::GetNormalisations() const{
     return fNormalisations;
 }
 
 void
-PhysDistMan::SetNormalisations(const std::vector<double>& norms_){
+EDManager::SetNormalisations(const std::vector<double>& norms_){
     if (norms_.size() != fNDists)
-        throw DimensionError("PhysDistMan::SetNormalisations", fNDists, 
+        throw DimensionError("EDManager::SetNormalisations", fNDists, 
                              norms_.size());
     fNormalisations = norms_;
 }
 
 size_t 
-PhysDistMan::GetNDims() const{
+EDManager::GetNDims() const{
     return fNDims;
 }
 
 size_t 
-PhysDistMan::GetNDists() const{
+EDManager::GetNDists() const{
     return fNDists;
 }
 
 // Make a fittable component - i.e. rescale pdfs inside to fit
 void
-PhysDistMan::MakeFittable(){
+EDManager::MakeFittable(){
     fParameterManager.Clear();
     fNormalisations.resize(fNDists);
     fParameterManager.AddContainer<std::vector<double> >(fNormalisations, 
@@ -70,25 +70,25 @@ PhysDistMan::MakeFittable(){
 }
 
 std::vector<std::string>
-PhysDistMan::GetParameterNames() const{
+EDManager::GetParameterNames() const{
     return fParameterManager.GetParameterNames();
 }
 std::vector<double>
-PhysDistMan::GetParameters() const{
+EDManager::GetParameters() const{
     return fParameterManager.GetParameters();
 }
 
 size_t 
-PhysDistMan::GetParameterCount() const{
+EDManager::GetParameterCount() const{
     return fParameterManager.GetParameterCount();
 }
 
 void
-PhysDistMan::SetParameters(const std::vector<double>& params_){
+EDManager::SetParameters(const std::vector<double>& params_){
     try{
         fParameterManager.SetParameters(params_);
     }
     catch(const ParameterCountError& e_){
-        throw ParameterCountError(std::string("PhysDistMan:: ") + e_.what());
+        throw ParameterCountError(std::string("EDManager:: ") + e_.what());
     }
 }

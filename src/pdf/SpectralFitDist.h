@@ -1,12 +1,12 @@
 #ifndef __OXSX_SPECTRAL_FIT_PDF__
 #define __OXSX_SPECTRAL_FIT_PDF__
-#include <BinnedPhysDist.h>
+#include <BinnedED.h>
 #include <FitComponent.h>
 #include <ParameterManager.h>
 
-class SpectralFitDist : public BinnedPhysDist, public FitComponent{
+class SpectralFitDist : public BinnedED, public FitComponent{
  public:
-    SpectralFitDist(const AxisCollection& axes_) : BinnedPhysDist(axes_) {}
+    SpectralFitDist(const AxisCollection& axes_) : BinnedED(axes_) {}
 
     // Make this fittable with each bin content adjustable
     void MakeFittable() {}
@@ -14,6 +14,5 @@ class SpectralFitDist : public BinnedPhysDist, public FitComponent{
     std::vector<double> GetParameters() const;
     size_t GetParameterCount() const;
     void   SetParameters(const std::vector<double>&);
-
 };
 #endif

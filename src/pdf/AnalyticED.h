@@ -1,16 +1,16 @@
-#ifndef __OXSX_ANALYTIC_PDF__
-#define __OXSX_ANALYTIC_PDF__
-#include <PhysDist.h>
+#ifndef __OXSX_ANALYTIC_ED__
+#define __OXSX_ANALYTIC_ED__
+#include <EventDistribution.h>
 #include <FitComponent.h>
 #include <DataRepresentation.h>
 
 class PDF;
-class AnalyticPhysDist : public PhysDist, public FitComponent{
+class AnalyticED : public EventDistribution, public FitComponent{
  public:
-    AnalyticPhysDist(PDF*); // make a copy
-    AnalyticPhysDist(const AnalyticPhysDist& other_); // deep copy
-    ~AnalyticPhysDist();         // frees fFunction
-    PhysDist* Clone() const;
+    AnalyticED(PDF*); // make a copy
+    AnalyticED(const AnalyticED& other_); // deep copy
+    ~AnalyticED();         // frees fFunction
+    EventDistribution* Clone() const;
     
     double Probability(const EventData&) const;
     double Probability(const std::vector<double>&) const;

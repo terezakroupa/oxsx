@@ -1,5 +1,4 @@
 #include  <Matrix.h>
-#include  <BinnedPhysDist.h>
 #include  <iostream>
 #include  <Exceptions.h>
 

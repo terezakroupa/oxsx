@@ -1,9 +1,9 @@
 #ifndef __BinnedNLLH__
 #define __BinnedNLLH__
 #include <TestStatistic.h>
-#include <BinnedPhysDistMan.h>
+#include <BinnedEDManager.h>
 #include <SystematicManager.h>
-#include <BinnedPhysDistShrink.h>
+#include <BinnedEDShrinker.h>
 #include <ComponentManager.h>
 #include <DataSet.h>
 #include <CutCollection.h>
@@ -14,15 +14,15 @@
 class DataSet;
 class BinnedNLLH : public TestStatistic{
  public:
-    BinnedNLLH() : fCalculatedDataPdf(false), fAlreadyShrunk(false), fDataSet(NULL) {}
+    BinnedNLLH() : fCalculatedDataDist(false), fAlreadyShrunk(false), fDataSet(NULL) {}
 
-    void   SetPdfManager(const BinnedPhysDistMan&);
+    void   SetPdfManager(const BinnedEDManager&);
     void   SetSystematicManager(const SystematicManager&);
 
-    void   AddPdf(const BinnedPhysDist&);
+    void   AddPdf(const BinnedED&);
     void   AddSystematic(Systematic*);
 
-    void   AddPdfs(const std::vector<BinnedPhysDist>&);
+    void   AddPdfs(const std::vector<BinnedED>&);
     void   AddSystematics(const std::vector<Systematic*>);
 
     void   SetConstraint(const std::string& paramName_, double mean_, double sigma_);
@@ -32,8 +32,8 @@ class BinnedNLLH : public TestStatistic{
 
     void  BinData();
 
-    void SetDataPdf(const BinnedPhysDist&);
-    BinnedPhysDist GetDataPdf() const;
+    void SetDataDist(const BinnedED&);
+    BinnedED GetDataDist() const;
 
     void SetDataSet(DataSet*);
     DataSet* GetDataSet();
@@ -55,16 +55,16 @@ class BinnedNLLH : public TestStatistic{
     std::vector<std::string> GetParameterNames() const;
 
  private:
-    BinnedPhysDistMan  fPdfManager;
-    SystematicManager fSystematicManager;
-    BinnedPhysDistShrink fPdfShrinker;
-    DataSet* fDataSet;
+    BinnedEDManager      fPdfManager;
+    SystematicManager    fSystematicManager;
+    BinnedEDShrinker     fPdfShrinker;
+    DataSet*             fDataSet;
     CutCollection fCuts;
     std::map<std::string, QuadraticConstraint> fConstraints;
 
-    BinnedPhysDist fDataPdf;
-    bool      fCalculatedDataPdf;
-    bool      fAlreadyShrunk;
+    BinnedED         fDataDist;
+    bool             fCalculatedDataDist;
+    bool             fAlreadyShrunk;
     ComponentManager fComponentManager;    
 };
 #endif

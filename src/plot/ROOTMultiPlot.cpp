@@ -1,7 +1,7 @@
 #include <ROOTMultiPlot.h>
 #include <PdfConverter.h>
 #include <Exceptions.h>
-#include <BinnedPhysDist.h>
+#include <BinnedED.h>
 #include <iostream>
 
 //FIXME: add marginalisations for higher D pdfs
@@ -14,7 +14,7 @@ ROOTMultiPlot::fColorScheme[fNcolors] = {kRed, kBlue, kViolet,
 					 
 
 void
-ROOTMultiPlot::AddPdf(const BinnedPhysDist& pdf_, const std::string& name_){
+ROOTMultiPlot::AddPdf(const BinnedED& pdf_, const std::string& name_){
   size_t nDims = pdf_.GetNDims();
   if (nDims != 1)
     throw DimensionError("ROOTMultiPlot::Added dim != 1 binned pdf!");

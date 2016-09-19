@@ -3,10 +3,10 @@
 #include <algorithm>
 #include <iostream>
 
-BinnedPhysDist 
-Systematic::operator() (const BinnedPhysDist& pdf_) const{
+BinnedED 
+Systematic::operator() (const BinnedED& pdf_) const{
     try{
-        BinnedPhysDist afterSmear = pdf_;
+        BinnedED afterSmear = pdf_;
         afterSmear.SetBinContents(fResponse(pdf_.GetBinContents()));
         afterSmear.Normalise();
         return afterSmear;

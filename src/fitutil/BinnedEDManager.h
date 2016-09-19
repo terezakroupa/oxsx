@@ -2,23 +2,22 @@
 /* A collection of BinnedPDFs with normalisations for calculating the probability of a given obs   */
 /* given some rates and some pdfs                                                                  */
 /***************************************************************************************************/
-#ifndef __OXSX_BINNEDPHYSDISTMAN__
-#define __OXSX_BINNEDPHYSDISTMAN__
-#include <BinnedPhysDist.h>
-#include <BinnedPhysDistShrink.h>
+#ifndef __OXSX_BINNED_ED_MANAGER__
+#define __OXSX_BINNED_ED_MANAGER__
+#include <BinnedED.h>
 #include <FitComponent.h>
 #include <ParameterManager.h>
 #include <vector>
 
 class EventData;
 class SystematicManager;
-
-class BinnedPhysDistMan : public FitComponent{
+class BinnedEDShrinker;
+class BinnedEDManager : public FitComponent{
  public:
-    BinnedPhysDistMan() : fNPdfs(0) {}
+    BinnedEDManager() : fNPdfs(0) {}
 
-    void   AddPdf(const BinnedPhysDist&);
-    void   AddPdfs(const std::vector<BinnedPhysDist>&);
+    void   AddPdf(const BinnedED&);
+    void   AddPdfs(const std::vector<BinnedED>&);
 
     double Probability(const EventData&) const;
     double BinProbability(size_t) const;
@@ -27,9 +26,9 @@ class BinnedPhysDistMan : public FitComponent{
     void SetNormalisations(const std::vector<double>& normalisations_);
 
     void ApplySystematics(const SystematicManager& sysMan_);
-    void ApplyShrink(const BinnedPhysDistShrink&);
+    void ApplyShrink(const BinnedEDShrinker&);
 
-    const BinnedPhysDist& GetOriginalPdf(size_t index_) const;
+    const BinnedED& GetOriginalPdf(size_t index_) const;
     unsigned GetNPdfs() const;
     size_t   GetNDims() const;
     
@@ -43,11 +42,10 @@ class BinnedPhysDistMan : public FitComponent{
 
  private:
     ParameterManager       fParameterManager;
-    std::vector<BinnedPhysDist> fOriginalPdfs;
-    std::vector<BinnedPhysDist> fWorkingPdfs;
+    std::vector<BinnedED>  fOriginalPdfs;
+    std::vector<BinnedED>  fWorkingPdfs;
     std::vector<double>    fNormalisations;
     int                    fNPdfs;
-    //    std::vector<double>    fCachedParams;
     size_t fNDims;
 };
 #endif

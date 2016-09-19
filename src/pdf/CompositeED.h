@@ -6,29 +6,29 @@
 /* each will know where to look from its data representation                                       */
 /***************************************************************************************************/
 
-#ifndef __COMPOSITE_PHYSDIST__
-#define __COMPOSITE_PHYSDIST__
-#include <PhysDist.h>
+#ifndef __COMPOSITE_ED__
+#define __COMPOSITE_ED__
+#include <EventDistribution.h>
 #include <vector>
-class EventData;
 
-class CompositePhysDist : public PhysDist{
+class EventData;
+class CompositeED : public EventDistribution{
  public:
-    CompositePhysDist(const PhysDist* p1_, const PhysDist* p2_);
-    CompositePhysDist(const std::vector<PhysDist*>& pdfs_); 
-    virtual ~CompositePhysDist();
+    CompositeED(const EventDistribution* p1_, const EventDistribution* p2_);
+    CompositeED(const std::vector<EventDistribution*>& pdfs_); 
+    virtual ~CompositeED();
         
     virtual double Probability(const EventData&) const;
-    virtual PhysDist*   Clone() const; // required for futher compositions
+    virtual EventDistribution*   Clone() const; // required for futher compositions
 
     virtual double Integral()  const;
     virtual void   Normalise();
     unsigned GetNDims() const;
  private:
     
-    std::vector<PhysDist*> fDistPtrs;
+    std::vector<EventDistribution*> fDistPtrs;
 };
 
-CompositePhysDist operator * (const PhysDist&, const PhysDist&);
+CompositeED operator * (const EventDistribution&, const EventDistribution&);
 
 #endif
