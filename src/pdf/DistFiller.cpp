@@ -1,4 +1,4 @@
-#include <PdfFiller.h>
+#include <DistFiller.h>
 #include <CutCollection.h>
 #include <BinnedED.h>
 #include <DataSet.h>
@@ -6,9 +6,9 @@
 #include <iostream>
 
 void
-PdfFiller::FillPdf(BinnedED& pdf_, const DataSet& data_, 
-                   const CutCollection& cuts_, 
-                   EventSystematicManager sysMan_, int nEv_){
+DistFiller::FillDist(BinnedED& pdf_, const DataSet& data_, 
+                     const CutCollection& cuts_, 
+                     EventSystematicManager sysMan_, int nEv_){
   if(nEv_ < 0)
     nEv_ = data_.GetNEntries();
   for(size_t i = 0; i < nEv_; i++){

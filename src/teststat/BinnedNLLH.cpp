@@ -2,7 +2,7 @@
 #include <math.h>
 #include <DataSet.h>
 #include <Exceptions.h>
-#include <PdfFiller.h>
+#include <DistFiller.h>
 #include <iostream>
 
 double 
@@ -54,7 +54,7 @@ void
 BinnedNLLH::BinData(){
     fDataDist =  BinnedED(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     fDataDist.Empty();
-    PdfFiller::FillPdf(fDataDist, *fDataSet, fCuts);
+    DistFiller::FillDist(fDataDist, *fDataSet, fCuts);
     fCalculatedDataDist = true;
     
 }
