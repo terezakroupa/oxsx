@@ -67,7 +67,7 @@ BinnedEDShrinker::ShrinkPdf(const BinnedED& pdf_) const{
 
     // 1. Build new axes. ShrinkPdf method just makes a copy if buffer size is zero
     AxisCollection newAxes;
-    const std::vector<size_t> pdfDataIndices = pdf_.GetDataRep().GetIndices();
+    const std::vector<size_t> pdfDataIndices = pdf_.GetObservables().GetIndices();
     size_t dataIndex = 0;
     
     for(size_t i = 0; i < nDims; i++){
@@ -82,7 +82,7 @@ BinnedEDShrinker::ShrinkPdf(const BinnedED& pdf_) const{
 
     // 2. Initialise the new pdf with same data rep
     BinnedED newPdf(newAxes);
-    newPdf.SetDataRep(pdf_.GetDataRep());
+    newPdf.SetObservables(pdf_.GetObservables());
 
     // 3. Fill the axes
     std::vector<size_t> newIndices(pdf_.GetNDims());  // same as old, just corrected for overflow

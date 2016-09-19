@@ -13,12 +13,12 @@ BinnedED::BinnedED(const Histogram& histo_){
 }
 
 void
-BinnedED::SetDataRep(const ObsSet& rep_){
+BinnedED::SetObservables(const ObsSet& rep_){
     fObservables = rep_;
 }
 
 ObsSet
-BinnedED::GetDataRep() const {
+BinnedED::GetObservables() const {
     return fObservables;
 }
 
@@ -190,7 +190,7 @@ BinnedED::Marginalise(const std::vector<size_t>& indices_) const{
 
     // Marginalise the histogram
     BinnedED newPhysDist(fHistogram.Marginalise(relativeIndices));
-    newPhysDist.SetDataRep(newRep);
+    newPhysDist.SetObservables(newRep);
     return newPhysDist;
 }
 
