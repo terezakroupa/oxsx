@@ -84,6 +84,10 @@ Minuit::Initialise(){
     
     else if ("Simplex" == fMethod)
         fMinimiser = new MnSimplex(fMinuitFCN, params);
+    else 
+        throw ValueError(Formatter() << "Minuit::Unrecognised method - "
+                         << fMethod
+                         );
 }
 
 void

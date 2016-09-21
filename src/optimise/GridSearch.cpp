@@ -78,12 +78,14 @@ GridSearch::Optimise(TestStatistic* testStat_){
     
     // count interations
     unsigned stepCount = 0;
-    
+    int oneTenth = maxSteps/10;
+    if(oneTenth < 10)
+        oneTenth = 1;
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
 
-        if(!(stepCount++ %1000000)){
+        if(!(stepCount++ %oneTenth)){
             std::cout << stepCount << " / " << maxSteps  << "\t"
                       <<  100 * double(stepCount)/maxSteps 
                       << "%" << std::endl;
