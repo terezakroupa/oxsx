@@ -64,6 +64,10 @@ class BinnedED : public EventDistribution{
     void   SetObservables(const ObsSet&);
     ObsSet GetObservables() const;
 
+    void Add(const BinnedED& other_, double weight_ = 1);
+    void Multiply(const BinnedED& other_);
+    void Divide(const BinnedED& other_);
+    
  protected:
     ObsSet    fObservables;
     Histogram fHistogram;

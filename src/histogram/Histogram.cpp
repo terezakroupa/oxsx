@@ -229,3 +229,31 @@ Histogram::GetBinCentre(size_t bin_, size_t index_) const{
     return fAxes.GetBinCentre(bin_, index_);
 }
 
+void
+Histogram::Add(const Histogram& other_, double weight_){
+    if(other_.GetAxes() != GetAxes())
+        throw ValueError(Formatter() << "Histogram::Add can't add histograms with different binning definitions!");
+    
+    for(size_t i = 0; i < GetNBins(); i++)
+        AddBinContent(i, other_.GetBinContent(i) * weight_);
+}
+
+
+void
+Histogram::Multiply(const Histogram& other_){
+    if(other_.GetAxes() != GetAxes())
+        throw ValueError(Formatter() << "Histogram::Add can't add histograms with different binning definitions!");
+    
+    for(size_t i = 0; i < GetNBins(); i++)
+        SetBinContent(i, GetBinContent(i) * other_.GetBinContent(i));
+}
+
+
+void
+Histogram::Divide(const Histogram& other_){
+    if(other_.GetAxes() != GetAxes())
+        throw ValueError(Formatter() << "Histogram::Add can't add histograms with different binning definitions!");
+    
+    for(size_t i = 0; i < GetNBins(); i++)
+        SetBinContent(i, GetBinContent(i) / other_.GetBinContent(i));
+}
