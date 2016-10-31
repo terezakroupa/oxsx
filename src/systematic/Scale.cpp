@@ -24,7 +24,7 @@ Scale::Construct(){
     const AxisCollection& axes       = fPdfMapping.GetAxes(); 
     // the axis to scale
     const size_t  scaleAxisDataIndex = fDataRep.GetIndex(0);
-    const PdfAxis& scaleAxis         = axes.GetAxis(scaleAxisDataIndex);
+    const PdfAxis& scaleAxis         = axes.GetAxis(fPdfDataRep.GetDataIndexPos(scaleAxisDataIndex));
 
 
     const size_t nBins               = axes.GetNBins(); 
