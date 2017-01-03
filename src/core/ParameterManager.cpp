@@ -34,6 +34,15 @@ ParameterManager::GetParameterNames() const{
     return fNames;
 }
 
+void
+ParameterManager::SetParameterNames(const std::vector<std::string>& names_){
+    if(names_.size() != fParamPtrs.size())
+        throw DimensionError("ParameterManager::SetParameterNames",
+                             fParamPtrs.size(), names_.size(), "have all the parameters been added?"
+                             );
+    fNames = names_;
+}
+
 size_t
 ParameterManager::GetParameterCount() const{
     return fParamPtrs.size();
