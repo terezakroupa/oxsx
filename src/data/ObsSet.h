@@ -29,6 +29,10 @@ class ObsSet{
     size_t GetDataIndexPos(size_t dataIndex_) const; // where is data index x in this representation
     // Call this something else
     std::vector<size_t> GetRelativeIndices(const ObsSet&) const; 
+    
+    // comparision
+    bool operator==(const ObsSet& other_) const;
+    bool operator!=(const ObsSet& other_) const;
 
  private:
     std::vector<size_t> fIndices;

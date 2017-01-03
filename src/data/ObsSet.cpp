@@ -67,3 +67,13 @@ ObsSet::GetRelativeIndices(const ObsSet& otherRep_) const{
     
     return relativeIndices;
 } 
+
+bool
+ObsSet::operator==(const ObsSet& other_) const{
+    return fIndices == other_.fIndices;
+}
+
+bool
+ObsSet::operator!=(const ObsSet& other_) const{
+    return !(*this == other_);
+}

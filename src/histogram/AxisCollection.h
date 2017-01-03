@@ -35,6 +35,9 @@ class AxisCollection{
     double GetBinCentre(size_t bin_, size_t dim_)   const;
     double GetBinWidth(size_t bin_, size_t dim_)    const;
     
+	// comparison
+	bool operator==(const AxisCollection& other_) const;
+	bool operator!=(const AxisCollection& other_) const;
  private:
     std::vector<BinAxis> fAxes;
     std::vector<size_t> fAxisNbins;

@@ -217,3 +217,13 @@ AxisCollection::GetBinWidth(size_t bin_, size_t dim_) const{
     
     return fAxes.at(dim_).GetBinWidth(UnflattenIndex(bin_, dim_));
 }
+
+bool
+AxisCollection::operator==(const AxisCollection& other_) const{
+    return fAxes == other_.fAxes;
+}
+
+bool
+AxisCollection::operator!=(const AxisCollection& other_) const{
+    return fAxes != other_.fAxes;
+}

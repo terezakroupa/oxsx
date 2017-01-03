@@ -2,6 +2,7 @@
 #include <Exceptions.h>
 #include <Event.h>
 #include <Combinations.hpp>
+#include <iostream>
 
 
 BinnedED::BinnedED(const AxisCollection& axes_){
@@ -216,3 +217,41 @@ BinnedED::GetAllProjections() const{
   return returnDists;
 }
 
+
+void
+BinnedED::Add(const BinnedED& other_, double weight){
+    if(other_.fObservables != fObservables)
+        std::cout << "Warning::Adding distributions with different observables" << std::endl;
+    try{
+        fHistogram.Add(other_.fHistogram, weight);
+    }
+    catch(const ValueError& e_){
+        throw ValueError("BinnedED::Add can't add distributions with different binning definitions!");
+    }
+}
+
+
+void
+BinnedED::Multiply(const BinnedED& other_){
+    if(other_.fObservables != fObservables)
+        std::cout << "Warning::Multiplying distributions with different observables" << std::endl;
+    try{
+        fHistogram.Multiply(other_.fHistogram);
+    }
+    catch(const ValueError& e_){
+        throw ValueError("BinnedED::Add can't add distributions with different binning definitions!");
+    }
+}
+
+
+void
+BinnedED::Divide(const BinnedED& other_){
+    if(other_.fObservables != fObservables)
+        std::cout << "Warning::Dividing distributions with different observables" << std::endl;
+    try{
+        fHistogram.Divide(other_.fHistogram);
+    }
+    catch(const ValueError& e_){
+        throw ValueError("BinnedED::Add can't add distributions with different binning definitions!");
+    }
+}

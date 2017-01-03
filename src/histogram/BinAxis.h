@@ -43,9 +43,12 @@ class BinAxis{
     double GetMaximum() const {return fMax;}
     double GetMinimum() const {return fMin;}
 
+	// comparison
+	bool operator==(const BinAxis& other_) const;
+	bool operator!=(const BinAxis& other_) const;
 
  private:
-    int fNBins;
+    int    fNBins;
     double fMin;
     double fMax;
 
