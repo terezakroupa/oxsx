@@ -55,53 +55,53 @@ BinnedEDShrinker::ShrinkAxis(const BinAxis& axis_, const unsigned lowerBuff_,
 }
 
 BinnedED
-BinnedEDShrinker::ShrinkPdf(const BinnedED& pdf_) const{
+BinnedEDShrinker::ShrinkDist(const BinnedED& dist_) const{
 
     // No buffer no problem. FIXME: what about if all the values are zero?
     if (!fBuffers.size())
-        return pdf_;
+        return dist_;
     
-    size_t nDims = pdf_.GetNDims();
+    size_t nDims = dist_.GetNDims();
 
     // FIXME Add a check to see if the non zero entries of fBuffers are in the pdf and give warning
 
     // 1. Build new axes. ShrinkPdf method just makes a copy if buffer size is zero
     AxisCollection newAxes;
-    const std::vector<size_t> pdfDataIndices = pdf_.GetObservables().GetIndices();
+    const std::vector<size_t> distDataIndices = dist_.GetObservables().GetIndices();
     size_t dataIndex = 0;
     
     for(size_t i = 0; i < nDims; i++){
-        dataIndex = pdfDataIndices.at(i);
+        dataIndex = distDataIndices.at(i);
         if (!fBuffers.count(dataIndex))
-            newAxes.AddAxis(pdf_.GetAxes().GetAxis(i));
+            newAxes.AddAxis(dist_.GetAxes().GetAxis(i));
         else
-            newAxes.AddAxis(ShrinkAxis(pdf_.GetAxes().GetAxis(i), 
+            newAxes.AddAxis(ShrinkAxis(dist_.GetAxes().GetAxis(i), 
                                        fBuffers.at(dataIndex).first,  
                                        fBuffers.at(dataIndex).second));
     }
 
     // 2. Initialise the new pdf with same data rep
-    BinnedED newPdf(newAxes);
-    newPdf.SetObservables(pdf_.GetObservables());
+    BinnedED newDist(newAxes);
+    newDist.SetObservables(dist_.GetObservables());
 
     // 3. Fill the axes
-    std::vector<size_t> newIndices(pdf_.GetNDims());  // same as old, just corrected for overflow
+    std::vector<size_t> newIndices(dist_.GetNDims());  // same as old, just corrected for overflow
     int   offsetIndex = 0; // note taking difference of two unsigneds
     size_t newBin = 0;     //  will loop over dims and use this to assign bin # corrected for overflow
 
-    const AxisCollection& axes = pdf_.GetAxes();
+    const AxisCollection& axes = dist_.GetAxes();
     double content = 0;
     // bin by bin of old pdf
-    for(size_t i = 0; i < pdf_.GetNBins(); i++){
-        content = pdf_.GetBinContent(i);
+    for(size_t i = 0; i < dist_.GetNBins(); i++){
+        content = dist_.GetBinContent(i);
         if(!content) // no content no problem
             continue;
 
         // work out the index of this bin in the new shrunk pdf. 
         for(size_t j = 0; j < nDims; j++){
             offsetIndex = axes.UnflattenIndex(i, j);            // the index in old pdf
-            if (fBuffers.count(pdfDataIndices.at(j)))          // offset by lower buffer if nonzero
-                offsetIndex -= fBuffers.at(pdfDataIndices.at(j)).first;
+            if (fBuffers.count(distDataIndices.at(j)))          // offset by lower buffer if nonzero
+                offsetIndex -= fBuffers.at(distDataIndices.at(j)).first;
 
             // Correct the ones that fall in the buffer regions
             // bins in the lower buffer have negative index. Put in first bin in fit region or ignore
@@ -124,10 +124,10 @@ BinnedEDShrinker::ShrinkPdf(const BinnedED& pdf_) const{
         }
         // Fill 
         newBin = newAxes.FlattenIndices(newIndices);
-        newPdf.AddBinContent(newBin, content);
+        newDist.AddBinContent(newBin, content);
     }
 
-    return newPdf;
+    return newDist;
 }
 
 void
