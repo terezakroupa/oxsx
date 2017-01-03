@@ -71,16 +71,23 @@ GridSearch::Optimise(TestStatistic* testStat_){
         size_t axisCounts = 1 + static_cast<size_t>((fMaxima.at(i) - fMinima.at(i)) / fStepSizes.at(i));
         maxSteps *= axisCounts;
         gridCounts.push_back(axisCounts);
-    }
-    
+    }    
+
     // start at min value
     fParams = fMinima;
     
+	if(maxSteps == 1){
+	  std::cout << "Warning: Grid Search has only one grid point"
+				<< std::endl;
+	}
+	
     // count interations
     unsigned stepCount = 0;
     int oneTenth = maxSteps/10;
+
     if(oneTenth < 10)
         oneTenth = 1;
+
     while(Increment(0)){
         // calculate the new value
         // if bigger, grab this as new best fit
@@ -112,6 +119,8 @@ GridSearch::Optimise(TestStatistic* testStat_){
 
 bool 
 GridSearch::Increment(size_t index_){
+    if(fMinima == fMaxima)
+	  return false;
     fParams[index_] += fStepSizes.at(index_);
 
     // wrap around past the maximum
