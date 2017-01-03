@@ -85,7 +85,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
         // calculate the new value
         // if bigger, grab this as new best fit
 
-        if(!(stepCount++ %oneTenth)){
+        if(!(stepCount++ % oneTenth)){
             std::cout << stepCount << " / " << maxSteps  << "\t"
                       <<  100 * double(stepCount)/maxSteps 
                       << "%" << std::endl;
