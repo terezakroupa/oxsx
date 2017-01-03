@@ -303,9 +303,14 @@ MetropolisHastings::InitialiseHistograms(){
     // If the binning is specified, use that
     AxisCollection histAxes;
     if(fHistogramAxes.GetNDimensions()){
+        if(fHistogramAxes.GetNDimensions() != pTestStatistic->GetParameterCount())
+            throw DimensionError("MetropolisHastings::InitialiseHistograms",
+                                 pTestStatistic->GetParameterCount(),
+                                 fHistogramAxes.GetNDimensions(),
+                                 "Template axes - one axis for each parameter"
+                                 );
         histAxes = fHistogramAxes;
     }
-
 
     // otherwise take a guess
     else{
@@ -315,7 +320,7 @@ MetropolisHastings::InitialiseHistograms(){
                                  int(pow(fMaxIter, 1./fMinima.size()))));
         }
     }
-    
+
     // Set up the histogram, either with a big ND histogram
     if(fSaveFullHistogram){
         fHist = Histogram(histAxes);
@@ -339,8 +344,9 @@ MetropolisHastings::InitialiseHistograms(){
 void
 MetropolisHastings::FillProjections(const std::vector<double>& params_){
     // 1D
-    for(size_t i = 0; i < params_.size(); i++)
+    for(size_t i = 0; i < params_.size(); i++){
         f1DProjections[i].Fill(params_.at(i));
+    }
 
     // 2D
     std::vector<double> fillVals(2, 0);
