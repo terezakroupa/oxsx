@@ -58,6 +58,7 @@ BinnedNLLH::BinData(){
     CutLog log(fCuts.GetCutNames());
     DistFiller::FillDist(fDataDist, *fDataSet, fCuts, log);
     fCalculatedDataDist = true;    
+    fSignalCutLog = log;
 }
 
 void
