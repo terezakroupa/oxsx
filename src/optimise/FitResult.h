@@ -32,7 +32,8 @@ class FitResult{
     
     void SetValid(bool b_);
     bool GetValid() const;
-
+    
+    std::string AsString() const;
     void Print() const;
     void SaveAs(const std::string&) const;
 

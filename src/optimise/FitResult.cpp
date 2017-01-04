@@ -93,26 +93,29 @@ FitResult::GetParameterNames() const{
 
 void
 FitResult::Print() const{
-    if(fParameterNames.size() != fBestFit.size())
-        throw NotFoundError(Formatter() << "Expected one name for each parameter - got " 
-                            << fParameterNames.size() << " names and " << fBestFit.size() << " params"
-                            );
-
-    std::cout << "Fit Result: " << std::endl;
-    for(size_t i = 0; i < fParameterNames.size(); i++){
-        std::cout << fParameterNames.at(i) << "\t" 
-                  << fBestFit.at(i)
-                  << std::endl;
-    }        
+  std::cout << AsString() << std::endl;
 }
 
 void
 FitResult::SaveAs(const std::string& fileName_) const{
+  std::ofstream fs;
+  fs.open(fileName_);
+  fs << fileName_;
+  fs.close();
+}
+
+std::string
+FitResult::AsString() const{
+  if(fParameterNames.size() != fBestFit.size())
+      throw NotFoundError(Formatter() << "FitResult::Expected one name for each parameter - got " 
+                            << fParameterNames.size() << " names and " << fBestFit.size() << " params"
+                            );
+
   time_t t = time(0);
   struct tm * now = localtime(&t);
   
-  std::ofstream fs(fileName_.c_str());
-  fs << "-----------------------------------"
+  std::stringstream ss;
+  ss << "-----------------------------------"
      << "-----------------------------------" << std::endl
      << "OXSX Fit Result: "
      << now -> tm_year + 1900 << '-' 
@@ -129,15 +132,15 @@ FitResult::SaveAs(const std::string& fileName_) const{
      << "-----------------------------------" << std::endl
      << std::endl;
        
-  fs << "Best Fit Values: " << std::endl << std::endl;
+  ss << "Best Fit Values: " << std::endl << std::endl;
   for(size_t i = 0; i < fParameterNames.size(); i++){
-    fs << std::setw(25) 
+    ss << std::setw(25) 
        << fParameterNames.at(i) << "\t\t" 
        << std::setw(10) 
        << fBestFit.at(i)
        << std::endl;
-  }           
-  fs.close();
+  }
+  return ss.str();
 }
 
 void 
