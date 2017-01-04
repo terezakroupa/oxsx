@@ -14,7 +14,7 @@ BinnedNLLH::Evaluate(){
         BinData();
     
     if(!fAlreadyShrunk){
-        fDataDist = fPdfShrinker.ShrinkPdf(fDataDist);
+        fDataDist = fPdfShrinker.ShrinkDist(fDataDist);
         fAlreadyShrunk = true;
     }
 

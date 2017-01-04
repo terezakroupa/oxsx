@@ -18,7 +18,7 @@ class BinnedEDShrinker{
 
     BinAxis ShrinkAxis(const BinAxis&, const unsigned lowerBuff_, 
                        const unsigned upperBuff_) const;
-    BinnedED ShrinkPdf(const BinnedED& pdf_) const;
+    BinnedED ShrinkDist(const BinnedED& dist_) const;
     
     void SetBuffer(size_t dim_, unsigned lowerBuf_, unsigned upperBuf_);
     std::pair<unsigned, unsigned> GetBuffer(size_t dim_) const;

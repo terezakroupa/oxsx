@@ -98,7 +98,7 @@ BinnedEDManager::ApplyShrink(const BinnedEDShrinker& shrinker_){
         return;
 
     for (size_t i = 0; i < fWorkingPdfs.size(); i++){
-        fWorkingPdfs[i] = shrinker_.ShrinkPdf(fWorkingPdfs.at(i));
+        fWorkingPdfs[i] = shrinker_.ShrinkDist(fWorkingPdfs.at(i));
         fWorkingPdfs[i].Normalise();
     }
     
