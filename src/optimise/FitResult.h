@@ -4,7 +4,6 @@
 #ifndef __OXSX_FIT_RESULT__
 #define __OXSX_FIT_RESULT__
 #include <Histogram.h>
-#include <CutLog.h>
 #include <cstdlib>
 #include <vector>
 #include <string>
@@ -14,16 +13,10 @@ typedef std::map<std::string, Histogram> HistMap;
 
 class FitResult{
  public:
-    FitResult() : fStatSpace(NULL), fIsValid(true), fSignalCutEfficiency(-1) {}
+    FitResult() : fStatSpace(NULL), fIsValid(true) {}
     FitResult(const FitResult&); //deep copy
     FitResult operator=(const FitResult&); //deep copy
     ~FitResult(); // frees stat space
-
-    double GetSignalCutEfficiency() const;
-    void   SetSignalCutEfficiency(double);
-
-    CutLog GetSignalCutLog() const;
-    void   SetSignalCutLog(const CutLog&);
 
     void  SetBestFit(const std::vector<double>&);
     std::vector<double> GetBestFit() const;
@@ -58,10 +51,7 @@ class FitResult{
     Histogram*    fStatSpace;
     HistMap f1DProjections;
     HistMap f2DProjections;
-    
-    double  fSignalCutEfficiency;
-    CutLog  fSignalCutLog;
-
+   
     bool fIsValid;
 };
 #endif

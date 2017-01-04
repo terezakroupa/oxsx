@@ -23,26 +23,6 @@ FitResult::GetBestFit() const{
 }
 
 
-double
-FitResult::GetSignalCutEfficiency() const{
-    return fSignalCutEfficiency;
-}
-
-void
-FitResult::SetSignalCutEfficiency(double eff_){
-    fSignalCutEfficiency = eff_;
-}
-
-CutLog
-FitResult::GetSignalCutLog() const{
-    return fSignalCutLog;
-}
-
-void
-FitResult::SetSignalCutLog(const CutLog& lg_){
-    fSignalCutLog = lg_;
-}
-
 void
 FitResult::SetStatSpace(const Histogram& statSpace_){
     fStatSpace = new Histogram(statSpace_);
@@ -161,9 +141,6 @@ FitResult::AsString() const{
        << fBestFit.at(i)
        << std::endl;
   }
-  ss << "\n" << "Data Cut Efficiency: " << fSignalCutEfficiency  << "\n\n"
-     << fSignalCutLog.AsString();
-
   return ss.str();
 }
 

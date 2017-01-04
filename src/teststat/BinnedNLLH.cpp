@@ -3,6 +3,7 @@
 #include <DataSet.h>
 #include <Exceptions.h>
 #include <DistFiller.h>
+#include <CutLog.h>
 #include <iostream>
 
 double 
@@ -54,9 +55,9 @@ void
 BinnedNLLH::BinData(){
     fDataDist =  BinnedED(fPdfManager.GetOriginalPdf(0)); // make a copy for same binning and data rep
     fDataDist.Empty();
-    DistFiller::FillDist(fDataDist, *fDataSet, fCuts);
-    fCalculatedDataDist = true;
-    
+    CutLog log(fCuts.GetCutNames());
+    DistFiller::FillDist(fDataDist, *fDataSet, fCuts, log);
+    fCalculatedDataDist = true;    
 }
 
 void
@@ -158,6 +159,27 @@ BinnedNLLH::SetCuts(const CutCollection& cuts_){
 void 
 BinnedNLLH::SetConstraint(const std::string& paramName_, double mean_, double sigma_){
     fConstraints[paramName_] = QuadraticConstraint(mean_, sigma_);
+}
+
+
+double
+BinnedNLLH::GetSignalCutEfficiency() const{
+    return fSignalCutEfficiency;
+}
+
+void
+BinnedNLLH::SetSignalCutEfficiency(double eff_){
+    fSignalCutEfficiency = eff_;
+}
+
+CutLog
+BinnedNLLH::GetSignalCutLog() const{
+    return fSignalCutLog;
+}
+
+void
+BinnedNLLH::SetSignalCutLog(const CutLog& lg_){
+    fSignalCutLog = lg_;
 }
 
 /////////////////////////////////////////////////////////
