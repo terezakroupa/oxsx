@@ -53,6 +53,9 @@ CutLog::GetCutNames() const{
 
 std::string
 CutLog::AsString() const{
+    if (!fCutCounts.size())
+        return "";
+
     if (fCutCounts.size() != fCutNames.size())
         throw LogicError(Formatter() << "CutLog::AsString() there are "
                          << fCutCounts.size()
@@ -98,10 +101,6 @@ CutLog::AsString() const{
 
 
     }
-    
-    
-
-
     return outString;
 }
 
