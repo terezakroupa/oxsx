@@ -2,6 +2,7 @@
 #include <Exceptions.h>
 #include <algorithm>
 #include <iostream>
+#include <set>
 
 void 
 ComponentManager::AddComponent(FitComponent*  componentPtr_){
@@ -48,12 +49,12 @@ ComponentManager::GetParameters() const{
 
 std::vector<std::string>
 ComponentManager::GetParameterNames() const{
-    std::vector<std::string> paramNames;
+    std::set<std::string> paramNames;
     for(size_t i = 0; i < fComponents.size(); i++){
         const std::vector<std::string>& comps = fComponents.at(i) -> GetParameterNames();
-        paramNames.insert(paramNames.end(), comps.begin(), comps.end());
+        paramNames.insert(comps.begin(), comps.end());
     }
-    return paramNames;
+    return std::vector<std::string>(paramNames.begin(), paramNames.end());
 }
 
 int
