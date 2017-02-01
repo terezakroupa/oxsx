@@ -109,3 +109,29 @@ Scale::SetParameters(const std::vector<double>& params_){
         throw ParameterCountError("Scale systematic has only 1 parameter!");
     fScaleFactor = params_.at(0);
 }
+
+double
+Scale::GetParameter(const std::string& name_) const{
+    if(name_ != fScaleName)
+        throw NotFoundError(Formatter() << "Scale::No parameter called " << name_ \
+                            << ", only" << fScaleName);
+    return fScaleFactor;
+}
+
+void
+Scale::SetParameter(const std::string& name_, double val_){
+    if(name_ != fScaleName)
+        throw NotFoundError(Formatter() << "Scale::No parameter called " << name_ \
+                            << ", only " << fScaleName << ".");
+    fScaleFactor = val_;
+}
+
+void
+Scale::SetParameterNames(const std::vector<std::string>& names_){
+    if(names_.size() != 1)
+        throw DimensionError("Scale::SetParameterNames", 1, names_.size(),
+                             ", there's only one parameter");
+    fScaleName = names_.at(0);
+}
+
+

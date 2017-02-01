@@ -23,9 +23,14 @@ class Convolution : public Systematic{
     // Make this fittable, by delegating to the underlying function
     void MakeFittable();
     std::vector<std::string> GetParameterNames() const;
+    void SetParameterNames(const std::vector<std::string>&);
+
     std::vector<double>      GetParameters() const;
-    size_t                   GetParameterCount() const;
     void                     SetParameters(const std::vector<double>&);
+    size_t                   GetParameterCount() const;
+
+    double GetParameter(const std::string&) const;
+    void   SetParameter(const std::string&, double);
 
  private:
     void                     Reset();

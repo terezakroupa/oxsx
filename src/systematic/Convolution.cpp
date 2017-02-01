@@ -148,3 +148,32 @@ Convolution::SetParameters(const std::vector<double>& params_){
                                   + e.what());
     }
 }
+
+void
+Convolution::SetParameterNames(const std::vector<std::string>& names_){
+    if(!fDist)
+        throw NULLPointerAccessError("Convolution::SetParameters",
+                                     "Have you set the sampling function?");
+    try{
+        fDist->SetParameterNames(names_);
+    }
+    catch(const DimensionError& e){
+        throw DimensionError(std::string("Convolution : ") + e.what());
+    }
+}
+
+double
+Convolution::GetParameter(const std::string& name_) const{
+    if(!fDist)
+        throw NULLPointerAccessError("Convolution::SetParameters",
+                                     "Have you set the sampling function?");
+        return fDist->GetParameter(name_);
+}
+
+void
+Convolution::SetParameter(const std::string& name_, double val_){
+    if(!fDist)
+        throw NULLPointerAccessError("Convolution::SetParameters",
+                                     "Have you set the sampling function?");
+    fDist->SetParameter(name_, val_);
+}
