@@ -38,9 +38,11 @@ class JumpPDF : public ConditionalPDF{
   std::vector<double> GetParameters() const;
   size_t GetParameterCount() const; 
   void   SetParameters(const std::vector<double>& params_);
+
   double GetParameter(const std::string&) const;
   void   SetParameter(const std::string& name_, double val_);
   void   SetParameterNames(const std::vector<std::string>& names_);
+
  private:
   PDF* fPDF;
 };

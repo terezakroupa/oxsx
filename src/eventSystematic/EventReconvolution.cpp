@@ -45,3 +45,28 @@ EventReconvolution::SetParameters(const std::vector<double>& params_){
         throw ParameterCountError("Event Reconvolution", 1, params_.size());
     SetCorrection(params_.at(0));
 }
+
+double
+EventReconvolution::GetParameter(const std::string& name_) const{
+    if(name_ != fCorrectionName)
+        throw NotFoundError(Formatter() << "EventReconvolution::No parameter called " << name_ << ", only " << fCorrectionName);
+    return fCorrection;
+}
+
+void
+EventReconvolution::SetParameter(const std::string& name_, double val_){
+    if(name_ != fCorrectionName)
+        throw NotFoundError(Formatter() << "EventScale::No parameter called " 
+                            << name_
+                            << ", only " << fCorrectionName << ".");
+    fCorrection = val_;
+}
+
+
+void
+EventReconvolution::SetParameterNames(const std::vector<std::string>& names_){
+    if(names_.size() != 1)
+        throw DimensionError("EventReconvolution::SetParameterNames", 1, names_.size(),
+                             ", there's only one parameter");
+    fCorrectionName = names_.at(0);
+}

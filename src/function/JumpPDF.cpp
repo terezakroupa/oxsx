@@ -138,3 +138,27 @@ JumpPDF::SetParameters(const std::vector<double>& params_){
                                  "Have you set the function?");
   fPDF->SetParameters(params_);
 }
+
+double 
+JumpPDF::GetParameter(const std::string& name_) const{
+  if(!fPDF)
+    throw NULLPointerAccessError("JumpPDF::SetParameterNames",
+                                 "Have you set the function?");
+  return fPDF->GetParameter(name_);
+}
+
+void
+JumpPDF::SetParameter(const std::string& name_, double val_){
+  if(!fPDF)
+    throw NULLPointerAccessError("JumpPDF::SetParameterNames",
+                                 "Have you set the function?");
+  fPDF->SetParameter(name_, val_);
+}
+
+void   
+JumpPDF::SetParameterNames(const std::vector<std::string>& names_){
+  if(!fPDF)
+      throw NULLPointerAccessError("JumpPDF::SetParameterNames",
+                                   "Have you set the function?");
+  fPDF->SetParameterNames(names_);
+}

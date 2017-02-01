@@ -15,10 +15,17 @@ class EventReconvolution : public EventSystematic{
     // Fit Component Interface - just the correction, set directly
     void  MakeFittable() {}
     std::vector<std::string> GetParameterNames() const;
+    void   SetParameterNames(const std::vector<std::string>&);
+
     std::vector<double> GetParameters() const;
     size_t GetParameterCount() const;
     void   SetParameters(const std::vector<double>&);
+
+    double GetParameter(const std::string&) const;
+    void   SetParameter(const std::string&, double);
+
  private:
     double fCorrection;
+    std::string fCorrectionName;
 };
 #endif

@@ -42,3 +42,28 @@ EventShift::SetParameters(const std::vector<double>& params_){
         throw ParameterCountError("Event Shift", 1, params_.size());
     SetShift(params_.at(0));
 }
+
+
+double
+EventShift::GetParameter(const std::string& name_) const{
+    if(name_ != fShiftName)
+        throw NotFoundError(Formatter() << "EventShift::No parameter called " << name_ \
+                            << ", only" << fShiftName);
+    return fShift;
+}
+
+void
+EventShift::SetParameter(const std::string& name_, double val_){
+    if(name_ != fShiftName)
+        throw NotFoundError(Formatter() << "EventShift::No parameter called " << name_ \
+                            << ", only " << fShiftName << ".");
+    fShift = val_;
+}
+
+void
+EventShift::SetParameterNames(const std::vector<std::string>& names_){
+    if(names_.size() != 1)
+        throw DimensionError("EventShift::SetParameterNames", 1, names_.size(),
+                             ", there's only one parameter");
+    fShiftName = names_.at(0);
+}

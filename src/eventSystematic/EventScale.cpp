@@ -28,7 +28,7 @@ EventScale::GetScale() const{
 // Fit Component Interface  
 std::vector<std::string>
 EventScale::GetParameterNames() const{
-    return std::vector<std::string>(1, Formatter() << "Scale systematic on parameter");
+    return std::vector<std::string>(1, fScaleName);
 }
 
 std::vector<double>
@@ -48,4 +48,27 @@ EventScale::SetParameters(const std::vector<double>& params_){
         throw ParameterCountError("Event Scale", 1, params_.size());
     SetScale(params_.at(0));
 }
+
+double
+EventScale::GetParameter(const std::string& name_) const{
+    if(name_ != fScaleName)
+        throw NotFoundError(Formatter() << "EventScale::No parameter called " << name_ << ", only" << fScaleName);
+    return fScale;
+}
+
+void
+EventScale::SetParameter(const std::string& name_, double val_){
+    if(name_ != fScaleName)
+        throw NotFoundError(Formatter() << "EventScale::No parameter called " << name_ << ", only " << fScaleName << ".");
+    fScale = val_;
+}
+
+void 
+EventScale::SetParameterNames(const std::vector<std::string>& names_){
+    if(names_.size() != 1)
+        throw DimensionError("EventScale::SetParameterNames", 1, names_.size(),
+                             ", there's only one parameter");
+    fScaleName = names_.at(0);
+}
+
 
