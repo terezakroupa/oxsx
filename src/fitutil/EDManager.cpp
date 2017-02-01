@@ -92,3 +92,27 @@ EDManager::SetParameters(const std::vector<double>& params_){
         throw ParameterCountError(std::string("EDManager:: ") + e_.what());
     }
 }
+
+void
+EDManager::SetParameterNames(const std::vector<std::string>& names_){
+    try{
+        fParameterManager.SetParameterNames(names_);
+    }
+    catch(const DimensionError&){
+        throw DimensionError("EDManager::SetParameterNames",
+                             fParameterManager.GetParameterCount(), names_.size(),
+                             Formatter() << GetNDims() * 2
+                             << " 1 name for each mean and stddev"
+                             );
+    }
+}
+
+double
+EDManager::GetParameter(const std::string& name_) const{
+    return fParameterManager.GetParameter(name_);
+}
+
+void
+EDManager::SetParameter(const std::string& name_, double val_){
+    fParameterManager.SetParameter(name_, val_);
+}

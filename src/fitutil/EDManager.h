@@ -30,6 +30,10 @@ class EDManager : public FitComponent{
     size_t GetParameterCount() const;
     void   SetParameters(const std::vector<double>& params_);
 
+    void   SetParameter(const std::string& name_, double val);
+    double GetParameter(const std::string& name_) const;
+    void   SetParameterNames(const std::vector<std::string>&);
+
  private:
     ParameterManager       fParameterManager;
     size_t fNDists;
