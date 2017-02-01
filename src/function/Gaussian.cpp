@@ -206,3 +206,27 @@ size_t
 Gaussian::GetParameterCount() const{
     return fParameterManager.GetParameterCount();
 }
+
+void   
+Gaussian::SetParameterNames(const std::vector<std::string>& names_){
+    try{
+        fParameterManager.SetParameterNames(names_);
+    }
+    catch(const DimensionError&){
+        throw DimensionError("Gaussian::SetParameterNames", 
+                             GetParameterCount(), names_.size(), 
+                             Formatter() << GetNDims() * 2
+                             << " 1 name for each mean and stddev"
+                             );
+    }
+}
+
+double 
+Gaussian::GetParameter(const std::string& name_) const{
+    return fParameterManager.GetParameter(name_);
+}
+
+void   
+Gaussian::SetParameter(const std::string& name_, double val_){
+    fParameterManager.SetParameter(name_, val_);
+}

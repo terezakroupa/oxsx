@@ -31,7 +31,10 @@ ParameterManager::GetParameters() const{
 
 std::vector<std::string>
 ParameterManager::GetParameterNames() const{
-    return fNames;
+    std::vector<std::string> names;
+    for(size_t i = 0; i < fParamPtrs.size(); i++)
+        names.push_back(fParamPtrs[i] -> GetName());
+    return names;
 }
 
 void
@@ -40,7 +43,8 @@ ParameterManager::SetParameterNames(const std::vector<std::string>& names_){
         throw DimensionError("ParameterManager::SetParameterNames",
                              fParamPtrs.size(), names_.size(), "have all the parameters been added?"
                              );
-    fNames = names_;
+    for(size_t i = 0; i < fParamPtrs.size(); i++)
+        fParamPtrs[i] -> SetName(names_.at(i));
 }
 
 size_t
@@ -48,20 +52,37 @@ ParameterManager::GetParameterCount() const{
     return fParamPtrs.size();
 }
 
+// FIXME: This is dodgy, definitely do not forget about this and make it public
+FitParameter* 
+ParameterManager::FindParameter(const std::string& name_) const{
+    for(size_t i = 0; i < fParamPtrs.size(); i++){
+        if(fParamPtrs.at(i)->GetName() == name_)
+            return fParamPtrs.at(i);
+    }
+    throw NotFoundError(Formatter() << "Parameter " << name_ << "  not found");
+}
+
+double
+ParameterManager::GetParameter(const std::string& name_) const{
+    return FindParameter(name_)->Get();
+}
+
+void
+ParameterManager::SetParameter(const std::string& name_, double val_){
+    FindParameter(name_)->Set(val_);
+}
+
 void 
-ParameterManager::Add(FitParameter* p_, const std::string& n_){
+ParameterManager::Add(FitParameter* p_){
     fParamPtrs.push_back(p_);
-    fNames.push_back(n_);
 }
 
 void 
 ParameterManager::AddDouble(double& d_, const std::string& n_){
-    fParamPtrs.push_back(new DoubleParameter(d_));
-    fNames.push_back(n_);
+    fParamPtrs.push_back(new DoubleParameter(n_, d_));
 }
 
 void
 ParameterManager::Clear(){
     fParamPtrs.clear();
-    fNames.clear();
 }

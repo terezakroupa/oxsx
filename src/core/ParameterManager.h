@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+
 class FitParameter;
 class ParameterManager{
  public:
@@ -14,7 +15,7 @@ class ParameterManager{
     ParameterManager operator=(const ParameterManager&) {return ParameterManager();}
 
     // Add parameters
-    void Add(FitParameter*, const std::string&); // copies 
+    void Add(FitParameter*); // copies 
     void AddDouble(double&, const std::string&);
     template<typename Container>        
     void AddContainer(Container&,
@@ -28,16 +29,19 @@ class ParameterManager{
     std::vector<std::string> GetParameterNames() const;
     void SetParameterNames(const std::vector<std::string>&);
 
-
     std::vector<double> GetParameters() const;
     void SetParameters(const std::vector<double>&);
 
+    double GetParameter(const std::string& name_) const;
+    void   SetParameter(const std::string& name_, double val_);
+
     size_t GetParameterCount() const;
+
  private:
     std::vector<FitParameter*> fParamPtrs;
-    std::vector<std::string>   fNames;
+    FitParameter* FindParameter(const std::string& name_) const;
 };
 
-// implements AddContainerOfParameters(-)
+// Implements AddContainerOfParameters(-)
 #include <ParameterManager.hpp> 
 #endif

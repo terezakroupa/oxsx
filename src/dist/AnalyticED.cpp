@@ -107,3 +107,36 @@ AnalyticED::SetParameters(const std::vector<double>& params_){
 
     }
 }
+
+void
+AnalyticED::SetParameterNames(const std::vector<std::string>& names_){
+    try{
+        fFunction->SetParameterNames(names_);
+    }
+    catch(const DimensionError& e_){
+        throw DimensionError(std::string("AnalyticED internal function : ") + e_.what());
+    }
+}
+
+double 
+AnalyticED::GetParameter(const std::string& name_) const{
+    try{
+        return fFunction -> GetParameter(name_);
+    }
+    catch(const NotFoundError& e_){
+        throw NotFoundError(std::string("AnalyticED internal function : ") + e_.what());
+    }    
+}
+
+void   
+AnalyticED::SetParameter(const std::string& name_, double val_){
+    try{
+        fFunction->SetParameter(name_, val_);
+    }
+    catch(const NotFoundError& e_){
+        throw NotFoundError(std::string("AnalyticED internal function : ") + e_.what());
+    }
+    catch(const ValueError& e_){
+        throw ValueError(std::string("AnalyticED internal function : ") + e_.what());
+    }
+}

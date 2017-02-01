@@ -27,8 +27,12 @@ class AnalyticED : public EventDistribution, public FitComponent{
     void MakeFittable();
     std::vector<std::string> GetParameterNames() const;
     std::vector<double>      GetParameters() const;
-    size_t                   GetParameterCount() const;
+    double GetParameter(const std::string&) const;
+    size_t GetParameterCount() const;
+
     void SetParameters(const std::vector<double>&);
+    void SetParameterNames(const std::vector<std::string>&);
+    void SetParameter(const std::string& name_, double val_);
     
 
  private:

@@ -9,8 +9,7 @@ ParameterManager::AddContainer(Container& cntr_,
     std::stringstream ss;
     for(size_t i = 0; i < cntr_.size(); i++){
         ss << sharedName_ << " " << i;
-        Add(new ContainerParameter<Container>(cntr_, i)
-            , ss.str());
+        Add(new ContainerParameter<Container>(ss.str(), cntr_, i));
         ss.str("");
     }
 }
@@ -23,5 +22,5 @@ ParameterManager::AddContainer(Container& cntr_,
         throw DimensionError("ParameterManager::AddContainer", cntr_.size(),
                              names_.size(), "#names doesn't match #parameters");
     for(size_t i = 0; i < cntr_.size(); i++)
-        Add(new ContainerParameter<Container>(cntr_, i), names_.at(i));
+        Add(new ContainerParameter<Container>(names_.at(i), cntr_, i));
 }

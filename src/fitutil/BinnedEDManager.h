@@ -36,9 +36,14 @@ class BinnedEDManager : public FitComponent{
     // Make a fittable component - i.e. rescale the binned pdfs inside to fit
     void MakeFittable();
     std::vector<std::string> GetParameterNames() const;
+    void   SetParameterNames(const std::vector<std::string>&);
+
     std::vector<double> GetParameters() const;
     size_t GetParameterCount() const;
-    void SetParameters(const std::vector<double>&);
+    void   SetParameters(const std::vector<double>&);
+
+    void   SetParameter(const std::string& name_, double val);
+    double GetParameter(const std::string& name_) const;
 
  private:
     ParameterManager       fParameterManager;

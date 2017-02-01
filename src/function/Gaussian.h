@@ -39,7 +39,9 @@ class Gaussian : public PDF{
     std::vector<std::string> GetParameterNames() const;
     void   SetParameters(const std::vector<double>&);
     size_t GetParameterCount() const;
-    
+    void   SetParameterNames(const std::vector<std::string>&);
+    double GetParameter(const std::string&) const;
+    void   SetParameter(const std::string&, double);
 
  private:
     ParameterManager fParameterManager;

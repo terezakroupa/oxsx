@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <iterator>
 #include <vector>
+#include <string>
 
 // Class definition
 template<typename Container>
@@ -11,13 +12,17 @@ class ContainerParameter : public FitParameter{
 public:
     typedef typename std::iterator_traits<typename Container::iterator>::iterator_category Category;
 
-    ContainerParameter(Container& cntr_, size_t index_) : fContainer(cntr_), fIndex(index_) {}
+ ContainerParameter(const std::string& nm_, Container& cntr_, size_t index_) : fName(nm_), fContainer(cntr_), fIndex(index_) {}
     void   Set(double);
     double Get() const;
+
+    std::string GetName() const {return fName;}
+    void SetName(const std::string& nm_){fName = nm_;}
 
 private:
     Container& fContainer;
     size_t     fIndex;
+    std::string fName;
 };
 
 // Implementations of the finding algorithm, optimised by iterator type

@@ -101,6 +101,29 @@ EventConvolution::SetParameters(const std::vector<double>& params_){
   return fDist->SetParameters(params_);
 }
 
+void 
+EventConvolution::SetParameterNames(const std::vector<std::string>& names_){
+  if(!fDist)
+    throw NULLPointerAccessError("EventConvolution::SetParameters", 
+                                 "Have you set the sampling function?");
+  fDist->SetParameterNames(names_);
+}
+
+double 
+EventConvolution::GetParameter(const std::string& name_) const{
+    if(!fDist)
+        throw NULLPointerAccessError("EventConvolution::SetParameters", 
+                                 "Have you set the sampling function?");
+    return fDist->GetParameter(name_);
+}
+
+void   
+EventConvolution::SetParameter(const std::string& name_, double val_){
+    if(!fDist)
+        throw NULLPointerAccessError("EventConvolution::SetParameters", 
+                                     "Have you set the sampling function?");
+    fDist->SetParameter(name_, val_);
+}
 
 // Event Systematic Interface
 Event
@@ -115,3 +138,4 @@ EventConvolution::operator()(const Event& event_){
   obs[fObservables.GetIndex(0)] = newVal;
   return Event(obs);
 }
+

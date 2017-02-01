@@ -25,10 +25,13 @@ class EventConvolution : public EventSystematic{
   
   // Fit Component interface defers to underlying function
   void MakeFittable();
+  void SetParameterNames(const std::vector<std::string>&);
   std::vector<std::string> GetParameterNames() const;
   std::vector<double> GetParameters() const;
   size_t GetParameterCount() const;
   void   SetParameters(const std::vector<double>&);
+  double GetParameter(const std::string&) const;
+  void   SetParameter(const std::string&, double);
 
  private:
   ConditionalPDF* fDist;
