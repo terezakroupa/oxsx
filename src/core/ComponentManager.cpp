@@ -73,16 +73,37 @@ ComponentManager::Clear(){
 double
 ComponentManager::GetParameter(const std::string& paramName_) const{
     for(size_t i = 0; i < fComponents.size(); i++){
+        // find the first component with a parameter of this name, and use it to extract the value
         FitComponent* component = fComponents[i];
         std::vector<std::string> names = component->GetParameterNames();
 
         std::vector<std::string>::iterator it = std::find(names.begin(), names.end(), 
                                                           paramName_);
         if(it != names.end())
-            return component->GetParameters()[it - names.begin()];
+            return component->GetParameter(paramName_);
     }
     throw NotFoundError(Formatter() << "ComponentManager::GetParameter "
                         << " requested non-existent parameter "
                         << paramName_
                         );
 }
+
+void
+ComponentManager::SetParameter(const std::string& paramName_, double val_){
+    // set the value of all parameters with name paramName_
+        for(size_t i = 0; i < fComponents.size(); i++){
+            // find the first component with a parameter of this name, and use it to extract the value
+            FitComponent* component = fComponents[i];
+            std::vector<std::string> names = component->GetParameterNames();
+            
+            std::vector<std::string>::iterator it = std::find(names.begin(), names.end(), 
+                                                              paramName_);
+            if(it != names.end())
+                component->SetParameter(paramName_, val_);
+        }
+        throw NotFoundError(Formatter() << "ComponentManager::GetParameter "
+                            << " requested non-existent parameter "
+                            << paramName_
+                            );
+}
+

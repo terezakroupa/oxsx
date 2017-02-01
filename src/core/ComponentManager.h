@@ -16,6 +16,7 @@ class ComponentManager{
     void                      Clear();
 
     double GetParameter(const std::string&) const;
+    void   SetParameter(const std::string&, double);
 
  private:
     std::vector<FitComponent*>  fComponents;
