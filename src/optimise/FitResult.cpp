@@ -101,7 +101,7 @@ void
 FitResult::SaveAs(const std::string& fileName_) const{
   std::ofstream fs;
   fs.open(fileName_);
-  fs << fileName_;
+  fs << AsString();
   fs.close();
 }
 
