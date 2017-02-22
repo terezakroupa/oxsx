@@ -58,9 +58,8 @@ CountingExperiment::AddCut(const Cut& c_, const std::string& name_){
 }
 
 void
-CountingExperiment::AddSystematic(EventSystematic* sys_, const std::string& name_){
+CountingExperiment::AddSystematic(EventSystematic* sys_){
     fSystematics.Add(sys_);
-    fSystematicNames.push_back(name_);
 }
 
 void

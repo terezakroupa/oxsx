@@ -14,22 +14,22 @@ class CountingExperiment{
     void CountSignal();
 
     void AddCut(const Cut&, const std::string& name_);
-    void AddSystematic(EventSystematic*, const std::string& name_);
+    void AddSystematic(EventSystematic*);
     void AddBackground(DataSet* mcData_, double rate_, const std::string& name_);
     void SetSignal(DataSet* mcData_, const std::string& name_);
     const CountingResult& GetCountingResult() const;
 
  private:
     CutCollection            fCuts;
-    EventSystematicManager   fSystematics;
     std::vector<DataSet*>    fBackgroundDataSets;
     std::vector<double>      fBackgroundNorms;
     DataSet*                 fTestDataSet;
     DataSet*                 fSignalDataSet;
 
+    EventSystematicManager   fSystematics;    
+
     std::vector<std::string> fBackgroundNames;
     std::string              fSignalName;
-    std::vector<std::string> fSystematicNames;
     CountingResult           fResult;
 };
 #endif
