@@ -15,7 +15,7 @@ TEST_CASE("Writing a data set to disk  and reading back"){
         for(size_t j = 0; j < eventObs.size(); j++)
             eventObs[j] = j;
         
-        origDataSet.AddEntry(EventData(eventObs));
+        origDataSet.AddEntry(Event(eventObs));
     }
     
     // name the observables for the save
