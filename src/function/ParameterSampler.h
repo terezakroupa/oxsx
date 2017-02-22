@@ -10,6 +10,7 @@ class PDF;
 class ParameterSampler{
  public:
     ~ParameterSampler(); // deletes pdf
+    void AddParameter(PDF*, const std::string& name_);
     void AddCorrelatedSet(PDF*, const std::vector<std::string>& correlatedParamNames_); // clones pdf
     ParamMap Sample() const;
 

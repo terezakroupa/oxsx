@@ -21,6 +21,11 @@ ParameterSampler::AddCorrelatedSet(PDF* pdf_,
     fParamNames.push_back(correlatedParamNames_);
 }
 
+void
+ParameterSampler::AddParameter(PDF* pdf_, const std::string& name_){
+    AddCorrelatedSet(pdf_, std::vector<std::string>(1, name_));
+}
+
 ParamMap
 ParameterSampler::Sample() const{
     ParamMap params;
