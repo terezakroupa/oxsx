@@ -39,7 +39,6 @@ TEST_CASE("Shrinking a 1D pdf"){
 
     SECTION("With overflow bins"){
         shrinker.SetUsingOverflows(true);
-
         BinnedED shrunkPdf = shrinker.ShrinkDist(inputPdf);
         REQUIRE(shrunkPdf.GetNBins() == inputPdf.GetNBins() - 5 - 3);
 
@@ -91,12 +90,12 @@ TEST_CASE("2D pdf, only have buffer in one direction"){
     shrinker.SetBuffer(1, 3, 5); // five, three from above on dim 1
     
     SECTION("With Overflow bins"){
+        shrinker.SetUsingOverflows(true);
         BinnedED shrunk = shrinker.ShrinkDist(inputPdf);
 
         REQUIRE(shrunk.GetAxes().GetAxis(0).GetNBins() == inputPdf.GetAxes().GetAxis(0).GetNBins());
         REQUIRE(shrunk.GetAxes().GetAxis(1).GetNBins() == 
                 inputPdf.GetAxes().GetAxis(1).GetNBins() - 5 -3 );
-
 
         // 0, 92 .. etc should be over flows 
         REQUIRE(shrunk.GetBinContent(0) == 4);
