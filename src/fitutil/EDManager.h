@@ -12,8 +12,8 @@ class EDManager : public FitComponent{
     EDManager(): fNDists(0), fNDims(0) {}
     ~EDManager(); // free pdf copies
 
-    void  AddEventDistribution(EventDistribution*); // take a copy
-    void  AddEventDistributions(const std::vector<EventDistribution*>& pdfs_);
+    void  AddDist(EventDistribution*); // take a copy
+    void  AddDists(const std::vector<EventDistribution*>& pdfs_);
 
     const std::vector<double>& GetNormalisations() const;
     void  SetNormalisations(const std::vector<double>&);

@@ -1,13 +1,13 @@
 #include <catch.hpp>
 #include <ComponentManager.h>
-#include <SpectralFitPdf.h>
+#include <SpectralFitDist.h>
 
 TEST_CASE("Stand alone component manager"){
     // some fake objects
     AxisCollection axes;
-    axes.AddAxis(PdfAxis("", 0, 10, 100));
-    SpectralFitPdf pdf1(axes);
-    SpectralFitPdf pdf2(axes);
+    axes.AddAxis(BinAxis("", 0, 10, 100));
+    SpectralFitDist pdf1(axes);
+    SpectralFitDist pdf2(axes);
 
     ComponentManager cmpMan;
 
@@ -39,9 +39,9 @@ TEST_CASE("Stand alone component manager"){
     }
     SECTION("getting parameter by name"){
         cmpMan.AddComponent(&pdf1);
-        REQUIRE(cmpMan.GetParameter("Spectral fit bin 0") == 0);
+        REQUIRE(cmpMan.GetParameter("Bin_0") == 0);
         pdf1.SetBinContent(0, 10);
-        REQUIRE(cmpMan.GetParameter("Spectral fit bin 0") == 10);
+        REQUIRE(cmpMan.GetParameter("Bin_0") == 10);
         
     }
 }

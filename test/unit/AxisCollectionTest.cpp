@@ -3,9 +3,9 @@
 
 TEST_CASE("Correct Indexing for 3x3 Uniform Axes","[AxisCollection]"){
 
-    PdfAxis axis1("axis1", 0,  20, 100);
-    PdfAxis axis2("axis2", 10, 30, 219);
-    PdfAxis axis3("axis3", 0, 1, 2341);
+    BinAxis axis1("axis1", 0,  20, 100);
+    BinAxis axis2("axis2", 10, 30, 219);
+    BinAxis axis3("axis3", 0, 1, 2341);
 
     AxisCollection axes;
     axes.AddAxis(axis1);
@@ -48,7 +48,7 @@ TEST_CASE("Correct Indexing for 3x3 Uniform Axes","[AxisCollection]"){
 
 TEST_CASE("Correct Indexing when there's just one axis in there", "[AxisCollection]"){
     AxisCollection axes;
-    PdfAxis axis("test", -20, 55, 9875);
+    BinAxis axis("test", -20, 55, 9875);
     axes.AddAxis(axis);
 
     SECTION("Right bin numbers and indices"){
@@ -64,10 +64,10 @@ TEST_CASE("Correct Indexing when there's just one axis in there", "[AxisCollecti
 
 
 TEST_CASE("Bin Edges for 4x4 binning"){
-    PdfAxis axis1("axis1", 0,  20, 100);
-    PdfAxis axis2("axis2", 10, 30, 219);
-    PdfAxis axis3("axis3", 0, 1, 2341);
-    PdfAxis axis4("axis4", 0, 2, 2241);
+    BinAxis axis1("axis1", 0,  20, 100);
+    BinAxis axis2("axis2", 10, 30, 219);
+    BinAxis axis3("axis3", 0, 1, 2341);
+    BinAxis axis4("axis4", 0, 2, 2241);
 
     AxisCollection axes;
     axes.AddAxis(axis1);

@@ -1,7 +1,7 @@
 #include <catch.hpp>
 #include <BinnedNLLH.h>
 #include <Gaussian.h>
-#include <PdfConverter.h>
+#include <DistTools.h>
 #include <OXSXDataSet.h>
 #include <iostream>
 
@@ -11,11 +11,11 @@ TEST_CASE("Binned NLLH, 3 rates no systematics"){
     Gaussian gaus3(1, 30);
 
     AxisCollection axes;
-    axes.AddAxis(PdfAxis("axis1", -40, 40 , 200));
+    axes.AddAxis(BinAxis("axis1", -40, 40 , 200));
 
-    BinnedPdf pdf1 = PdfConverter::ToBinnedPdf(gaus1, axes);
-    BinnedPdf pdf2 = PdfConverter::ToBinnedPdf(gaus2, axes);
-    BinnedPdf pdf3 = PdfConverter::ToBinnedPdf(gaus3, axes);
+    BinnedED pdf1(DistTools::ToHist(gaus1, axes));
+    BinnedED pdf2(DistTools::ToHist(gaus2, axes));
+    BinnedED pdf3(DistTools::ToHist(gaus3, axes));
 
 
     size_t centralBin = pdf1.FindBin(std::vector<double>(1,0));
@@ -23,9 +23,9 @@ TEST_CASE("Binned NLLH, 3 rates no systematics"){
     double prob2 = pdf2.GetBinContent(centralBin);
     double prob3 = pdf3.GetBinContent(centralBin);
 
-    pdf1.SetDataRep(0);
-    pdf2.SetDataRep(0);
-    pdf3.SetDataRep(0);
+    pdf1.SetObservables(0);
+    pdf2.SetObservables(0);
+    pdf3.SetObservables(0);
     
     BinnedNLLH lh;
     lh.AddPdf(pdf1);
@@ -33,7 +33,7 @@ TEST_CASE("Binned NLLH, 3 rates no systematics"){
     lh.AddPdf(pdf3);
 
     OXSXDataSet data;
-    data.AddEntry(EventData(std::vector<double>(1, 0)));
+    data.AddEntry(Event(std::vector<double>(1, 0)));
     
     lh.SetDataSet(&data);
     

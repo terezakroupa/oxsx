@@ -13,7 +13,7 @@ TEST_CASE("Do parameters register correctly?"){
     double doubleParam2 = 0;
     std::list<double> listParams(10, 0);
     
-    paramMan.Add(new DoubleParameter(doubleParam), "double");
+    paramMan.Add(new DoubleParameter("double", doubleParam));
     paramMan.AddDouble(doubleParam2, "double2");
 
     paramMan.AddContainer<std::list<double> >(listParams, "list");
@@ -21,8 +21,7 @@ TEST_CASE("Do parameters register correctly?"){
         std::stringstream ss;
         ss << "vector " << i;
         paramMan.Add(
-                 new ContainerParameter<std::vector<double> >(vecParams,i), 
-                 ss.str()
+                     new ContainerParameter<std::vector<double> >(ss.str(), vecParams,i)
                      );
     }
 

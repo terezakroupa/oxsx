@@ -9,12 +9,12 @@ EDManager::~EDManager(){
 }
 
 void 
-EDManager::AddEventDistribution(EventDistribution * pdf_){
+EDManager::AddDist(EventDistribution * pdf_){
     if (!fDists.size())
         fNDims = pdf_->GetNDims();
 
     else if(pdf_->GetNDims() != fNDims)
-        throw DimensionError("EDManager::AddEventDistribution", fNDims, pdf_->GetNDims(),
+        throw DimensionError("EDManager::AddDist", fNDims, pdf_->GetNDims(),
                              " dimensions in added pdf");
 
     fDists.push_back(pdf_->Clone());    
@@ -23,9 +23,9 @@ EDManager::AddEventDistribution(EventDistribution * pdf_){
 }
 
 void
-EDManager::AddEventDistributions(const std::vector<EventDistribution*>& pdfs_){
+EDManager::AddDists(const std::vector<EventDistribution*>& pdfs_){
     for(size_t i = 0; i < pdfs_.size(); i++)
-        AddEventDistribution(pdfs_.at(i));
+        AddDist(pdfs_.at(i));
 }
 
 double

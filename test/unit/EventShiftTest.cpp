@@ -1,10 +1,10 @@
 #include <catch.hpp>
-#include <EventData.h>
+#include <Event.h>
 #include <EventShift.h>
 
 TEST_CASE("Simple shift on variable number 2"){
     EventShift shifter;
-    shifter.SetDataRep(DataRepresentation(2));
+    shifter.SetObservables(ObsSet(2));
     shifter.SetShift(1);
 
     // make fake event
@@ -14,10 +14,10 @@ TEST_CASE("Simple shift on variable number 2"){
     fakeObservations.push_back(2);
     fakeObservations.push_back(3);
 
-    EventData inData(fakeObservations);
+    Event inData(fakeObservations);
     
     // apply the shift
-    EventData outData = shifter(inData);
+    Event outData = shifter(inData);
     std::vector<double> modifiedObs = outData.GetData();
 
     // Check the values

@@ -7,9 +7,9 @@
 TEST_CASE("Writing a histogram to disk  and reading back"){
     // make any old histogram
     AxisCollection axes;
-    axes.AddAxis(PdfAxis("a", 10, 11, 10));
-    axes.AddAxis(PdfAxis("b", 20, 21, 10));    
-    axes.AddAxis(PdfAxis("c", 30, 31, 10));
+    axes.AddAxis(BinAxis("a", 10, 11, 10));
+    axes.AddAxis(BinAxis("b", 20, 21, 10));    
+    axes.AddAxis(BinAxis("c", 30, 31, 10));
     
     Histogram origHisto(axes);
     origHisto.SetBinContents(SequentialElements<double>(0., axes.GetNBins()));
@@ -20,8 +20,8 @@ TEST_CASE("Writing a histogram to disk  and reading back"){
 
     SECTION("SAME AXES"){
         for(unsigned i = 0; i < origHisto.GetNDims(); i++){
-            const PdfAxis& origAxis   =  origHisto.GetAxes().GetAxis(i);
-            const PdfAxis& loadedAxis =  loadedHisto.GetAxes().GetAxis(i);
+            const BinAxis& origAxis   =  origHisto.GetAxes().GetAxis(i);
+            const BinAxis& loadedAxis =  loadedHisto.GetAxes().GetAxis(i);
             REQUIRE(origAxis.GetName() == loadedAxis.GetName());
             REQUIRE(origAxis.GetLatexName() == loadedAxis.GetLatexName());
             REQUIRE(origAxis.GetBinLowEdges() == loadedAxis.GetBinLowEdges());

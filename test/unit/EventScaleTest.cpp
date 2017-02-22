@@ -1,10 +1,10 @@
 #include <catch.hpp>
-#include <EventData.h>
+#include <Event.h>
 #include <EventScale.h>
 
 TEST_CASE("Simple scale on variable number 3"){
     EventScale scaler;
-    scaler.SetDataRep(DataRepresentation(3));
+    scaler.SetObservables(ObsSet(3));
     scaler.SetScale(2);
 
     // make fake event
@@ -14,10 +14,10 @@ TEST_CASE("Simple scale on variable number 3"){
     fakeObservations.push_back(2);
     fakeObservations.push_back(3);
 
-    EventData inData(fakeObservations);
+    Event inData(fakeObservations);
     
     // apply the shift
-    EventData outData = scaler(inData);
+    Event outData = scaler(inData);
     std::vector<double> modifiedObs = outData.GetData();
 
     // Check the values

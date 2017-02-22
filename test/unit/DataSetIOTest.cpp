@@ -15,7 +15,7 @@ TEST_CASE("Writing a data set to disk  and reading back"){
         for(size_t j = 0; j < eventObs.size(); j++)
             eventObs[j] = j;
         
-        origDataSet.AddEntry(EventData(eventObs));
+        origDataSet.AddEntry(Event(eventObs));
     }
     
     // name the observables for the save
@@ -28,24 +28,21 @@ TEST_CASE("Writing a data set to disk  and reading back"){
     
     IO::SaveDataSet(origDataSet, "data_set_io_root_test.h5");
     OXSXDataSet* loadedSet = IO::LoadDataSet("data_set_io_root_test.h5");
-	size_t nEntries = origDataSet.GetNEntries();
+    size_t nEntries = origDataSet.GetNEntries();
 
-    SECTION("Names copied correctly"){
-        REQUIRE(origDataSet.GetObservableNames() == loadedSet->GetObservableNames());
-    }
+    REQUIRE(origDataSet.GetObservableNames() == loadedSet->GetObservableNames());
 
-    SECTION("Same Data dimension"){
-        REQUIRE(origDataSet.GetNEntries() == loadedSet->GetNEntries());
-        REQUIRE(origDataSet.GetNObservables() == loadedSet->GetNObservables());
-    }
-	SECTION("Same number of events"){
+
+    
+    REQUIRE(origDataSet.GetNEntries() == loadedSet->GetNEntries());
+    REQUIRE(origDataSet.GetNObservables() == loadedSet->GetNObservables());
+
 	  REQUIRE(loadedSet->GetNEntries() == nEntries);
-	}
+    
 
-    SECTION("Same first and last data"){
-        REQUIRE(origDataSet.GetEntry(0).GetData() == loadedSet->GetEntry(0).GetData());
-        REQUIRE(origDataSet.GetEntry(nEntries -1).GetData() == loadedSet->GetEntry(nEntries -1).GetData());
-    }
+    REQUIRE(origDataSet.GetEntry(0).GetData() == loadedSet->GetEntry(0).GetData());
+    REQUIRE(origDataSet.GetEntry(nEntries -1).GetData() == loadedSet->GetEntry(nEntries -1).GetData());
+    
     
     remove("data_set_io_root_test.h5");
 }

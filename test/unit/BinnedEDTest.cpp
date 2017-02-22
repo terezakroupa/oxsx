@@ -1,13 +1,13 @@
 #include <catch.hpp>
-#include <BinnedPdf.h>
-#include <EventData.h>
+#include <BinnedED.h>
+#include <Event.h>
 
 TEST_CASE("Filling a 2x2 PDF"){
     AxisCollection ax;
-    ax.AddAxis(PdfAxis("axis1", 0, 10 , 100));
-    ax.AddAxis(PdfAxis("axis2", -12, 34 , 100));
+    ax.AddAxis(BinAxis("axis1", 0, 10 , 100));
+    ax.AddAxis(BinAxis("axis2", -12, 34 , 100));
 
-    BinnedPdf pdf(ax);
+    BinnedED pdf(ax);
 
     SECTION("Intial Binning Correct"){
         REQUIRE(pdf.GetNBins() == 100 * 100);
@@ -37,13 +37,13 @@ TEST_CASE("Filling a 2x2 PDF"){
     }
 
 
-    SECTION("Filling from EventData with weights"){
+    SECTION("Filling from Event with weights"){
         std::vector<size_t> relevantIndicies;
         relevantIndicies.push_back(0);
         relevantIndicies.push_back(3);
-        DataRepresentation drep(relevantIndicies);
+        ObsSet drep(relevantIndicies);
         
-        pdf.SetDataRep(drep);
+        pdf.SetObservables(drep);
 
         for(size_t i = 0; i < 100; i++){
             std::vector<double> vals;
@@ -52,7 +52,7 @@ TEST_CASE("Filling a 2x2 PDF"){
             vals.push_back(-1);
             vals.push_back(i + 1);
 
-            EventData evData(vals);
+            Event evData(vals);
             pdf.Fill(evData, 0.36);
         }
         

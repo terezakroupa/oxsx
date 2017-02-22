@@ -10,27 +10,27 @@ TEST_CASE("1D Box cut"){
     cut.SetUpperLimit(10);
     
     SECTION("in the middle of accepted range"){
-        EventData ev(std::vector<double>(1, 5));
+        Event ev(std::vector<double>(1, 5));
         REQUIRE(cut.PassesCut(ev) == true);
     }
 
     SECTION("below accepted range"){
-        EventData ev(std::vector<double>(1, 0));
+        Event ev(std::vector<double>(1, 0));
         REQUIRE(cut.PassesCut(ev) == false);
     }
 
     SECTION("above accepted range"){
-        EventData ev(std::vector<double>(1, 11));
+        Event ev(std::vector<double>(1, 11));
         REQUIRE(cut.PassesCut(ev) == false);
     }
 
     SECTION("on lower boundary"){
-        EventData ev(std::vector<double>(1, 1));
+        Event ev(std::vector<double>(1, 1));
         REQUIRE(cut.PassesCut(ev) == false);
     }
 
     SECTION("on upper boundary"){
-        EventData ev(std::vector<double>(1, 10));
+        Event ev(std::vector<double>(1, 10));
         REQUIRE(cut.PassesCut(ev) == false);
     }
 }
@@ -57,7 +57,7 @@ TEST_CASE("Several Cuts on MultiD data"){
     observations.push_back(6);
     observations.push_back(1);
 
-    EventData fakeEvent(observations);
+    Event fakeEvent(observations);
 
     // Check vals
     REQUIRE(lineCut.PassesCut(fakeEvent) == false);
