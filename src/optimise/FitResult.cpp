@@ -100,8 +100,8 @@ FitResult::Print() const{
 void
 FitResult::SaveAs(const std::string& fileName_) const{
   std::ofstream fs;
-  fs.open(fileName_);
-  fs << fileName_;
+  fs.open(fileName_.c_str());
+  fs << AsString();
   fs.close();
 }
 
