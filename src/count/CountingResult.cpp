@@ -86,6 +86,8 @@ CountingResult::SaveAs(const std::string& fileName_) const{
     time_t t = time(0);
     struct tm * now = localtime(&t);
 
+    size_t lastindex = fileName_.find_last_of(".");
+
     std::ofstream fs(fileName_.c_str());
     fs << "-----------------------------------"
        << "-----------------------------------" << std::endl
@@ -184,4 +186,15 @@ CountingResult::AsString() const{
                  << "\n"
                  << "----------------------------------------------------------------------\n";
     return resultString;
+}
+
+
+void 
+CountingResult::SetSampleHist(const Histogram& hist_){
+    fSampleHist = hist_;
+}
+
+const Histogram& 
+CountingResult::GetSampleHist() const{
+    return fSampleHist;
 }

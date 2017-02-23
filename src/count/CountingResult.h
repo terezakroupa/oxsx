@@ -1,6 +1,7 @@
 #ifndef __OXSX_COUNTING_RESULT__
 #define __OXSX_COUNTING_RESULT__
 #include <CutLog.h>
+#include <Histogram.h>
 #include <vector>
 #include <string>
 
@@ -25,6 +26,9 @@ class CountingResult{
     void SaveAs(const std::string& filename_) const;
     std::string AsString() const;
 
+    void SetSampleHist(const Histogram& hist_);
+    const Histogram& GetSampleHist() const;
+
  private:
     int  fObservedCounts;
     double fSignalEfficiency;
@@ -35,5 +39,6 @@ class CountingResult{
     std::string              fSignalName;
     CutLog fDataLog;
     CutLog fSignalLog;
+    Histogram fSampleHist;
 };
 #endif
