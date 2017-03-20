@@ -1,6 +1,9 @@
 #ifndef __OXSX_HIST_TOOLS__
 #define __OXSX_HIST_TOOLS__
 #include <vector>
+#include <stddef.h>
+
+
 class AxisCollection;
 class Histogram;
 
