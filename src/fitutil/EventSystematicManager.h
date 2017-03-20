@@ -1,6 +1,7 @@
 #ifndef __EVENT_SYSTEMATIC_MANAGER__
 #define __EVENT_SYSTEMATIC_MANAGER__
 #include <vector>
+#include <stddef.h>
 
 class EventSystematic;
 class Event;
