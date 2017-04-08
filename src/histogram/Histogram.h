@@ -51,9 +51,9 @@ class Histogram{
     double    GetBinHighEdge(size_t bin_, size_t dim_) const;
     double    GetBinCentre(size_t bin_, size_t dim_) const;
 
-	void Add(const Histogram&, double weight = 1);
-	void Multiply(const Histogram&);
-	void Divide(const Histogram&);
+    void Add(const Histogram&, double weight = 1);
+    void Multiply(const Histogram&);
+    void Divide(const Histogram&);
 	
  private:
     AxisCollection fAxes;
