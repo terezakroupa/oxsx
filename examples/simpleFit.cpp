@@ -1,5 +1,5 @@
 // A simple fit in energy for signal and a background        
-#include <BinnedED.h>        
+#include <BinnedPdf.h>        
 #include <ROOTNtuple.h>        
 #include <BinnedNLLH.h>        
 #include <GridSearch.h>        
@@ -19,14 +19,14 @@ int main(){
          
     // Set up binning        
     AxisCollection axes;        
-    axes.AddAxis(BinAxis("energy", 2, 3, 10, "Energy"));
+    axes.AddAxis(PdfAxis("energy", 2, 3, 10, "Energy"));
          
     // Only interested in first bit of data ntuple        
-    ObsSet obsSet(0);        
+    DataRepresentation dataRep(0);        
          
     // Set up pdf with these bins in this observable        
-    BinnedED bgPdf(axes);      bgPdf.SetObservables(obsSet);        
-    BinnedED signalPdf(axes);  signalPdf.SetObservables(obsSet);        
+    BinnedPdf bgPdf(axes);      bgPdf.SetDataRep(dataRep);        
+    BinnedPdf signalPdf(axes);  signalPdf.SetDataRep(dataRep);        
          
     std::cout << "Initialised Pdfs" << std::endl;        
          
