@@ -140,8 +140,7 @@ Minuit::Optimise(TestStatistic* testStat_){
     // defaults are same as ROOT defaults
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 
-    fFitResult.SetBestFit(fMinimiser -> Params());
-    fFitResult.SetParameterNames(testStat_->GetParameterNames());
+    fFitResult.SetBestFit(VecsToMap(testStat_->GetParameterNames(), fMinimiser -> Params()));
     fFitResult.SetValid(fnMin.IsValid());
     return fFitResult;
 }

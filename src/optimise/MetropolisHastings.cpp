@@ -204,8 +204,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     fRejectionRate/= static_cast<double>(fMaxIter);
     std::cout << "Metropolis Hastings:: acceptance rate = " << 1 - fRejectionRate << std::endl;
 
-    fFitResult.SetBestFit(fBestFit);
-    fFitResult.SetParameterNames(pTestStatistic->GetParameterNames());
+    fFitResult.SetBestFit(VecsToMap(pTestStatistic->GetParameterNames(), fBestFit));
     fFitResult.SetStatSample(fSample);
     fFitResult.SetStatSpace(fHist);
     fFitResult.SetValid(true);

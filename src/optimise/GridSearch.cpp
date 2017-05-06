@@ -115,8 +115,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
         }
        
     } 
-    fFitResult.SetBestFit(bestFit);
-    fFitResult.SetParameterNames(testStat_->GetParameterNames());
+    fFitResult.SetBestFit(VecsToMap(paramNames, bestFit));
     return fFitResult;
 }
 
