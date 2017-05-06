@@ -5,24 +5,26 @@
 #define __MINUIT_FCN__
 #include <TestStatistic.h>
 #include <Minuit2/FCNBase.h>
+#include <ContainerTools.hpp>
+#include <Exceptions.h>
 
 class MinuitFCN : public ROOT::Minuit2::FCNBase{
  public:
-    MinuitFCN() :fTestStatistic(NULL), fUp(0.5), fFlipSign(false) {}
-    MinuitFCN(TestStatistic* statistic_) : fTestStatistic(statistic_), 
+    MinuitFCN() :pTestStatistic(NULL), fUp(0.5), fFlipSign(false) {}
+    MinuitFCN(TestStatistic* statistic_) : pTestStatistic(statistic_), 
                                            fUp(0.5), fFlipSign(false){}
 
     //these two required by minit
     double Up() const {return fUp;} 
     double operator()(const std::vector<double>& params_) const {
-        if(!fTestStatistic)
-            throw 0;
+        if(!pTestStatistic)
+            throw NULLPointerAccessError("Minuit is trying to optimise a NULL TestStatistic* !");
 
-        fTestStatistic->SetParameters(params_);
+        pTestStatistic->SetParameters(VecsToMap(pTestStatistic->GetParameterNames(), params_));
         if(fFlipSign)
-            return -1 * fTestStatistic->Evaluate();
+            return -1 * pTestStatistic->Evaluate();
 
-        return fTestStatistic -> Evaluate();
+        return pTestStatistic -> Evaluate();
     }
 
 
@@ -33,7 +35,7 @@ class MinuitFCN : public ROOT::Minuit2::FCNBase{
     bool GetSignFlip() const {return fFlipSign;}
 
  private:
-    TestStatistic* fTestStatistic;
+    TestStatistic* pTestStatistic;
     double fUp;
     bool   fFlipSign;  // if true, result is multiplied by -ve 1. changes minimisation to maximisation
 };

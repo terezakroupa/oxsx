@@ -6,6 +6,7 @@
 #include <FitResult.h>
 #include <Exceptions.h>
 #include <Formatter.hpp>
+#include <ContainerTools.hpp>
 
 void 
 GridSearch::SetMinima(const std::vector<double>& minima_){
@@ -42,6 +43,9 @@ GridSearch::Optimise(TestStatistic* testStat_){
     // list of rates followed by list of systematics
     testStat_->RegisterFitComponents();
 
+    // get the names of the parameters
+    std::vector<std::string> paramNames = testStat_ -> GetParameterNames();
+    
     // check initialisation
     size_t nParams = testStat_ -> GetParameterCount();
     if(   fStepSizes.size() != nParams
@@ -98,7 +102,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
                       << "%" << std::endl;
         }
 
-        testStat_ -> SetParameters(fParams);
+        testStat_ -> SetParameters(VecsToMap(paramNames, fParams));
         double currentVal = testStat_ -> Evaluate();
 
         // if maximising, take the negative of the test stat

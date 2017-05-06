@@ -4,6 +4,7 @@
 #include <HistTools.h>
 #include <Formatter.hpp>
 #include <Combinations.hpp>
+#include <ContainerTools.hpp>
 #include <Rand.h>
 #include <iostream>
 #include <math.h> //sqrt
@@ -152,6 +153,8 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
                          << "\n If initial trial is specified it should be one per fit parameter"
                          );    
 
+    std::vector<std::string> parameterNames = testStat_->GetParameterNames();
+
     InitialiseHistograms();
 
     // 1. Choose a random starting point or the user defined one
@@ -222,10 +225,10 @@ MetropolisHastings::StepAccepted(const std::vector<double>& thisStep_,
             return false;
     }
 
-    pTestStatistic -> SetParameters(thisStep_);
+    pTestStatistic -> SetParameters(VecsToMap(pTestStatistic->GetParameterNames(), thisStep_));
     double thisVal = pTestStatistic -> Evaluate();
     
-    pTestStatistic -> SetParameters(proposedStep_);
+    pTestStatistic -> SetParameters(VecsToMap(pTestStatistic->GetParameterNames(), proposedStep_));
     double proposedVal = pTestStatistic -> Evaluate();
 
     if(fFlipSign){
