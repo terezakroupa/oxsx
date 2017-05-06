@@ -57,5 +57,7 @@ class BinnedEDManager : public FitComponent{
     size_t fNDims;
 
     std::string fName; // component name
+
+    void RegisterParameters();
 };
 #endif

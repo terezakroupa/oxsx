@@ -73,6 +73,8 @@ BinnedEDManager::AddPdf(const BinnedED& pdf_){
     fOriginalPdfs.push_back(pdf_);
     fWorkingPdfs.push_back(pdf_);
     fNPdfs++;
+    
+    RegisterParameters();
 }
 
 void 
@@ -80,6 +82,7 @@ BinnedEDManager::AddPdfs(const std::vector<BinnedED>& pdfs_){
     for(size_t i = 0; i < pdfs_.size(); i++){
         AddPdf(pdfs_.at(i));
     }
+    RegisterParameters();
 }
 
 const std::vector<double>&
@@ -102,7 +105,6 @@ BinnedEDManager::ApplyShrink(const BinnedEDShrinker& shrinker_){
     }
     
 }
-
 
 ////////////////////////////////
 // Make this a fit component! //
@@ -152,3 +154,13 @@ std::vector<std::string>
 BinnedEDManager::GetParameterNames() const{
     return fParameterManager.GetParameterNames();
 }
+
+void
+BinnedEDManager::RegisterParameters(){
+    fParameterManager.Clear();
+    std::vector<std::string> parameterNames;
+    for(size_t i = 0; i < fOriginalPdfs.size(); i++)
+        parameterNames.push_back(fOriginalPdfs.at(i).GetName() + " norm");
+    
+    fParameterManager.AddContainer(fNormalisations, parameterNames);
+}    

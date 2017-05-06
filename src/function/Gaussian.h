@@ -22,10 +22,7 @@ class Gaussian : public PDF{
     double Integral() const {return 1;} // normalised by definition
     std::vector<double> Sample() const;
 
-
     // Getters/Setters
-    void SetMeansStdDevs(const std::vector<double>& means_, 
-                         const std::vector<double>& stdDevs_);
     double GetMean(size_t dimension_) const;
     double GetStDev(size_t dimension_) const;    
     std::vector<double> GetMeans() const;
@@ -61,5 +58,9 @@ class Gaussian : public PDF{
     void   Initialise(const std::vector<double>& means_, 
                       const std::vector<double>& stdDevs_,
                       const std::string& name_);
+    
+    // this is private, we want the dimensionality to be fixed at creation
+    void SetMeansStdDevs(const std::vector<double>& means_, 
+                         const std::vector<double>& stdDevs_);
 };
 #endif

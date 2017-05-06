@@ -61,6 +61,18 @@ EDManager::GetNDists() const{
 }
 
 // Make a fittable component - i.e. rescale pdfs inside to fit
+
+void
+EDManager::RegisterParameters(){
+    fParameterManager.Clear();
+    std::vector<std::string> parameterNames;
+    for(size_t i = 0; i < fDists.size(); i++)
+        parameterNames.push_back(fDists.at(i)->GetName() + " norm");
+    
+    fParameterManager.AddContainer(fNormalisations, parameterNames);
+}    
+
+
 std::string
 EDManager::GetName() const{
     return fName;
@@ -105,3 +117,4 @@ std::vector<std::string>
 EDManager::GetParameterNames() const{
     return fParameterManager.GetParameterNames();
 }
+

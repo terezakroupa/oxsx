@@ -88,6 +88,8 @@ Gaussian::SetMeansStdDevs(const std::vector<double>& means_,
     fMeans = means_;
     fStdDevs = stdDevs_;
     fNDims = means_.size();
+    fParameterManager.AddContainer(fMeans, "means");
+    fParameterManager.AddContainer(fStdDevs, "stddevs");
 }
 
 std::vector<double>

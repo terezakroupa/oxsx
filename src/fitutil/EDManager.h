@@ -46,5 +46,6 @@ class EDManager : public FitComponent{
     std::vector<double> fNormalisations;
 
     std::string fName; // component name
+    void RegisterParameters();
 };
 #endif
