@@ -3,6 +3,9 @@
 #include <Exceptions.h>
 #include <ContainerTools.hpp>
 
+using ContainerTools::ToString;
+using ContainerTools::GetKeys;
+
 Event
 EventShift::operator()(const Event& inEvent_){
     // pull out the relevant data point

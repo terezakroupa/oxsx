@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <iostream>
 
+using ContainerTools::GetKeys;
+using ContainerTools::ToString;
+
 void 
 ComponentManager::AddComponent(FitComponent*  componentPtr_){
     fComponents.push_back(componentPtr_);

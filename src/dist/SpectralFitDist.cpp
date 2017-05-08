@@ -4,6 +4,9 @@
 #include <ContainerTools.hpp>
 #include <sstream>
 
+using ContainerTools::ToString;
+using ContainerTools::VecsToMap;
+
 // JD: this will probably be too slow one day - there is overkill checking here.
 // you can just set all of the bin contents in one go, but noone needs this code yet
 

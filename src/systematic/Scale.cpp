@@ -109,7 +109,7 @@ Scale::SetParameters(const ParameterDict& pd_){
         fScaleFactor = pd_.at(fParamName);
     }
     catch(const std::out_of_range& e_){
-        throw ParameterError("Set dictionary is missing " + fParamName + ". I did contain: \n" + ToString(GetKeys(pd_)));
+        throw ParameterError("Set dictionary is missing " + fParamName + ". I did contain: \n" + ContainerTools::ToString(ContainerTools::GetKeys(pd_)));
     }
 }
 

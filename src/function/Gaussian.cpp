@@ -38,7 +38,7 @@ Gaussian::Gaussian(double mean_, double stdDev_, const std::string& name_){
 }
 
 Gaussian::Gaussian(){
-    Initialise(std::vector<double>(1, 0), std::vector<double>(0, 1), "");
+    Initialise(std::vector<double>(1, 0), std::vector<double>(1, 1), "");
 }
 
 Function* 

@@ -16,11 +16,12 @@ class MinuitFCN : public ROOT::Minuit2::FCNBase{
 
     //these two required by minit
     double Up() const {return fUp;} 
-    double operator()(const std::vector<double>& params_) const {
+    double operator()(const std::vector<double>& paramVals_) const {
         if(!pTestStatistic)
             throw NULLPointerAccessError("Minuit is trying to optimise a NULL TestStatistic* !");
-
-        pTestStatistic->SetParameters(VecsToMap(pTestStatistic->GetParameterNames(), params_));
+        
+        ContainerTools::SetValues(fSetParameters, paramVals_);
+        pTestStatistic->SetParameters(fSetParameters);
         if(fFlipSign)
             return -1 * pTestStatistic->Evaluate();
 
@@ -38,5 +39,8 @@ class MinuitFCN : public ROOT::Minuit2::FCNBase{
     TestStatistic* pTestStatistic;
     double fUp;
     bool   fFlipSign;  // if true, result is multiplied by -ve 1. changes minimisation to maximisation
+    ParameterDict fSetParameters; // edit this map in place to avoid recreating it constantly
+
+    void Initialise(){fSetParameters = pTestStatistic -> GetParameters();}
 };
 #endif

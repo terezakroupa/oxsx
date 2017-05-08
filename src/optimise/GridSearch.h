@@ -3,6 +3,7 @@
 #include <Optimiser.h>
 #include <vector>
 #include <FitResult.h>
+
 class TestStatistic;
 class GridSearch : public Optimiser{
  public:
@@ -22,7 +23,7 @@ class GridSearch : public Optimiser{
     bool GetMaximising() const;
 
  private:
-    std::vector<double> fParams;
+    std::vector<double> fParamVals;
     FitResult           fFitResult;
     
     bool fMaximising;

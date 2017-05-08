@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cassert>
 
+namespace ContainerTools{
 
 template <typename T1, typename T2>
 std::map<T1, T2> VecsToMap(const std::vector<T1>& v1_, const std::vector<T2>& v2_){
@@ -29,6 +30,17 @@ std::vector<T1> GetKeys(const std::map<T1, T2> & mp_){
     return vec;
 }
 
+template<typename T1, typename T2>
+std::vector<T2> GetValues(const std::map<T1, T2>& mp_, const std::vector<T1>& keys_){
+    // throws std::out_of_range if there is no matching key
+    std::vector<T2> vals;
+    vals.reserve(keys_.size());
+    for(size_t i = 0; i < keys_.size(); i++){    
+            vals.push_back(mp_.at(keys_.at(i)));
+    }
+
+    return vals;
+}
 
 template<typename T1, typename T2>
 std::vector<T2> GetValues(const std::map<T1, T2>& mp_){
@@ -41,6 +53,16 @@ std::vector<T2> GetValues(const std::map<T1, T2>& mp_){
     }
     return vec;
 }
+template<typename T1, typename T2>
+void SetValues(std::map<T1, T2> mp_, const std::vector<T2>& set_){
+    typedef typename std::map<T1, T2>::iterator mapIt;
+
+    assert(mp_.size() == set_.size());    
+    size_t index = 0;
+    for(mapIt it = mp_.begin(); it != mp_.end(); ++it)
+        it->second = set_.at(index++);
+}
+
 
 template<typename T1, typename T2>
 bool HasSameKeys(const T1& m1_, const T2& m2_){
@@ -52,20 +74,17 @@ bool HasKey(const std::map<T1, T2>& mp_, const T1& key_){
     return mp_.find(key_) != mp_.end();
 }
 
-
 template<typename T1, typename T2, typename T3>
 std::string CompareKeys(const std::map<T1, T2>& m1_, const std::map<T1, T3>& m2_, const std::string name1_ = "p1", const std::string& name2_ = "p2"){
     // nothing doing
     if(HasSameKeys(m1_, m2_))
         return name1_ + " and " + name2_ + " have the same keys";
 
-    typename std::vector<T1> missingFrom1;
     typename std::vector<T1> missingFrom2;
     
-    typedef typename std::map<T1, T2>::const_iterator mapIt2;
-    typedef typename std::map<T1, T3>::const_iterator mapIt3;
+    typedef typename std::map<T1, T2>::const_iterator mapIt;
 
-    for(mapIt2 it = m1_.begin(); it != m1_.end(); ++it){
+    for(mapIt it = m1_.begin(); it != m1_.end(); ++it){
         if(!HasKey(m2_, it->first))
             missingFrom2.push_back(it->first);
     }
@@ -88,5 +107,5 @@ std::string ToString(const T1& c_, const std::string& delimit_ = ", "){
     return retStr;
 }
 
-
+} // namespace
 #endif

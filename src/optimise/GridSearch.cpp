@@ -43,8 +43,8 @@ GridSearch::Optimise(TestStatistic* testStat_){
     // list of rates followed by list of systematics
     testStat_->RegisterFitComponents();
 
-    // get the names of the parameters
-    std::vector<std::string> paramNames = testStat_ -> GetParameterNames();
+    // use this map to set the parameters, change the values in place
+    ParameterDict setParams = testStat_ -> GetParameters();
     
     // check initialisation
     size_t nParams = testStat_ -> GetParameterCount();
@@ -78,7 +78,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
     }    
 
     // start at min value
-    fParams = fMinima;
+    fParamVals = fMinima;
     
 	if(maxSteps == 1){
 	  std::cout << "Warning: Grid Search has only one grid point"
@@ -101,8 +101,9 @@ GridSearch::Optimise(TestStatistic* testStat_){
                       <<  100 * double(stepCount)/maxSteps 
                       << "%" << std::endl;
         }
-
-        testStat_ -> SetParameters(VecsToMap(paramNames, fParams));
+        
+        ContainerTools::SetValues(setParams, fParamVals);
+        testStat_ -> SetParameters(setParams);
         double currentVal = testStat_ -> Evaluate();
 
         // if maximising, take the negative of the test stat
@@ -111,11 +112,12 @@ GridSearch::Optimise(TestStatistic* testStat_){
 
         if (currentVal < fMinVal || !fMinVal){
                 fMinVal = currentVal;
-                bestFit = fParams;
+                bestFit = fParamVals;
         }
        
-    } 
-    fFitResult.SetBestFit(VecsToMap(paramNames, bestFit));
+    }
+    ContainerTools::SetValues(setParams, bestFit);
+    fFitResult.SetBestFit(setParams);
     return fFitResult;
 }
 
@@ -124,11 +126,11 @@ bool
 GridSearch::Increment(size_t index_){
     if(fMinima == fMaxima)
 	  return false;
-    fParams[index_] += fStepSizes.at(index_);
+    fParamVals[index_] += fStepSizes.at(index_);
 
     // wrap around past the maximum
-    if (fParams[index_] > fMaxima.at(index_)){
-        fParams[index_] = fMinima.at(index_);
+    if (fParamVals[index_] > fMaxima.at(index_)){
+        fParamVals[index_] = fMinima.at(index_);
 
         // if its the last index no rippling to do
         if (index_ == fStepSizes.size() - 1)

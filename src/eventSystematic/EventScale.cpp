@@ -5,6 +5,9 @@
 #include <Formatter.hpp>
 #include <ContainerTools.hpp>
 
+using ContainerTools::ToString;
+using ContainerTools::GetKeys;
+
 Event
 EventScale::operator()(const Event& inEvent_){
     // pull out the relevant data point

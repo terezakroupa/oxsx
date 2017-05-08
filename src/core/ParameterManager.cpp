@@ -4,6 +4,11 @@
 #include <ContainerTools.hpp>
 #include <Exceptions.h>
 
+using ContainerTools::CompareKeys;
+using ContainerTools::HasKey;
+using ContainerTools::GetKeys;
+using ContainerTools::ToString;
+
 ParameterManager::~ParameterManager(){
     for(std::map<std::string, FitParameter*>::iterator it = fParamPtrs.begin(); it != fParamPtrs.end(); ++it)
         delete it->second;

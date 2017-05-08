@@ -5,6 +5,9 @@
 #include <iostream>
 #include <ContainerTools.hpp>
 
+using ContainerTools::ToString;
+using ContainerTools::GetKeys;
+
 Event
 EventReconvolution::operator()(const Event& event_){
     std::vector<double> obs = event_.GetData();
