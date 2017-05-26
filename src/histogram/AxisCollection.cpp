@@ -33,8 +33,7 @@ AxisCollection::GetAxis(const std::string& axisName_) const{
     if(it == fAxisNames.end())
         throw NotFoundError("No axis by the name of " + axisName_ + " found!" + "\n axes are: " + ContainerTools::ToString(fAxisNames));
                             
-    
-    return fAxes[it - fAxisNames.end()];
+    return fAxes[it - fAxisNames.begin()];
 }
 
 std::vector<std::string> 
@@ -60,7 +59,6 @@ AxisCollection::AddAxis(const BinAxis& axis_){
         throw ValueError(Formatter() << "Can't add axis " 
                          << axis_.GetName() <<  " already exists!"); 
     }
-        
     fAxes.push_back(axis_);
     fAxisNames.push_back(axis_.GetName());
     fAxisNbins.push_back(axis_.GetNBins());
