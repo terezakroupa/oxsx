@@ -3,6 +3,7 @@
 #include <Exceptions.h>
 #include <Formatter.hpp>
 #include <ContainerTools.hpp>
+#include <algorithm>
 
 size_t 
 AxisCollection::GetNBins() const {
