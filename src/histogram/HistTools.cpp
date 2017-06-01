@@ -26,3 +26,16 @@ HistTools::FillAllHists(std::vector<Histogram>& hists_, const std::map<std::stri
         hists_.at(i).Fill(fillVals_);
     }    
 }
+
+
+std::vector<Histogram> MakeAllHists(const AxisCollection& axes_,
+                                    const std::vector<std::string>& names_){
+    std::vector<Histogram> hists;
+    hists.reserve(names_.size());
+    for(size_t i = 0; i < names_.size(); i++){
+        AxisCollection axes;
+        axes.AddAxis(axes_.GetAxis(names_.at(i)));
+        hists.push_back(Histogram(axes));
+    }
+    return hists;
+}

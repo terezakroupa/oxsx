@@ -344,6 +344,7 @@ MetropolisHastings::InitialiseHistograms(){
     else{
         f2DProjNames = Combinations::AllCombsNoDiag(pTestStatistic->GetParameterNames());
         f2DProjections = HistTools::MakeAllHists(histAxes, f2DProjNames);
+        f1DProjections = HistTools::MakeAllHists(histAxes, pTestStatistic->GetParameterNames());
     }
 }
 
