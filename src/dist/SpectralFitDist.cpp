@@ -3,7 +3,7 @@
 #include <Formatter.hpp>
 #include <ContainerTools.hpp>
 #include <sstream>
-
+#include <algorithm>
 using ContainerTools::ToString;
 using ContainerTools::VecsToMap;
 
