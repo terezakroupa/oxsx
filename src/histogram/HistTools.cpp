@@ -28,8 +28,9 @@ HistTools::FillAllHists(std::vector<Histogram>& hists_, const std::map<std::stri
 }
 
 
-std::vector<Histogram> MakeAllHists(const AxisCollection& axes_,
-                                    const std::vector<std::string>& names_){
+std::vector<Histogram> 
+HistTools::MakeAllHists(const AxisCollection& axes_,
+                        const std::vector<std::string>& names_){
     std::vector<Histogram> hists;
     hists.reserve(names_.size());
     for(size_t i = 0; i < names_.size(); i++){
