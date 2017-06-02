@@ -6,6 +6,7 @@
 #include <Histogram.h>
 #include <cstdlib>
 #include <vector>
+#include <ParameterDict.h>
 #include <string>
 #include <map>
 
@@ -13,17 +14,14 @@ typedef std::map<std::string, Histogram> HistMap;
 
 class FitResult{
  public:
-    FitResult() : fStatSpace(NULL), fIsValid(true) {}
+    FitResult() : fStatSpace(NULL), fIsValid(true),  printPrecision(5) {}
     FitResult(const FitResult&); //deep copy
     FitResult operator=(const FitResult&); //deep copy
     ~FitResult(); // frees stat space
 
-    void  SetBestFit(const std::vector<double>&);
-    std::vector<double> GetBestFit() const;
-
-    std::vector<std::string> GetParameterNames() const;
-    void SetParameterNames(const std::vector<std::string>&);
-
+    const ParameterDict& GetBestFit() const;
+    void SetBestFit(const ParameterDict&);
+    
     void SetStatSpace(const Histogram&);
     const Histogram& GetStatSpace() const; 
 
@@ -32,6 +30,9 @@ class FitResult{
     
     void SetValid(bool b_);
     bool GetValid() const;
+
+    void SetPrintPrecision(const size_t&);
+    size_t GetPrintPrecision() const;
     
     std::string AsString() const;
     void Print() const;
@@ -45,13 +46,13 @@ class FitResult{
 
 
  private:
-    std::vector<double>               fBestFit;
-    std::vector<std::string>          fParameterNames;
+    ParameterDict fBestFit;
     std::vector<std::vector<double> > fStatSample;
     Histogram*    fStatSpace;
     HistMap f1DProjections;
     HistMap f2DProjections;
    
+    size_t printPrecision;
     bool fIsValid;
 };
 #endif
