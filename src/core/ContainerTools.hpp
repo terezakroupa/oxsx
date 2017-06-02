@@ -54,13 +54,14 @@ std::vector<T2> GetValues(const std::map<T1, T2>& mp_){
     return vec;
 }
 template<typename T1, typename T2>
-void SetValues(std::map<T1, T2> mp_, const std::vector<T2>& set_){
+void SetValues(std::map<T1, T2> mp_, const std::vector<T1>& keys_, const std::vector<T2>& values_){
     typedef typename std::map<T1, T2>::iterator mapIt;
 
-    assert(mp_.size() == set_.size());    
+    assert(mp_.size() == keys_.size());
+    assert(values_.size() == keys_.size());
     size_t index = 0;
-    for(mapIt it = mp_.begin(); it != mp_.end(); ++it)
-        it->second = set_.at(index++);
+    for(size_t i = 0; i < keys_.size(); i++)
+        mp_[keys_.at(i)] = values_.at(i);
 }
 
 

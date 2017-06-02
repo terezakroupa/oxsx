@@ -80,10 +80,10 @@ GridSearch::Optimise(TestStatistic* testStat_){
     // start at min value
     fParamVals = fMinima;
     
-	if(maxSteps == 1){
-	  std::cout << "Warning: Grid Search has only one grid point"
-				<< std::endl;
-	}
+    if(maxSteps == 1){
+        std::cout << "Warning: Grid Search has only one grid point"
+                  << std::endl;
+    }
 	
     // count interations
     unsigned stepCount = 0;
@@ -103,7 +103,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
         }
         
         ContainerTools::SetValues(setParams, fParamVals);
-        testStat_ -> SetParameters(setParams);
+       testStat_ -> SetParameters(setParams);
         double currentVal = testStat_ -> Evaluate();
 
         // if maximising, take the negative of the test stat
@@ -125,7 +125,7 @@ GridSearch::Optimise(TestStatistic* testStat_){
 bool 
 GridSearch::Increment(size_t index_){
     if(fMinima == fMaxima)
-	  return false;
+        return false;
     fParamVals[index_] += fStepSizes.at(index_);
 
     // wrap around past the maximum
