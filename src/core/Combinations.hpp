@@ -3,6 +3,7 @@
 #include <Exceptions.h>
 #include <vector>
 #include <utility>
+#include <assert.h>
 
 
 namespace Combinations{
@@ -20,6 +21,7 @@ std::vector<std::pair<T1, T1> > AllCombsNoDiag(const std::vector<T1>& v1_){
 
 template<typename T1>
 std::vector<T1> Range(const T1& N, const T1& start = 0){
+    assert(N > start);
     std::vector<T1> ret;
     ret.reserve(N - start);
     for(T1 i = start; i < N; i++)

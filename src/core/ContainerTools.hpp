@@ -90,7 +90,7 @@ std::string CompareKeys(const std::map<T1, T2>& m1_, const std::map<T1, T3>& m2_
             missingFrom2.push_back(it->first);
     }
 
-    std::string returnStr =  "Keys in " + name1_ + "Missing from " + name2_ + " : \n";
+    std::string returnStr =  "Keys in " + name1_ + " but missing from " + name2_ + " : \n";
     for(size_t i = 0; i < missingFrom2.size(); i++){
         returnStr += std::string(missingFrom2.at(i));
         returnStr += ",";

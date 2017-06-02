@@ -19,8 +19,12 @@ class SpectralFitDist : public BinnedED, public FitComponent{
     std::vector<std::string> GetParameterNames() const;
     void   RenameParameter(const std::string& old_, const std::string& new_);
 
+
+    std::string GetName() const;
+    void SetName(const std::string& name_);
     // it already has get/set name from BinnedED
  private:
     std::vector<std::string> fBinNames;
+    std::string fName;
 };
 #endif

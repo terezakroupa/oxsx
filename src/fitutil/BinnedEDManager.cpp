@@ -73,7 +73,7 @@ BinnedEDManager::AddPdf(const BinnedED& pdf_){
     fOriginalPdfs.push_back(pdf_);
     fWorkingPdfs.push_back(pdf_);
     fNPdfs++;
-    
+    fNormalisations.resize(fOriginalPdfs.size(), 0);
     RegisterParameters();
 }
 
@@ -160,7 +160,6 @@ BinnedEDManager::RegisterParameters(){
     fParameterManager.Clear();
     std::vector<std::string> parameterNames;
     for(size_t i = 0; i < fOriginalPdfs.size(); i++)
-        parameterNames.push_back(fOriginalPdfs.at(i).GetName() + " norm");
-    
+        parameterNames.push_back(fOriginalPdfs.at(i).GetName() + "_norm");
     fParameterManager.AddContainer(fNormalisations, parameterNames);
 }    

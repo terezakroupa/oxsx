@@ -15,6 +15,8 @@ SpectralFitDist::SpectralFitDist(const std::string& name_,
     fBinNames.reserve(axes_.GetNBins());
     for(size_t i = 0; i < axes_.GetNBins(); i++)
         fBinNames.push_back(std::string(Formatter() << name_ <<  "_bin_" << i));
+    
+    fName = name_;
 }
 
 
@@ -69,4 +71,14 @@ SpectralFitDist::RenameParameter(const std::string& old_, const std::string& new
         throw ParameterError("Can't rename " + old_ + " it doesn't exist, parameters are called: \n " + ToString(fBinNames));
     *it = new_;
             
+}
+
+void
+SpectralFitDist::SetName(const std::string& name_){
+    fName = name_;
+}
+
+std::string
+SpectralFitDist::GetName() const{
+    return fName;
 }
