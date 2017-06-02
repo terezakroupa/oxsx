@@ -195,17 +195,17 @@ BinnedNLLH::RegisterFitComponents(){
 }
 
 void
-BinnedNLLH::SetParameters(const std::vector<double>& params_){
+BinnedNLLH::SetParameters(const ParameterDict& params_){
     try{
         fComponentManager.SetParameters(params_);
     }
-    catch(const ParameterCountError& e_){
-        throw ParameterCountError(std::string("BinnedNLLH::") + e_.what());
+    catch(const ParameterError& e_){
+        throw ParameterError(std::string("BinnedNLLH::") + e_.what());
     }
 }
                                              
                  
-std::vector<double>
+ParameterDict
 BinnedNLLH::GetParameters() const{
     return fComponentManager.GetParameters();
 }
