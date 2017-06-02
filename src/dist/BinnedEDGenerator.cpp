@@ -7,23 +7,22 @@
 #include <algorithm>
 
 BinnedED
-BinnedEDGenerator::ExpectedRatesPdf() const{
+BinnedEDGenerator::ExpectedRatesED(const std::string& name ) const{
     if(!(fPdfs.size() == fRates.size()))
         throw LogicError("BinnedEDGenerator::Need exactly one rate for each ");
    
     if (!fPdfs.size())
         throw LogicError("BinnedEDGenerator::No source pdfs!!");
 
+    std::string fname = name;
     BinnedED fakePdf(fPdfs.at(0));
-    std::string name;
-    name = "Gen_Exp_";
     for(size_t i = 0; i < fPdfs.size(); i++){
-        name +=  fPdfs.at(i).GetName();
+        fname +=  fPdfs.at(i).GetName();
         if(i != fPdfs.size() - 1)
-            name += "*";
+            fname += "*";
 
     }
-    fakePdf.SetName(name);
+    fakePdf.SetName(fname);
     fakePdf.Empty();
     for(size_t i = 0; i < fPdfs.size(); i++){
         unsigned counts = round(fRates.at(i));         
@@ -35,24 +34,23 @@ BinnedEDGenerator::ExpectedRatesPdf() const{
 }
 
 BinnedED
-BinnedEDGenerator::PoissonFluctuatedPdf() const{
+BinnedEDGenerator::PoissonFluctuatedED(const std::string& name ) const{
     if(!(fPdfs.size() == fRates.size()))
         throw LogicError("BinnedEDGenerator::Need exactly one rate for each ");
    
     if (!fPdfs.size())
         throw LogicError("BinnedEDGenerator::No source pdfs!!");
 
+    std::string fname = name;
     BinnedED fakePdf(fPdfs.at(0));
 
-    std::string name;
-    name = "Gen_Poi_";
     for(size_t i = 0; i < fPdfs.size(); i++){
-        name +=  fPdfs.at(i).GetName();
+        fname +=  fPdfs.at(i).GetName();
         if(i != fPdfs.size() - 1)
-            name += "*";
+            fname += "*";
 
     }
-    fakePdf.SetName(name);
+    fakePdf.SetName(fname);
     fakePdf.Empty();
     for(size_t i = 0; i < fPdfs.size(); i++){
         unsigned counts = Rand::Poisson(fRates.at(i));         
