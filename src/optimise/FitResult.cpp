@@ -122,7 +122,7 @@ FitResult::AsString() const{
        << it->first << "\t\t" 
        << std::setw(10) 
        << std::setprecision(printPrecision)
-       << fBestFit.at(i)
+       << it->second
        << std::endl;
   }
   return ss.str();
