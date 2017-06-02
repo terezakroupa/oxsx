@@ -31,7 +31,7 @@ double
 SpectralFitDist::GetParameter(const std::string& name_) const{
     std::vector<std::string>::const_iterator it = std::find(fBinNames.begin(), fBinNames.end(), name_);
     if(it == fBinNames.end())
-        throw ParameterError("Can't set " + name_ + ", parameters are called: \n " + ToString(fBinNames));
+        throw ParameterError("Can't get " + name_ + ", parameters are called: \n " + ToString(fBinNames));
 
     return fHistogram.GetBinContent(it - fBinNames.begin());
 }
