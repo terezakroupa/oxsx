@@ -1,6 +1,12 @@
+/* 
+Note that this object is formed without copying the statistics to add
+This means is should exist in the same scope as those summed.
+*/
+
 #ifndef __OXSX_SUMMED_STATISTIC__
 #define __OXSX_SUMMED_STATISTIC__
 #include <TestStatistic.h>
+#include <vector>
 
 class StatisticSum : public TestStatistic{
  public:
@@ -14,7 +20,7 @@ class StatisticSum : public TestStatistic{
     virtual ParameterDict GetParameters() const;
     virtual int    GetParameterCount() const;
 
-    virtual std::vector<std::string> GetParameterNames() const;
+    virtual std::set<std::string> GetParameterNames() const;
     
     // Set up all the components for a fit
     virtual void RegisterFitComponents();
@@ -24,6 +30,6 @@ class StatisticSum : public TestStatistic{
 };
 
 StatisticSum operator + (TestStatistic&, TestStatistic&);
-StatisticSum operator + (const StatisticSum&, TestStatistic&);
-StatisticSum Sum(const std::vector<TestStatistic*>&);
+StatisticSum operator + (StatisticSum&, TestStatistic&);
+StatisticSum Sum(std::vector<TestStatistic*>&);
 #endif

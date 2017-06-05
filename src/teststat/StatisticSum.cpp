@@ -30,7 +30,7 @@ StatisticSum::GetParameters() const{
     return combinedParams;
 }
 
-std::vector<std::string> 
+std::set<std::string> 
 StatisticSum::GetParameterNames() const{
     return ContainerTools::GetKeys(GetParameters());
 }
@@ -46,6 +46,14 @@ StatisticSum::AddStat(TestStatistic& st_){
     fStats.push_back(&st_);
 }
 
+int 
+StatisticSum::GetParameterCount() const{
+    // the teststastics can share parameters so this isn't a simple sum    
+    return GetParameters().size();
+}
+
+// Free operator overlaads
+
 StatisticSum operator + (TestStatistic& t1_, TestStatistic& t2_){
     return StatisticSum(t1_, t2_);
 }
@@ -56,9 +64,12 @@ StatisticSum operator + (StatisticSum& sum_, TestStatistic& t2_){
     return newSum;
 }
 
-StatisticSum Sum(const std::vector<TestStatistic*>& stats_){
+StatisticSum operator + (TestStatistic& t_, StatisticSum& sum_){
+    return sum_ + t_;
+}
+StatisticSum Sum(std::vector<TestStatistic*>& stats_){
     StatisticSum newSum;
     for(size_t i = 0; i < stats_.size(); i++)
-        newSum.AddStat(stats_.at(i));
+        newSum.AddStat(*stats_.at(i));
     return newSum;
 }
