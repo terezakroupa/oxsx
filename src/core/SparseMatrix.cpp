@@ -70,7 +70,7 @@ SparseMatrix::SetZeros(){
 
 void
 SparseMatrix::SetIdentity(){
-    if(fNRows && fNCols==fNRows )
+    if(fNRows && fNCols!=fNRows )
         throw DimensionError(Formatter()<<
                 "SparseMatrix:: Can't set identity as matrix is not square. (rows,cols) : ("<<
                 fNRows<<","<<fNCols<<")"  
