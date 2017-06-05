@@ -30,7 +30,7 @@ class SparseMatrix{
     size_t GetNCols() const {return fNRows;}
     size_t GetNRows() const {return fNCols;}
     void   SetZeros();
-    void   SetIdentity();
+    void   SetToIdentity();
 
  private:
     arma::sp_mat fArmaMat;
