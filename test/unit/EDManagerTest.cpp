@@ -63,15 +63,17 @@ TEST_CASE("Add a couple of analytic pdfs"){
         testPs["g2_norm"] = 0;
         REQUIRE(pdfMan.GetParameters() == testPs);
         
-        std::vector<std::string> expectedNames;
-        expectedNames.push_back("g1_norm");
-        expectedNames.push_back("g2_norm");
+        std::set<std::string> expectedNames;
+        expectedNames.insert("g1_norm");
+        expectedNames.insert("g2_norm");
         REQUIRE(pdfMan.GetParameterNames() == expectedNames);
         
         testPs["g1_norm"] = 10;
         testPs["g2_norm"] = 15;
         pdfMan.SetParameters(testPs);
         REQUIRE(pdfMan.GetParameters()     == testPs);
+        // note the line below only works because the normalisations
+        // happen to be in alphabetical order.. don't assume this generally
         REQUIRE(pdfMan.GetNormalisations() == ContainerTools::GetValues(testPs));
     }
 }

@@ -2,6 +2,7 @@
 #include <ComponentManager.h>
 #include <SpectralFitDist.h>
 #include <Formatter.hpp>
+#include <iostream>
 
 TEST_CASE("Stand alone component manager"){
     // some fake objects
@@ -15,7 +16,7 @@ TEST_CASE("Stand alone component manager"){
     SECTION("initialised correctly"){
         REQUIRE(cmpMan.GetTotalParameterCount() == 0);
         REQUIRE(cmpMan.GetParameters() == ParameterDict());
-        REQUIRE(cmpMan.GetParameterNames() == std::vector<std::string> (0));
+        REQUIRE(cmpMan.GetParameterNames() == std::set<std::string>());
     }
     
     SECTION("adding a component"){
@@ -40,18 +41,19 @@ TEST_CASE("Stand alone component manager"){
         params.insert(params2.begin(), params2.end());
         
         cmpMan.SetParameters(params);
+        
         REQUIRE(pdf1.GetParameters() == params1);
         REQUIRE(pdf2.GetParameters() == params2);
     }
     SECTION("clearing"){
         REQUIRE(cmpMan.GetTotalParameterCount() == 0);
         REQUIRE(cmpMan.GetParameters() == ParameterDict());
-        REQUIRE(cmpMan.GetParameterNames() == std::vector<std::string> (0));
+        REQUIRE(cmpMan.GetParameterNames() == std::set<std::string>());
     }
     SECTION("getting parameter by name"){
         cmpMan.AddComponent(&pdf1);
-        REQUIRE(cmpMan.GetParameter("test1_bin_1") == 0);
+        REQUIRE(cmpMan.GetParameter("test1_bin_1") == Approx(0.));
         pdf1.SetBinContent(0, 10);
-        REQUIRE(cmpMan.GetParameter("test1_bin_0") == 10);        
+        REQUIRE(cmpMan.GetParameter("test1_bin_0") == Approx(10.));
     }
 }
