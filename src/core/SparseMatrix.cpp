@@ -70,8 +70,13 @@ SparseMatrix::SetZeros(){
 
 void
 SparseMatrix::SetIdentity(){
-    if(!fNRows && !fNCols && fNCols!=fNRows )
-        return;
+    if(fNRows && fNCols==fNRows )
+        throw DimensionError(Formatter()<<
+                "SparseMatrix:: Can't set identity as matrix is not square. (rows,cols) : ("<<
+                fNRows<<","<<fNCols<<")"  
+                );
+        
+    fArmaMat = arma::sp_mat(fNCols, fNRows);
     for (size_t i = 0; i < fNCols; ++i) {
         fArmaMat(i,i)=1;
     }
