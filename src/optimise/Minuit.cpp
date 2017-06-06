@@ -2,11 +2,12 @@
 #include <Minuit2/MnMigrad.h>
 #include <Minuit2/MnMinimize.h>
 #include <Minuit2/MnSimplex.h>
-#include <Minuit2/FunctionMinimum.h>
 #include <Minuit2/MnUserParameters.h>
+#include <Minuit2/MnUserCovariance.h>
 #include <FitResult.h>
 #include <Exceptions.h>
 #include <Formatter.hpp>
+#include <math.h> //sqrt
 
 using ContainerTools::GetValues;
 using ContainerTools::HasSameKeys;
@@ -178,14 +179,20 @@ Minuit::Optimise(TestStatistic* testStat_){
     }
 
     // defaults are same as ROOT defaults
-    ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
+    ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance);
 
     fFitResult.SetBestFit(ContainerTools::CreateMap(fParameterNames, fMinimiser -> Params()));
     fFitResult.SetValid(fnMin.IsValid());
+
     if(fMaximising)
         fFitResult.SetExtremeVal(-fnMin.Fval());
     else
         fFitResult.SetExtremeVal(fnMin.Fval());
+
+    DenseMatrix covarianceMatrix = CalcCovarianceMatrix(fnMin);
+
+    fFitResult.SetCovarianceMatrix(covarianceMatrix);
+
     return fFitResult;
 }
 
@@ -203,4 +210,28 @@ FitResult
 Minuit::GetFitResult() const{
     return fFitResult;
     
+}
+
+DenseMatrix
+Minuit::CalcCovarianceMatrix(ROOT::Minuit2::FunctionMinimum functionMin) {
+    ROOT::Minuit2::MnUserCovariance minCovariance = functionMin.UserCovariance();
+    const std::vector<double>& minCovarianceVector = minCovariance.ROOT::Minuit2::MnUserCovariance::Data();
+    //This next section I really want to do with a function in DenseMatrix.h, but I haven't written that yet.
+    int noVectorEntries = minCovarianceVector.size();
+    int noRows = (sqrt((8*noVectorEntries) + 1) - 1) / 2;
+    DenseMatrix minCovarianceMatrix (noRows, noRows);
+    int i = 0;
+    while(i < noVectorEntries)
+      {
+        for(int j = 0; j < noRows; j++)
+          {
+            for(int k = 0;  k < j; k++)
+              {
+                minCovarianceMatrix.SetComponent(k, j, minCovarianceVector.at(i));
+                minCovarianceMatrix.SetComponent(j, k, minCovarianceVector.at(i));
+                i++;  
+	      }
+	  }        
+      }
+    return minCovarianceMatrix;
 }
