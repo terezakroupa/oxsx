@@ -4,8 +4,10 @@
 #include <ContainerTools.hpp>
 #include <sstream>
 #include <algorithm>
+#include <iostream>
+
 using ContainerTools::ToString;
-using ContainerTools::VecsToMap;
+using ContainerTools::CreateMap;
 
 // JD: this will probably be too slow one day - there is overkill checking here.
 // you can just set all of the bin contents in one go, but noone needs this code yet
@@ -34,7 +36,6 @@ SpectralFitDist::GetParameter(const std::string& name_) const{
     std::vector<std::string>::const_iterator it = std::find(fBinNames.begin(), fBinNames.end(), name_);
     if(it == fBinNames.end())
         throw ParameterError("Can't get " + name_ + ", parameters are called: \n " + ToString(fBinNames));
-
     return fHistogram.GetBinContent(it - fBinNames.begin());
 }
     
@@ -46,12 +47,12 @@ SpectralFitDist::SetParameters(const ParameterDict& pd_){
             }
             catch(const std::out_of_range& e_){
                 throw ParameterError("Set Parameters: Couldn't set bin content " + fBinNames.at(i));
-            }    
+            }
 }
 
 ParameterDict
 SpectralFitDist::GetParameters() const{
-    return VecsToMap(fBinNames, fHistogram.GetBinContents());
+    return CreateMap(fBinNames, fHistogram.GetBinContents());
 }
 
 size_t
@@ -59,9 +60,9 @@ SpectralFitDist::GetParameterCount() const{
     return fHistogram.GetNBins();
 }
     
-std::vector<std::string>
+std::set<std::string>
 SpectralFitDist::GetParameterNames() const{
-    return fBinNames;
+    return std::set<std::string>(fBinNames.begin(), fBinNames.end());
 }
 
 void

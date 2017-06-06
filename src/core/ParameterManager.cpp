@@ -34,7 +34,7 @@ ParameterManager::GetParameters() const{
     return returnD;
 }
 
-std::vector<std::string>
+std::set<std::string>
 ParameterManager::GetParameterNames() const{
     return GetKeys(fParamPtrs);
 }

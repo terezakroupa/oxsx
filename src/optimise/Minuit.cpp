@@ -93,16 +93,19 @@ Minuit::Initialise(){
                          << "Initial Errors for :\n" << ToString(GetKeys(fInitialErrors)) << "\n"
                          );
     
-    // impose a set ordering on the parameters, so they can be reliably referenced (minuit does vectors we do maps)
     fParameterNames = GetKeys(fInitialErrors);
     
     // Create parameters and set limits
     MnUserParameters params(GetValues(fInitialValues, fParameterNames), GetValues(fInitialErrors, fParameterNames));
 
-    if(fMinima.size() && fMaxima.size())
-        for(size_t i = 0; i < fParameterNames.size(); i++)
-            params.SetLimits(i, fMinima[fParameterNames.at(i)], fMaxima[fParameterNames.at(i)]);
-    
+    if(fMinima.size() && fMaxima.size()){
+        int i = 0;
+        for(std::set<std::string>::iterator it = fParameterNames.begin();
+            it != fParameterNames.end(); ++it){
+            params.SetLimits(i++, fMinima[*it], fMaxima[*it]);
+        }
+    }
+
     if("Migrad" == fMethod)
         fMinimiser = new MnMigrad(fMinuitFCN, params);
     
@@ -162,7 +165,7 @@ Minuit::Optimise(TestStatistic* testStat_){
     // defaults are same as ROOT defaults
     ROOT::Minuit2::FunctionMinimum fnMin  = fMinimiser -> operator()(fMaxCalls, fTolerance); 
 
-    fFitResult.SetBestFit(ContainerTools::VecsToMap(fParameterNames, fMinimiser -> Params()));
+    fFitResult.SetBestFit(ContainerTools::CreateMap(fParameterNames, fMinimiser -> Params()));
     fFitResult.SetValid(fnMin.IsValid());
     return fFitResult;
 }

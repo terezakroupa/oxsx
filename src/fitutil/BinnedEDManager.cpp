@@ -150,7 +150,7 @@ BinnedEDManager::GetParameterCount() const{
     return fParameterManager.GetParameterCount();
 }
 
-std::vector<std::string>
+std::set<std::string>
 BinnedEDManager::GetParameterNames() const{
     return fParameterManager.GetParameterNames();
 }

@@ -56,8 +56,8 @@ TEST_CASE("Do parameters register correctly?"){
             expectedNames.insert(ss.str());
         }
 
-        std::vector<std::string> names = paramMan.GetParameterNames();
-        REQUIRE(std::set<std::string>(names.begin(), names.end()) == expectedNames);
+        std::set<std::string> names = paramMan.GetParameterNames();
+        REQUIRE(names == expectedNames);
 
     }
 
