@@ -170,7 +170,10 @@ Minuit::Optimise(TestStatistic* testStat_){
 
     fFitResult.SetBestFit(ContainerTools::CreateMap(fParameterNames, fMinimiser -> Params()));
     fFitResult.SetValid(fnMin.IsValid());
-    fFitResult.SetExtremeVal(fnMin.Fval());
+    if(fMaximising)
+        fFitResult.SetExtremeVal(-fnMin.Fval());
+    else
+        fFitResult.SetExtremeVal(fnMin.Fval());
     return fFitResult;
 }
 
