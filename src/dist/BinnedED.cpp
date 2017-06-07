@@ -219,14 +219,6 @@ BinnedED::Marginalise(size_t index_) const{
     return Marginalise(std::vector<size_t>(1, index_));
 }
 
-std::map<std::string, BinnedED> 
-BinnedED::GetAllProjections() const{
-  std::map<std::string, BinnedED> returnDists;
-
-  return std::map<std::string, BinnedED>();
-}
-
-
 void
 BinnedED::Add(const BinnedED& other_, double weight){
     if(other_.fObservables != fObservables)

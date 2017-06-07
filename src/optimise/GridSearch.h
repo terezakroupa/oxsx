@@ -3,6 +3,7 @@
 #include <Optimiser.h>
 #include <vector>
 #include <FitResult.h>
+#include <ParameterDict.h>
 
 class TestStatistic;
 class GridSearch : public Optimiser{
@@ -10,28 +11,28 @@ class GridSearch : public Optimiser{
     GridSearch() :  fMaximising(false){}
     virtual const FitResult& Optimise(TestStatistic*);
     
-    void SetMinima(const std::vector<double>&);
-    void SetMaxima(const std::vector<double>&);
-    void SetStepSizes(const std::vector<double>&);
+    void SetMinima(const ParameterDict&);
+    void SetMaxima(const ParameterDict&);
+    void SetStepSizes(const ParameterDict&);
 
-    std::vector<double> GetMinima() const;
-    std::vector<double> GetMaxima() const;
-    std::vector<double> GetStepSizes()  const;
+    ParameterDict GetMinima() const;
+    ParameterDict GetMaxima() const;
+    ParameterDict GetStepSizes()  const;
     
     FitResult GetFitResult() const;
     void SetMaximising(bool);
     bool GetMaximising() const;
 
  private:
-    std::vector<double> fParamVals;
+    ParameterDict       fParamVals;
     FitResult           fFitResult;
     
     bool fMaximising;
 
-    std::vector<double> fMinima;
-    std::vector<double> fMaxima;
-    std::vector<double> fStepSizes;
-    bool Increment(size_t);
+    ParameterDict fMinima;
+    ParameterDict fMaxima;
+    ParameterDict fStepSizes;
+    bool Increment(ParameterDict::iterator it_, ParameterDict::iterator end_);
     double fMinVal;
     
 };

@@ -73,7 +73,7 @@ ChiSquare::GetParameterCount() const{
     return fComponentManager.GetTotalParameterCount();
 }
 
-std::vector<std::string>
+std::set<std::string>
 ChiSquare::GetParameterNames() const{
     return fComponentManager.GetParameterNames();
 }
