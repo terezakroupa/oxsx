@@ -216,22 +216,9 @@ DenseMatrix
 Minuit::CalcCovarianceMatrix(ROOT::Minuit2::FunctionMinimum functionMin) {
     ROOT::Minuit2::MnUserCovariance minCovariance = functionMin.UserCovariance();
     const std::vector<double>& minCovarianceVector = minCovariance.ROOT::Minuit2::MnUserCovariance::Data();
-    //This next section I really want to do with a function in DenseMatrix.h, but I haven't written that yet.
     int noVectorEntries = minCovarianceVector.size();
-    int noRows = (sqrt((8*noVectorEntries) + 1) - 1) / 2;
+    double noRows = (sqrt((8*noVectorEntries) + 1) - 1) / 2;
     DenseMatrix minCovarianceMatrix (noRows, noRows);
-    int i = 0;
-    while(i < noVectorEntries)
-      {
-        for(int j = 0; j < noRows; j++)
-          {
-            for(int k = 0;  k < j; k++)
-              {
-                minCovarianceMatrix.SetComponent(k, j, minCovarianceVector.at(i));
-                minCovarianceMatrix.SetComponent(j, k, minCovarianceVector.at(i));
-                i++;  
-	      }
-	  }        
-      }
+    minCovarianceMatrix.SetSymmetricMatrix(minCovarianceVector);
     return minCovarianceMatrix;
 }

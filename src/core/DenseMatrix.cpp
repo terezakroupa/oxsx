@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Exceptions.h>
 #include <Formatter.hpp>
+#include <math.h> //sqrt
 
 // initalise to zeros
 DenseMatrix::DenseMatrix(int rows_, int cols_){
@@ -78,4 +79,47 @@ DenseMatrix::SetToIdentity(){
                 fNRows<<","<<fNCols<<")"  
                 );
     fArmaMat.eye();
+}
+
+void
+DenseMatrix::SetSymmetricMatrix(const std::vector<double>& _input){
+    int noVectorEntries = _input.size();
+    double testTriangular = (sqrt((8*noVectorEntries) + 1) - 1) / 2;
+
+    if (testTriangular != floor(testTriangular))
+        throw DimensionError(Formatter()
+                            << "Input vector to create symmetric matrix "
+                            << "must have triangular number of entries."
+			    << "Vector has " << noVectorEntries 
+			    << " entries."
+                            );
+
+    if (testTriangular != fNRows)
+        throw DimensionError(Formatter()
+                            << "Number of entries in input vector "
+                            << "does not match number of rows in matrix."
+			    << "Vector has " << noVectorEntries 
+			    << " entries. Matrix has " << fNRows
+                            ); 
+
+    if (fNRows != fNCols)
+        throw DimensionError(Formatter()
+                            << "Symmetric matrix must be square."
+                            << "This is a  (" << fNCols << "x" << fNRows 
+                            << " ) matrix."
+			    );
+
+    int i = 0;
+    while(i < noVectorEntries)
+      {
+        for(int j = 0; j < fNRows; j++)
+          {
+            for(int k = 0;  k < j; k++)
+              {
+                fArmaMat(k, j) = _input.at(i);
+                fArmaMat(j, k) = _input.at(i);
+                i++;  
+	      }
+	  }        
+      }
 }
