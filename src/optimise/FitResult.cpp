@@ -147,3 +147,12 @@ FitResult::Get2DProjections() const{
   return f2DProjections;
 }
 
+double
+FitResult::GetMaxVal() const{
+    return fMaxVal;
+}
+
+void
+FitResult::SetMaxVal(double val_){
+    fMaxVal = val_;
+}
