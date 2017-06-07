@@ -5,6 +5,7 @@
 #include <set>
 #include <iostream>
 #include <cassert>
+#include <Formatter.hpp>
 
 namespace ContainerTools{
 
@@ -73,7 +74,6 @@ std::vector<typename T1::mapped_type> GetValues(const T1& mp_){
 
 template<typename T1, typename T2, typename T3>
 void SetValues(T1& mp_, const T2& keys_, const T3& values_){
-    assert(mp_.size() == keys_.size());
     assert(values_.size() == keys_.size());
 
     typedef typename T2::const_iterator It2;
@@ -127,10 +127,10 @@ std::string CompareKeys(const T1& m1_, const T2& m2_, const std::string name1_ =
 
 template<typename T1>
 std::string ToString(const T1& c_, const std::string& delimit_ = ", "){
-    std::string retStr = "";
+    Formatter f;
     for(typename T1::const_iterator it = c_.begin(); it != c_.end(); ++it)
-        retStr += std::string(*it) + delimit_;
-    return retStr;
+        f << *it << delimit_;
+    return f.str();
 }
 
 } // namespace

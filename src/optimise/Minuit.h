@@ -52,7 +52,7 @@ class Minuit : public Optimiser{
     FitResult GetFitResult() const;
 
  private:
-    void Initialise();
+    void Initialise(TestStatistic*);
     MinuitFCN   fMinuitFCN; // wrapper on evaluator so migrad can call it
     ParameterDict fInitialValues;
     ParameterDict fInitialErrors;
