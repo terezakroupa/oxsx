@@ -213,7 +213,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     fFitResult.SetValid(true);
     if(!fSaveFullHistogram)
       SaveProjections();
-    fFitResult.SetMaxVal(fMaxVal);
+    fFitResult.SetExtremeVal(fMaxVal);
 
     return fFitResult;
 }

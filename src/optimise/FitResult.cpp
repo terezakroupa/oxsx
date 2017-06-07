@@ -158,11 +158,11 @@ FitResult::Get2DProjections() const{
 }
 
 double
-FitResult::GetMaxVal() const{
-    return fMaxVal;
+FitResult::GetExtremeVal() const{
+    return fExtremeVal;
 }
 
 void
-FitResult::SetMaxVal(double val_){
-    fMaxVal = val_;
+FitResult::SetExtremeVal(double val_){
+    fExtremeVal = val_;
 }
