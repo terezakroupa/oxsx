@@ -191,7 +191,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
             }
         }
       
-        if(!(i%100000))
+        if(!(i%10000))
             std::cout << i << "  /  " << fMaxIter 
               << "\t" << (i - fRejectionRate) / static_cast<double>(i) << std::endl;
 
@@ -213,6 +213,7 @@ MetropolisHastings::Optimise(TestStatistic* testStat_){
     fFitResult.SetValid(true);
     if(!fSaveFullHistogram)
       SaveProjections();
+    fFitResult.SetExtremeVal(fMaxVal);
 
     return fFitResult;
 }

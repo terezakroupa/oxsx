@@ -157,3 +157,12 @@ FitResult::Get2DProjections() const{
   return f2DProjections;
 }
 
+double
+FitResult::GetExtremeVal() const{
+    return fExtremeVal;
+}
+
+void
+FitResult::SetExtremeVal(double val_){
+    fExtremeVal = val_;
+}

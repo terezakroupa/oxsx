@@ -92,7 +92,8 @@ Minuit::Initialise(){
                          << "Initial Values for :\n" << ToString(GetKeys(fInitialValues)) << "\n"
                          << "Initial Errors for :\n" << ToString(GetKeys(fInitialErrors)) << "\n"
                          );
-    
+
+    // take a copy of these here to make sure we hit the same order each time - minuit uses vector we use set/map...
     fParameterNames = GetKeys(fInitialErrors);
     
     // Create parameters and set limits
@@ -167,6 +168,7 @@ Minuit::Optimise(TestStatistic* testStat_){
 
     fFitResult.SetBestFit(ContainerTools::CreateMap(fParameterNames, fMinimiser -> Params()));
     fFitResult.SetValid(fnMin.IsValid());
+    fFitResult.SetExtremeVal(fnMin.Fval());
     return fFitResult;
 }
 
