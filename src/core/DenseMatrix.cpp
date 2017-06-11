@@ -83,38 +83,32 @@ DenseMatrix::SetToIdentity(){
 
 void
 DenseMatrix::SetSymmetricMatrix(const std::vector<double>& _input){
-    int noVectorEntries = _input.size();
-    double testTriangular = (sqrt((8*noVectorEntries) + 1) - 1) / 2;
-
-    if (testTriangular != floor(testTriangular))
-        throw DimensionError(Formatter()
-                            << "Input vector to create symmetric matrix "
-                            << "must have triangular number of entries."
-			    << "Vector has " << noVectorEntries 
-			    << " entries."
-                            );
-
-    if (testTriangular != fNRows)
-        throw DimensionError(Formatter()
-                            << "Number of entries in input vector "
-                            << "does not match number of rows in matrix."
-			    << "Vector has " << noVectorEntries 
-			    << " entries. Matrix has " << fNRows
-                            ); 
-
+    
     if (fNRows != fNCols)
         throw DimensionError(Formatter()
                             << "Symmetric matrix must be square."
-                            << "This is a  (" << fNCols << "x" << fNRows 
+                            << "This is a  (" << fNRows << "x" << fNCols 
                             << " ) matrix."
 			    );
+
+    int noVectorEntries = _input.size();
+    double testTriangular = (fNRows * (fNRows + 1)) / 2;
+
+    if (testTriangular != noVectorEntries)
+        throw DimensionError(Formatter() << "DenseMatrix::SetSymmetric : "
+			   << "Input vector ("<< _input.size() << ")" 
+			   << " wrong size for Matrix ("
+			   << fNRows << "x" << fNCols 
+			   << " ). Must have  " << testTriangular
+			   << " entries.");
+
 
     int i = 0;
     while(i < noVectorEntries)
       {
         for(int j = 0; j < fNRows; j++)
           {
-            for(int k = 0;  k < j; k++)
+            for(int k = 0;  k < (j+1); k++)
               {
                 fArmaMat(k, j) = _input.at(i);
                 fArmaMat(j, k) = _input.at(i);
