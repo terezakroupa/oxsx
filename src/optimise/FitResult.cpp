@@ -167,6 +167,7 @@ FitResult::GetExtremeVal() const{
 void
 FitResult::SetExtremeVal(double val_){
     fExtremeVal = val_;
+}
 
 void
 FitResult::SetCovarianceMatrix(const DenseMatrix covarianceMatrix_){
