@@ -94,7 +94,7 @@ DataSetGenerator::AllRemainingEvents(){
   for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
     size_t nEvents = fMaxs.at(iDS);
     if (nEvents==-999) 
-      nEvents = fDataSets.at(iDS) -> GetNEntries();
+      nEvents = (fDataSets.at(iDS) -> GetNEntries()) - 1;
 
     if (nEvents==-1) continue; //in case all events drawn and not replaced
     const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
