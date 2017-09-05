@@ -26,3 +26,12 @@ ConfigLoader::Close(){
     delete fParser;
     fParser = NULL;
 }
+
+
+std::set<std::string>
+ConfigLoader::ListSections(){
+    if(!fParser)
+      return std::set<std::string>();
+    
+    return ContainerTools::GetKeys(fParser->top().sections);
+}

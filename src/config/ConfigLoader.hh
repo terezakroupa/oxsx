@@ -26,7 +26,7 @@
 #define __OXSX__CONFIG_LOADER__
 #include <TypeTraits.hpp>
 #include <ini.hpp>
-#include <vector>
+#include <set>
 #include <string>
 
 using TypeTraits::enable_if;
@@ -48,24 +48,32 @@ public:
     static void
     Load(const std::string& section_, const std::string& fieldName_, TargetType& loadVal_, typename enable_if<is_container<TargetType>::value, int>::type = 0);
 
-     // and one for strings
-     static void
-     Load(const std::string& section_, const std::string& fieldName_,  std::string& loadVal_); 
-
-private:    
-    // nested class performs string conversions
-    template<typename TargetType>
-    struct Converter{
-        TargetType operator()(const std::string& s_) const;
-    };
-
-    // convert a whole container
-    template<typename InContainer, typename OutContainer, typename ConverterSp>
+    //
     static void
-    ConvertContainer(const InContainer& incntr_, OutContainer& outcntr_, const ConverterSp& cnvtr_);
-    
+    Load(const std::string& section_, const std::string& fieldName_, std::string&);
+
+  static std::set<std::string> ListSections();
+  
+private:    
     static INI::Parser* fParser;
 };
+
+// nested class performs string conversions
+template<typename TargetType>
+struct Converter{
+  TargetType operator()(const std::string& s_) const;
+};
+
+// specialise this for strings
+template<>
+struct Converter<std::string>{
+      std::string operator()(const std::string& s_) const {return s_;}
+};
+
+// convert a whole container
+template<typename InContainer, typename OutContainer, typename ConverterSp>
+static void
+ConvertContainer(const InContainer& incntr_, OutContainer& outcntr_, const ConverterSp& cnvtr_);
 
 #include <ConfigLoader.hpp>
     
