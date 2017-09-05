@@ -6,8 +6,8 @@
 INI::Parser* ConfigLoader::fParser = NULL;
 
 void
-ConfigLoader::Load(const std::string& fieldName_,  std::string& loadVal_){
-    loadVal_ = fParser-> top()[fieldName_];
+ConfigLoader::Load(const std::string& section_, const std::string& fieldName_,  std::string& loadVal_){
+  loadVal_ = fParser->top()(section_)[fieldName_];
 }
 
 void

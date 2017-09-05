@@ -3,16 +3,16 @@
 
 template<typename TargetType>
 void
-ConfigLoader::Load(const std::string& fieldName_,  TargetType& loadVal_, typename enable_if<is_number<TargetType>::value, int>::type){
-    loadVal_ = Converter<TargetType>()(fParser->top()[fieldName_]);
+ConfigLoader::Load(const std::string& section_, const std::string& fieldName_,  TargetType& loadVal_, typename enable_if<is_number<TargetType>::value, int>::type){
+  loadVal_ = Converter<TargetType>()(fParser->top()(section_)[fieldName_]);
 }
 
 
 template<typename TargetType>
 void
-ConfigLoader::Load(const std::string& fieldName_, TargetType& loadVal_, typename enable_if<is_container<TargetType>::value, int>::type){
+ConfigLoader::Load(const std::string& section_, const std::string& fieldName_, TargetType& loadVal_, typename enable_if<is_container<TargetType>::value, int>::type){
     typedef typename TargetType::value_type ContainedType;
-    ConvertContainer(ContainerTools::Split(fParser->top()[fieldName_]), loadVal_, Converter<TargetType>());
+    ConvertContainer(ContainerTools::Split(fParser->top()(section_)[fieldName_]), loadVal_, Converter<TargetType>());
 }
 
 template<typename TargetType>

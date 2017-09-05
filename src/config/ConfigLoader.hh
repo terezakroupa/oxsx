@@ -35,22 +35,22 @@ using TypeTraits::is_number;
 
 class ConfigLoader{
 public:
-    void Open(const std::string& fileName_);
-    void Close();
+    static void Open(const std::string& fileName_);
+    static void Close();
     
     // Fundamental numeric types
     template<typename TargetType>
     static void
-    Load(const std::string& fieldName_,  TargetType& loadVal_, typename enable_if<is_number<TargetType>::value, int>::type = 0);
+    Load(const std::string& section_, const std::string& fieldName_,  TargetType& loadVal_, typename enable_if<is_number<TargetType>::value, int>::type = 0);
 
     // another one for containers
     template<typename TargetType>
     static void
-    Load(const std::string& fieldName_, TargetType& loadVal_, typename enable_if<is_container<TargetType>::value, int>::type = 0);
+    Load(const std::string& section_, const std::string& fieldName_, TargetType& loadVal_, typename enable_if<is_container<TargetType>::value, int>::type = 0);
 
-    // and one for strings
-    void
-    Load(const std::string& fieldName_,  std::string& loadVal_); 
+     // and one for strings
+     static void
+     Load(const std::string& section_, const std::string& fieldName_,  std::string& loadVal_); 
 
 private:    
     // nested class performs string conversions
