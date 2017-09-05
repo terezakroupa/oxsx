@@ -13,6 +13,13 @@ struct enable_if {};
 template<typename T>
 struct enable_if<true, T> { typedef T type; };
 
+// same for conditional
+template<bool B, class T, class F>
+struct conditional { typedef T type; };
+ 
+template<class T, class F> 
+struct conditional<false, T, F> { typedef F type; };
+
 // the next three are taken from https://gist.github.com/louisdx/1076849 - credit there
 // does this object have a const iterator
 template<typename T>
@@ -34,7 +41,7 @@ public:
 template <typename T>
 struct has_begin_end{
     struct Dummy { typedef void const_iterator; };
-    typedef typename std::conditional<has_const_iterator<T>::value, T, Dummy>::type TType;
+    typedef typename conditional<has_const_iterator<T>::value, T, Dummy>::type TType;
     typedef typename TType::const_iterator iter;
 
     struct Fallback { iter begin() const; iter end() const; };
