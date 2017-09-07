@@ -6,11 +6,12 @@
 
 class BoolCut : public Cut{
  public:
-    BoolCut(const std::string& obs_, double value_): fObs(obs_),  fVal(value_){}
+    BoolCut(const std::string& name_, const std::string& obs_, double value_): fObs(obs_),  fVal(value_), fName(name_){}
     virtual bool PassesCut(const Event& ev_) const;
     virtual Cut* Clone() const;
-
+    virtual std::string GetName() const;
  private:
+    std::string fName;
     std::string fObs;
     size_t fDim;
     double fVal;

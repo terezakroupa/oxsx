@@ -20,3 +20,8 @@ Cut*
 BoolCut::Clone() const{
   return new BoolCut(*this);
 }
+
+std::string
+BoolCut::GetName() const{
+  return fName;
+}
