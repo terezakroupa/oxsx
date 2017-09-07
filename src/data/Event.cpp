@@ -2,6 +2,8 @@
 #include <ObsSet.h>
 #include <Exceptions.h>
 #include <ContainerTools.hpp>
+#include <algorithm>
+
 using ContainerTools::CreateMap;
 
 Event::Event(const std::vector<double>& obs_){
