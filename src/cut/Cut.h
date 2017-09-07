@@ -9,6 +9,6 @@ class Cut{
   virtual Cut* Clone() const = 0;
   virtual ~Cut() {}
   
-  virtual std::string GetName() const;
+  virtual std::string GetName() const = 0;
 };
 #endif
