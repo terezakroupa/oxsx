@@ -67,17 +67,14 @@ BinnedEDShrinker::ShrinkDist(const BinnedED& dist_) const{
 
     // 1. Build new axes. ShrinkPdf method just makes a copy if buffer size is zero
     AxisCollection newAxes;
-    const std::vector<std::string>& obsNames = dist_.GetObservables();
-    size_t dataIndex = 0;
-    
     for(size_t i = 0; i < nDims; i++){
-        const std::string& obsName = obsNames.at(i);
-        if (!fBuffers.count(obsName))
-            newAxes.AddAxis(dist_.GetAxes().GetAxis(obsName));
+        const std::string& axisName = dist_.GetAxes().GetAxis(i).GetName();
+        if (!fBuffers.count(axisName))
+            newAxes.AddAxis(dist_.GetAxes().GetAxis(i));
         else
-            newAxes.AddAxis(ShrinkAxis(dist_.GetAxes().GetAxis(obsName),
-                                       fBuffers.at(obsName).first,
-                                       fBuffers.at(obsName).second));
+            newAxes.AddAxis(ShrinkAxis(dist_.GetAxes().GetAxis(i),
+                                       fBuffers.at(axisName).first,
+                                       fBuffers.at(axisName).second));
     }
 
     // 2. Initialise the new pdf with same observables
@@ -97,11 +94,12 @@ BinnedEDShrinker::ShrinkDist(const BinnedED& dist_) const{
         if(!content) // no content no problem
             continue;
 
-        // work out the index of this bin in the new shrunk pdf. 
+        // work out the index of this bin in the new shrunk pdf.
         for(size_t j = 0; j < nDims; j++){
+            std::string axisName = axes.GetAxis(j).GetName();
             offsetIndex = axes.UnflattenIndex(i, j);            // the index in old pdf
-            if (fBuffers.count(obsNames.at(j)))          // offset by lower buffer if nonzero
-                offsetIndex -= fBuffers.at(obsNames.at(j)).first;
+            if (fBuffers.count(axisName))          // offset by lower buffer if nonzero
+                offsetIndex -= fBuffers.at(axisName).first;
 
             // Correct the ones that fall in the buffer regions
             // bins in the lower buffer have negative index. Put in first bin in fit region or ignore
