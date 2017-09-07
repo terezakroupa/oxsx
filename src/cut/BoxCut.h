@@ -2,11 +2,12 @@
 #define __OXSX_BOX_CUT__
 #include <Event.h>
 #include <Cut.h>
+#include <string>
 
 class BoxCut : public Cut{
  public:
-    BoxCut(size_t dim_, double lower_, double upper_) : fDim(dim_), fUpperLim(upper_), 
-                                                        fLowerLim(lower_) {}
+   BoxCut(const std::string& obs_, double lower_, double upper_) : fUpperLim(upper_), 
+                                                                   fLowerLim(lower_), fObs(obs_) {}
 
     virtual Cut* Clone() const;
 
@@ -18,9 +19,8 @@ class BoxCut : public Cut{
     void    SetUpperLimit(double upper_) {fUpperLim = upper_;} 
     double  GetUpperLimit() const {return fUpperLim;}
    
-
  private:
-    size_t fDim;
+    std::string fObs;
     double fUpperLim;
     double fLowerLim;
     

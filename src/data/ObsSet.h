@@ -13,9 +13,11 @@ class ObsSet{
  public:    
     ObsSet(){}
     ~ObsSet(){}
-    ObsSet(const std::vector<std::string>& indices_);
-
-    std::vector<std::string> GetNames() const; 
+    ObsSet(const std::vector<std::string>& names_);
+    ObsSet(const std::string& name_);
+    void SetNames(const std::vector<std::string>& indices_);
+    
+    const std::vector<std::string>& GetNames() const; 
 
     size_t GetNObservables() const;
     

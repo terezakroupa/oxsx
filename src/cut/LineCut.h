@@ -8,7 +8,7 @@ A one sided cut.
 
 class LineCut : public Cut{
  public:
-    LineCut(size_t dim_, double val_, 
+    LineCut(const std::string& obs_, double val_, 
             const std::string& side_);
 
     virtual ~LineCut(){}
@@ -23,7 +23,7 @@ class LineCut : public Cut{
     std::string GetSidedness() const;
 
  private:
-    size_t fDim;
+    std::string fObs;
     double fVal;
     std::string fSidedness;
 };

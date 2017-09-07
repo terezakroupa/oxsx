@@ -5,7 +5,7 @@ bool
 BoxCut::PassesCut(const Event& ev_) const{
     double val = 0;
     try{
-        val = ev_.GetDatum(fDim);
+        val = ev_.GetDatum(fObs);
     }
     catch(const NotFoundError&){
         throw NotFoundError("Cut::Cut to non-existent data observable requested!");

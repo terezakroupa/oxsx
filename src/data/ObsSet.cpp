@@ -6,7 +6,12 @@ ObsSet::ObsSet(const std::vector<std::string>& names_){
     SetNames(names_);
 }
 
-std::vector<std::string>
+
+ObsSet::ObsSet(const std::string& name_){
+    SetNames(std::vector<std::string>(1, name_));
+}
+
+const std::vector<std::string>&
 ObsSet::GetNames() const {
     return fNames;
 }
@@ -26,7 +31,7 @@ ObsSet::GetIndex(const std::string& name_) const{
 
 size_t
 ObsSet::GetNObservables() const {
-    return fNames.size()
+    return fNames.size();
 }
 
 std::vector<size_t> 

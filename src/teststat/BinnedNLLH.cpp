@@ -105,12 +105,12 @@ BinnedNLLH::GetDataDist() const{
 
 
 void
-BinnedNLLH::SetBuffer(size_t dim_, unsigned lower_, unsigned upper_){
+BinnedNLLH::SetBuffer(const std::string& dim_, unsigned lower_, unsigned upper_){
     fPdfShrinker.SetBuffer(dim_, lower_, upper_);
 }
 
 std::pair<unsigned, unsigned>
-BinnedNLLH::GetBuffer(size_t dim_) const{
+BinnedNLLH::GetBuffer(const std::string& dim_) const{
     return fPdfShrinker.GetBuffer(dim_);
 }
 
