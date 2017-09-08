@@ -2,8 +2,9 @@
 #include <Event.h>
 #include <Exceptions.h>
 
-LineCut::LineCut(const std::string& obs_, double val_, 
+LineCut::LineCut(const std::string& name_, const std::string& obs_, double val_, 
                  const std::string& side_){
+    fName = name_;
     fObs = obs_;
     fVal = val_;
     SetSidedness(side_);
@@ -51,4 +52,10 @@ LineCut::SetSidedness(const std::string& side_){
 std::string 
 LineCut::GetSidedness() const{
     return fSidedness;
+}
+
+
+std::string
+LineCut::GetName() const{
+  return fName;
 }

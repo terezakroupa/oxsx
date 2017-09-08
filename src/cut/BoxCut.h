@@ -6,8 +6,8 @@
 
 class BoxCut : public Cut{
  public:
-   BoxCut(const std::string& obs_, double lower_, double upper_) : fUpperLim(upper_), 
-                                                                   fLowerLim(lower_), fObs(obs_) {}
+    BoxCut(const std::string& name_,  const std::string& obs_, double lower_, double upper_) 
+      : fUpperLim(upper_), fLowerLim(lower_), fObs(obs_), fName(name_) {}
 
     virtual Cut* Clone() const;
 
@@ -19,7 +19,10 @@ class BoxCut : public Cut{
     void    SetUpperLimit(double upper_) {fUpperLim = upper_;} 
     double  GetUpperLimit() const {return fUpperLim;}
    
+    virtual std::string GetName() const;
+
  private:
+    std::string fName;
     std::string fObs;
     double fUpperLim;
     double fLowerLim;

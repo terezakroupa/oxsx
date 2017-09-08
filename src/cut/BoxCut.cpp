@@ -19,3 +19,8 @@ Cut*
 BoxCut::Clone() const{
   return new BoxCut(*this);
 }
+
+std::string
+BoxCut::GetName() const{
+  return fName;
+}

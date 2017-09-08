@@ -8,7 +8,7 @@ A one sided cut.
 
 class LineCut : public Cut{
  public:
-    LineCut(const std::string& obs_, double val_, 
+    LineCut(const std::string& name_, const std::string& obs_, double val_, 
             const std::string& side_);
 
     virtual ~LineCut(){}
@@ -22,7 +22,10 @@ class LineCut : public Cut{
     void SetSidedness(const std::string&); // "upper" or "lower" (bounds)
     std::string GetSidedness() const;
 
+    virtual std::string GetName() const;
+
  private:
+    std::string fName;
     std::string fObs;
     double fVal;
     std::string fSidedness;
