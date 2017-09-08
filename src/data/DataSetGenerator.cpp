@@ -24,8 +24,10 @@ DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
     fDataSets = sets_;
     fEventIndicies.clear();
     fMaxs.clear();
+    fEventsTaken.clear();
     fEventIndicies.resize(sets_.size());
     fMaxs.resize(sets_.size(), -999);
+    fEventsTaken.resize(sets_.size(), 0);
 }
 
 void
@@ -45,6 +47,7 @@ DataSetGenerator::ExpectedRatesDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
+	fEventsTaken[i] += expectedCounts;
 	fBootstrap ? RandomDrawsWithReplacement(i, expectedCounts, dataSet) 
 	  : RandomDrawsNoReplacement(i, expectedCounts, dataSet);
     }
@@ -63,6 +66,7 @@ DataSetGenerator::PoissonFluctuatedDataSet(){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
+	fEventsTaken[i] += counts;
         fBootstrap ? RandomDrawsWithReplacement(i, counts, dataSet) 
 	  : RandomDrawsNoReplacement(i, counts, dataSet);
     }        
@@ -79,6 +83,7 @@ DataSetGenerator::AllValidEvents(){
         Event event_ = fDataSets.at(i)->GetEntry(j);
         dataSet.AddEntry(event_);
       } // events
+      fEventsTaken[i] += fDataSets.at(i)->GetNEntries();
     } // data sets
     return dataSet;
 }
@@ -96,12 +101,15 @@ DataSetGenerator::AllRemainingEvents(){
     if (nEvents==-999) 
       nEvents = (fDataSets.at(iDS) -> GetNEntries()) - 1;
 
-    if (nEvents==-1) continue; //in case all events drawn and not replaced
+    if (nEvents==-1) 
+      continue; //in case all events drawn and not replaced
+
     const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
 
     for(size_t jEV = 0; jEV <= nEvents; jEV++){   
-      remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));
+      remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));      
     }
+    fEventsTaken[iDS] += nEvents;
   }
   Reset();
   return remainders;
@@ -111,6 +119,8 @@ void
 DataSetGenerator::Reset(){
   fEventIndicies.clear();
   fEventIndicies.resize(fDataSets.size());
+  fEventsTaken.clear();
+  fEventsTaken.resize(fDataSets.size(), 0);
   fMaxs = std::vector<size_t>(fDataSets.size(), -999);
 }
 
@@ -213,6 +223,7 @@ DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
     fEventIndicies.push_back(std::vector<size_t>());
+    fEventsTaken.push_back(0);
     fMaxs.push_back(0);
 }
 
@@ -233,4 +244,10 @@ DataSetGenerator::ClearDataSets(){
     fEventIndicies.clear();
     fMaxs.clear();
     fDataSets.clear();
+    fEventsTaken.clear();
+}
+
+const std::vector<int>&
+DataSetGenerator::GetEventsTaken() const{
+  return fEventsTaken;
 }
