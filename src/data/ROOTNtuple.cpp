@@ -38,7 +38,7 @@ Event
 ROOTNtuple::Assemble(size_t iEvent_) const{
     if (iEvent_ >= GetNEntries())
         throw NotFoundError("Exceeded end of ROOT NTuple");
-
+    fROOTFile->cd();
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
     Event ret(std::vector<double> (vals, vals + GetNObservables()));
