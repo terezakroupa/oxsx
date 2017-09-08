@@ -24,10 +24,8 @@ DataSetGenerator::SetDataSets(const std::vector<DataSet*> sets_){
     fDataSets = sets_;
     fEventIndicies.clear();
     fMaxs.clear();
-    fEventsTaken.clear();
     fEventIndicies.resize(sets_.size());
     fMaxs.resize(sets_.size(), -999);
-    fEventsTaken.resize(sets_.size(), 0);
 }
 
 void
@@ -36,46 +34,66 @@ DataSetGenerator::SetExpectedRates(const std::vector<double>& rates_){
 }
 
 OXSXDataSet
-DataSetGenerator::ExpectedRatesDataSet(){
+DataSetGenerator::ExpectedRatesDataSet(std::vector<int>* eventsTaken_){
     if(fExpectedRates.size() != fDataSets.size())
         throw LogicError("Can't generate fake data: need one rate exactly for each data set");
 
     if(!fDataSets.size())
         throw LogicError("Can't generate fake data: no input data sets");
+    
+    // if requested note down the events taken
+    if(eventsTaken_){
+      eventsTaken_->clear();
+    }
 
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-	fEventsTaken[i] += expectedCounts;
 	fBootstrap ? RandomDrawsWithReplacement(i, expectedCounts, dataSet) 
 	  : RandomDrawsNoReplacement(i, expectedCounts, dataSet);
+	
+	if(eventsTaken_)
+	  eventsTaken_->push_back(expectedCounts);
     }
             
     return dataSet;
 }
 
 OXSXDataSet
-DataSetGenerator::PoissonFluctuatedDataSet(){
+DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
     if(fExpectedRates.size() != fDataSets.size())
         throw LogicError("Can't generate fake data: need one rate exactly for each data set");
     if(!fDataSets.size())
       throw LogicError("Can't generate fake data: no input data sets");
 
+    // if requested note down the events taken
+    if(eventsTaken_){
+      eventsTaken_->clear();
+    }
+
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
-	fEventsTaken[i] += counts;
+
         fBootstrap ? RandomDrawsWithReplacement(i, counts, dataSet) 
 	  : RandomDrawsNoReplacement(i, counts, dataSet);
+	
+	if(eventsTaken_)
+	  eventsTaken_->push_back(counts);
     }        
     return dataSet;
 }
 
 
 OXSXDataSet
-DataSetGenerator::AllValidEvents(){
+DataSetGenerator::AllValidEvents(std::vector<int>* eventsTaken_){
+    // if requested note down the events taken
+    if(eventsTaken_){
+      eventsTaken_->clear();
+    }
+
     OXSXDataSet dataSet;
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
@@ -83,14 +101,20 @@ DataSetGenerator::AllValidEvents(){
         Event event_ = fDataSets.at(i)->GetEntry(j);
         dataSet.AddEntry(event_);
       } // events
-      fEventsTaken[i] += fDataSets.at(i)->GetNEntries();
+
+      if(eventsTaken_)
+	eventsTaken_->push_back(fDataSets.at(i)->GetNEntries());
+
     } // data sets
     return dataSet;
 }
 
 
 std::vector<OXSXDataSet*> 
-DataSetGenerator::AllRemainingEvents(){
+DataSetGenerator::AllRemainingEvents(std::vector<int>* eventsTaken_){
+  if(eventsTaken_)
+    eventsTaken_->clear();
+
   std::vector<OXSXDataSet*> remainders(fDataSets.size(), NULL);
   for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
     remainders[iDS] = new OXSXDataSet();
@@ -109,7 +133,9 @@ DataSetGenerator::AllRemainingEvents(){
     for(size_t jEV = 0; jEV <= nEvents; jEV++){   
       remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));      
     }
-    fEventsTaken[iDS] += nEvents;
+    
+    if(eventsTaken_)
+      eventsTaken_->push_back(nEvents);
   }
   Reset();
   return remainders;
@@ -119,8 +145,6 @@ void
 DataSetGenerator::Reset(){
   fEventIndicies.clear();
   fEventIndicies.resize(fDataSets.size());
-  fEventsTaken.clear();
-  fEventsTaken.resize(fDataSets.size(), 0);
   fMaxs = std::vector<size_t>(fDataSets.size(), -999);
 }
 
@@ -223,7 +247,6 @@ DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
     fEventIndicies.push_back(std::vector<size_t>());
-    fEventsTaken.push_back(0);
     fMaxs.push_back(0);
 }
 
@@ -244,10 +267,5 @@ DataSetGenerator::ClearDataSets(){
     fEventIndicies.clear();
     fMaxs.clear();
     fDataSets.clear();
-    fEventsTaken.clear();
 }
 
-const std::vector<int>&
-DataSetGenerator::GetEventsTaken() const{
-  return fEventsTaken;
-}
