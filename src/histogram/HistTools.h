@@ -1,8 +1,8 @@
 #ifndef __OXSX_HIST_TOOLS__
 #define __OXSX_HIST_TOOLS__
 #include <vector>
-#include <map>
 #include <string>
+#include <map>
 #include <set>
 
 
@@ -19,6 +19,8 @@ class HistTools{
                                                const T1& names_);
 
     static void FillAllHists(std::vector<Histogram>&, const std::map<std::string, double>& fillvals);
+
+    static std::vector<Histogram> GetVisualisableProjections(const Histogram&);
 };
 
 #include <HistTools.hpp>
