@@ -20,7 +20,10 @@ class HistTools{
 
     static void FillAllHists(std::vector<Histogram>&, const std::map<std::string, double>& fillvals);
 
-    static std::vector<Histogram> GetVisualisableProjections(const Histogram&);
+
+    // this works for histograms and binnedED -> put it somewhere else
+    template<typename T>
+    static std::vector<T> GetVisualisableProjections(const T&);
 };
 
 #include <HistTools.hpp>
