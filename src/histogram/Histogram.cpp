@@ -5,6 +5,7 @@
 #include <ContainerTools.hpp>
 #include <iostream>
 #include <set>
+#include <algorithm>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
