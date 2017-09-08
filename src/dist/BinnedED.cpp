@@ -199,7 +199,6 @@ BinnedED
 BinnedED::Marginalise(const std::vector<std::string>& names_) const{
     // Find the relative indicies indicies in 
     ObsSet newRep = ObsSet(names_);
-    std::vector<size_t> relativeIndices = newRep.GetRelativeIndices(fObservables);
 
     // create a name for the projection
     Formatter f;
@@ -209,7 +208,7 @@ BinnedED::Marginalise(const std::vector<std::string>& names_) const{
     f << "_proj";
 
     // Marginalise the histogram
-    BinnedED proj(std::string(f), fHistogram.Marginalise(relativeIndices));
+    BinnedED proj(std::string(f), fHistogram.Marginalise(names_));
     proj.SetObservables(names_);
     return proj;
 }
