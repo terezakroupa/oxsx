@@ -193,9 +193,12 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
   size_t draw  = -1; // the random draw 
 
   outData_.Reserve(outData_.GetNEntries() + nEvents_);
+
+  int oneTenth = nEvents_/10;
+
   for(size_t i = 0; i < nEvents_; i++){
-    if(!(i%10000))
-      std::cout << i << "/" << nEvents_ << std::endl;
+    if(oneTenth && !(i % oneTenth))
+      std::cout << i << "/" << nEvents_ << "   (  " << nEvents_/oneTenth << " %)" << std::endl;
 
     if (max==-999)
       max = eventIndices.size() -1;
@@ -296,6 +299,7 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   size_t& max = fMaxs[handleIndex_];
   DataSet* origData = fDataSets.at(handleIndex_);
 
+
   if(!(origData->GetNEntries()))
     throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsWithReplacement() asked for "
                         << nEvents_ << " but there are no events!");
@@ -311,11 +315,12 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   size_t draw  = -1; // the random draw 
 
   data_.Reserve(data_.GetNEntries() + nEvents_);
+
+  int oneTenth = nEvents_/10;
   for(size_t i = 0; i < nEvents_; i++){
-    if(!(i%10000))
-      std::cout << i << "/" << nEvents_ << std::endl;
-    
-    
+    if(oneTenth && !(i % oneTenth))
+      std::cout << i << "/" << nEvents_ << "   (  " << nEvents_/oneTenth << " %)" << std::endl;
+        
     if (max==-999)
       max = eventIndices.size() -1;
 
