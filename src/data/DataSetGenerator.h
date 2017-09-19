@@ -19,7 +19,8 @@ class DataSetGenerator{
     DataSetGenerator() : fBootstrap(false){}
     void SetDataSets(const std::vector<DataSet*> sets_);
     void SetExpectedRates(const std::vector<double>& rates_);
-    void AddDataSet(DataSet* data_, double rates_);
+
+    void AddDataSet(DataSet* data_, double rates_, bool sequential_);
     
     void SetCuts(const CutCollection& cuts_);
     void AddCut(const Cut& cut_);
@@ -34,12 +35,18 @@ class DataSetGenerator{
     std::vector<OXSXDataSet*> AllRemainingEvents(std::vector<int>* eventsTaken_ = NULL);
     void ClearDataSets();
     void Reset();
+    
+    void SetSequentialFlags(const std::vector<bool>&);
+    const std::vector<bool>& GetSequentialFlags() const;
+
  private:
+    std::vector<bool>        fSequentialFlags;
     std::vector<DataSet*>    fDataSets;
     std::vector<double>      fExpectedRates;
     std::vector<std::vector<size_t> > fEventIndicies;
     std::vector<size_t>      fMaxs;
     void                     RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_, OXSXDataSet& data_);
+    void                     SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_, OXSXDataSet& data_);
     void                     RandomDrawsWithReplacement(size_t handleIndex_, int nEvents_, OXSXDataSet& data_);
     bool                     fBootstrap;
     CutCollection            fCuts;

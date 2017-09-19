@@ -8,6 +8,7 @@
 #include <math.h>
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 
 void
 DataSetGenerator::SetCuts(const CutCollection& cuts_){
@@ -50,9 +51,14 @@ DataSetGenerator::ExpectedRatesDataSet(std::vector<int>* eventsTaken_){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-	fBootstrap ? RandomDrawsWithReplacement(i, expectedCounts, dataSet) 
-	  : RandomDrawsNoReplacement(i, expectedCounts, dataSet);
-	
+	if(fBootstrap)
+	  RandomDrawsWithReplacement(i, expectedCounts, dataSet);
+	else{
+	  if(fSequentialFlags.at(i))
+	    SequentialDrawsNoReplacement(i, expectedCounts, dataSet);
+	  else
+	    RandomDrawsNoReplacement(i, expectedCounts, dataSet);
+	}
 	if(eventsTaken_)
 	  eventsTaken_->push_back(expectedCounts);
     }
@@ -72,14 +78,27 @@ DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
       eventsTaken_->clear();
     }
 
+    // work out how much memory you'll probably need
+    int eventsNeeded = std::accumulate(fExpectedRates.begin(), fExpectedRates.end(), 0.0) * 1.2;
+
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
+    dataSet.Reserve(eventsNeeded);
+
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
 
-        fBootstrap ? RandomDrawsWithReplacement(i, counts, dataSet) 
-	  : RandomDrawsNoReplacement(i, counts, dataSet);
-	
+        if(fBootstrap)
+	  RandomDrawsWithReplacement(i, counts, dataSet);
+
+	else{
+	  if(fSequentialFlags.at(i))
+	    SequentialDrawsNoReplacement(i, counts, dataSet);
+
+	  else
+	    RandomDrawsNoReplacement(i, counts, dataSet);
+	}
+
 	if(eventsTaken_)
 	  eventsTaken_->push_back(counts);
     }        
@@ -202,7 +221,7 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
 
 void
 DataSetGenerator::RandomDrawsWithReplacement(size_t handleIndex_, int nEvents_, 
-					          OXSXDataSet& outData_
+					     OXSXDataSet& outData_
 					     ){
 
   std::vector<size_t>& eventIndices = fEventIndicies[handleIndex_];
@@ -243,7 +262,8 @@ DataSetGenerator::RandomDrawsWithReplacement(size_t handleIndex_, int nEvents_,
 
 
 void
-DataSetGenerator::AddDataSet(DataSet* data_, double rate_){
+DataSetGenerator::AddDataSet(DataSet* data_, double rate_, bool flag_){
+    fSequentialFlags.push_back(flag_);
     fDataSets.push_back(data_);
     fExpectedRates.push_back(rate_);
     fEventIndicies.push_back(std::vector<size_t>());
@@ -263,9 +283,60 @@ DataSetGenerator::SetBootstrap(bool b_){
 
 void 
 DataSetGenerator::ClearDataSets(){
+    fSequentialFlags.clear();
     fExpectedRates.clear();
     fEventIndicies.clear();
     fMaxs.clear();
     fDataSets.clear();
 }
 
+void
+DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_, OXSXDataSet& data_){
+  std::vector<size_t>& eventIndices = fEventIndicies[handleIndex_];
+  size_t& max = fMaxs[handleIndex_];
+  DataSet* origData = fDataSets.at(handleIndex_);
+
+  if(!(origData->GetNEntries()))
+    throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsWithReplacement() asked for "
+                        << nEvents_ << " but there are no events!");
+  
+  if(!eventIndices.size()){
+    eventIndices.reserve(origData->GetNEntries());
+
+    for(size_t i = 0; i < origData -> GetNEntries(); i++)
+      eventIndices.push_back(i);
+    max = eventIndices.size() - 1; // the effective end of the array
+  }
+  
+  size_t draw  = -1; // the random draw 
+
+  data_.Reserve(data_.GetNEntries() + nEvents_);
+  for(size_t i = 0; i < nEvents_; i++){
+    if(!(i%10000))
+      std::cout << i << "/" << nEvents_ << std::endl;
+    
+    
+    if (max==-999)
+      max = eventIndices.size() -1;
+
+    // draw
+    draw = i;
+
+    // return 
+    if(fCuts.PassesCuts(origData -> GetEntry(eventIndices[draw])))
+      data_.AddEntry(origData -> GetEntry(eventIndices[draw]));
+  }
+
+  return;  
+}
+
+void
+DataSetGenerator::SetSequentialFlags(const std::vector<bool>& flags_){
+  fSequentialFlags = flags_;
+}
+
+
+const std::vector<bool>&
+DataSetGenerator::GetSequentialFlags() const{
+  return fSequentialFlags;
+}
