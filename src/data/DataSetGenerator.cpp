@@ -80,7 +80,7 @@ DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
 
     // work out how much memory you'll probably need
     int eventsNeeded = std::accumulate(fExpectedRates.begin(), fExpectedRates.end(), 0.0) * 1.2;
-
+    
     OXSXDataSet dataSet;    
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     dataSet.Reserve(eventsNeeded);
@@ -129,36 +129,20 @@ DataSetGenerator::AllValidEvents(std::vector<int>* eventsTaken_){
 }
 
 
-std::vector<OXSXDataSet*> 
-DataSetGenerator::AllRemainingEvents(std::vector<int>* eventsTaken_){
-  if(eventsTaken_)
-    eventsTaken_->clear();
+// std::vector<OXSXDataSet*> 
+// DataSetGenerator::AllRemainingEvents(std::vector<int>* eventsTaken_){
+//   if(eventsTaken_)
+//     eventsTaken_->clear();
 
-  std::vector<OXSXDataSet*> remainders(fDataSets.size(), NULL);
-  for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
-    remainders[iDS] = new OXSXDataSet();
-    remainders[iDS]->SetObservableNames(fDataSets.at(0)->GetObservableNames());
-  }
-  for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
-    size_t nEvents = fMaxs.at(iDS);
-    if (nEvents==-999) 
-      nEvents = (fDataSets.at(iDS) -> GetNEntries()) - 1;
+//   std::vector<OXSXDataSet*> remainders(fDataSets.size(), NULL);
+//   int taken;
+//   for(size_t iDS = 0; iDS < fDataSets.size(); iDS++){   
+//     remainders[iDS] = AllRemainingEvents(iDS, *taken);
+//     eventsTaken_->push_back(taken);
+//   }
 
-    if (nEvents==-1) 
-      continue; //in case all events drawn and not replaced
-
-    const std::vector<size_t>& eventIndices = fEventIndicies[iDS];
-
-    for(size_t jEV = 0; jEV <= nEvents; jEV++){   
-      remainders[iDS]->AddEntry(fDataSets.at(iDS)->GetEntry(eventIndices.at(jEV)));      
-    }
-    
-    if(eventsTaken_)
-      eventsTaken_->push_back(nEvents);
-  }
-  Reset();
-  return remainders;
-}
+//   return remainders;
+// }
 
 void
 DataSetGenerator::Reset(){
@@ -198,7 +182,7 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
 
   for(size_t i = 0; i < nEvents_; i++){
     if(oneTenth && !(i % oneTenth))
-      std::cout << i << "/" << nEvents_ << "   (  " << nEvents_/oneTenth << " %)" << std::endl;
+      std::cout << i << "/" << nEvents_ << "   (  " << 10 * i/oneTenth << " %)" << std::endl;
 
     if (max==-999)
       max = eventIndices.size() -1;
@@ -314,12 +298,12 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   
   size_t draw  = -1; // the random draw 
 
-  data_.Reserve(data_.GetNEntries() + nEvents_);
+  //data_.Reserve(data_.GetNEntries() + nEvents_);
 
   int oneTenth = nEvents_/10;
   for(size_t i = 0; i < nEvents_; i++){
     if(oneTenth && !(i % oneTenth))
-      std::cout << i << "/" << nEvents_ << "   (  " << nEvents_/oneTenth << " %)" << std::endl;
+      std::cout << i << "/" << nEvents_ << "   (  " << 10 * i /oneTenth << " %)" << std::endl;
         
     if (max==-999)
       max = eventIndices.size() -1;
@@ -344,4 +328,35 @@ DataSetGenerator::SetSequentialFlags(const std::vector<bool>& flags_){
 const std::vector<bool>&
 DataSetGenerator::GetSequentialFlags() const{
   return fSequentialFlags;
+}
+
+
+OXSXDataSet*
+DataSetGenerator::AllRemainingEvents(size_t iDS_, int* eventsTaken_){
+  OXSXDataSet* ds = new OXSXDataSet();
+  ds -> SetObservableNames(fDataSets.at(iDS_)->GetObservableNames());
+  *eventsTaken_ = 0;
+
+  size_t nEvents = fMaxs.at(iDS_);
+  if (nEvents==-999) 
+    nEvents = (fDataSets.at(iDS_) -> GetNEntries()) - 1;
+  
+  if (nEvents==-1)
+    return ds; //in case all events drawn and not replaced
+  
+  const std::vector<size_t>& eventIndices = fEventIndicies[iDS_];
+  
+  size_t oneTenth = nEvents/10;
+  
+  for(size_t jEV = 0; jEV <= nEvents; jEV++){   
+    if(oneTenth && !(jEV % oneTenth))
+      std::cout << jEV << "/" << nEvents << "\t" 
+		<< "(" <<  10 * jEV/oneTenth
+		<< "%)"
+		<< std::endl;
+    ds -> AddEntry(fDataSets.at(iDS_)->GetEntry(eventIndices.at(jEV)));
+  }
+  
+  *eventsTaken_ = nEvents;
+  return ds;
 }

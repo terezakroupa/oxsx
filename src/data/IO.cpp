@@ -42,22 +42,25 @@ void
 IO::SaveDataSetROOT(const DataSet& dataSet_, const std::string& filename_){
     // note if this is already a ROOT tree this is a super silly way to do it, but it doesn't make sense to do it
     // anyway
-
     if(!dataSet_.GetObservableNames().size()){
         std::cout << "Tried to save a dataset with nothing in it.. nothing done" << std::endl;
         return;
     }
-    
+
     std::string branchString = dataSet_.GetObservableNames().at(0);
     for(size_t i = 1; i < dataSet_.GetObservableNames().size(); i++){
         branchString += ":";
         branchString += dataSet_.GetObservableNames().at(i);
     }
-    
+
     TFile f(filename_.c_str(), "RECREATE");
     TNtuple nt("oxsx_saved", "", branchString.c_str());
 
+    int oneTenth = dataSet_.GetNEntries()/10;
     for(size_t i = 0; i < dataSet_.GetNEntries(); i++){
+        if(oneTenth && !(i%oneTenth))
+	  std::cout << "(" <<  10 * i/oneTenth << "%)" << std::endl;
+
         // save these as floats
         Event ev = dataSet_.GetEntry(i);
 	const std::vector<double>& datad = ev.GetData();
@@ -67,9 +70,11 @@ IO::SaveDataSetROOT(const DataSet& dataSet_, const std::string& filename_){
         // and write
         nt.Fill(&dataf[0]);
     }    
-
+    f.cd();
+    
     nt.Write();
     f.Close();
+    
 }
 
 
