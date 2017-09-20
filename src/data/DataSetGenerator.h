@@ -32,7 +32,8 @@ class DataSetGenerator{
     OXSXDataSet PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_ = NULL);
     OXSXDataSet AllValidEvents(std::vector<int>* eventsTaken_ = NULL);
 
-    std::vector<OXSXDataSet*> AllRemainingEvents(std::vector<int>* eventsTaken_ = NULL);
+    OXSXDataSet* AllRemainingEvents(size_t dataSet_, int* eventsTaken_);
+    /* std::vector<OXSXDataSet*> AllRemainingEvents(std::vector<int>* eventsTaken_ = NULL); */
     void ClearDataSets();
     void Reset();
     
