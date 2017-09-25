@@ -37,7 +37,9 @@ ROOTNtuple::GetObservableNames() const{
 Event 
 ROOTNtuple::Assemble(size_t iEvent_) const{
     if (iEvent_ >= GetNEntries())
-        throw NotFoundError("Exceeded end of ROOT NTuple");
+        throw NotFoundError(Formatter() << "Exceeded end of ROOT NTuple"
+                            << " \n\t(requested " << iEvent_ 
+                            << " but only have " << GetNEntries() << ")");
     fROOTFile->cd();
     fNtuple -> GetEntry(iEvent_);
     float* vals = fNtuple -> GetArgs();
@@ -48,8 +50,6 @@ ROOTNtuple::Assemble(size_t iEvent_) const{
 
 Event
 ROOTNtuple::GetEntry(size_t iEvent_) const{
-    if(iEvent_ >= GetNEntries())
-        throw NotFoundError("Exceeded end of ROOT NTuple");
     return Assemble(iEvent_);
 }
 

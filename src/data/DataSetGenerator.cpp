@@ -161,10 +161,6 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
   std::vector<size_t>& eventIndices = fEventIndicies[handleIndex_];
   size_t& max = fMaxs[handleIndex_];
   DataSet* origData = fDataSets.at(handleIndex_);
-  if(origData->GetNEntries() < nEvents_)
-    throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsNoReplacement() asked for "
-                        << nEvents_ << " but only have " << origData -> GetNEntries() 
-                        << "events!");
 
   if(!eventIndices.size()){
     eventIndices.reserve(origData->GetNEntries());
@@ -172,6 +168,11 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
       eventIndices.push_back(i);
     max = eventIndices.size() - 1; // the effective end of the array
   }
+
+  if(nEvents_ >  max)
+    throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsNoReplacement() asked for "
+                        << nEvents_ << " but only have " << origData -> GetNEntries() 
+                        << "events!)");
 
   size_t cache = -1; // for swapping
   size_t draw  = -1; // the random draw 
@@ -283,16 +284,22 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   size_t& max = fMaxs[handleIndex_];
   DataSet* origData = fDataSets.at(handleIndex_);
 
+  if(nEvents_ > origData->GetNEntries())
+      throw NotFoundError(Formatter() << "DataSetGenerator::Not enough events!"
+                          << "\n\t (asked for " << nEvents_
+                          << " but only have " << origData->GetNEntries()
+                          );
+
 
   if(!(origData->GetNEntries()))
     throw NotFoundError(Formatter() << "DataSetGenerator::RandomDrawsWithReplacement() asked for "
                         << nEvents_ << " but there are no events!");
   
   if(!eventIndices.size()){
-    eventIndices.reserve(origData->GetNEntries());
+      eventIndices.reserve(origData->GetNEntries());
 
     for(size_t i = 0; i < origData -> GetNEntries(); i++)
-      eventIndices.push_back(i);
+        eventIndices.push_back(i);
     max = eventIndices.size() - 1; // the effective end of the array
   }
   
@@ -306,7 +313,7 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
       std::cout << i << "/" << nEvents_ << "   (  " << 10 * i /oneTenth << " %)" << std::endl;
         
     if (max==-999)
-      max = eventIndices.size() -1;
+        max = eventIndices.size() -1;
 
     // draw
     draw = i;
@@ -314,8 +321,11 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
     // return 
     if(fCuts.PassesCuts(origData -> GetEntry(eventIndices[draw])))
       data_.AddEntry(origData -> GetEntry(eventIndices[draw]));
+    
+    // deincrement
+    max--;
   }
-
+  
   return;  
 }
 
