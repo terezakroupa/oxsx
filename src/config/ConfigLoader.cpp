@@ -7,6 +7,8 @@ INI::Parser* ConfigLoader::fParser = NULL;
 
 void
 ConfigLoader::Load(const std::string& section_, const std::string& fieldName_,  std::string& loadVal_){
+
+  CheckExists(section_, fieldName_);
   loadVal_ = fParser->top()(section_)[fieldName_];
 }
 
@@ -34,4 +36,14 @@ ConfigLoader::ListSections(){
       return std::set<std::string>();
     
     return ContainerTools::GetKeys(fParser->top().sections);
+}
+
+void
+ConfigLoader::CheckExists(const std::string& section_, const std::string& field_){
+
+    if(fParser->top().sections.find(section_) == fParser->top().sections.end())
+        throw ConfigSectionMissing("Can't find section " + section_);
+
+    if(fParser->top()(section_).values.find(field_) == fParser->top()(section_).values.end())
+        throw ConfigFieldMissing("Can't find field " + field_ + " in section " + section_);
 }

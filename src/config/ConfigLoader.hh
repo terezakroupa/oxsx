@@ -54,7 +54,8 @@ public:
 
   static std::set<std::string> ListSections();
   
-private:    
+private:
+    static void   CheckExists(const std::string& section_, const std::string& field_);
     static INI::Parser* fParser;
 };
 
