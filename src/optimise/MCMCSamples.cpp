@@ -110,12 +110,12 @@ MCMCSamples::Fill(const ParameterDict& params_, bool accepted_){
 }
 
 
-const std::vector<Histogram>&
+const std::map<std::string, Histogram>&
 MCMCSamples::Get1DProjections() const{
     return f1DProjections;
 }
     
-const std::vector<Histogram>&
+const std::map<std::string, Histogram>&
 MCMCSamples::Get2DProjections() const{
     return f2DProjections;
 }

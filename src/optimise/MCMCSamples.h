@@ -28,8 +28,8 @@ class MCMCSamples{
 
     void Fill(const ParameterDict&, bool accepted_);
 
-    const std::vector<Histogram>& Get1DProjections() const;
-    const std::vector<Histogram>& Get2DProjections() const;
+    const std::map<std::string, Histogram>& Get1DProjections() const;
+    const std::map<std::string, Histogram>& Get2DProjections() const;
 
     const Histogram& GetHistogram() const;
     const std::vector< std::vector<double> >& GetRawSamples() const;
@@ -51,8 +51,8 @@ class MCMCSamples{
     int fAcceptedSteps;
     int fTotalSteps;
 
-    std::vector<Histogram>           f1DProjections;
-    std::vector<Histogram>           f2DProjections;
+    std::map<std::string, Histogram>           f1DProjections;
+    std::map<std::string, Histogram>           f2DProjections;
 
     Histogram fHist;
     std::vector< std::vector<double> > fSample;
