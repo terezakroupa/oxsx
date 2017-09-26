@@ -9,6 +9,15 @@
 #include <iostream>
 #include <math.h> //sqrt
 
+void
+MCMC::SetHistogramAxes(const AxisCollection& ax_){
+    fSamples.SetHistogramAxes(ax_);
+}
+AxisCollection
+MCMC::GetHistogramAxes() const{
+    return fSamples.GetHistogramAxes();
+}
+
 unsigned
 MCMC::GetBurnIn() const{
     return fSamples.GetBurnIn();
@@ -168,7 +177,7 @@ MCMC::Optimise(TestStatistic* testStat_){
 
     // 2. Loop step through the space a fixed number of times and
     for(unsigned i = 0; i < fMaxIter; i++){      
-        if(!(i%10000))
+        if(!(i%100))
             std::cout << i << "  /  " << fMaxIter 
                       << "\t" << fSamples.GetAcceptanceRate() << std::endl;
 
