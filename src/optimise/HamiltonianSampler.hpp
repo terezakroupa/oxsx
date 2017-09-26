@@ -2,10 +2,17 @@
 #include <ContainerTools.hpp>
 #include <LeapFrog.h>
 #include <iostream>
+#include <cmath>
 
 template<typename StatType>
 HamiltonianSampler<StatType>::HamiltonianSampler(StatType& stat_, double epsilon_, int nSteps_)
-    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, epsilon_/100)){}
+    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, epsilon_/100)){
+
+    typedef std::set<std::string> StringSet;
+    StringSet names = stat_.GetParameterNames();
+    for(StringSet::iterator it = names.begin(); it != names.end(); ++it)
+        fMasses[*it] = 1;
+}
 
 
 template<typename StatType>
@@ -15,8 +22,7 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
     ParameterDict momenta;
     
     for(ParameterDict::const_iterator it = thisStep_.begin(); it != thisStep_.end(); ++it){
-        fMasses[it->first] = 1;
-        momenta[it->first] = Rand::Gaus(0, fMasses[it->first]);
+        momenta[it->first] = Rand::Gaus(0, sqrt(fMasses[it->first]));
     }
 
     // step 2: Hamiltonian dynamics
@@ -27,5 +33,4 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
 
     return nextStep;
 }
-
 
