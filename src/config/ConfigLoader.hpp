@@ -1,4 +1,5 @@
 #include <sstream>
+#include <Exceptions.h>
 #include <ContainerTools.hpp>
 
 template<typename TargetType>
@@ -21,7 +22,10 @@ Converter<TargetType>::operator()(const std::string& s_) const{
   std::istringstream buffer(s_);
   TargetType val;
   buffer >> val;
-    return val;
+
+  if (buffer.fail())
+      throw ValueError("String conversion failed : value is invalid (this can mean the numerical type isn't big enough)");
+  return val;
 }
 
 template<typename InContainer, typename OutContainer, typename ConverterSp>
