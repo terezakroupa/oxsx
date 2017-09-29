@@ -1,6 +1,6 @@
 #include <numeric>
 #include <AutoCorrelationCalc.h>
-
+#include <iostream>
 void
 AutoCorrelationCalc::Fill(double v_){
     // shuffle everything along
@@ -25,8 +25,9 @@ AutoCorrelationCalc::Get() const{
     autocorrs.reserve(fValues.size());
 
     for(size_t i = 0; i < fDiffs.size(); i++){
-        autocorrs[i] = fDiffs[i]/fNorms[i];
+        autocorrs.push_back(fDiffs[i]/fNorms[i]);
     }
+
     return autocorrs;
 }
 
