@@ -6,7 +6,7 @@
 
 template<typename StatType>
 HamiltonianSampler<StatType>::HamiltonianSampler(StatType& stat_, double epsilon_, int nSteps_)
-    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, epsilon_/100)){
+    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, 0.25 * epsilon_)){
 
     typedef std::set<std::string> StringSet;
     StringSet names = stat_.GetParameterNames();
