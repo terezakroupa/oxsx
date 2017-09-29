@@ -13,7 +13,8 @@ class MCMC : public Optimiser{
                           fSamples(this),
                           fMaxIter(100000), 
                           fMaxVal(0), fFlipSign(false), 
-                          fTestStatLogged(false), pTestStatistic(NULL)
+                          fTestStatLogged(false), pTestStatistic(NULL),
+                          fCurrentVal(0.)
                           {}
     
     const FitResult& Optimise(TestStatistic*); 
@@ -60,8 +61,10 @@ class MCMC : public Optimiser{
     bool      fFlipSign;
     
     double fMaxVal;
+    double fCurrentVal;
     FitResult fFitResult;
     ParameterDict fBestFit;
+    ParameterDict fCurrentStep;
     
     MCMCSamples fSamples;
     
@@ -74,7 +77,6 @@ class MCMC : public Optimiser{
     
     MCSampler& fSampler;
 
-    bool   StepAccepted(const ParameterDict& thisStep_,
-                        const ParameterDict& proposedStep_);
+    bool   StepAccepted(const ParameterDict& proposedStep_);
 };
 #endif
