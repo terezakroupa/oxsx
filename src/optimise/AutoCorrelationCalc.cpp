@@ -13,7 +13,7 @@ AutoCorrelationCalc::Fill(double v_){
 
     double newest = fValues.back();
     for(size_t i = 0; i < fValues.size(); i++){
-        double older = fValues.back()  - i;
+        double older = fValues.rbegin()[i];
         fDiffs[i] += (newest - mean) * (older - mean);
         fNorms[i] += (newest - mean) * (newest - mean);
     }    
