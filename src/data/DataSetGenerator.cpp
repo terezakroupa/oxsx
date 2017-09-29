@@ -89,18 +89,18 @@ DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
         int counts = Rand::Poisson(fExpectedRates.at(i));
 
         if(fBootstrap)
-	  RandomDrawsWithReplacement(i, counts, dataSet);
+            RandomDrawsWithReplacement(i, counts, dataSet);
 
-	else{
-	  if(fSequentialFlags.at(i))
-	    SequentialDrawsNoReplacement(i, counts, dataSet);
-
-	  else
-	    RandomDrawsNoReplacement(i, counts, dataSet);
-	}
-
-	if(eventsTaken_)
-	  eventsTaken_->push_back(counts);
+        else{
+            if(fSequentialFlags.at(i))
+                SequentialDrawsNoReplacement(i, counts, dataSet);
+            
+            else
+                RandomDrawsNoReplacement(i, counts, dataSet);
+        }
+        
+        if(eventsTaken_)
+            eventsTaken_->push_back(counts);
     }        
     return dataSet;
 }
@@ -190,7 +190,7 @@ DataSetGenerator::RandomDrawsNoReplacement(size_t handleIndex_, int nEvents_,
     // draw
     draw = Rand::Shoot(max);
 
-    // swap
+     // swap
     cache = eventIndices[draw];
     eventIndices[draw] = eventIndices[max];
     eventIndices[max]  = cache;
@@ -287,7 +287,7 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   if(nEvents_ > origData->GetNEntries())
       throw NotFoundError(Formatter() << "DataSetGenerator::Not enough events!"
                           << "\n\t (asked for " << nEvents_
-                          << " but only have " << origData->GetNEntries()
+                          << " but only have " << max << " (left)"
                           );
 
 
@@ -304,7 +304,7 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
   }
   
   size_t draw  = -1; // the random draw 
-
+  size_t cache = -1;
   //data_.Reserve(data_.GetNEntries() + nEvents_);
 
   int oneTenth = nEvents_/10;
@@ -315,8 +315,13 @@ DataSetGenerator::SequentialDrawsNoReplacement(size_t handleIndex_, int nEvents_
     if (max==-999)
         max = eventIndices.size() -1;
 
-    // draw
-    draw = i;
+    // draw --> always take the first one 
+    draw = 0;
+    
+    // swap
+    cache = eventIndices[draw];
+    eventIndices[draw] = eventIndices[max];
+    eventIndices[max]  = cache;
 
     // return 
     if(fCuts.PassesCuts(origData -> GetEntry(eventIndices[draw])))
