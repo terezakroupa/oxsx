@@ -3,12 +3,15 @@
 #include <AxisCollection.h>
 #include <Histogram.h>
 #include <ParameterDict.h>
+#include <AutoCorrelationCalc.h>
 
 class MCMC;
 class MCMCSamples{
  public:
     MCMCSamples(MCMC* p_) : fSaveFullHistogram(false), fAcceptedSteps(0), fTotalSteps(0),
-                            fBurnIn(1000), fThinFactor(1), fInitialised(false), fMCMC(p_) {}
+                            fBurnIn(1000), fThinFactor(1), fInitialised(false), fMCMC(p_),
+                            fAutoCorrelator(20)
+                            {}
 
 
     int  GetBurnIn() const;
@@ -26,7 +29,7 @@ class MCMCSamples{
     double   GetRejectionRate() const;
     double   GetAcceptanceRate() const;
 
-    void Fill(const ParameterDict&, bool accepted_);
+    void Fill(const ParameterDict&, double val_, bool accepted_);
 
     const std::map<std::string, Histogram>& Get1DProjections() const;
     const std::map<std::string, Histogram>& Get2DProjections() const;
@@ -35,8 +38,11 @@ class MCMCSamples{
     const std::vector< std::vector<double> >& GetRawSamples() const;
 
     void Clear();
-    
+
+    std::vector<double> GetAutoCorrelations();
+
  private:
+    AutoCorrelationCalc fAutoCorrelator;
     MCMC*   fMCMC;
     bool    fInitialised;
     int     fBurnIn;

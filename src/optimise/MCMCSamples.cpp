@@ -90,7 +90,7 @@ MCMCSamples::InitialiseHistograms(){
 }
 
 void
-MCMCSamples::Fill(const ParameterDict& params_, bool accepted_){
+MCMCSamples::Fill(const ParameterDict& params_, double val_, bool accepted_){
     if(!fInitialised)
         InitialiseHistograms();
 
@@ -107,6 +107,7 @@ MCMCSamples::Fill(const ParameterDict& params_, bool accepted_){
         fAcceptedSteps++;
     
     fTotalSteps++;
+    fAutoCorrelator.Fill(val_);
 }
 
 
@@ -160,4 +161,10 @@ MCMCSamples::Clear(){
     f2DProjections.clear();
     fInitialised = false;
     fHist.Empty();
+    fAutoCorrelator.Clear();
+}
+
+std::vector<double>
+MCMCSamples::GetAutoCorrelations(){
+    return fAutoCorrelator.Get();
 }

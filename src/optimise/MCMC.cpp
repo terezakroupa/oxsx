@@ -158,38 +158,48 @@ MCMC::Optimise(TestStatistic* testStat_){
                          );
 
     // 1. Choose a random starting point or the user defined one
-    ParameterDict currentStep;
     std::set<std::string> parameterNames = testStat_->GetParameterNames();
     if(fInitialTrial.size())
-      currentStep = fInitialTrial;
+        fCurrentStep = fInitialTrial;
     else{
         for(std::set<std::string>::iterator it = parameterNames.begin(); 
         it != parameterNames.end(); ++it){
         const std::string& name = *it;
-            currentStep[name] = fMinima[name] + Rand::Uniform() * (fMaxima[name] - fMinima[name]);
+        fCurrentStep[name] = fMinima[name] + Rand::Uniform() * (fMaxima[name] - fMinima[name]);
         }
     }
 
     std::cout << "MCMC::Initial Position @:" << std::endl;
-    for(ParameterDict::iterator it = currentStep.begin(); it != currentStep.end(); ++it)
+    for(ParameterDict::iterator it = fCurrentStep.begin(); it != fCurrentStep.end(); ++it)
         std::cout << it->first << " : " << it->second << std::endl;
     std::cout << std::endl;
 
-    // 2. Loop step through the space a fixed number of times and
+
+    pTestStatistic->SetParameters(fCurrentStep);
+    fCurrentVal = pTestStatistic->Evaluate();
+    if(fFlipSign)
+        fCurrentVal *= -1;
+
+    fBestFit = fCurrentStep;
+    fMaxVal  = fCurrentVal;
+    
+    // 2. Loop step through the space a fixed number of times
     for(unsigned i = 0; i < fMaxIter; i++){      
-        if(!(i%100))
-            std::cout << i << "  /  " << fMaxIter 
-                      << "\t" << fSamples.GetAcceptanceRate() << std::endl;
+        if(!(i%100) && i)
+            std::cout << i << "  /  " << fMaxIter
+                      << "\t" << fSamples.GetAcceptanceRate()
+                      << "\t" << fSamples.GetAutoCorrelations()[1]
+                      << std::endl;
+
 
         // b. Propose a new step according to a random jump distribution
-        ParameterDict proposedStep = fSampler.Draw(currentStep);
+        ParameterDict proposedStep = fSampler.Draw(fCurrentStep);
 
-        // c. Test for acceptance
-        bool accepted =  StepAccepted(currentStep, proposedStep);
-        if(accepted)
-            currentStep = proposedStep;
+        // c. Decide whethere to step there or not
+        bool accepted =  StepAccepted(proposedStep);
 
-        fSamples.Fill(currentStep, accepted);
+        // d. log
+        fSamples.Fill(fCurrentStep, fCurrentVal, accepted);
     }
     
     std::cout << "MCMC:: acceptance rate = " << fSamples.GetAcceptanceRate()
@@ -203,39 +213,32 @@ MCMC::Optimise(TestStatistic* testStat_){
 }
 
 bool
-MCMC::StepAccepted(const ParameterDict& thisStep_, 
-                   const ParameterDict& proposedStep_){
+MCMC::StepAccepted(const ParameterDict& proposedStep_){
 
     // dont step outside of the fit region 
-    for (ParameterDict::const_iterator it  = thisStep_.begin();
-         it != thisStep_.end(); ++it){
+    for (ParameterDict::const_iterator it  = fCurrentStep.begin();
+         it != fCurrentStep.end(); ++it){
         if (proposedStep_.at(it->first) < fMinima.at(it->first) || proposedStep_.at(it->first) > fMaxima.at(it->first))
             return false;
     }
-    
-    
-    pTestStatistic -> SetParameters(thisStep_);
-    double thisVal = pTestStatistic -> Evaluate();
-    
 
     pTestStatistic -> SetParameters(proposedStep_);
     double proposedVal = pTestStatistic -> Evaluate();
 
     if(fFlipSign){
-        thisVal = -thisVal;
         proposedVal = -proposedVal;
     }
 
-    if(thisVal > fMaxVal || fMaxVal == 0.0){
-        fMaxVal = thisVal;
-        fBestFit = thisStep_;
+    if(fCurrentVal > fMaxVal || fMaxVal == 0.0){
+        fMaxVal = fCurrentVal;
+        fBestFit = fCurrentStep;
     }
     
     double acceptanceParam = 0;
     if(fTestStatLogged)
-        acceptanceParam = exp(proposedVal - thisVal);
+        acceptanceParam = exp(proposedVal - fCurrentVal);
     else
-        acceptanceParam = proposedVal/thisVal;
+        acceptanceParam = proposedVal/fCurrentVal;
 
     bool accept = false;
     if (acceptanceParam > 1)
@@ -243,6 +246,12 @@ MCMC::StepAccepted(const ParameterDict& thisStep_,
 
     else if (acceptanceParam >= Rand::Uniform())
         accept = true;
+
+
+    if(accept){
+        fCurrentVal = proposedVal;
+        fCurrentStep = proposedStep_;
+    }
 
     return accept;
 }
