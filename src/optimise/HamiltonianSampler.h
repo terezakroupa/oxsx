@@ -14,9 +14,19 @@ public:
     
     void SetMasses(const ParameterDict& m_) {fMasses = m_;}
     ParameterDict GetMasses() const {return fMasses;}
+
+    void SetMinima(const ParameterDict& m_);
+    ParameterDict GetMinima() const;
+    
+    void SetMaxima(const ParameterDict& m_);
+    ParameterDict GetMaxima() const;
+
 private:
     typedef Gradient<StatType> GradType;
     ParameterDict fMasses;
+    ParameterDict fMinima;
+    ParameterDict fMaxima;
+
     int           fNSteps;
     GradType      fDiff;
     double        fEpsilon;

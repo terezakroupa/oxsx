@@ -7,7 +7,8 @@ class HMCEnergy{
     HMCEnergy(LogLikelihood& lh_) : fLLikelihood(lh_) {}
     double Evaluate();
     void   SetParameters(const ParameterDict& p_);
-    
+    std::set<std::string> GetParameterNames() const;
+
  private:
     LogLikelihood& fLLikelihood;
 };
