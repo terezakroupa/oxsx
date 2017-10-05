@@ -5,10 +5,17 @@
 
 class LeapFrog{
 public:
+    // one step
     template<typename T>
     static void Hamiltonian(ParameterDict& qs_, ParameterDict& ps_,
                             const ParameterDict& masses_,
                             double epsilon_, T&);
+
+    // one step
+    template<typename T>
+    static void Hamiltonian(ParameterDict& qs_, ParameterDict& ps_,
+                            const ParameterDict& masses_,
+                            double epsilon_, T&, int nSteps_);
 };
 
 #include <LeapFrog.hpp>
