@@ -27,9 +27,13 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
 
     fCorr = KineticEnergy(momenta);
 
-    // step 2: Hamiltonian dynamics
+    
+    // step 2: Hamiltonian dynamics, including reflections or not
     ParameterDict nextStep = thisStep_;
-    LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff, fNSteps);
+    if(fMinima.size() && fMaxima.size())
+        LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff, fNSteps, fMinima, fMaxima);
+    else
+        LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff, fNSteps);
 
     fCorr -= KineticEnergy(momenta);
     
