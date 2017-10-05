@@ -10,7 +10,7 @@ class MCMCSamples{
  public:
     MCMCSamples(MCMC* p_) : fSaveFullHistogram(false), fAcceptedSteps(0), fTotalSteps(0),
                             fBurnIn(1000), fThinFactor(1), fInitialised(false), fMCMC(p_),
-                            fAutoCorrelator(20)
+                            fAutoCorrelator(1000)
                             {}
 
 
