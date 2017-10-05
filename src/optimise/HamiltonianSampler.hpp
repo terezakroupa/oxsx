@@ -6,7 +6,7 @@
 
 template<typename StatType>
 HamiltonianSampler<StatType>::HamiltonianSampler(StatType& stat_, double epsilon_, int nSteps_)
-    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, 0.05 * epsilon_)){
+    : fEpsilon(epsilon_), fNSteps(nSteps_), fDiff(GradType(stat_, 0.05 * epsilon_)), fCorr(0){
 
     typedef std::set<std::string> StringSet;
     StringSet names = stat_.GetParameterNames();
@@ -25,28 +25,14 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
         momenta[it->first] = Rand::Gaus(0, sqrt(fMasses[it->first]));
     }
 
+    fCorr = KineticEnergy(momenta);
+
     // step 2: Hamiltonian dynamics
     ParameterDict nextStep = thisStep_;
-    for(int i  = 0; i < fNSteps; i++){
-        LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff);
-        
+    LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff, fNSteps);
 
-        // look for reflections
-        for(ParameterDict::iterator it = fMinima.begin(); it != fMinima.end();
-            ++it){
-            if (nextStep.at(it->first) < it->second)
-                momenta[it->first] *= -1;
-        }
-        
-        for(ParameterDict::iterator it = fMaxima.begin(); it != fMaxima.end();
-            ++it){
-            if (nextStep.at(it->first) > it->second)
-                momenta[it->first] *= -1;
-        }
-            
-
-    }
-
+    fCorr -= KineticEnergy(momenta);
+    
     return nextStep;
 }
 
@@ -72,4 +58,20 @@ template<typename StatType>
 ParameterDict
 HamiltonianSampler<StatType>::GetMaxima() const{
     return fMaxima;
+}
+
+template<typename StatType>
+double
+HamiltonianSampler<StatType>::KineticEnergy(const ParameterDict& momenta_) const{
+    double kinEnergy = 0;
+    for(ParameterDict::const_iterator it = momenta_.begin(); it != momenta_.end(); ++it)
+        kinEnergy += it->second * it->second /2/fMasses.at(it->first);
+
+    return kinEnergy;
+}
+
+template<typename StatType>
+double
+HamiltonianSampler<StatType>::CorrectAccParam(double in_){
+    return in_ * exp(fCorr);
 }

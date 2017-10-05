@@ -76,7 +76,7 @@ class MCMC : public Optimiser{
     TestStatistic* pTestStatistic;
     
     MCSampler& fSampler;
-
+    
     bool   StepAccepted(const ParameterDict& proposedStep_);
 };
 #endif
