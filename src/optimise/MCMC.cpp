@@ -192,7 +192,7 @@ MCMC::Optimise(TestStatistic* testStat_){
                       << std::endl;
 
 
-        // b. Propose a new step according to a random jump distribution
+        // b. Propose a new step according
         ParameterDict proposedStep = fSampler.Draw(fCurrentStep);
 
         // c. Decide whethere to step there or not
@@ -214,7 +214,6 @@ MCMC::Optimise(TestStatistic* testStat_){
 
 bool
 MCMC::StepAccepted(const ParameterDict& proposedStep_){
-
     // dont step outside of the fit region 
     for (ParameterDict::const_iterator it  = fCurrentStep.begin();
          it != fCurrentStep.end(); ++it){
@@ -232,7 +231,7 @@ MCMC::StepAccepted(const ParameterDict& proposedStep_){
     if(fCurrentVal > fMaxVal || fMaxVal == 0.0){
         fMaxVal = fCurrentVal;
         fBestFit = fCurrentStep;
-    }
+    }    
     
     double acceptanceParam = 0;
     if(fTestStatLogged)
@@ -240,6 +239,10 @@ MCMC::StepAccepted(const ParameterDict& proposedStep_){
     else
         acceptanceParam = proposedVal/fCurrentVal;
 
+    // depdending on the sampler, some need to modify the acceptance probability to preserve stationary
+    // condition
+    acceptanceParam = fSampler.CorrectAccParam(acceptanceParam);
+    
     bool accept = false;
     if (acceptanceParam > 1)
         accept =  true;

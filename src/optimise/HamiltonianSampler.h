@@ -21,12 +21,17 @@ public:
     void SetMaxima(const ParameterDict& m_);
     ParameterDict GetMaxima() const;
 
+    double KineticEnergy(const ParameterDict& momenta_) const;
+    double CorrectAccParam(double orig_);
+    
 private:
     typedef Gradient<StatType> GradType;
     ParameterDict fMasses;
     ParameterDict fMinima;
     ParameterDict fMaxima;
 
+    double        fCorr;
+    
     int           fNSteps;
     GradType      fDiff;
     double        fEpsilon;

@@ -20,3 +20,4 @@ MetropolisSampler::Draw(const ParameterDict& current_){
     }
     return newStep;    
 }
+

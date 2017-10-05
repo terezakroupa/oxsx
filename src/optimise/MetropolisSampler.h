@@ -9,7 +9,8 @@ class MetropolisSampler : public MCSampler{
     void  SetSigmas(const ParameterDict&);
 
     ParameterDict Draw(const ParameterDict& current_);
-
+    inline double CorrectAccParam(double in_) {return in_;}
+    
  private:
     ParameterDict fSigmas;
 };
