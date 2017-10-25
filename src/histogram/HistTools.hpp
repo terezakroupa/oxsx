@@ -32,15 +32,17 @@ HistTools::GetVisualisableProjections(const T& hist_){
   for(size_t i = 0; i < axisNames.size(); i++){
     hists.push_back(hist_.Marginalise(axisNames.at(i)));
   }
-  
-  // 2D
-  AxisCombs combs = Combinations::AllCombsNoDiag(axisNames);
-  for(AxisCombs::iterator it = combs.begin(); it != combs.end(); ++it){
-    // sadly this method takes a vector not a pair so conv
-    std::vector<std::string> vec;
-    vec.push_back(it->first);
-    vec.push_back(it->second);
-    hists.push_back(hist_.Marginalise(vec));
+
+  if(hist_.GetNDims() > 2){  
+      // 2D
+      AxisCombs combs = Combinations::AllCombsNoDiag(axisNames);
+      for(AxisCombs::iterator it = combs.begin(); it != combs.end(); ++it){
+          // sadly this method takes a vector not a pair so conv
+          std::vector<std::string> vec;
+          vec.push_back(it->first);
+          vec.push_back(it->second);
+          hists.push_back(hist_.Marginalise(vec));
+      }
   }
   return hists;
 }
