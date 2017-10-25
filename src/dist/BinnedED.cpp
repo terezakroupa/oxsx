@@ -204,7 +204,7 @@ BinnedED::Marginalise(const std::vector<std::string>& names_) const{
     Formatter f;
     f << fName;
     for(size_t i = 0; i < names_.size(); i++)
-        f << "_" << i;
+        f << "_" << names_.at(i);
     f << "_proj";
 
     // Marginalise the histogram
