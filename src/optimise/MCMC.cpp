@@ -7,7 +7,7 @@
 #include <ContainerTools.hpp>
 #include <Rand.h>
 #include <iostream>
-#include <math.h> //sqrt
+#include <math.h> //isinf
 
 void
 MCMC::SetHistogramAxes(const AxisCollection& ax_){
@@ -174,14 +174,13 @@ MCMC::Optimise(TestStatistic* testStat_){
         std::cout << it->first << " : " << it->second << std::endl;
     std::cout << std::endl;
 
-
     pTestStatistic->SetParameters(fCurrentStep);
     fCurrentVal = pTestStatistic->Evaluate();
     if(fFlipSign)
         fCurrentVal *= -1;
 
     fBestFit = fCurrentStep;
-    fMaxVal  = fCurrentVal;
+    fMaxVal = fCurrentVal;
     
     // 2. Loop step through the space a fixed number of times
     for(unsigned i = 0; i < fMaxIter; i++){      
@@ -189,6 +188,8 @@ MCMC::Optimise(TestStatistic* testStat_){
             std::cout << i << "  /  " << fMaxIter
                       << "\t" << fSamples.GetAcceptanceRate()
                       << "\t" << fSamples.GetAutoCorrelations()[1]
+                      << "\t" << fSamples.GetAutoCorrelations()[10]
+                      << "\t" << fSamples.GetAutoCorrelations()[100]
                       << std::endl;
 
 
@@ -223,33 +224,27 @@ MCMC::StepAccepted(const ParameterDict& proposedStep_){
 
     pTestStatistic -> SetParameters(proposedStep_);
     double proposedVal = pTestStatistic -> Evaluate();
-
+    
     if(fFlipSign){
         proposedVal = -proposedVal;
-    }
-
+    }    
+   
     if(fCurrentVal > fMaxVal || fMaxVal == 0.0){
         fMaxVal = fCurrentVal;
         fBestFit = fCurrentStep;
     }    
     
-    double acceptanceParam = 0;
+    long double acceptanceParam = 0;
     if(fTestStatLogged)
-        acceptanceParam = exp(proposedVal - fCurrentVal);
+        acceptanceParam = exp(proposedVal - fCurrentVal + fSampler.CorrectAccParam(acceptanceParam));
     else
         acceptanceParam = proposedVal/fCurrentVal;
 
-    // depdending on the sampler, some need to modify the acceptance probability to preserve stationary
-    // condition
-    acceptanceParam = fSampler.CorrectAccParam(acceptanceParam);
-    
     bool accept = false;
     if (acceptanceParam > 1)
         accept =  true;
-
     else if (acceptanceParam >= Rand::Uniform())
         accept = true;
-
 
     if(accept){
         fCurrentVal = proposedVal;

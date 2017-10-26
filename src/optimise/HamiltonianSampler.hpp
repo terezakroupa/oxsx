@@ -26,7 +26,6 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
     }
 
     fCorr = KineticEnergy(momenta);
-
     
     // step 2: Hamiltonian dynamics, including reflections or not
     ParameterDict nextStep = thisStep_;
@@ -36,7 +35,7 @@ HamiltonianSampler<StatType>::Draw(const ParameterDict& thisStep_){
         LeapFrog::Hamiltonian(nextStep, momenta, fMasses, fEpsilon, fDiff, fNSteps);
 
     fCorr -= KineticEnergy(momenta);
-    
+
     return nextStep;
 }
 
@@ -77,5 +76,5 @@ HamiltonianSampler<StatType>::KineticEnergy(const ParameterDict& momenta_) const
 template<typename StatType>
 double
 HamiltonianSampler<StatType>::CorrectAccParam(double in_){
-    return in_ * exp(fCorr);
+    return fCorr;
 }
