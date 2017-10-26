@@ -102,12 +102,12 @@ MCMCSamples::Fill(const ParameterDict& params_, double val_, bool accepted_){
         else
             FillProjections(params_);
 
+        fAutoCorrelator.Fill(val_);
     }
     if(accepted_)
         fAcceptedSteps++;
     
     fTotalSteps++;
-    fAutoCorrelator.Fill(val_);
 }
 
 
