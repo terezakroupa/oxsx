@@ -5,7 +5,7 @@
 template<typename Energy>
 class SigmoidBoundary{
  public:
- SigmoidBoundary(const Energy& stat_, const ParameterDict& minima_,
+ SigmoidBoundary(Energy& stat_, const ParameterDict& minima_,
                  const ParameterDict& maxima_, double mu_ = 1000)
                 : fStat(stat_), fMu(mu_), fMinima(minima_),
                   fMaxima(maxima_) {}
@@ -15,7 +15,7 @@ class SigmoidBoundary{
     std::set<std::string> GetParameterNames() const {return fStat.GetParameterNames();}
     
  private:
-    Energy fStat;
+    Energy&  fStat;
     double   fMu;
     ParameterDict fParams;
     ParameterDict fMinima;
