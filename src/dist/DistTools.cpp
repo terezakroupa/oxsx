@@ -124,7 +124,7 @@ DistTools::ToHist(const TH1D& h_){
     AxisCollection axes;
     axes.AddAxis(BinAxis(h_.GetXaxis()->GetTitle(), 
                          h_.GetXaxis()->GetBinLowEdge(1),
-                         h_.GetXaxis()->GetBinUpEdge(h_.GetNbinsX() + 1),
+                         h_.GetXaxis()->GetBinUpEdge(h_.GetNbinsX()),
                          h_.GetNbinsX()
                          )
                  
@@ -133,6 +133,40 @@ DistTools::ToHist(const TH1D& h_){
     Histogram hist(axes);
     for(int i = 1; i < h_.GetNbinsX() + 1; i++){
         hist.SetBinContent(i-1, h_.GetBinContent(i));
+    }
+
+    return hist;
+}
+
+
+Histogram
+DistTools::ToHist(const TH2D& h_){
+    AxisCollection axes;
+    axes.AddAxis(BinAxis(h_.GetXaxis()->GetTitle(), 
+                         h_.GetXaxis()->GetBinLowEdge(1),
+                         h_.GetXaxis()->GetBinUpEdge(h_.GetNbinsX()),
+                         h_.GetNbinsX()
+                         )
+                 
+                 );
+
+    axes.AddAxis(BinAxis(h_.GetYaxis()->GetTitle(), 
+                         h_.GetYaxis()->GetBinLowEdge(1),
+                         h_.GetYaxis()->GetBinUpEdge(h_.GetNbinsY()),
+                         h_.GetNbinsY()
+                         )
+                 
+                 );
+    
+    Histogram hist(axes);
+    for(int i = 1; i < h_.GetNbinsX() + 1; i++){
+        for(int j = 1; j < h_.GetNbinsY() + 1; j++){
+            std::vector<size_t> indices;
+            indices.push_back(i-1);
+            indices.push_back(j-1);
+            size_t histIndex = hist.FlattenIndices(indices);
+            hist.SetBinContent(histIndex, h_.GetBinContent(h_.GetBin(i,j)));
+        }
     }
 
     return hist;
