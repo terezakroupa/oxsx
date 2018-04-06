@@ -138,7 +138,6 @@ MCMC::Optimise(TestStatistic* testStat_){
     testStat_->RegisterFitComponents();
     pTestStatistic = testStat_;
     fNDims = fMinima.size();
-    fMaxVal = 0;
 
     // Check initialisation
     size_t nParams = testStat_ -> GetParameterCount();
@@ -184,7 +183,7 @@ MCMC::Optimise(TestStatistic* testStat_){
     
     // 2. Loop step through the space a fixed number of times
     for(unsigned i = 0; i < fMaxIter; i++){      
-        if(!(i%100) && i)
+        if(!(i%100000) && i)
             std::cout << i << "  /  " << fMaxIter
                       << "\t" << fSamples.GetAcceptanceRate()
                       << "\t" << fSamples.GetAutoCorrelations()[1]
@@ -202,7 +201,6 @@ MCMC::Optimise(TestStatistic* testStat_){
         // d. log
         fSamples.Fill(fCurrentStep, fCurrentVal, accepted);
     }
-    
     std::cout << "MCMC:: acceptance rate = " << fSamples.GetAcceptanceRate()
               << std::endl;
 
@@ -229,19 +227,20 @@ MCMC::StepAccepted(const ParameterDict& proposedStep_){
         proposedVal = -proposedVal;
     }    
    
-    if(fCurrentVal > fMaxVal || fMaxVal == 0.0){
+    if(fCurrentVal > fMaxVal){
         fMaxVal = fCurrentVal;
         fBestFit = fCurrentStep;
     }    
-    
+
     long double acceptanceParam = 0;
     if(fTestStatLogged)
         acceptanceParam = exp(proposedVal - fCurrentVal + fSampler.CorrectAccParam(acceptanceParam));
     else
         acceptanceParam = proposedVal/fCurrentVal;
 
+
     bool accept = false;
-    if (acceptanceParam > 1)
+    if (acceptanceParam > 1 || isinf(acceptanceParam))
         accept =  true;
     else if (acceptanceParam >= Rand::Uniform())
         accept = true;
