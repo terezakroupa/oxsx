@@ -5,6 +5,7 @@
 #include <DistFiller.h>
 #include <CutLog.h>
 #include <iostream>
+#include <Formatter.hpp>
 
 double 
 BinnedNLLH::Evaluate(){
@@ -31,9 +32,11 @@ BinnedNLLH::Evaluate(){
     // loop over bins and calculate the likelihood
     double nLogLH = 0;
     for(size_t i = 0; i < fDataDist.GetNBins(); i++){
+        if(!fDataDist.GetBinContent(i))
+            continue;
         double prob = fPdfManager.BinProbability(i);
         if(!prob)
-            throw std::runtime_error("BinnedNLLH::Encountered zero probability bin!");
+            throw std::runtime_error(Formatter() << "BinnedNLLH::Encountered zero probability bin! #" << i);
         nLogLH -= fDataDist.GetBinContent(i) *  log(prob);        
     }
 
