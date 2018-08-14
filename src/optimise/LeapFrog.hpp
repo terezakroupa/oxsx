@@ -42,7 +42,7 @@ LeapFrog::Hamiltonian(ParameterDict& qs_, ParameterDict& ps_,
         if(i != nSteps_ -1){
             grad = differ_(qs_);
             for(ParameterDict::iterator it = ps_.begin(); it != ps_.end(); ++it)
-                it->second -= epsilon_/2 * grad[it->first];
+                it->second -= epsilon_ * grad[it->first];
         }
         
     }
