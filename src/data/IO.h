@@ -16,9 +16,9 @@ class Histogram;
 
 class IO{
  public:
-    static void SaveDataSet(const DataSet&, const std::string& filename_);    
+    static void SaveDataSet(const DataSet&, const std::string& filename_, const std::string& = "oxsx_saved");    
     static void SaveDataSetH5(const DataSet&, const std::string& filename_);
-    static void SaveDataSetROOT(const DataSet&, const std::string& filename_);
+    static void SaveDataSetROOT(const DataSet&, const std::string& filename_, const std::string&);
       
 
     static void SaveHistogramH5(const Histogram& , const std::string& filename_);
