@@ -6,36 +6,40 @@ TEST_CASE("Correct Indexing for 3x3 Uniform Axes","[AxisCollection]"){
     BinAxis axis1("axis1", 0,  20, 100);
     BinAxis axis2("axis2", 10, 30, 219);
     BinAxis axis3("axis3", 0, 1, 2341);
-
+		
+    BinAxis axis4("axis1", 0,  20, 100);
+		
     AxisCollection axes;
     axes.AddAxis(axis1);
     axes.AddAxis(axis2);
     axes.AddAxis(axis3);
+		axes.AddAxis(axis4);
 
     SECTION("Correct Number of Bins"){
-        REQUIRE(axes.GetNBins() == (100 * 219 * 2341));
+        REQUIRE(axes.GetNBins() == (100 * 100 * 219 * 2341));
     }
 
     SECTION("Correct Number of Dimensions"){
-        REQUIRE(axes.GetNDimensions() == 3);
+        REQUIRE(axes.GetNDimensions() == 4);
     }
 
 
     SECTION("Global Bin Conversions for first and last bin"){
-        std::vector<size_t> firstBins(3, 0);
+        std::vector<size_t> firstBins(4, 0);
         std::vector<size_t> lastBins;
         lastBins.push_back(99);
         lastBins.push_back(218);
         lastBins.push_back(2340);
-
+				lastBins.push_back(99);
+				
         REQUIRE(axes.FlattenIndices(firstBins) == 0);
-        REQUIRE(axes.FlattenIndices(lastBins)  ==  (2341 * 100 * 219 - 1));
+        REQUIRE(axes.FlattenIndices(lastBins)  ==  (2341 * 100 * 219 *100 - 1));
     }
 
     SECTION("Global Bin Self Conversions"){
         // pick a random bin
         for(unsigned i = 0; i < 100; i++ ){
-            size_t bin = rand()%(2341 * 219 * 100);
+            size_t bin = rand()%(2341 * 219 * 100*100);
 
             std::vector<size_t> indices = axes.UnpackIndices(bin);
             size_t bin2 = axes.FlattenIndices(indices);

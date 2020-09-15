@@ -218,6 +218,39 @@ BinnedED::Marginalise(const std::string& name_) const{
     return Marginalise(std::vector<std::string>(1, name_));
 }
 
+
+BinnedED 
+BinnedED::GetSlice(const std::map<std::string, size_t>& namesAndBins_) const{
+    
+	const std::vector<std::string> allAxisNames = fHistogram.GetAxes().GetAxisNames();
+	std::cout << "BinnedED::GetSlice allAxisNames.size(): " << allAxisNames.size() << std::endl;
+	std::vector<std::string> newObsNames;
+
+		// create a name for the slice and get the observable name
+    Formatter f;
+    f << fName;
+		for(std::vector<std::string>::const_iterator it = allAxisNames.begin(); it!=allAxisNames.end(); it++){
+			std::cout << "BinnedED::GetSlice in the for loop " << std::endl;
+			if(namesAndBins_.find(*it) == namesAndBins_.end()){
+				//this is the axis we want the slice in
+				std::cout << "BinnedED::GetSlice not found, new obs is: "<< (*it) <<std::endl;
+				newObsNames.push_back(*it);
+		}else{
+				std::cout << "BinnedED::GetSlice found (*it): " << (*it) <<std::endl;
+				f << "_" << *it << namesAndBins_.at(*it);
+			}
+		}
+		f << "_slice";
+
+		std::cout << "BinnedED::GetSlice f: "<< std::string(f) << std::endl;
+
+    // slice the histogram
+    BinnedED slice(std::string(f), fHistogram.GetSlice(namesAndBins_));
+    slice.SetObservables(newObsNames);
+		std::cout << "BinnedED::GetSlice newObsNames.size(): " << newObsNames.size() << std::endl;
+    return slice;
+}
+
 void
 BinnedED::Add(const BinnedED& other_, double weight){
     if(other_.fObservables != fObservables)

@@ -51,14 +51,14 @@ DataSetGenerator::ExpectedRatesDataSet(std::vector<int>* eventsTaken_){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-	if(fBootstrap)
-	  RandomDrawsWithReplacement(i, expectedCounts, dataSet);
-	else{
-	  if(fSequentialFlags.at(i))
-	    SequentialDrawsNoReplacement(i, expectedCounts, dataSet);
-	  else
-	    RandomDrawsNoReplacement(i, expectedCounts, dataSet);
-	}
+				if(fBootstraps.at(i))
+					RandomDrawsWithReplacement(i, expectedCounts, dataSet);
+				else{
+					if(fSequentialFlags.at(i))
+						SequentialDrawsNoReplacement(i, expectedCounts, dataSet);
+					else
+						RandomDrawsNoReplacement(i, expectedCounts, dataSet);
+				}
 	if(eventsTaken_)
 	  eventsTaken_->push_back(expectedCounts);
     }
@@ -88,15 +88,19 @@ DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
 
-        if(fBootstrap)
-            RandomDrawsWithReplacement(i, counts, dataSet);
-
-        else{
-            if(fSequentialFlags.at(i))
+        if(fBootstraps.at(i)){
+					std::cout<< "Datagen random with replacement"<<std::endl;
+					RandomDrawsWithReplacement(i, counts, dataSet);
+					
+				}else{
+					if(fSequentialFlags.at(i)){
+							std::cout<< "Datagen seq no replacement"<<std::endl;
                 SequentialDrawsNoReplacement(i, counts, dataSet);
             
-            else
-                RandomDrawsNoReplacement(i, counts, dataSet);
+					}else{
+						std::cout<< "Datagen random no replacement"<<std::endl;
+						RandomDrawsNoReplacement(i, counts, dataSet);
+					}
         }
         
         if(eventsTaken_)
@@ -259,14 +263,14 @@ DataSetGenerator::AddDataSet(DataSet* data_, double rate_, bool flag_){
 }
 
 
-bool
+const std::vector<bool>&
 DataSetGenerator::GetBootstrap() const{
-    return fBootstrap;
+    return fBootstraps;
 }
 
 void
-DataSetGenerator::SetBootstrap(bool b_){
-    fBootstrap = b_;
+DataSetGenerator::SetBootstrap(const std::vector<bool>& b_){
+    fBootstraps = b_;
 }
 
 void 
