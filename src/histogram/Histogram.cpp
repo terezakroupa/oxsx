@@ -5,6 +5,7 @@
 #include <ContainerTools.hpp>
 #include <iostream>
 #include <set>
+#include <algorithm>
 
 Histogram::Histogram(const AxisCollection& axes_){
     SetAxes(axes_);
@@ -169,22 +170,35 @@ Histogram::Variances() const{
 }
 
 Histogram
-Histogram::Marginalise(const std::vector<size_t>& indices_) const{
-    // check the pdf does contain the indices asked for      
-    for(size_t i = 0; i < indices_.size(); i++){
-        if (indices_.at(i) >= fNDims)
-            throw NotFoundError(Formatter() << "Histogram::Marginalise::Tried to project out non existent dim " << indices_.at(i)<< "!");
+Histogram::Marginalise(const std::vector<std::string>& axes_) const{
+    std::vector<std::string> allAxisNames = fAxes.GetAxisNames();
+
+    // check the pdf does contain the axes asked for
+    for(size_t i = 0; i < axes_.size(); i++){
+
+        if (std::find(allAxisNames.begin(), allAxisNames.end(), axes_.at(i)) == allAxisNames.end())
+            throw NotFoundError(Formatter()
+                                << "Histogram::Marginalise::Tried "
+                                << "to project out non existent axis "
+                                << axes_.at(i) << "!");
     }
+
+
+    // work out which axis number corresponds to each name
+    std::vector<size_t> indices;
+    for(size_t i = 0; i < axes_.size(); i++)
+        indices.push_back(fAxes.GetAxisIndex(axes_.at(i)));
+        
     // Get the axes you are interested in, in the order requested
     AxisCollection newAxes;
-    for(size_t i = 0;  i < indices_.size(); i++)
-        newAxes.AddAxis(fAxes.GetAxis(indices_.at(i)));
+    for(size_t i = 0;  i < axes_.size(); i++)
+        newAxes.AddAxis(fAxes.GetAxis(axes_.at(i)));
 
     // New histogram
     Histogram marginalised(newAxes);
 
     std::vector<size_t> oldIndices(fNDims);
-    std::vector<size_t> newIndices(indices_.size());
+    std::vector<size_t> newIndices(axes_.size());
     size_t newBin = -1;
 
     // Now loop over the bins in old and fill new pdfs 
@@ -192,8 +206,8 @@ Histogram::Marginalise(const std::vector<size_t>& indices_) const{
         for(size_t i = 0; i < fNDims; i++)
             oldIndices[i] = fAxes.UnflattenIndex(bin, i);
 
-        for(size_t i = 0; i < indices_.size(); i++)
-            newIndices[i] = oldIndices.at(indices_.at(i));
+        for(size_t i = 0; i < indices.size(); i++)
+            newIndices[i] = oldIndices.at(indices.at(i));
 
         newBin = marginalised.FlattenIndices(newIndices);
         marginalised.AddBinContent(newBin, fBinContents.at(bin));
@@ -202,8 +216,8 @@ Histogram::Marginalise(const std::vector<size_t>& indices_) const{
 }
 
 Histogram
-Histogram::Marginalise(size_t index_) const {
-    return Marginalise(std::vector<size_t>(1, index_));
+Histogram::Marginalise(const std::string& index_) const {
+    return Marginalise(std::vector<std::string>(1, index_));
 }
 
 double
@@ -253,4 +267,9 @@ Histogram::Divide(const Histogram& other_){
 std::vector<std::string>
 Histogram::GetAxisNames() const{
     return fAxes.GetAxisNames();
+}
+
+size_t
+Histogram::GetAxisIndex(const std::string& name_) const{
+    return fAxes.GetAxisIndex(name_);
 }
