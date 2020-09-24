@@ -13,7 +13,7 @@ EventShift::operator()(const Event& inEvent_){
     std::string obsToChange = fOutObservables.GetNames().at(0);
     
     // pull out the relevant data point
-    newEvent.SetDatum(obsToChange, inEvent_.GetDatum(obsToChange) * GetShift());
+    newEvent.SetDatum(obsToChange, inEvent_.GetDatum(obsToChange) + GetShift());
     return newEvent;
 }
 
