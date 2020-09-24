@@ -220,6 +220,53 @@ Histogram::Marginalise(const std::string& index_) const {
     return Marginalise(std::vector<std::string>(1, index_));
 }
 
+Histogram
+Histogram::GetSlice(const std::map<std::string,size_t>& fixedBins_) const{
+    const std::vector<std::string> allAxisNames = fAxes.GetAxisNames();
+
+    // check the pdf does contain the axes and bins asked for
+    for(std::map<std::string, size_t>::const_iterator it = fixedBins_.begin(); it!=fixedBins_.end(); it++){
+        if (std::find(allAxisNames.begin(), allAxisNames.end(), it->first) == allAxisNames.end())
+            throw NotFoundError(Formatter()
+			      << "Histogram::GetSlice::Tried "
+			      << "to get slice of non existent axis "
+			      << it->first << "!");
+    }
+
+    // want a 1d slice, so check the dimensions
+    if (fixedBins_.size() != fNDims-1)
+        throw DimensionError("Histogram::GetSlice", fNDims-1, fixedBins_.size());
+  
+    // work out which axis is the slice in (i.e. the not fixed one)
+    std::string newAxisName;
+    size_t newAxisIndex;
+    std::vector<size_t> sliceIndices(fNDims);
+  
+    for(std::vector<std::string>::const_iterator it = allAxisNames.begin(); it!=allAxisNames.end(); it++){
+        if(fixedBins_.find(*it) == fixedBins_.end()){
+	    //this is the axis we want the slice in
+	    newAxisName = *it;
+	    newAxisIndex = fAxes.GetAxisIndex(*it);
+	}else{
+	    //record the indices for the fixed bins in other dimensions
+	    sliceIndices[fAxes.GetAxisIndex(*it)] = fixedBins_.at(*it);
+	}
+    }
+ 
+    // new histogram
+    AxisCollection newAxes;
+    newAxes.AddAxis(fAxes.GetAxis(newAxisIndex));
+    Histogram slice(newAxes);
+
+    // loop over bins in the slice histo and fill it
+    for(size_t bin = 0; bin < newAxes.GetNBins(); bin++){
+        sliceIndices[newAxisIndex] = bin;
+	size_t oldGlobalBin = fAxes.FlattenIndices(sliceIndices);
+	slice.AddBinContent(bin, fBinContents.at(oldGlobalBin));
+    }
+    return slice;
+}
+
 double
 Histogram::GetBinLowEdge(size_t bin_, size_t index_) const{
     return fAxes.GetBinLowEdge(bin_, index_);
