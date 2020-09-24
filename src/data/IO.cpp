@@ -25,13 +25,13 @@ IO::GetExt(const std::string& path_){
 }
 
 void
-IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
+IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_, const std::string& treename_){
     std::string ext = GetExt(filename_);
     if(ext == "h5")
         SaveDataSetH5(dataSet_, filename_);
 
     else if(ext == "root")
-        SaveDataSetROOT(dataSet_, filename_);
+        SaveDataSetROOT(dataSet_, filename_, treename_);
 
     else
         throw IOError("IO::SaveDataSet Don't know how to save file as ." + ext);
@@ -39,7 +39,7 @@ IO::SaveDataSet(const DataSet& dataSet_, const std::string& filename_){
 
 
 void
-IO::SaveDataSetROOT(const DataSet& dataSet_, const std::string& filename_){
+IO::SaveDataSetROOT(const DataSet& dataSet_, const std::string& filename_, const std::string& treename_){
     // note if this is already a ROOT tree this is a super silly way to do it, but it doesn't make sense to do it
     // anyway
     if(!dataSet_.GetObservableNames().size()){
@@ -54,7 +54,7 @@ IO::SaveDataSetROOT(const DataSet& dataSet_, const std::string& filename_){
     }
 
     TFile f(filename_.c_str(), "RECREATE");
-    TNtuple nt("oxsx_saved", "", branchString.c_str());
+    TNtuple nt(treename_.c_str(), "", branchString.c_str());
 
     int oneTenth = dataSet_.GetNEntries()/10;
     for(size_t i = 0; i < dataSet_.GetNEntries(); i++){
