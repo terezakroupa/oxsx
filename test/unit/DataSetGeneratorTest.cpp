@@ -29,12 +29,14 @@ TEST_CASE("Dataset generation by random draws"){
   sets.push_back(&testDataSet1);
   sets.push_back(&testDataSet2);
   gen.SetDataSets(sets);
+  
+  std::vector<bool> sequentialFlags(2,0);
+  gen.SetSequentialFlags(sequentialFlags);
 
   std::vector<double> rates;
   rates.push_back(2.0);
   rates.push_back(3.0);
   gen.SetExpectedRates(rates);
-
 
   SECTION("Correct number of events drawn without replacement"){
     gen.SetBootstrap(false);
@@ -48,10 +50,10 @@ TEST_CASE("Dataset generation by random draws"){
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
 
     //get number of events remaining in original datasets
-    std::vector<OXSXDataSet*> remainders = gen.AllRemainingEvents();   
     size_t remainingEvents = 0;
-    for (std::vector<OXSXDataSet*>::iterator i = remainders.begin(); i != remainders.end(); ++i) {  
-      OXSXDataSet* remainder = *i;
+    for (size_t i = 0; i<sets.size();i++){
+      int countsTaken = 0;
+      OXSXDataSet* remainder = gen.AllRemainingEvents(i,&countsTaken);
       remainingEvents+= remainder->GetNEntries();
     }
 
@@ -71,10 +73,10 @@ TEST_CASE("Dataset generation by random draws"){
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
 
     //get number of events remaining in original datasets
-    std::vector<OXSXDataSet*> remainders = gen.AllRemainingEvents();
     size_t remainingEvents = 0;
-    for (std::vector<OXSXDataSet*>::iterator i = remainders.begin(); i != remainders.end(); ++i) {
-      OXSXDataSet* remainder = *i;
+    for (size_t i = 0; i<sets.size();i++){
+      int countsTaken = 0;
+      OXSXDataSet* remainder = gen.AllRemainingEvents(i, &countsTaken);
       remainingEvents+= remainder->GetNEntries();
     }
 
