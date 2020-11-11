@@ -51,7 +51,7 @@ DataSetGenerator::ExpectedRatesDataSet(std::vector<int>* eventsTaken_){
     dataSet.SetObservableNames(fDataSets.at(0)->GetObservableNames());
     for(size_t i = 0; i < fDataSets.size(); i++){
         unsigned expectedCounts = round(fExpectedRates.at(i));
-	if(fBootstrap)
+	if(fBootstraps.at(i))
 	  RandomDrawsWithReplacement(i, expectedCounts, dataSet);
 	else{
 	  if(fSequentialFlags.at(i))
@@ -88,7 +88,7 @@ DataSetGenerator::PoissonFluctuatedDataSet(std::vector<int>* eventsTaken_){
     for(size_t i = 0; i < fDataSets.size(); i++){
         int counts = Rand::Poisson(fExpectedRates.at(i));
 
-        if(fBootstrap)
+        if(fBootstraps.at(i))
             RandomDrawsWithReplacement(i, counts, dataSet);
 
         else{
@@ -259,14 +259,14 @@ DataSetGenerator::AddDataSet(DataSet* data_, double rate_, bool flag_){
 }
 
 
-bool
+const std::vector<bool>&
 DataSetGenerator::GetBootstrap() const{
-    return fBootstrap;
+    return fBootstraps;
 }
 
 void
-DataSetGenerator::SetBootstrap(bool b_){
-    fBootstrap = b_;
+DataSetGenerator::SetBootstrap(const std::vector<bool>& b_){
+    fBootstraps = b_;
 }
 
 void 
