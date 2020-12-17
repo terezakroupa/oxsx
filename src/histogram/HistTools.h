@@ -24,6 +24,9 @@ class HistTools{
     // this works for histograms and binnedED -> put it somewhere else
     template<typename T>
     static std::vector<T> GetVisualisableProjections(const T&);
+
+    template<typename T>
+    static std::vector<T> Get1DSlices(const T&, const std::string&);
 };
 
 #include <HistTools.hpp>
