@@ -39,14 +39,20 @@ TEST_CASE("Dataset generation by random draws"){
   gen.SetExpectedRates(rates);
 
   SECTION("Correct number of events drawn without replacement"){
-    gen.SetBootstrap(false);
+    std::vector<bool> bootstraps;
+    bootstraps.push_back(false);
+    bootstraps.push_back(false);
+    gen.SetBootstrap(bootstraps);
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
     REQUIRE(newDataSet.GetNEntries() == std::accumulate(rates.begin(), rates.end(), 0));
   }
   
 
   SECTION("Correct number of events left in datasets, no replacement"){
-    gen.SetBootstrap(false);
+    std::vector<bool> bootstraps;
+    bootstraps.push_back(false);
+    bootstraps.push_back(false);
+    gen.SetBootstrap(bootstraps);
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
 
     //get number of events remaining in original datasets
@@ -62,14 +68,20 @@ TEST_CASE("Dataset generation by random draws"){
   
 
   SECTION("Correct number of events drawn with replacement"){
-    gen.SetBootstrap(true);
+    std::vector<bool> bootstraps;
+    bootstraps.push_back(true);
+    bootstraps.push_back(true);
+    gen.SetBootstrap(bootstraps);
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
     REQUIRE(newDataSet.GetNEntries() == std::accumulate(rates.begin(), rates.end(), 0));
   }
 
 
   SECTION("Correct number of events left in datasets, with replacement"){
-    gen.SetBootstrap(true);
+    std::vector<bool> bootstraps;
+    bootstraps.push_back(true);
+    bootstraps.push_back(true);
+    gen.SetBootstrap(bootstraps);
     OXSXDataSet newDataSet = gen.ExpectedRatesDataSet();
 
     //get number of events remaining in original datasets
